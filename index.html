@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>GMAIL HUB</title>
+    <title>GMAIL HUB & WORK PORTAL</title>
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -20,7 +20,7 @@
             user-select: none;
             -webkit-touch-callout: none;
         }
-        input, textarea, #orders-purchase-history .font-mono, #replace-history-list .text-sm, .selectable-text {
+        input, textarea, #orders-purchase-history .font-mono, #replace-history-list .text-sm, .selectable-text, #work-proof-input {
             -webkit-user-select: text;
             -ms-user-select: text;
             user-select: text;
@@ -114,26 +114,36 @@
         }
         .btn-order-orange:active { transform: scale(0.96); }
 
+        .btn-vip-upgrade {
+            background: linear-gradient(135deg, #eab308 0%, #ca8a04 100%);
+            color: #ffffff;
+            font-weight: 800;
+            border-radius: 14px;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 14px rgba(202, 138, 4, 0.3);
+        }
+        .btn-vip-upgrade:active { transform: scale(0.96); }
+
         /* ULTRA SLEEK FLOATING BOTTOM NAVIGATION */
         .bottom-nav-container {
             position: fixed;
-            bottom: 12px;
-            left: 12px;
-            right: 12px;
-            max-width: 424px;
+            bottom: 10px;
+            left: 8px;
+            right: 8px;
+            max-width: 440px;
             margin: 0 auto;
             z-index: 50;
         }
         .bottom-nav {
-            background: rgba(255, 255, 255, 0.94);
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(16px);
             border: 1px solid rgba(226, 232, 240, 0.9);
-            border-radius: 24px;
+            border-radius: 22px;
             display: flex;
-            justify-content: space-around;
+            justify-content: space-between;
             align-items: center;
-            height: 62px;
-            padding: 4px 6px;
+            height: 60px;
+            padding: 3px 6px;
             box-shadow: 0 12px 32px rgba(15, 23, 42, 0.12), 0 2px 6px rgba(0, 0, 0, 0.04);
         }
         .nav-item {
@@ -142,12 +152,12 @@
             align-items: center;
             justify-content: center;
             color: #64748b;
-            font-size: 0.68rem;
+            font-size: 0.65rem;
             font-weight: 700;
             transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
-            padding: 5px 6px;
-            border-radius: 16px;
+            padding: 4px 3px;
+            border-radius: 14px;
             flex: 1;
         }
         .nav-item.active {
@@ -157,8 +167,8 @@
             background: #eff6ff;
             color: #2563eb;
             transform: translateY(-2px);
-            border-radius: 14px;
-            padding: 3px 12px;
+            border-radius: 12px;
+            padding: 3px 8px;
             box-shadow: 0 2px 8px rgba(37, 99, 235, 0.15);
         }
         .nav-icon-wrapper {
@@ -276,6 +286,13 @@
         .toast-item.toast-success { border-left-color: #10b981; }
         .toast-item.toast-error { border-left-color: #ef4444; }
         .toast-item.toast-info { border-left-color: #3b82f6; }
+
+        .vip-badge {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+            font-weight: 900;
+        }
     </style>
 </head>
 <body class="max-w-md mx-auto relative bg-[#f8fafc] min-h-screen text-[#0f172a]">
@@ -288,28 +305,27 @@
         <div class="relative flex items-center justify-center mb-6">
             <div class="w-20 h-20 rounded-full border-4 border-blue-500/20 border-t-blue-400 border-r-indigo-400 animate-spin"></div>
             <div class="absolute inset-0 flex items-center justify-center">
-                <i data-lucide="mail" class="w-8 h-8 text-blue-400 animate-pulse"></i>
+                <i data-lucide="briefcase" class="w-8 h-8 text-blue-400 animate-pulse"></i>
             </div>
         </div>
 
         <div class="text-center space-y-2 z-10">
-            <h1 class="font-black text-3xl tracking-wider shimmer-text">GMAIL HUB</h1>
+            <h1 class="font-black text-3xl tracking-wider shimmer-text">GMAIL HUB & WORK</h1>
             <div class="flex items-center justify-center gap-1.5 pt-1">
                 <span class="px-2.5 py-0.5 rounded-full bg-blue-500/20 text-blue-300 text-[11px] font-black border border-blue-500/40">EMAILS</span>
                 <span class="text-gray-500">•</span>
-                <span class="px-2.5 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 text-[11px] font-black border border-indigo-500/40">VPN</span>
+                <span class="px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 text-[11px] font-black border border-amber-500/40">VIP WORK</span>
                 <span class="text-gray-500">•</span>
-                <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[11px] font-black border border-emerald-500/40">PROXY</span>
+                <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[11px] font-black border border-emerald-500/40">EARN</span>
             </div>
-            <p class="text-xs text-slate-400 font-medium tracking-wide">Automated & Verified Accounts Gateway</p>
+            <p class="text-xs text-slate-400 font-medium tracking-wide">Automated Services & Multi-Tier Work Marketplace</p>
         </div>
     </div>
 
-    <!-- SIDEBAR DRAWER (TRANSFER, HISTORY, SUPPORT & TOOLS) -->
+    <!-- SIDEBAR DRAWER -->
     <div id="side-drawer-overlay" class="fixed inset-0 z-[80] hidden" onclick="toggleSideDrawer(false)"></div>
     <div id="side-drawer" class="fixed top-0 left-0 bottom-0 w-72 bg-white z-[85] shadow-2xl flex flex-col justify-between -translate-x-full border-r border-slate-200">
         <div class="p-5 space-y-4 overflow-y-auto">
-            <!-- Header inside Drawer -->
             <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                 <div class="flex items-center gap-2.5">
                     <div class="w-9 h-9 rounded-2xl bg-blue-600 text-white flex items-center justify-center font-black shadow-md shadow-blue-500/30">
@@ -331,15 +347,25 @@
                     U
                 </div>
                 <div class="overflow-hidden">
-                    <h4 class="font-bold text-xs text-slate-900 truncate" id="drawer-user-name">User</h4>
+                    <div class="flex items-center gap-1.5">
+                        <h4 class="font-bold text-xs text-slate-900 truncate" id="drawer-user-name">User</h4>
+                        <span id="drawer-user-vip-badge" class="text-[9px] font-black px-1.5 py-0.2 rounded bg-amber-500 text-white">VIP 0</span>
+                    </div>
                     <span class="text-[10px] font-mono text-slate-500 font-bold block" id="drawer-user-id">ID: 000000</span>
                 </div>
             </div>
 
-            <!-- 1. WALLET & TRANSFER SECTION -->
             <div class="space-y-1 text-xs font-bold text-slate-700">
-                <div class="px-2 py-1 text-[10px] uppercase tracking-wider text-slate-400 font-black">Finances & History</div>
+                <div class="px-2 py-1 text-[10px] uppercase tracking-wider text-slate-400 font-black">Portal Sections</div>
                 
+                <button onclick="toggleSideDrawer(false); navigateTo('work-page')" class="w-full flex items-center gap-3 p-2.5 rounded-xl hover:bg-amber-50 text-slate-700 hover:text-amber-700 transition text-left">
+                    <div class="p-1.5 bg-amber-100 text-amber-700 rounded-lg"><i data-lucide="briefcase" class="w-4 h-4"></i></div>
+                    <div class="flex-grow flex justify-between items-center">
+                        <span>Work & VIP Jobs</span>
+                        <span class="text-[10px] text-amber-600 font-extrabold bg-amber-50 px-2 py-0.5 rounded-md">Earn Daily</span>
+                    </div>
+                </button>
+
                 <button onclick="toggleSideDrawer(false); navigateTo('features-page')" class="w-full flex items-center gap-3 p-2.5 rounded-xl hover:bg-blue-50 text-slate-700 hover:text-blue-600 transition text-left">
                     <div class="p-1.5 bg-orange-100 text-orange-600 rounded-lg"><i data-lucide="arrow-left-right" class="w-4 h-4"></i></div>
                     <div class="flex-grow flex justify-between items-center">
@@ -357,7 +383,6 @@
                 </button>
             </div>
 
-            <!-- 2. COMMUNITY & SUPPORT -->
             <div class="space-y-1 text-xs font-bold text-slate-700 pt-2 border-t border-slate-100">
                 <div class="px-2 py-1 text-[10px] uppercase tracking-wider text-slate-400 font-black">Support & Community</div>
                 
@@ -371,7 +396,6 @@
                 </a>
             </div>
 
-            <!-- 3. TOOLS & POLICIES -->
             <div class="space-y-1 text-xs font-bold text-slate-700 pt-2 border-t border-slate-100">
                 <div class="px-2 py-1 text-[10px] uppercase tracking-wider text-slate-400 font-black">Policies & System</div>
 
@@ -403,7 +427,6 @@
         <!-- HEADER -->
         <header class="main-header flex items-center justify-between">
             <div class="flex items-center gap-3">
-                <!-- HAMBURGER MENU BUTTON -->
                 <button onclick="toggleSideDrawer(true)" class="p-2 rounded-xl bg-white/15 hover:bg-white/25 active:scale-95 transition text-white" title="Menu">
                     <i data-lucide="menu" class="w-5 h-5"></i>
                 </button>
@@ -411,7 +434,7 @@
                 <div class="flex items-center gap-2 cursor-pointer" onclick="navigateTo('home-page')">
                     <div class="flex flex-col">
                         <span class="text-lg font-black tracking-tight text-white leading-tight">GMAIL HUB</span>
-                        <span class="text-[9.5px] text-blue-200 font-bold uppercase tracking-wider">Automated Shop</span>
+                        <span class="text-[9.5px] text-blue-200 font-bold uppercase tracking-wider">Automated Portal</span>
                     </div>
                 </div>
             </div>
@@ -422,6 +445,12 @@
                     <i data-lucide="wallet" class="w-3.5 h-3.5 text-amber-300"></i>
                     <span id="header-coin-balance" class="font-black text-xs text-white">৳0.00</span>
                 </div>
+
+                <!-- VIP BADGE IN HEADER -->
+                <button onclick="openVipUpgradeModal()" class="px-2 py-1 bg-amber-400/25 border border-amber-300/40 text-amber-200 text-[10.5px] font-black rounded-xl flex items-center gap-1">
+                    <i data-lucide="crown" class="w-3 h-3 text-amber-300"></i>
+                    <span id="header-vip-tag">VIP 0</span>
+                </button>
 
                 <!-- NOTIFICATION BELL ICON -->
                 <button id="header-notif-btn" onclick="toggleNotificationModal()" class="relative bg-white/15 p-2 rounded-xl text-white hover:bg-white/25 transition" title="নোটিফিকেশন">
@@ -434,15 +463,13 @@
         <!-- MAIN CONTENT AREA -->
         <main class="flex-grow pb-28">
 
-            <!-- 1. HOME PAGE -->
+            <!-- 1. HOME PAGE (Shop & Services) -->
             <div id="home-page" class="p-4 space-y-3.5 sub-page">
-                <!-- Search Bar -->
                 <div class="relative">
                     <input id="product-search-input" oninput="filterProductsSearch(this.value)" type="text" placeholder="সার্ভিস বা ইমেইল খুঁজুন..." class="w-full py-2.5 pl-9 pr-4 rounded-xl input-field text-xs font-semibold">
                     <i data-lucide="search" class="w-4 h-4 absolute left-3 top-3 text-slate-400"></i>
                 </div>
 
-                <!-- Categories Grid -->
                 <div class="grid grid-cols-3 gap-2" id="category-filter-grid"></div>
 
                 <div class="space-y-3 pt-1">
@@ -462,9 +489,58 @@
                 </div>
             </div>
 
-            <!-- 2. DEPOSIT PAGE -->
+            <!-- 2. WORK PAGE (NEW VIP & WORK POSTS PORTAL) -->
+            <div id="work-page" class="p-4 space-y-4 sub-page">
+                <!-- VIP Status & Unlock Banner -->
+                <div class="bg-gradient-to-br from-slate-900 via-amber-950 to-slate-900 p-5 rounded-3xl text-white shadow-xl relative overflow-hidden border border-amber-500/30">
+                    <div class="absolute -right-6 -bottom-6 w-36 h-36 bg-amber-500/10 rounded-full blur-2xl pointer-events-none"></div>
+                    <div class="relative z-10 flex items-center justify-between">
+                        <div class="space-y-1">
+                            <div class="flex items-center gap-2">
+                                <span id="work-page-vip-badge" class="px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 text-[10px] font-black uppercase tracking-wider border border-amber-400/30 flex items-center gap-1">
+                                    <i data-lucide="crown" class="w-3 h-3 text-amber-400"></i> <span id="work-page-vip-level-text">VIP 0 MEMBER</span>
+                                </span>
+                            </div>
+                            <h2 class="text-xl font-black tracking-tight text-white">Work & Earn Portal</h2>
+                            <p class="text-xs text-amber-200/90" id="work-page-vip-subtext">Free ও VIP কাজ সম্পন্ন করে আনলিমিটেড আয় করুন!</p>
+                        </div>
+                        <button onclick="openVipUpgradeModal()" class="px-3.5 py-2.5 rounded-2xl btn-vip-upgrade text-xs font-black flex items-center gap-1.5 shadow-lg active:scale-95 transition">
+                            <i data-lucide="zap" class="w-4 h-4"></i>
+                            <span>Upgrade</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- VIP Level Filter Tabs -->
+                <div class="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none" id="work-vip-tabs-container">
+                    <button onclick="filterWorkVipLevel('all', this)" class="category-btn active text-xs whitespace-nowrap px-3.5 py-2">All Jobs</button>
+                    <button onclick="filterWorkVipLevel('vip0', this)" class="category-btn text-xs whitespace-nowrap px-3 py-2">VIP 0 (Free)</button>
+                    <button onclick="filterWorkVipLevel('vip1', this)" class="category-btn text-xs whitespace-nowrap px-3 py-2">VIP 1</button>
+                    <button onclick="filterWorkVipLevel('vip2', this)" class="category-btn text-xs whitespace-nowrap px-3 py-2">VIP 2</button>
+                    <button onclick="filterWorkVipLevel('vip3', this)" class="category-btn text-xs whitespace-nowrap px-3 py-2">VIP 3</button>
+                    <button onclick="filterWorkVipLevel('vip4', this)" class="category-btn text-xs whitespace-nowrap px-3 py-2">VIP 4</button>
+                    <button onclick="filterWorkVipLevel('vip5', this)" class="category-btn text-xs whitespace-nowrap px-3 py-2">VIP 5</button>
+                </div>
+
+                <!-- Work Submissions Toggle View Button -->
+                <div class="flex gap-2">
+                    <button id="btn-show-active-jobs" onclick="toggleWorkView('jobs')" class="flex-1 py-2.5 bg-blue-600 text-white rounded-xl font-bold text-xs shadow-sm transition">
+                        Available Job Posts
+                    </button>
+                    <button id="btn-show-my-submissions" onclick="toggleWorkView('submissions')" class="flex-1 py-2.5 bg-slate-100 text-slate-700 hover:bg-slate-200 rounded-xl font-bold text-xs transition">
+                        My Work Submissions
+                    </button>
+                </div>
+
+                <!-- Work Posts Container -->
+                <div id="work-posts-list-container" class="space-y-3 min-h-[220px]"></div>
+
+                <!-- User Submissions History Container -->
+                <div id="work-submissions-list-container" class="space-y-3 hidden min-h-[220px]"></div>
+            </div>
+
+            <!-- 3. DEPOSIT PAGE -->
             <div id="pay-page" class="p-4 space-y-4 sub-page">
-                
                 <div id="deposit-status-banner" class="hidden p-3.5 rounded-2xl text-xs font-semibold flex items-center justify-between transition-all duration-300">
                     <div class="flex items-center gap-2" id="deposit-status-banner-content"></div>
                     <button onclick="document.getElementById('deposit-status-banner').classList.add('hidden')" class="text-gray-400 hover:text-gray-600">
@@ -502,7 +578,6 @@
                         </div>
                     </div>
 
-                    <!-- Input Amount (Default 50 BDT) -->
                     <div>
                         <div class="flex justify-between items-center mb-1.5">
                             <label for="amountInput" class="text-xs font-black text-slate-700">টাকার পরিমাণ (BDT)</label>
@@ -525,7 +600,6 @@
                             <button type="button" onclick="setAutoQuickAmount(500)" class="quick-amount-pill">500 BDT</button>
                             <button type="button" onclick="setAutoQuickAmount(1000)" class="quick-amount-pill">1,000 BDT</button>
                             
-                            <!-- 2000 BDT with Special Free 200 Bonus Badge -->
                             <button type="button" onclick="setAutoQuickAmount(2000)" class="quick-amount-pill col-span-3 border-2 border-amber-400 bg-gradient-to-r from-amber-50 to-orange-50 hover:from-amber-100 flex items-center justify-between px-4 py-2.5">
                                 <div class="flex items-center gap-2">
                                     <span class="w-7 h-7 rounded-full bg-amber-500 text-white flex items-center justify-center font-bold text-xs shadow-sm">
@@ -540,7 +614,6 @@
                         </div>
                     </div>
 
-                    <!-- Continue Button -->
                     <button id="btnPayGateway" onclick="initiatePayment()" class="w-full py-4 rounded-2xl btn-gateway-pay text-sm flex items-center justify-center gap-2 cursor-pointer shadow-lg">
                         <i data-lucide="lock" class="w-4 h-4 text-amber-300"></i>
                         <span>Continue to Instant Payment</span>
@@ -551,12 +624,10 @@
                         <span>Secured by 256-Bit SSL Encrypted Automated Gateway</span>
                     </div>
                 </div>
-
             </div>
 
-            <!-- 3. NEW TASK & REWARDS PAGE -->
+            <!-- 4. TASK & REWARDS PAGE -->
             <div id="task-page" class="p-4 space-y-4 sub-page">
-                <!-- Task Header Banner -->
                 <div class="bg-gradient-to-br from-amber-500 via-orange-500 to-red-500 p-5 rounded-3xl text-white shadow-lg space-y-2 relative overflow-hidden">
                     <div class="absolute -right-4 -bottom-4 w-32 h-32 bg-white/10 rounded-full blur-xl pointer-events-none"></div>
                     <div class="flex items-center gap-2">
@@ -623,7 +694,7 @@
                 </div>
             </div>
 
-            <!-- 4. ORDERS PAGE -->
+            <!-- 5. ORDERS PAGE -->
             <div id="orders-page" class="p-4 space-y-4 sub-page">
                 <div class="flex items-center justify-between border-b border-slate-200 pb-3">
                     <div>
@@ -642,22 +713,24 @@
                 <div id="orders-purchase-history" class="space-y-3 min-h-[200px]"></div>
             </div>
 
-            <!-- 5. MODERN PROFILE PAGE -->
+            <!-- 6. MODERN PROFILE PAGE -->
             <div id="profile-page" class="p-4 space-y-4 sub-page">
-                <!-- User Profile Card -->
                 <div class="bg-gradient-to-br from-slate-900 via-blue-950 to-indigo-950 p-6 rounded-3xl text-white shadow-xl relative overflow-hidden text-center space-y-3">
                     <div class="absolute top-3 right-3 bg-white/10 px-2.5 py-1 rounded-full text-[10px] font-extrabold text-blue-200 border border-white/10 flex items-center gap-1">
                         <i data-lucide="shield-check" class="w-3 h-3 text-emerald-400"></i> Verified Member
                     </div>
                     
-                    <div class="w-20 h-20 rounded-full bg-gradient-to-tr from-blue-500 to-indigo-500 p-1 mx-auto shadow-lg">
+                    <div class="w-20 h-20 rounded-full bg-gradient-to-tr from-blue-500 to-amber-500 p-1 mx-auto shadow-lg">
                         <div class="w-full h-full rounded-full bg-slate-900 flex items-center justify-center font-black text-2xl text-white overflow-hidden" id="profile-initials-avatar">
                             <span id="profile-initials">U</span>
                         </div>
                     </div>
 
                     <div>
-                        <h3 id="profile-name" class="text-xl font-black tracking-tight">User</h3>
+                        <div class="flex items-center justify-center gap-2">
+                            <h3 id="profile-name" class="text-xl font-black tracking-tight">User</h3>
+                            <span id="profile-vip-pill" class="text-xs px-2 py-0.5 rounded-full font-black bg-amber-500 text-white shadow-sm">VIP 0</span>
+                        </div>
                         <p id="profile-username" class="text-xs text-blue-300">@username</p>
                         <div class="mt-2 inline-flex items-center gap-1.5 bg-white/10 px-3 py-1 rounded-full text-xs font-mono font-bold text-slate-200 border border-white/10 cursor-pointer" onclick="copyToClipboard(userData.tgChatId, null, 'Telegram ID Copied')">
                             <span id="profile-id">ID: 000000</span>
@@ -666,20 +739,30 @@
                     </div>
                 </div>
 
-                <!-- Account Stats Grid -->
-                <div class="grid grid-cols-2 gap-3 text-center">
-                    <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
-                        <p class="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider">AVAILABLE BALANCE</p>
-                        <p id="profile-stat-balance" class="text-xl font-black text-blue-600 mt-0.5">৳0.00</p>
+                <div class="grid grid-cols-3 gap-2 text-center">
+                    <div class="bg-white p-3 rounded-2xl border border-slate-200 shadow-sm">
+                        <p class="text-[9px] font-extrabold text-slate-400 uppercase tracking-wider">BALANCE</p>
+                        <p id="profile-stat-balance" class="text-base font-black text-blue-600 mt-0.5">৳0.00</p>
                     </div>
-                    <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
-                        <p class="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider">TOTAL ORDERS</p>
-                        <p id="profile-stat-orders" class="text-xl font-black text-indigo-600 mt-0.5">0</p>
+                    <div class="bg-white p-3 rounded-2xl border border-slate-200 shadow-sm">
+                        <p class="text-[9px] font-extrabold text-slate-400 uppercase tracking-wider">VIP LEVEL</p>
+                        <p id="profile-stat-vip" class="text-base font-black text-amber-600 mt-0.5">VIP 0</p>
+                    </div>
+                    <div class="bg-white p-3 rounded-2xl border border-slate-200 shadow-sm">
+                        <p class="text-[9px] font-extrabold text-slate-400 uppercase tracking-wider">ORDERS</p>
+                        <p id="profile-stat-orders" class="text-base font-black text-indigo-600 mt-0.5">0</p>
                     </div>
                 </div>
 
-                <!-- Quick Menu Links in Profile -->
                 <div class="bg-white p-2 rounded-2xl border border-slate-200 shadow-sm divide-y divide-slate-100 text-xs font-bold">
+                    <button onclick="navigateTo('work-page')" class="w-full p-3 flex items-center justify-between hover:bg-slate-50 rounded-xl transition">
+                        <div class="flex items-center gap-2.5">
+                            <div class="p-1.5 bg-amber-50 text-amber-600 rounded-lg"><i data-lucide="briefcase" class="w-4 h-4"></i></div>
+                            <span>কাজের পোর্টাল ও VIP আর্নিং</span>
+                        </div>
+                        <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400"></i>
+                    </button>
+
                     <button onclick="navigateTo('pay-page')" class="w-full p-3 flex items-center justify-between hover:bg-slate-50 rounded-xl transition">
                         <div class="flex items-center gap-2.5">
                             <div class="p-1.5 bg-blue-50 text-blue-600 rounded-lg"><i data-lucide="wallet" class="w-4 h-4"></i></div>
@@ -706,7 +789,7 @@
                 </div>
             </div>
 
-            <!-- 6. WALLET TRANSFERS PAGE (Accessed via Drawer) -->
+            <!-- 7. WALLET TRANSFERS PAGE -->
             <div id="features-page" class="p-4 space-y-5 sub-page">
                 <div class="flex items-center gap-2 mb-2">
                     <button onclick="navigateTo('home-page')" class="p-2 rounded-xl bg-white border border-slate-200">
@@ -736,7 +819,7 @@
                 </div>
             </div>
 
-            <!-- 7. HISTORY PAGE (DEPOSIT HISTORY REMOVED) -->
+            <!-- 8. HISTORY PAGE -->
             <div id="history-page" class="p-4 space-y-6 sub-page">
                 <div class="flex items-center gap-2 mb-2">
                     <button onclick="navigateTo('home-page')" class="p-2 rounded-xl bg-white border border-slate-200">
@@ -762,7 +845,7 @@
                 </div>
             </div>
 
-            <!-- 8. SEND BALANCE SUB-PAGE -->
+            <!-- 9. SEND BALANCE SUB-PAGE -->
             <div id="send-page" class="p-4 space-y-5 sub-page">
                 <div class="flex items-center gap-3 mb-2">
                     <button onclick="navigateTo('features-page')" class="p-2 rounded-xl bg-white border border-slate-200">
@@ -784,9 +867,21 @@
                 </div>
             </div>
 
-            <!-- 9. ADMIN PANEL -->
+            <!-- 10. ADMIN PANEL (SERVICES + WORK APPROVALS) -->
             <div id="admin-page" class="p-4 space-y-6 sub-page">
                 <h2 class="text-xl font-bold text-center text-slate-800">Admin Control Center</h2>
+
+                <!-- Admin Pending Work Submissions -->
+                <div class="bg-white p-5 rounded-2xl border border-amber-300 shadow-sm space-y-3">
+                    <div class="flex items-center justify-between border-b pb-2">
+                        <h3 class="font-bold text-sm text-amber-950 flex items-center gap-1.5">
+                            <i data-lucide="briefcase" class="w-4 h-4 text-amber-600"></i>
+                            ওয়ার্ক প্রুফ রিভিউ ও অ্যাপ্রুভাল
+                        </h3>
+                        <span id="admin-work-sub-count" class="bg-amber-100 text-amber-800 text-xs px-2 py-0.5 rounded-full font-bold">0 Pending</span>
+                    </div>
+                    <div id="admin-work-submissions-list" class="space-y-3"></div>
+                </div>
 
                 <div class="bg-white p-5 rounded-2xl border border-orange-200 shadow-sm space-y-3">
                     <div class="flex items-center justify-between border-b pb-2">
@@ -819,42 +914,48 @@
 
         </main>
 
-        <!-- ULTRA SLEEK FLOATING BOTTOM NAVIGATION BAR (WITH NEW TASK BUTTON) -->
+        <!-- FLOATING BOTTOM NAVIGATION (WITH WORK TAB) -->
         <div class="bottom-nav-container">
             <nav class="bottom-nav">
                 <div class="nav-item active" data-page="home-page" onclick="navigateTo('home-page')">
                     <div class="nav-icon-wrapper">
-                        <i data-lucide="layout-grid" class="w-5 h-5"></i>
+                        <i data-lucide="layout-grid" class="w-4 h-4"></i>
                     </div>
-                    <span>Home</span>
+                    <span>Shop</span>
+                </div>
+                <div class="nav-item" data-page="work-page" onclick="navigateTo('work-page')">
+                    <div class="nav-icon-wrapper">
+                        <i data-lucide="briefcase" class="w-4 h-4"></i>
+                    </div>
+                    <span>Work</span>
                 </div>
                 <div class="nav-item" data-page="pay-page" onclick="navigateTo('pay-page')">
                     <div class="nav-icon-wrapper">
-                        <i data-lucide="wallet" class="w-5 h-5"></i>
+                        <i data-lucide="wallet" class="w-4 h-4"></i>
                     </div>
                     <span>Deposit</span>
                 </div>
                 <div class="nav-item" data-page="task-page" onclick="navigateTo('task-page')">
                     <div class="nav-icon-wrapper">
-                        <i data-lucide="gift" class="w-5 h-5"></i>
+                        <i data-lucide="gift" class="w-4 h-4"></i>
                     </div>
                     <span>Tasks</span>
                 </div>
                 <div class="nav-item" data-page="orders-page" onclick="navigateTo('orders-page')">
                     <div class="nav-icon-wrapper">
-                        <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+                        <i data-lucide="shopping-bag" class="w-4 h-4"></i>
                     </div>
                     <span>Orders</span>
                 </div>
                 <div class="nav-item" data-page="profile-page" onclick="navigateTo('profile-page')">
                     <div class="nav-icon-wrapper">
-                        <i data-lucide="user" class="w-5 h-5"></i>
+                        <i data-lucide="user" class="w-4 h-4"></i>
                     </div>
                     <span>Profile</span>
                 </div>
                 <div class="nav-item hidden" id="admin-nav-item" data-page="admin-page" onclick="navigateTo('admin-page')">
                     <div class="nav-icon-wrapper">
-                        <i data-lucide="shield" class="w-5 h-5"></i>
+                        <i data-lucide="shield" class="w-4 h-4"></i>
                     </div>
                     <span>Admin</span>
                 </div>
@@ -863,17 +964,82 @@
 
     </div>
 
+    <!-- VIP UPGRADE & UNLOCK MODAL -->
+    <div id="vip-upgrade-modal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[90] p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-3xl p-5 w-full max-w-sm space-y-4 max-h-[90vh] flex flex-col shadow-2xl">
+            <div class="flex items-center justify-between border-b pb-2">
+                <div class="flex items-center gap-2">
+                    <div class="p-2 bg-amber-100 text-amber-700 rounded-xl">
+                        <i data-lucide="crown" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-extrabold text-sm text-slate-900">VIP Upgrade & Unlock</h3>
+                        <p class="text-[10px] text-slate-500">উচ্চ আয়ের কাজের জন্য VIP লেভেল আনলক করুন</p>
+                    </div>
+                </div>
+                <button onclick="document.getElementById('vip-upgrade-modal').classList.add('hidden')" class="p-1.5 bg-slate-100 rounded-lg text-slate-500">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+
+            <div class="overflow-y-auto space-y-2.5 pr-1 flex-grow text-xs" id="vip-tier-cards-list"></div>
+
+            <div class="pt-2 border-t text-center">
+                <p class="text-[10px] text-slate-400 font-semibold">আপনার বর্তমান ব্যালেন্স থেকে VIP ফি কর্তন করা হবে।</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- WORK APPLY & SUBMIT MODAL -->
+    <div id="work-submit-modal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[90] p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-3xl p-5 w-full max-w-sm space-y-4 shadow-2xl">
+            <div class="flex items-center justify-between border-b pb-2">
+                <div>
+                    <span id="work-modal-vip-tag" class="px-2 py-0.5 rounded bg-amber-100 text-amber-800 text-[10px] font-bold">VIP 0</span>
+                    <h3 class="text-base font-black text-slate-800 mt-1" id="work-modal-title">Job Title</h3>
+                </div>
+                <button onclick="document.getElementById('work-submit-modal').classList.add('hidden')" class="p-1.5 bg-slate-100 rounded-lg text-slate-500">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+
+            <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200 text-xs space-y-1.5">
+                <div class="flex justify-between">
+                    <span class="text-slate-500">কাজের পারিশ্রমিক:</span>
+                    <span class="font-black text-emerald-600" id="work-modal-reward">৳০.০০</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-slate-500">দৈনিক লিমিট:</span>
+                    <span class="font-bold text-slate-700" id="work-modal-limit">১ টি</span>
+                </div>
+                <p class="text-slate-600 pt-1 text-[11px] leading-relaxed border-t" id="work-modal-desc"></p>
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">কাজের প্রমাণ / ডাটা সাবমিশন:</label>
+                <textarea id="work-proof-input" rows="3" placeholder="ইমেইল/পাসওয়ার্ড, লিংক বা প্রয়োজনীয় প্রমাণ লিখুন..." class="w-full p-2.5 rounded-xl input-field text-xs"></textarea>
+            </div>
+
+            <div class="flex gap-2">
+                <button onclick="document.getElementById('work-submit-modal').classList.add('hidden')" class="w-1/2 py-2.5 bg-slate-100 font-bold rounded-xl text-xs">বাতিল</button>
+                <button id="btn-confirm-work-submit" onclick="executeWorkSubmission()" class="w-1/2 py-2.5 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl text-xs shadow-md">
+                    Submit Work
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- REPLACEMENT POLICY MODAL -->
     <div id="policy-modal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center z-[90] p-4 backdrop-blur-sm">
         <div class="bg-white rounded-3xl p-5 w-full max-w-sm space-y-3.5 text-center shadow-2xl">
             <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mx-auto">
                 <i data-lucide="shield-alert" class="w-6 h-6"></i>
             </div>
-            <h3 class="text-base font-extrabold text-slate-800">রিপ্লেসমেন্ট ও ওয়ারেন্টি নিয়মাবলী</h3>
+            <h3 class="text-base font-extrabold text-slate-800">রিপ্লেসমেন্ট ও কাজের নিয়মাবলী</h3>
             <div class="text-xs text-slate-600 text-left space-y-2 max-h-60 overflow-y-auto leading-relaxed bg-slate-50 p-3 rounded-2xl border border-slate-100">
                 <p>১. অ্যাকাউন্ট ক্রয়ের পর ইনভ্যালিড থাকলে ১৫ মিনিটের মধ্যে রিপোর্ট করতে হবে।</p>
-                <p>২. নিয়ম অনুযায়ী রিপোর্ট ভেরিফাই হলে অ্যাডমিন সরাসরি রিপ্লেসমেন্ট প্রদান করবেন।</p>
-                <p>৩. পাসওয়ার্ড পরিবর্তন বা অপব্যবহার করলে ওয়ারেন্টি বাতিল বলে গণ্য হবে।</p>
+                <p>২. কাজের সাবমিশনে ভুল তথ্য দিলে অ্যাকাউন্ট সাসপেন্ড ও ব্যালেন্স বাতিল হতে পারে।</p>
+                <p>৩. VIP লেভেল আপগ্রেড ফি অফেরতযোগ্য।</p>
             </div>
             <button onclick="document.getElementById('policy-modal').classList.add('hidden')" class="w-full py-2.5 bg-blue-600 text-white font-bold rounded-xl text-xs">ঠিক আছে</button>
         </div>
@@ -898,7 +1064,7 @@
         <div id="notification-list-container" class="space-y-3 flex-grow overflow-y-auto pb-10"></div>
     </div>
 
-    <!-- 1. BUY NOW MODAL -->
+    <!-- BUY NOW MODAL -->
     <div id="buy-now-modal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center z-[70] p-4 backdrop-blur-sm">
         <div class="bg-white rounded-3xl p-6 w-full max-w-sm space-y-4 relative text-center shadow-2xl">
             <div class="w-14 h-14 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto">
@@ -931,7 +1097,7 @@
         </div>
     </div>
 
-    <!-- 2. MANUAL PRE-ORDER MODAL -->
+    <!-- MANUAL PRE-ORDER MODAL -->
     <div id="manual-order-modal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center z-[70] p-4 backdrop-blur-sm">
         <div class="bg-white rounded-3xl p-6 w-full max-w-sm space-y-4 relative text-center shadow-2xl">
             <div class="w-14 h-14 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center mx-auto">
@@ -962,7 +1128,7 @@
         </div>
     </div>
 
-    <!-- 3. GATEWAY PAYMENT SUCCESS MODAL -->
+    <!-- GATEWAY PAYMENT SUCCESS MODAL -->
     <div id="gateway-success-modal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center z-[85] p-4 backdrop-blur-sm">
         <div class="bg-white rounded-3xl p-6 w-full max-w-sm space-y-4 text-center shadow-2xl">
             <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto">
@@ -983,7 +1149,7 @@
         </div>
     </div>
 
-    <!-- 4. REPLACE MODAL -->
+    <!-- REPLACE MODAL -->
     <div id="replace-modal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center z-[75] p-4 backdrop-blur-sm">
         <div class="bg-white rounded-3xl p-6 w-full max-w-sm space-y-4 relative text-center">
             <div class="w-14 h-14 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center mx-auto">
@@ -1006,7 +1172,7 @@
         </div>
     </div>
 
-    <!-- 5. PURCHASE SUCCESS MODAL -->
+    <!-- PURCHASE SUCCESS MODAL -->
     <div id="purchase-success-modal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center z-[70] p-4 backdrop-blur-sm">
         <div class="bg-white rounded-3xl p-5 w-full max-w-sm space-y-4 relative text-center max-h-[90vh] flex flex-col shadow-2xl">
             <button onclick="document.getElementById('purchase-success-modal').classList.add('hidden')" class="absolute top-4 right-4 p-1 rounded-full bg-slate-100">
@@ -1040,12 +1206,19 @@
         </div>
     </div>
 
-    <!-- FIREBASE & CORE SCRIPT -->
+    <!-- MULTI-FIREBASE ARCHITECTURE & CORE SYSTEM SCRIPT -->
     <script type="module">
         const DEFAULT_ADMIN_UID = "6954647230";
         
-        // FIREBASE CONFIGURATION
-        const firebaseConfig = {
+        // -------------------------------------------------------------
+        // MULTI-FIREBASE CONFIGURATION SETUP
+        // 1. App Primary (User & Security & Balance Master)
+        // 2. App Home (Shop, Products, Orders)
+        // 3. App Tasks (Daily checkin, Telegram Tasks, Referral)
+        // 4. App Work (VIP Tier, Job Posts, Submissions, Verification)
+        // 5. App Misc (Notifications, Notices, Reports)
+        // -------------------------------------------------------------
+        const baseFirebaseConfig = {
             apiKey: "AIzaSyBopnlRjMScCBaKaxvYsZesAvzxtEjSFRw",
             authDomain: "rkrj-abffe.firebaseapp.com",
             databaseURL: "https://rkrj-abffe-default-rtdb.firebaseio.com",
@@ -1056,19 +1229,112 @@
         };
 
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-        import { getFirestore, doc, setDoc, getDoc, collection, addDoc, serverTimestamp, query, where, getDocs, orderBy, limit, runTransaction, getCountFromServer, writeBatch, updateDoc, Timestamp, increment } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+        import { 
+            getFirestore, doc, setDoc, getDoc, collection, addDoc, serverTimestamp, 
+            query, where, getDocs, orderBy, limit, runTransaction, getCountFromServer, 
+            writeBatch, updateDoc, Timestamp, increment 
+        } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
+        // Separate Modular Instances
+        const primaryApp = initializeApp(baseFirebaseConfig, "PRIMARY_USER_APP");
+        const homeApp = initializeApp(baseFirebaseConfig, "HOME_SHOP_APP");
+        const tasksApp = initializeApp(baseFirebaseConfig, "TASKS_REWARD_APP");
+        const workApp = initializeApp(baseFirebaseConfig, "WORK_PORTAL_APP");
+        const miscApp = initializeApp(baseFirebaseConfig, "MISC_SYSTEM_APP");
+
+        const dbUser = getFirestore(primaryApp); // Master User, Balance, VIP Level & Anti-Cheat locks
+        const dbHome = getFirestore(homeApp);    // Products, Config & Purchases
+        const dbTasks = getFirestore(tasksApp);  // Tasks ledger
+        const dbWork = getFirestore(workApp);    // VIP Jobs & Submissions
+        const dbMisc = getFirestore(miscApp);    // Notifications & Replacements
+
+        // VIP Tier Definitions
+        const VIP_TIERS = [
+            { level: 0, title: "VIP 0 (Free)", cost: 0, dailyLimit: 2, icon: "user", color: "from-slate-600 to-slate-800", desc: "ফ্রি কাজসমূহ: Gmail sell, Facebook Account Sell ইত্যাদি।" },
+            { level: 1, title: "VIP 1 Bronze", cost: 100, dailyLimit: 5, icon: "shield", color: "from-amber-600 to-amber-800", desc: "মাইক্রো সার্ভে, ডেটা ভেরিফিকেশন ও অ্যাকাউন্ট টাস্ক।" },
+            { level: 2, title: "VIP 2 Silver", cost: 300, dailyLimit: 8, icon: "award", color: "from-slate-400 to-slate-600", desc: "বাল্ক অ্যাকাউন্ট ক্রিয়েশন ও সোশ্যাল মিডিয়া প্রোমোশন।" },
+            { level: 3, title: "VIP 3 Gold", cost: 600, dailyLimit: 12, icon: "crown", color: "from-yellow-500 to-amber-600", desc: "হাই-পেইং অ্যাপ টেস্টিং, রিভিউ ও প্রিমিয়াম টাস্ক।" },
+            { level: 4, title: "VIP 4 Platinum", cost: 1200, dailyLimit: 20, icon: "gem", color: "from-cyan-500 to-blue-600", desc: "অ্যাফিলিয়েট লিড ও স্পেশাল ক্যাম্পেইন জব।" },
+            { level: 5, title: "VIP 5 Master", cost: 2500, dailyLimit: 35, icon: "zap", color: "from-purple-600 to-indigo-800", desc: "মাস্টার প্রমোশন, এজেন্সি লেভেল জব ও আনলিমিটেড সাপোর্ট।" }
+        ];
+
+        // Default Work Job Posts (VIP 0 to VIP 5)
+        const DEFAULT_WORK_POSTS = [
+            {
+                id: "job_vip0_gmail",
+                title: "Gmail Account Submit (VIP 0)",
+                vipRequired: 0,
+                reward: 5.50,
+                dailyLimit: 2,
+                category: "Account Sell",
+                desc: "যেকোনো ফ্রেশ বা রিকভারি যুক্ত Gmail অ্যাকাউন্ট (ইমেইল ও পাসওয়ার্ড) ফরম্যাটে সাবমিট করুন। ভেরিফাইয়ের পর টাকা যোগ হবে।"
+            },
+            {
+                id: "job_vip0_fb",
+                title: "Facebook Old/New Account Sell",
+                vipRequired: 0,
+                reward: 8.00,
+                dailyLimit: 2,
+                category: "FB Sell",
+                desc: "সক্রিয় ফেসবুক অ্যাকাউন্ট আইডি এবং পাসওয়ার্ড সাবমিট করুন। ইনভ্যালিড ডাটা দিলে বাতিল হবে।"
+            },
+            {
+                id: "job_vip1_micro_task",
+                title: "App Review & 5-Star Rating (VIP 1)",
+                vipRequired: 1,
+                reward: 18.00,
+                dailyLimit: 5,
+                category: "App Testing",
+                desc: "প্লেস্টোরে গিয়ে নির্দিষ্ট অ্যাপে ৫ স্টার রিভিউ দিয়ে স্ক্রিনশটের লিংক বা বিবরণ সাবমিট করুন।"
+            },
+            {
+                id: "job_vip2_bulk_gmail",
+                title: "USA Recovery Gmail Submit (VIP 2)",
+                vipRequired: 2,
+                reward: 45.00,
+                dailyLimit: 8,
+                category: "Bulk Account",
+                desc: "ইউএসএ আইপি দিয়ে তৈরি রিকভারি মেইল যুক্ত ২টি জিমেইল সাবমিট করুন।"
+            },
+            {
+                id: "job_vip3_premium_sub",
+                title: "Premium Service Verification (VIP 3)",
+                vipRequired: 3,
+                reward: 95.00,
+                dailyLimit: 12,
+                category: "Verification",
+                desc: "প্রিমিয়াম পোর্টাল একাউন্ট সাইন আপ ও ভেরিফিকেশন লিঙ্ক প্রদান করুন।"
+            },
+            {
+                id: "job_vip4_lead_gen",
+                title: "Affiliate Active Lead Task (VIP 4)",
+                vipRequired: 4,
+                reward: 180.00,
+                dailyLimit: 20,
+                category: "Leads",
+                desc: "অ্যাফিলিয়েট সিস্টেমে ১ জন সক্রিয় রিয়েল ইউজার সাইন আপ করিয়ে তার আইডি সাবমিট করুন।"
+            },
+            {
+                id: "job_vip5_master_campaign",
+                title: "Master Campaign Promotion (VIP 5)",
+                vipRequired: 5,
+                reward: 350.00,
+                dailyLimit: 35,
+                category: "Agency",
+                desc: "সোশ্যাল মিডিয়া পেজ বা গ্রুপে আমাদের ব্যানার প্রমোট করে পোস্টের পাবলিক লিংক দিন।"
+            }
+        ];
 
         let currentUserTg = null;
         let userData = null;
         let appConfig = {};
         let selectedCategory = 'all';
+        let selectedWorkVip = 'all';
         let userPurchasesCache = [];
         let displayedProductsCache = [];
         let activeBuyModalData = null;
         let activeManualModalData = null;
+        let activeWorkPostData = null;
         let countdownTimerInterval = null;
         let allUserNotifications = [];
         let lastPurchasedItemsBatch = [];
@@ -1088,7 +1354,7 @@
         const loader = document.getElementById('loader');
         const getLoadingHTML = () => `<div class="flex justify-center p-8"><div class="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div></div>`;
 
-        // TOAST
+        // TOAST NOTIFICATIONS
         window.showToast = function(message, type = 'info') {
             const container = document.getElementById('toast-container');
             if (!container) return;
@@ -1164,13 +1430,15 @@
             }, 600);
         };
 
+        // Master User Session Initialization (Primary DB)
         async function initUserSession() {
             const tgChatId = String(currentUserTg.id);
-            const userRef = doc(db, "users", tgChatId);
+            const userRef = doc(dbUser, "users", tgChatId);
             let userSnap = await getDoc(userRef);
 
             if (userSnap.exists()) {
                 userData = userSnap.data();
+                if (userData.vipLevel === undefined) userData.vipLevel = 0;
                 await updateDoc(userRef, {
                     name: `${currentUserTg.first_name || ''} ${currentUserTg.last_name || ''}`.trim(),
                     photo_url: currentUserTg.photo_url || null,
@@ -1184,6 +1452,8 @@
                     username: currentUserTg.username || null,
                     photo_url: currentUserTg.photo_url || null,
                     balance: 0,
+                    vipLevel: 0,
+                    vipUnlockedAt: null,
                     hasClaimedTgBonus: false,
                     lastDailyCheckin: null,
                     createdAt: serverTimestamp()
@@ -1191,12 +1461,10 @@
                 await setDoc(userRef, userData);
             }
 
-            // Drawer user details
             document.getElementById('drawer-user-name').textContent = userData.name || 'User';
             document.getElementById('drawer-user-id').textContent = `ID: ${userData.tgChatId}`;
             document.getElementById('drawer-user-avatar').textContent = (userData.name || 'U').charAt(0).toUpperCase();
 
-            // Set Ref Link
             const botUser = appConfig.botUsername || "GmailHubBot";
             const refLink = `https://t.me/${botUser}?start=${userData.tgChatId}`;
             const refLinkEl = document.getElementById('task-ref-link');
@@ -1217,7 +1485,7 @@
 
         async function fetchAppConfig() {
             try {
-                const configRef = doc(db, "config", "main");
+                const configRef = doc(dbHome, "config", "main");
                 const configSnap = await getDoc(configRef);
                 appConfig = configSnap.exists() ? configSnap.data() : {};
 
@@ -1233,6 +1501,330 @@
             } catch (e) {
                 renderDynamicCategories();
                 renderTelegramTaskUI();
+            }
+        }
+
+        // ==========================================
+        // WORK & VIP LOGIC (ANTI-CHEAT & STRONG STATE)
+        // ==========================================
+        function renderWorkPosts() {
+            const container = document.getElementById('work-posts-list-container');
+            if (!container) return;
+
+            const allPosts = (appConfig.workPosts && Array.isArray(appConfig.workPosts) && appConfig.workPosts.length > 0) 
+                ? appConfig.workPosts 
+                : DEFAULT_WORK_POSTS;
+
+            let filtered = allPosts;
+            if (selectedWorkVip !== 'all') {
+                const targetVip = parseInt(selectedWorkVip.replace('vip', ''));
+                filtered = allPosts.filter(p => p.vipRequired === targetVip);
+            }
+
+            if (filtered.length === 0) {
+                container.innerHTML = `<div class="bg-white p-8 rounded-2xl text-center text-slate-400 font-semibold border">এই VIP লেভেলের জন্য কোনো কাজ বর্তমানে পাওয়া যায়নি।</div>`;
+                return;
+            }
+
+            const userVip = userData?.vipLevel || 0;
+
+            container.innerHTML = filtered.map((post, idx) => {
+                const isLocked = post.vipRequired > userVip;
+                const reqTier = VIP_TIERS.find(t => t.level === post.vipRequired) || { title: `VIP ${post.vipRequired}` };
+
+                return `
+                <div class="product-card p-4 space-y-3 border ${isLocked ? 'border-slate-200 bg-slate-50/50' : 'border-amber-200/80'}">
+                    <div class="flex items-start justify-between">
+                        <div class="space-y-1">
+                            <div class="flex items-center gap-1.5">
+                                <span class="px-2 py-0.5 text-[10px] font-black rounded-md ${isLocked ? 'bg-slate-200 text-slate-700' : 'bg-amber-100 text-amber-800'}">
+                                    VIP ${post.vipRequired}
+                                </span>
+                                <span class="text-[10.5px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-md">${post.category || 'Work'}</span>
+                            </div>
+                            <h4 class="font-black text-sm text-slate-900 leading-tight">${post.title}</h4>
+                            <p class="text-[11px] text-slate-500 leading-relaxed">${post.desc || ''}</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between pt-2 border-t border-slate-100 text-xs">
+                        <div>
+                            <span class="text-[10px] text-slate-400 uppercase font-bold block">Reward per task</span>
+                            <span class="text-base font-black text-emerald-600">৳${parseFloat(post.reward).toFixed(2)}</span>
+                        </div>
+
+                        <div>
+                            ${isLocked ? `
+                                <button onclick="openVipUpgradeModal()" class="px-4 py-2 rounded-xl text-xs font-black bg-slate-200 text-slate-600 hover:bg-amber-100 hover:text-amber-800 flex items-center gap-1 transition">
+                                    <i data-lucide="lock" class="w-3.5 h-3.5"></i>
+                                    <span>Unlock ${reqTier.title}</span>
+                                </button>
+                            ` : `
+                                <button onclick="openWorkSubmitModal('${post.id}')" class="px-4 py-2 rounded-xl text-xs font-black bg-amber-500 hover:bg-amber-600 text-white flex items-center gap-1 shadow-md active:scale-95 transition">
+                                    <i data-lucide="send" class="w-3.5 h-3.5"></i>
+                                    <span>Apply / Submit</span>
+                                </button>
+                            `}
+                        </div>
+                    </div>
+                </div>`;
+            }).join('');
+            lucide.createIcons();
+        }
+
+        window.filterWorkVipLevel = function(vipLevelKey, btn) {
+            document.querySelectorAll('#work-vip-tabs-container .category-btn').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+            selectedWorkVip = vipLevelKey;
+            renderWorkPosts();
+        };
+
+        window.toggleWorkView = function(view) {
+            const jobsContainer = document.getElementById('work-posts-list-container');
+            const subContainer = document.getElementById('work-submissions-list-container');
+            const btnJobs = document.getElementById('btn-show-active-jobs');
+            const btnSubs = document.getElementById('btn-show-my-submissions');
+
+            if (view === 'jobs') {
+                jobsContainer.classList.remove('hidden');
+                subContainer.classList.add('hidden');
+                btnJobs.className = "flex-1 py-2.5 bg-blue-600 text-white rounded-xl font-bold text-xs shadow-sm transition";
+                btnSubs.className = "flex-1 py-2.5 bg-slate-100 text-slate-700 hover:bg-slate-200 rounded-xl font-bold text-xs transition";
+                renderWorkPosts();
+            } else {
+                jobsContainer.classList.add('hidden');
+                subContainer.classList.remove('hidden');
+                btnSubs.className = "flex-1 py-2.5 bg-blue-600 text-white rounded-xl font-bold text-xs shadow-sm transition";
+                btnJobs.className = "flex-1 py-2.5 bg-slate-100 text-slate-700 hover:bg-slate-200 rounded-xl font-bold text-xs transition";
+                loadUserWorkSubmissions();
+            }
+        };
+
+        window.openVipUpgradeModal = function() {
+            const listEl = document.getElementById('vip-tier-cards-list');
+            const currentVip = userData?.vipLevel || 0;
+
+            listEl.innerHTML = VIP_TIERS.map(tier => {
+                const isCurrent = tier.level === currentVip;
+                const isPassed = tier.level < currentVip;
+
+                return `
+                <div class="p-3.5 rounded-2xl border ${isCurrent ? 'border-amber-500 bg-amber-50/50' : 'border-slate-200 bg-white'} space-y-2">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <div class="w-8 h-8 rounded-xl bg-gradient-to-br ${tier.color} text-white flex items-center justify-center font-black text-xs">
+                                <i data-lucide="${tier.icon}" class="w-4 h-4"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-extrabold text-xs text-slate-900">${tier.title}</h4>
+                                <span class="text-[10px] text-slate-500">Daily limit: ${tier.dailyLimit} tasks</span>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="font-black text-xs text-slate-800">${tier.cost === 0 ? 'Free' : `৳${tier.cost}`}</span>
+                        </div>
+                    </div>
+                    <p class="text-[10.5px] text-slate-600 leading-relaxed">${tier.desc}</p>
+                    
+                    <div>
+                        ${isCurrent ? `
+                            <button disabled class="w-full py-2 bg-emerald-600 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-1">
+                                <i data-lucide="check-circle" class="w-3.5 h-3.5"></i>
+                                <span>Current Active VIP</span>
+                            </button>
+                        ` : isPassed ? `
+                            <button disabled class="w-full py-2 bg-slate-100 text-slate-400 font-bold rounded-xl text-xs">
+                                Completed Tier
+                            </button>
+                        ` : `
+                            <button onclick="executeVipUpgrade(${tier.level}, ${tier.cost})" class="w-full py-2 btn-vip-upgrade text-white font-bold rounded-xl text-xs flex items-center justify-center gap-1">
+                                <i data-lucide="zap" class="w-3.5 h-3.5"></i>
+                                <span>Unlock for ৳${tier.cost}</span>
+                            </button>
+                        `}
+                    </div>
+                </div>`;
+            }).join('');
+
+            document.getElementById('vip-upgrade-modal').classList.remove('hidden');
+            lucide.createIcons();
+        };
+
+        window.executeVipUpgrade = async function(targetLevel, cost) {
+            if (!userData) return showToast("প্রথমে লগইন করুন", "error");
+            if ((userData.balance || 0) < cost) {
+                return showToast(`পর্যাপ্ত ব্যালেন্স নেই! প্রয়োজন ৳${cost.toFixed(2)} (ডিপোজিট করুন)`, "error");
+            }
+
+            const confirmUpgrade = confirm(`আপনি কি ৳${cost} ব্যালেন্স দিয়ে VIP ${targetLevel} আপগ্রেড করতে চান?`);
+            if (!confirmUpgrade) return;
+
+            const tgUserId = String(userData.tgChatId);
+            const userRef = doc(dbUser, "users", tgUserId);
+
+            try {
+                await runTransaction(dbUser, async (t) => {
+                    const snap = await t.get(userRef);
+                    if (!snap.exists()) throw new Error("ইউজার পাওয়া যায়নি");
+                    const u = snap.data();
+
+                    if ((u.balance || 0) < cost) throw new Error("পর্যাপ্ত ব্যালেন্স নেই");
+                    if ((u.vipLevel || 0) >= targetLevel) throw new Error("আপনি ইতিমধ্যে এই লেভেলে বা এর উপরে আছেন");
+
+                    t.update(userRef, {
+                        balance: increment(-cost),
+                        vipLevel: targetLevel,
+                        vipUnlockedAt: serverTimestamp()
+                    });
+
+                    // Log VIP Upgrade in Work DB
+                    const upgradeLogRef = doc(collection(dbWork, "vip_upgrades"));
+                    t.set(upgradeLogRef, {
+                        userId: tgUserId,
+                        userName: u.name,
+                        targetLevel: targetLevel,
+                        cost: cost,
+                        createdAt: serverTimestamp()
+                    });
+                });
+
+                const userSnap = await getDoc(userRef);
+                userData = userSnap.data();
+                updateUI();
+                document.getElementById('vip-upgrade-modal').classList.add('hidden');
+                showToast(`অভিনন্দন! আপনার অ্যাকাউন্ট VIP ${targetLevel}-এ আপগ্রেড হয়েছে!`, "success");
+                renderWorkPosts();
+            } catch(e) {
+                showToast(e.message || "আপগ্রেড ব্যর্থ হয়েছে", "error");
+            }
+        };
+
+        window.openWorkSubmitModal = function(jobId) {
+            const allPosts = (appConfig.workPosts && Array.isArray(appConfig.workPosts) && appConfig.workPosts.length > 0) 
+                ? appConfig.workPosts 
+                : DEFAULT_WORK_POSTS;
+
+            const post = allPosts.find(p => p.id === jobId);
+            if (!post) return;
+
+            activeWorkPostData = post;
+
+            document.getElementById('work-modal-vip-tag').textContent = `VIP ${post.vipRequired}`;
+            document.getElementById('work-modal-title').textContent = post.title;
+            document.getElementById('work-modal-reward').textContent = `৳${parseFloat(post.reward).toFixed(2)}`;
+            document.getElementById('work-modal-limit').textContent = `${post.dailyLimit || 1} টি / দিন`;
+            document.getElementById('work-modal-desc').textContent = post.desc;
+            document.getElementById('work-proof-input').value = '';
+
+            document.getElementById('work-submit-modal').classList.remove('hidden');
+        };
+
+        // Anti-Cheat & Strong Execution for Work Submission
+        window.executeWorkSubmission = async function() {
+            if (!userData || !activeWorkPostData) return;
+            const proofData = document.getElementById('work-proof-input').value.trim();
+            if (!proofData) return showToast("কাজের প্রুফ বা বিবরণ লিখুন!", "error");
+
+            const tgUserId = String(userData.tgChatId);
+            const userVip = userData.vipLevel || 0;
+
+            if (activeWorkPostData.vipRequired > userVip) {
+                return showToast("আপনার VIP লেভেল এই কাজের জন্য যথেষ্ট নয়!", "error");
+            }
+
+            const btn = document.getElementById('btn-confirm-work-submit');
+            btn.disabled = true;
+            btn.innerHTML = `<span class="animate-spin inline-block w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full mr-1"></span> Submitting...`;
+
+            try {
+                // Anti-Double Income Check: Check if user submitted this specific job within cooldown (same day)
+                const todayStart = new Date();
+                todayStart.setHours(0,0,0,0);
+
+                const existingSubQuery = query(
+                    collection(dbWork, "work_submissions"),
+                    where("userId", "==", tgUserId),
+                    where("jobId", "==", activeWorkPostData.id),
+                    where("submittedAt", ">=", Timestamp.fromDate(todayStart))
+                );
+
+                const existingSnap = await getDocs(existingSubQuery);
+                if (existingSnap.size >= (activeWorkPostData.dailyLimit || 1)) {
+                    throw new Error(`আপনি আজ এই কাজের দৈনিক লিমিট (${activeWorkPostData.dailyLimit || 1} বার) পূর্ণ করেছেন!`);
+                }
+
+                // Add Submission with Unique Lock to DB Work
+                await addDoc(collection(dbWork, "work_submissions"), {
+                    userId: tgUserId,
+                    userName: userData.name || 'User',
+                    jobId: activeWorkPostData.id,
+                    jobTitle: activeWorkPostData.title,
+                    vipLevel: activeWorkPostData.vipRequired,
+                    reward: parseFloat(activeWorkPostData.reward),
+                    proof: proofData,
+                    status: "pending",
+                    submittedAt: serverTimestamp()
+                });
+
+                document.getElementById('work-submit-modal').classList.add('hidden');
+                showToast("কাজ সফলভাবে সাবমিট হয়েছে! অ্যাডমিন ভেরিফাই করে ব্যালেন্স যুক্ত করবেন।", "success");
+                toggleWorkView('submissions');
+            } catch(e) {
+                showToast(e.message || "সাবমিশন ব্যর্থ হয়েছে!", "error");
+            } finally {
+                btn.disabled = false;
+                btn.textContent = "Submit Work";
+            }
+        };
+
+        async function loadUserWorkSubmissions() {
+            const container = document.getElementById('work-submissions-list-container');
+            if (!container) return;
+            container.innerHTML = getLoadingHTML();
+
+            try {
+                const tgUserId = String(userData.tgChatId);
+                const q = query(collection(dbWork, "work_submissions"), where("userId", "==", tgUserId));
+                const snap = await getDocs(q);
+
+                if (snap.empty) {
+                    container.innerHTML = `<div class="bg-white p-8 rounded-2xl text-center text-slate-400 font-semibold border">আপনি এখনো কোনো কাজের প্রুফ সাবমিট করেননি।</div>`;
+                    return;
+                }
+
+                const subs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                subs.sort((a,b) => (b.submittedAt?.seconds || 0) - (a.submittedAt?.seconds || 0));
+
+                container.innerHTML = subs.map(s => {
+                    const dateStr = s.submittedAt?.toDate ? s.submittedAt.toDate().toLocaleString('en-GB') : 'Just now';
+                    const isApproved = s.status === 'approved';
+                    const isRejected = s.status === 'rejected';
+
+                    return `
+                    <div class="bg-white p-3.5 rounded-2xl border border-slate-200 space-y-2 shadow-sm text-xs">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h4 class="font-black text-slate-800">${s.jobTitle}</h4>
+                                <span class="text-[10px] text-slate-400">${dateStr}</span>
+                            </div>
+                            <span class="font-black text-sm text-emerald-600">৳${s.reward?.toFixed(2)}</span>
+                        </div>
+                        <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-100 text-[11px] font-mono text-slate-700">
+                            <b>Proof:</b> ${s.proof}
+                        </div>
+                        <div class="flex items-center justify-between pt-1">
+                            <span class="text-[10px] uppercase font-black px-2 py-0.5 rounded ${
+                                isApproved ? 'bg-emerald-100 text-emerald-700' :
+                                isRejected ? 'bg-red-100 text-red-700' : 'bg-amber-100 text-amber-800'
+                            }">
+                                ${s.status}
+                            </span>
+                        </div>
+                    </div>`;
+                }).join('');
+                lucide.createIcons();
+            } catch(e) {
+                container.innerHTML = `<p class="text-center text-red-500 text-xs">${e.message}</p>`;
             }
         }
 
@@ -1257,7 +1849,7 @@
             if (btn) btn.disabled = true;
 
             try {
-                const userRef = doc(db, "users", String(userData.tgChatId));
+                const userRef = doc(dbUser, "users", String(userData.tgChatId));
                 await updateDoc(userRef, {
                     balance: increment(0.20),
                     lastDailyCheckin: serverTimestamp()
@@ -1356,8 +1948,8 @@
 
             const tgUserId = String(userData.tgChatId);
             try {
-                const userRef = doc(db, "users", tgUserId);
-                await runTransaction(db, async (transaction) => {
+                const userRef = doc(dbUser, "users", tgUserId);
+                await runTransaction(dbUser, async (transaction) => {
                     const userSnap = await transaction.get(userRef);
                     if (!userSnap.exists()) throw new Error("ইউজার পাওয়া যায়নি");
                     const currentData = userSnap.data();
@@ -1380,7 +1972,7 @@
         };
 
         // ==========================================
-        // DEPOSIT LOGIC (DEFAULT 50 BDT & 2000 BDT BONUS)
+        // DEPOSIT & GATEWAY HANDLER
         // ==========================================
         window.setAutoQuickAmount = function(val) {
             document.getElementById('amountInput').value = val;
@@ -1504,11 +2096,11 @@
         async function savePaymentAndUpdateBalance(depositAmount, txid, fullData) {
             if (!userData) return;
             const tgChatId = String(userData.tgChatId);
-            const depositRef = doc(db, "deposits", txid);
-            const userRef = doc(db, "users", tgChatId);
+            const depositRef = doc(dbHome, "deposits", txid);
+            const userRef = doc(dbUser, "users", tgChatId);
 
             try {
-                await runTransaction(db, async (transaction) => {
+                await runTransaction(dbUser, async (transaction) => {
                     const depSnap = await transaction.get(depositRef);
                     if (depSnap.exists()) return;
 
@@ -1538,7 +2130,7 @@
             }
         }
 
-        // --- NOTIFICATIONS & SUPPORT ---
+        // --- NOTIFICATIONS & UI HELPERS ---
         async function loadUserNotifications() {
             if (!userData) return;
             const tgChatId = String(userData.tgChatId);
@@ -1557,7 +2149,7 @@
             }
 
             try {
-                const notifRef = collection(db, "users", tgChatId, "notifications");
+                const notifRef = collection(dbMisc, "users", tgChatId, "notifications");
                 const q = query(notifRef, orderBy("time", "desc"), limit(20));
                 const snap = await getDocs(q);
                 snap.forEach(docSnap => {
@@ -1650,13 +2242,28 @@
         function updateUI() {
             if (!userData) return;
             const balanceFormatted = (userData.balance || 0).toFixed(2);
+            const vipText = `VIP ${userData.vipLevel || 0}`;
+
             document.getElementById('header-coin-balance').textContent = `৳${balanceFormatted}`;
+            document.getElementById('header-vip-tag').textContent = vipText;
             
+            const drawerVip = document.getElementById('drawer-user-vip-badge');
+            if (drawerVip) drawerVip.textContent = vipText;
+
+            const workVipBadge = document.getElementById('work-page-vip-level-text');
+            if (workVipBadge) workVipBadge.textContent = `${vipText} MEMBER`;
+
             const depBalance = document.getElementById('deposit-page-balance');
             if (depBalance) depBalance.textContent = `৳${balanceFormatted}`;
 
             const profileStatBal = document.getElementById('profile-stat-balance');
             if (profileStatBal) profileStatBal.textContent = `৳${balanceFormatted}`;
+
+            const profileStatVip = document.getElementById('profile-stat-vip');
+            if (profileStatVip) profileStatVip.textContent = vipText;
+
+            const profileVipPill = document.getElementById('profile-vip-pill');
+            if (profileVipPill) profileVipPill.textContent = vipText;
         }
 
         function showMainPage(pageId) {
@@ -1675,13 +2282,14 @@
 
             const routes = {
                 'home-page': renderProductsBySelection,
+                'work-page': () => { updateUI(); renderWorkPosts(); },
                 'pay-page': updateUI,
                 'task-page': renderTelegramTaskUI,
                 'orders-page': loadOrdersHistory,
                 'features-page': loadFeaturesPage,
                 'history-page': () => { loadManualOrdersHistory(); loadReplaceHistory(); },
-                'profile-page': () => { loadProfilePage(); },
-                'admin-page': () => { loadAdminManualOrders(); populateAdminMailTypes(); loadReplaceRequests(); }
+                'profile-page': loadProfilePage,
+                'admin-page': () => { loadAdminWorkSubmissions(); loadAdminManualOrders(); populateAdminMailTypes(); loadReplaceRequests(); }
             };
 
             if (routes[pageId]) routes[pageId]();
@@ -1708,7 +2316,7 @@
         async function getStockCount(collectionName) {
             if(!collectionName) return 0;
             try {
-                const q = query(collection(db, collectionName), where("isSold", "==", false));
+                const q = query(collection(dbHome, collectionName), where("isSold", "==", false));
                 const snapshot = await getCountFromServer(q);
                 return snapshot.data().count;
             } catch (e) { return 0; }
@@ -1835,7 +2443,7 @@
             lucide.createIcons();
         }
 
-        // --- BUY NOW MODAL ---
+        // --- BUY NOW MODAL & EXECUTION ---
         window.openBuyModal = function(index) {
             const item = displayedProductsCache[index];
             if (!item) return;
@@ -1915,7 +2523,7 @@
             btn.innerHTML = `<span class="animate-spin inline-block w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full mr-1"></span> Processing...`;
 
             try {
-                const itemQuery = query(collection(db, product.stockKey), where("isSold", "==", false), limit(qty));
+                const itemQuery = query(collection(dbHome, product.stockKey), where("isSold", "==", false), limit(qty));
                 const itemQuerySnapshot = await getDocs(itemQuery);
 
                 if (itemQuerySnapshot.docs.length < qty) {
@@ -1924,9 +2532,9 @@
 
                 const purchasedItems = [];
 
-                await runTransaction(db, async (transaction) => {
-                    const buyerRef = doc(db, "users", String(userData.tgChatId));
-                    const counterRef = doc(db, "counters", "item_purchase");
+                await runTransaction(dbUser, async (transaction) => {
+                    const buyerRef = doc(dbUser, "users", String(userData.tgChatId));
+                    const counterRef = doc(dbHome, "counters", "item_purchase");
                     const buyerSnap = await transaction.get(buyerRef);
                     
                     if (!buyerSnap.exists() || buyerSnap.data().balance < totalCost) {
@@ -1946,7 +2554,7 @@
                             soldAt: serverTimestamp() 
                         });
 
-                        const purchaseLogRef = doc(collection(db, "purchases"));
+                        const purchaseLogRef = doc(collection(dbHome, "purchases"));
                         transaction.set(purchaseLogRef, {
                             saleId: saleId,
                             userId: String(userData.tgChatId),
@@ -1976,7 +2584,7 @@
                 lastPurchasedItemsBatch = purchasedItems;
                 showPurchaseSuccessModal(purchasedItems);
 
-                const userSnap = await getDoc(doc(db, "users", String(userData.tgChatId)));
+                const userSnap = await getDoc(doc(dbUser, "users", String(userData.tgChatId)));
                 userData = userSnap.data();
                 updateUI();
                 renderProductsBySelection();
@@ -2050,8 +2658,8 @@
             btn.textContent = "Processing...";
 
             try {
-                await runTransaction(db, async (transaction) => {
-                    const buyerRef = doc(db, "users", String(userData.tgChatId));
+                await runTransaction(dbUser, async (transaction) => {
+                    const buyerRef = doc(dbUser, "users", String(userData.tgChatId));
                     const buyerSnap = await transaction.get(buyerRef);
                     
                     if (!buyerSnap.exists() || buyerSnap.data().balance < totalPrice) {
@@ -2061,7 +2669,7 @@
                     transaction.update(buyerRef, { balance: buyerSnap.data().balance - totalPrice });
 
                     const expiryDate = new Date(Date.now() + timeoutMinutes * 60 * 1000);
-                    const manualOrderRef = doc(collection(db, "manual_orders"));
+                    const manualOrderRef = doc(collection(dbHome, "manual_orders"));
                     
                     transaction.set(manualOrderRef, {
                         userId: String(userData.tgChatId),
@@ -2081,7 +2689,7 @@
                 document.getElementById('manual-order-modal').classList.add('hidden');
                 showToast(`আপনার ${qty} টি ${product.type} অর্ডার গ্রহণ করা হয়েছে!`, 'success');
                 
-                const userSnap = await getDoc(doc(db, "users", String(userData.tgChatId)));
+                const userSnap = await getDoc(doc(dbUser, "users", String(userData.tgChatId)));
                 userData = userSnap.data();
                 updateUI();
                 navigateTo('history-page');
@@ -2145,9 +2753,9 @@
             btn.textContent = "Sending...";
 
             try {
-                await runTransaction(db, async (t) => {
-                    const senderRef = doc(db, "users", String(userData.tgChatId));
-                    const recipientRef = doc(db, "users", String(recipientId));
+                await runTransaction(dbUser, async (t) => {
+                    const senderRef = doc(dbUser, "users", String(userData.tgChatId));
+                    const recipientRef = doc(dbUser, "users", String(recipientId));
 
                     const senderSnap = await t.get(senderRef);
                     const recipientSnap = await t.get(recipientRef);
@@ -2162,7 +2770,7 @@
                     t.update(senderRef, { balance: senderSnap.data().balance - totalCost });
                     t.update(recipientRef, { balance: increment(amount) });
 
-                    const transferRef = doc(collection(db, "transfers"));
+                    const transferRef = doc(collection(dbUser, "transfers"));
                     t.set(transferRef, {
                         fromId: String(userData.tgChatId),
                         toId: String(recipientId),
@@ -2176,7 +2784,7 @@
                 document.getElementById('send-recipient-id').value = '';
                 document.getElementById('send-amount').value = '';
 
-                const userSnap = await getDoc(doc(db, "users", String(userData.tgChatId)));
+                const userSnap = await getDoc(doc(dbUser, "users", String(userData.tgChatId)));
                 userData = userSnap.data();
                 updateUI();
                 navigateTo('features-page');
@@ -2238,15 +2846,15 @@
         async function checkAndRefundExpiredOrders() {
             try {
                 const now = new Date();
-                const q = query(collection(db, "manual_orders"), where("status", "==", "pending"));
+                const q = query(collection(dbHome, "manual_orders"), where("status", "==", "pending"));
                 const snap = await getDocs(q);
 
                 snap.docs.forEach(async (docSnap) => {
                     const po = docSnap.data();
                     if (po.expiresAt && po.expiresAt.toDate() <= now) {
-                        await runTransaction(db, async (t) => {
-                            const moRef = doc(db, "manual_orders", docSnap.id);
-                            const userRef = doc(db, "users", String(po.userId));
+                        await runTransaction(dbUser, async (t) => {
+                            const moRef = doc(dbHome, "manual_orders", docSnap.id);
+                            const userRef = doc(dbUser, "users", String(po.userId));
                             t.update(moRef, { status: "expired_auto_refunded", refundedAt: serverTimestamp() });
                             t.update(userRef, { balance: increment(parseFloat(po.cost)) });
                         });
@@ -2259,7 +2867,7 @@
             const listEl = document.getElementById('orders-purchase-history');
             listEl.innerHTML = getLoadingHTML();
             try {
-                const q = query(collection(db, "purchases"), where("userId", "in", [String(userData.tgChatId), Number(userData.tgChatId)]));
+                const q = query(collection(dbHome, "purchases"), where("userId", "in", [String(userData.tgChatId), Number(userData.tgChatId)]));
                 const snap = await getDocs(q);
 
                 if (snap.empty) {
@@ -2313,7 +2921,7 @@
             if(!list) return;
             list.innerHTML = getLoadingHTML();
             try {
-                const q = query(collection(db, "manual_orders"), where("userId", "in", [String(userData.tgChatId), Number(userData.tgChatId)]));
+                const q = query(collection(dbHome, "manual_orders"), where("userId", "in", [String(userData.tgChatId), Number(userData.tgChatId)]));
                 const snap = await getDocs(q);
                 if (snap.empty) return list.innerHTML = '<p class="text-center text-xs text-slate-400 py-2">কোনো ম্যানুয়াল অর্ডার হিস্ট্রি নেই</p>';
 
@@ -2352,7 +2960,7 @@
             if(!list) return;
             list.innerHTML = getLoadingHTML();
             try {
-                const q = query(collection(db, "replace_requests"), where("userId", "in", [String(userData.tgChatId), Number(userData.tgChatId)]));
+                const q = query(collection(dbMisc, "replace_requests"), where("userId", "in", [String(userData.tgChatId), Number(userData.tgChatId)]));
                 const snap = await getDocs(q);
                 if (snap.empty) return list.innerHTML = '<p class="text-center text-xs text-slate-400">কোনো রেকর্ড নেই</p>';
                 const docs = snap.docs.map(d => d.data());
@@ -2371,8 +2979,8 @@
 
         async function loadFeaturesPage() {
             try {
-                const receivedQuery = query(collection(db, "transfers"), where("toId", "==", String(userData.tgChatId)));
-                const sentQuery = query(collection(db, "transfers"), where("fromId", "==", String(userData.tgChatId)));
+                const receivedQuery = query(collection(dbUser, "transfers"), where("toId", "==", String(userData.tgChatId)));
+                const sentQuery = query(collection(dbUser, "transfers"), where("fromId", "==", String(userData.tgChatId)));
                 const [recSnap, sentSnap] = await Promise.all([getDocs(receivedQuery), getDocs(sentQuery)]);
                 
                 const recTotal = recSnap.docs.reduce((sum, d) => sum + (d.data().amount || 0), 0);
@@ -2392,13 +3000,91 @@
 
             updateUI();
 
-            // Count total orders
             try {
-                const q = query(collection(db, "purchases"), where("userId", "in", [String(userData.tgChatId), Number(userData.tgChatId)]));
+                const q = query(collection(dbHome, "purchases"), where("userId", "in", [String(userData.tgChatId), Number(userData.tgChatId)]));
                 const snap = await getCountFromServer(q);
                 document.getElementById('profile-stat-orders').textContent = String(snap.data().count || 0);
             } catch(e) {}
         }
+
+        // ==========================================
+        // ADMIN PANEL - WORK & ORDER MANAGEMENT
+        // ==========================================
+        async function loadAdminWorkSubmissions() {
+            const list = document.getElementById('admin-work-submissions-list');
+            const countBadge = document.getElementById('admin-work-sub-count');
+            if (!list) return;
+
+            list.innerHTML = getLoadingHTML();
+            try {
+                const q = query(collection(dbWork, "work_submissions"), where("status", "==", "pending"));
+                const snap = await getDocs(q);
+
+                if (snap.empty) {
+                    list.innerHTML = '<p class="text-xs text-center text-slate-400 py-3">কোনো পেন্ডিং কাজের সাবমিশন নেই</p>';
+                    countBadge.textContent = '0 Pending';
+                    return;
+                }
+
+                countBadge.textContent = `${snap.docs.length} Pending`;
+
+                list.innerHTML = snap.docs.map(docSnap => {
+                    const sub = docSnap.data();
+                    const subId = docSnap.id;
+
+                    return `
+                    <div class="bg-amber-50/70 p-3.5 rounded-2xl border border-amber-200 space-y-2 text-xs">
+                        <div class="flex justify-between items-center font-bold">
+                            <span class="text-slate-800">${sub.jobTitle} (VIP ${sub.vipLevel})</span>
+                            <span class="text-emerald-700 font-black">৳${sub.reward?.toFixed(2)}</span>
+                        </div>
+                        <p class="text-slate-600 text-[11px]">User: <b>${sub.userName}</b> (TG ID: <code>${sub.userId}</code>)</p>
+                        
+                        <div class="bg-white p-2.5 rounded-xl border border-slate-200 text-slate-700 font-mono text-[11px] break-all">
+                            <b>Proof:</b> ${sub.proof}
+                        </div>
+
+                        <div class="flex justify-end gap-2 pt-1">
+                            <button onclick="handleAdminRejectWorkSub('${subId}')" class="bg-red-500 text-white font-bold px-3 py-1.5 rounded-xl text-xs">Reject</button>
+                            <button onclick="handleAdminApproveWorkSub('${subId}', '${sub.userId}', ${sub.reward})" class="bg-emerald-600 text-white font-bold px-3 py-1.5 rounded-xl text-xs flex items-center gap-1">
+                                <i data-lucide="check" class="w-3.5 h-3.5"></i> Approve & Pay
+                            </button>
+                        </div>
+                    </div>`;
+                }).join('');
+                lucide.createIcons();
+            } catch(e) {
+                list.innerHTML = `<p class="text-xs text-red-500">${e.message}</p>`;
+            }
+        }
+
+        window.handleAdminApproveWorkSub = async function(subId, userId, reward) {
+            try {
+                await runTransaction(dbUser, async (t) => {
+                    const subRef = doc(dbWork, "work_submissions", subId);
+                    const userRef = doc(dbUser, "users", String(userId));
+
+                    t.update(subRef, { status: "approved", approvedAt: serverTimestamp() });
+                    t.update(userRef, { balance: increment(parseFloat(reward)) });
+                });
+
+                showToast("কাজের সাবমিশন অ্যাপ্রুভ এবং ইউজারের ব্যালেন্স যোগ হয়েছে!", "success");
+                loadAdminWorkSubmissions();
+            } catch(e) {
+                showToast(e.message || "অ্যাপ্রুভ করতে সমস্যা হয়েছে", "error");
+            }
+        };
+
+        window.handleAdminRejectWorkSub = async function(subId) {
+            try {
+                const subRef = doc(dbWork, "work_submissions", subId);
+                await updateDoc(subRef, { status: "rejected", rejectedAt: serverTimestamp() });
+                showToast("কাজের সাবমিশন বাতিল করা হয়েছে", "info");
+                loadAdminWorkSubmissions();
+            } catch(e) {
+                showToast(e.message, "error");
+            }
+        };
 
         async function loadAdminManualOrders() {
             const list = document.getElementById('admin-manual-orders-list');
@@ -2407,7 +3093,7 @@
 
             list.innerHTML = getLoadingHTML();
             try {
-                const q = query(collection(db, "manual_orders"), where("status", "==", "pending"));
+                const q = query(collection(dbHome, "manual_orders"), where("status", "==", "pending"));
                 const snap = await getDocs(q);
 
                 if (snap.empty) {
@@ -2457,15 +3143,15 @@
             if (!accData) return showToast("অ্যাকাউন্টের ডাটা/ইমেইল লিখুন", "error");
 
             try {
-                await runTransaction(db, async (t) => {
-                    const moRef = doc(db, "manual_orders", orderId);
-                    const counterRef = doc(db, "counters", "item_purchase");
+                await runTransaction(dbUser, async (t) => {
+                    const moRef = doc(dbHome, "manual_orders", orderId);
+                    const counterRef = doc(dbHome, "counters", "item_purchase");
                     const counterSnap = await t.get(counterRef);
                     const saleId = counterSnap.exists() ? counterSnap.data().currentId : 1000;
 
                     t.update(moRef, { status: "approved", deliveredData: accData, deliveredPass: accPass, fulfilledAt: serverTimestamp() });
 
-                    const purchaseRef = doc(collection(db, "purchases"));
+                    const purchaseRef = doc(collection(dbHome, "purchases"));
                     t.set(purchaseRef, {
                         saleId: saleId,
                         userId: String(userId),
@@ -2488,9 +3174,9 @@
 
         window.handleAdminCancelManualOrder = async function(orderId, userId, cost, mailType) {
             try {
-                await runTransaction(db, async (t) => {
-                    const moRef = doc(db, "manual_orders", orderId);
-                    const userRef = doc(db, "users", String(userId));
+                await runTransaction(dbUser, async (t) => {
+                    const moRef = doc(dbHome, "manual_orders", orderId);
+                    const userRef = doc(dbUser, "users", String(userId));
                     t.update(moRef, { status: "cancelled_refunded", refundedAt: serverTimestamp() });
                     t.update(userRef, { balance: increment(parseFloat(cost)) });
                 });
@@ -2517,10 +3203,10 @@
 
             const lines = text.split('\n').filter(l => l.trim().length > 0);
             try {
-                const batch = writeBatch(db);
+                const batch = writeBatch(dbHome);
                 lines.forEach(line => {
                     const parts = line.split('/');
-                    const itemDoc = doc(collection(db, stockKey));
+                    const itemDoc = doc(collection(dbHome, stockKey));
                     batch.set(itemDoc, {
                         email: parts[0] || line,
                         password: parts[1] || null,
@@ -2540,7 +3226,7 @@
             const listEl = document.getElementById('replace-requests-list');
             if (!listEl) return;
             try {
-                const q = query(collection(db, "replace_requests"), where("status", "==", "pending"));
+                const q = query(collection(dbMisc, "replace_requests"), where("status", "==", "pending"));
                 const snap = await getDocs(q);
                 if (snap.empty) return listEl.innerHTML = '<p class="text-xs text-center text-slate-400">No pending reports</p>';
                 listEl.innerHTML = snap.docs.map(docSnap => {
@@ -2578,7 +3264,7 @@
             btn.textContent = "Submitting...";
 
             try {
-                await addDoc(collection(db, "replace_requests"), {
+                await addDoc(collection(dbMisc, "replace_requests"), {
                     userId: String(userData.tgChatId),
                     userName: userData.name || 'User',
                     saleId: saleId,
