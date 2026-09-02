@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>GMAIL HUB</title>
+    <title>GMAIL HUB - Marketplace & Work Portal</title>
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -27,16 +27,16 @@
             -webkit-touch-callout: default;
         }
         .main-header {
-            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #2563eb 100%);
             color: #ffffff;
-            padding: 10px 16px;
+            padding: 12px 16px;
             position: sticky;
             top: 0;
             z-index: 40;
             box-shadow: 0 4px 20px rgba(37, 99, 235, 0.2);
         }
         .wallet-pill {
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.12);
             border: 1px solid rgba(255, 255, 255, 0.25);
             backdrop-filter: blur(10px);
             border-radius: 9999px;
@@ -50,15 +50,15 @@
         .category-btn {
             background: #ffffff;
             color: #475569;
-            border: 1px solid #e2e8f0;
+            border: 1.5px solid #e2e8f0;
             border-radius: 14px;
-            padding: 8px 10px;
+            padding: 9px 12px;
             font-size: 0.78rem;
             font-weight: 700;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 5px;
+            gap: 6px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
             transition: all 0.2s ease;
             cursor: pointer;
@@ -68,13 +68,13 @@
             background: #2563eb;
             color: #ffffff;
             border-color: #2563eb;
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
         }
         .product-card {
             background: #ffffff;
-            border-radius: 18px;
+            border-radius: 20px;
             border: 1px solid #e2e8f0;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
             transition: all 0.25s ease;
         }
         .product-card:hover {
@@ -287,7 +287,27 @@
         .toast-item.toast-error { border-left-color: #ef4444; }
         .toast-item.toast-info { border-left-color: #3b82f6; }
 
-        /* PROFILE SPECIAL STYLES */
+        /* LUXURY WORK & VIP STYLES */
+        .work-hero-gradient {
+            background: linear-gradient(135deg, #091224 0%, #0f2b5c 50%, #1e3a8a 100%);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        .work-job-card {
+            background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+            border: 1.5px solid #e2e8f0;
+            border-radius: 22px;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .work-job-card:hover {
+            border-color: #3b82f6;
+            box-shadow: 0 12px 30px rgba(37, 99, 235, 0.1);
+            transform: translateY(-2px);
+        }
+        .glow-tag {
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.25);
+        }
         .profile-hero-card {
             background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
             border: 1px solid rgba(255, 255, 255, 0.12);
@@ -319,13 +339,13 @@
         <div class="text-center space-y-2 z-10">
             <h1 class="font-black text-3xl tracking-wider shimmer-text">GMAIL HUB</h1>
             <div class="flex items-center justify-center gap-1.5 pt-1">
-                <span class="px-2.5 py-0.5 rounded-full bg-blue-500/20 text-blue-300 text-[11px] font-black border border-blue-500/40">EMAILS</span>
+                <span class="px-2.5 py-0.5 rounded-full bg-blue-500/20 text-blue-300 text-[11px] font-black border border-blue-500/40">MARKETPLACE</span>
                 <span class="text-gray-500">•</span>
-                <span class="px-2.5 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 text-[11px] font-black border border-indigo-500/40">VPN</span>
+                <span class="px-2.5 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 text-[11px] font-black border border-indigo-500/40">VIP WORK</span>
                 <span class="text-gray-500">•</span>
-                <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[11px] font-black border border-emerald-500/40">PROXY</span>
+                <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[11px] font-black border border-emerald-500/40">INSTANT</span>
             </div>
-            <p class="text-xs text-slate-400 font-medium tracking-wide">Automated & Verified Accounts Gateway</p>
+            <p class="text-xs text-slate-400 font-medium tracking-wide">Automated & Verified Services</p>
         </div>
     </div>
 
@@ -433,7 +453,7 @@
     <!-- MAIN APP WRAPPER -->
     <div id="app-container" class="min-h-screen flex-col main-page">
 
-        <!-- HEADER (ORIGINAL CLEAN HEADER WITHOUT VIP BADGE) -->
+        <!-- HEADER -->
         <header class="main-header flex items-center justify-between">
             <div class="flex items-center gap-3">
                 <button onclick="toggleSideDrawer(true)" class="p-2 rounded-xl bg-white/15 hover:bg-white/25 active:scale-95 transition text-white" title="Menu">
@@ -492,44 +512,70 @@
                 </div>
             </div>
 
-            <!-- 2. PROFESSIONAL WORK PORTAL PAGE (VIP 0 to VIP 5) -->
+            <!-- 2. BRAND NEW ULTRA-MODERN WORK PORTAL PAGE (VIP 0 to VIP 5) -->
             <div id="work-page" class="p-4 space-y-4 sub-page">
                 
-                <!-- VIP Status & Info Banner -->
-                <div class="bg-gradient-to-br from-slate-900 via-indigo-950 to-blue-950 p-5 rounded-3xl text-white shadow-xl relative overflow-hidden border border-blue-500/20">
-                    <div class="absolute -right-6 -bottom-6 w-36 h-36 bg-blue-500/10 rounded-full blur-2xl pointer-events-none"></div>
-                    <div class="relative z-10 flex items-center justify-between">
-                        <div class="space-y-1">
-                            <span id="work-user-vip-badge" class="px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 text-[10px] font-black uppercase tracking-wider border border-amber-400/30 inline-flex items-center gap-1">
-                                <i data-lucide="crown" class="w-3 h-3 text-amber-400"></i> VIP 0 FREE MEMBER
-                            </span>
-                            <h2 class="text-xl font-black tracking-tight text-white">Work Marketplace</h2>
-                            <p class="text-xs text-blue-200 mt-0.5">অ্যাকাউন্ট সেল ও মাইক্রো জব করে প্রতিদিন আয় করুন</p>
+                <!-- LUXURY WORK HERO BANNER -->
+                <div class="work-hero-gradient p-5 rounded-3xl text-white shadow-2xl relative">
+                    <div class="absolute -right-8 -top-8 w-40 h-40 bg-blue-500/20 rounded-full blur-3xl pointer-events-none"></div>
+                    <div class="absolute -left-8 -bottom-8 w-40 h-40 bg-indigo-500/20 rounded-full blur-3xl pointer-events-none"></div>
+                    
+                    <div class="relative z-10 space-y-3.5">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <span id="work-user-vip-badge" class="px-3 py-1 rounded-full bg-amber-400/20 text-amber-300 text-[10px] font-black uppercase tracking-wider border border-amber-400/40 inline-flex items-center gap-1.5 shadow-sm">
+                                    <i data-lucide="crown" class="w-3.5 h-3.5 text-amber-400"></i> VIP 0 FREE MEMBER
+                                </span>
+                            </div>
+                            <button onclick="openVipUpgradeModal()" class="px-4 py-2 rounded-2xl btn-vip-upgrade text-xs font-black flex items-center gap-1.5 shadow-lg active:scale-95 transition">
+                                <i data-lucide="zap" class="w-3.5 h-3.5 fill-current"></i> Buy VIP
+                            </button>
                         </div>
-                        <button onclick="openVipUpgradeModal()" class="px-3.5 py-2 rounded-2xl btn-vip-upgrade text-xs font-extrabold flex items-center gap-1 shadow-md active:scale-95 transition">
-                            <i data-lucide="zap" class="w-3.5 h-3.5"></i> Upgrade
-                        </button>
+
+                        <div>
+                            <h2 class="text-xl font-black tracking-tight text-white flex items-center gap-2">
+                                <span>Work & Micro Earnings</span>
+                                <span class="text-xs bg-blue-500/30 text-blue-300 px-2 py-0.5 rounded-full font-bold border border-blue-400/30">Verified</span>
+                            </h2>
+                            <p class="text-xs text-blue-200 mt-1 leading-relaxed">অ্যাকাউন্ট সেল, মাইক্রো রিভিউ ও ডেটা সাবমিট করে প্রতিদিন ইনস্ট্যান্ট আয় করুন।</p>
+                        </div>
+
+                        <!-- Micro Stats Indicator -->
+                        <div class="grid grid-cols-3 gap-2 pt-2 border-t border-white/10 text-center text-xs">
+                            <div class="bg-white/10 backdrop-blur-md p-2 rounded-xl border border-white/10">
+                                <span class="text-[9.5px] text-blue-200 block font-bold">Daily Tasks</span>
+                                <span class="font-black text-sm text-white" id="work-stat-limit">2 / Day</span>
+                            </div>
+                            <div class="bg-white/10 backdrop-blur-md p-2 rounded-xl border border-white/10">
+                                <span class="text-[9.5px] text-emerald-300 block font-bold">Max Earning</span>
+                                <span class="font-black text-sm text-emerald-400">৳৪৫০+</span>
+                            </div>
+                            <div class="bg-white/10 backdrop-blur-md p-2 rounded-xl border border-white/10">
+                                <span class="text-[9.5px] text-amber-300 block font-bold">Payout</span>
+                                <span class="font-black text-sm text-amber-300">Instant</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- VIP Filter Buttons -->
-                <div class="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none" id="work-vip-tabs-container">
-                    <button onclick="filterWorkCategory('all', this)" class="category-btn active text-xs whitespace-nowrap px-3.5 py-2">All Jobs</button>
-                    <button onclick="filterWorkCategory('vip0', this)" class="category-btn text-xs whitespace-nowrap px-3 py-2">VIP 0 (Free)</button>
-                    <button onclick="filterWorkCategory('vip1', this)" class="category-btn text-xs whitespace-nowrap px-3 py-2">VIP 1</button>
-                    <button onclick="filterWorkCategory('vip2', this)" class="category-btn text-xs whitespace-nowrap px-3 py-2">VIP 2</button>
-                    <button onclick="filterWorkCategory('vip3', this)" class="category-btn text-xs whitespace-nowrap px-3 py-2">VIP 3</button>
-                    <button onclick="filterWorkCategory('vip4', this)" class="category-btn text-xs whitespace-nowrap px-3 py-2">VIP 4</button>
-                    <button onclick="filterWorkCategory('vip5', this)" class="category-btn text-xs whitespace-nowrap px-3 py-2">VIP 5</button>
+                <!-- VIP Filter Scrollable Chips -->
+                <div class="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none" id="work-vip-tabs-container">
+                    <button onclick="filterWorkCategory('all', this)" class="category-btn active text-xs whitespace-nowrap px-4 py-2.5 font-black">All Tiers</button>
+                    <button onclick="filterWorkCategory('vip0', this)" class="category-btn text-xs whitespace-nowrap px-3.5 py-2.5">VIP 0 Free</button>
+                    <button onclick="filterWorkCategory('vip1', this)" class="category-btn text-xs whitespace-nowrap px-3.5 py-2.5">VIP 1</button>
+                    <button onclick="filterWorkCategory('vip2', this)" class="category-btn text-xs whitespace-nowrap px-3.5 py-2.5">VIP 2</button>
+                    <button onclick="filterWorkCategory('vip3', this)" class="category-btn text-xs whitespace-nowrap px-3.5 py-2.5">VIP 3</button>
+                    <button onclick="filterWorkCategory('vip4', this)" class="category-btn text-xs whitespace-nowrap px-3.5 py-2.5">VIP 4</button>
+                    <button onclick="filterWorkCategory('vip5', this)" class="category-btn text-xs whitespace-nowrap px-3.5 py-2.5">VIP 5</button>
                 </div>
 
                 <!-- Switch View (Job Posts vs My Submissions) -->
-                <div class="flex gap-2">
-                    <button id="btn-tab-work-feed" onclick="switchWorkView('jobs')" class="flex-1 py-2.5 bg-blue-600 text-white rounded-xl font-bold text-xs shadow-sm transition">
+                <div class="flex gap-2 bg-slate-200/70 p-1 rounded-2xl">
+                    <button id="btn-tab-work-feed" onclick="switchWorkView('jobs')" class="flex-1 py-2.5 bg-blue-600 text-white rounded-xl font-bold text-xs shadow-md transition">
                         Available Jobs
                     </button>
-                    <button id="btn-tab-work-my-subs" onclick="switchWorkView('my_subs')" class="flex-1 py-2.5 bg-slate-100 text-slate-700 hover:bg-slate-200 rounded-xl font-bold text-xs transition">
-                        My Work Submissions
+                    <button id="btn-tab-work-my-subs" onclick="switchWorkView('my_subs')" class="flex-1 py-2.5 bg-transparent text-slate-600 hover:text-slate-900 rounded-xl font-bold text-xs transition">
+                        My Submissions
                     </button>
                 </div>
 
@@ -540,7 +586,7 @@
                 <div id="work-user-submissions-list" class="space-y-3 hidden min-h-[220px]"></div>
             </div>
 
-            <!-- 2.1 DEDICATED WORK DETAIL & SUBMISSION PAGE (OPENS ON APPLY) -->
+            <!-- 2.1 DEDICATED WORK DETAIL & SUBMISSION PAGE -->
             <div id="work-detail-page" class="p-4 space-y-4 sub-page">
                 <div class="flex items-center gap-2 mb-1">
                     <button onclick="navigateTo('work-page')" class="p-2 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 transition">
@@ -573,7 +619,7 @@
                     </div>
                 </div>
 
-                <!-- Job Description & Terms (শর্ত ও কাজের নিয়মাবলী) -->
+                <!-- Job Description & Terms -->
                 <div class="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm space-y-3">
                     <h4 class="text-xs font-black uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
                         <i data-lucide="file-text" class="w-4 h-4 text-blue-600"></i>
@@ -790,9 +836,8 @@
                 <div id="orders-purchase-history" class="space-y-3 min-h-[200px]"></div>
             </div>
 
-            <!-- 6. HIGH-END EYE-CATCHING TELEGRAM PROFILE PAGE -->
+            <!-- 6. TELEGRAM PROFILE PAGE -->
             <div id="profile-page" class="p-4 space-y-4 sub-page">
-                <!-- Luxury Hero Card -->
                 <div class="profile-hero-card p-6 rounded-3xl text-white shadow-2xl text-center space-y-3">
                     <div class="flex items-center justify-between">
                         <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-black uppercase tracking-wider border border-emerald-400/30">
@@ -803,7 +848,6 @@
                         </span>
                     </div>
 
-                    <!-- Avatar with Glowing Ring -->
                     <div class="relative w-24 h-24 mx-auto my-2">
                         <div class="profile-avatar-ring w-full h-full flex items-center justify-center">
                             <div class="w-full h-full rounded-full bg-slate-950 flex items-center justify-center overflow-hidden font-black text-3xl text-white">
@@ -825,7 +869,6 @@
                     </div>
                 </div>
 
-                <!-- Attractive Multi-Stat Grid -->
                 <div class="grid grid-cols-3 gap-2 text-center">
                     <div class="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-sm">
                         <p class="text-[9.5px] font-extrabold text-slate-400 uppercase tracking-wider">BALANCE</p>
@@ -841,7 +884,6 @@
                     </div>
                 </div>
 
-                <!-- Action Menu in Profile -->
                 <div class="bg-white p-2 rounded-2xl border border-slate-200 shadow-sm divide-y divide-slate-100 text-xs font-bold">
                     <button onclick="navigateTo('pay-page')" class="w-full p-3 flex items-center justify-between hover:bg-slate-50 rounded-xl transition">
                         <div class="flex items-center gap-2.5">
@@ -854,7 +896,7 @@
                     <button onclick="openVipUpgradeModal()" class="w-full p-3 flex items-center justify-between hover:bg-slate-50 rounded-xl transition">
                         <div class="flex items-center gap-2.5">
                             <div class="p-1.5 bg-amber-50 text-amber-600 rounded-lg"><i data-lucide="crown" class="w-4 h-4"></i></div>
-                            <span>VIP লেভেল আপগ্রেড</span>
+                            <span>VIP লেভেল আপগ্রেড (Direct Pay)</span>
                         </div>
                         <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400"></i>
                     </button>
@@ -955,54 +997,9 @@
                 </div>
             </div>
 
-            <!-- 10. ADMIN PANEL -->
-            <div id="admin-page" class="p-4 space-y-6 sub-page">
-                <h2 class="text-xl font-bold text-center text-slate-800">Admin Control Center</h2>
-
-                <!-- Admin Pending Work Submissions -->
-                <div class="bg-white p-5 rounded-2xl border border-amber-300 shadow-sm space-y-3">
-                    <div class="flex items-center justify-between border-b pb-2">
-                        <h3 class="font-bold text-sm text-amber-950 flex items-center gap-1.5">
-                            <i data-lucide="briefcase" class="w-4 h-4 text-amber-600"></i>
-                            ওয়ার্ক প্রুফ রিভিউ ও অ্যাপ্রুভাল
-                        </h3>
-                        <span id="admin-work-sub-count" class="bg-amber-100 text-amber-800 text-xs px-2 py-0.5 rounded-full font-bold">0 Pending</span>
-                    </div>
-                    <div id="admin-work-submissions-list" class="space-y-3"></div>
-                </div>
-
-                <div class="bg-white p-5 rounded-2xl border border-orange-200 shadow-sm space-y-3">
-                    <div class="flex items-center justify-between border-b pb-2">
-                        <h3 class="font-bold text-sm text-orange-950 flex items-center gap-1.5">
-                            <i data-lucide="clock" class="w-4 h-4 text-orange-600"></i>
-                            ম্যানুয়াল প্রি-অর্ডার ডেলিভারি
-                        </h3>
-                        <span id="admin-manual-order-count" class="bg-orange-100 text-orange-800 text-xs px-2 py-0.5 rounded-full font-bold">0 Pending</span>
-                    </div>
-                    <div id="admin-manual-orders-list" class="space-y-3"></div>
-                </div>
-
-                <div class="bg-white p-5 rounded-2xl border border-slate-200 space-y-4">
-                    <h3 class="font-bold text-sm">Add Items to Stock</h3>
-                    <p class="text-xs text-slate-500">ফরম্যাট: <code>email/pass/token</code></p>
-                    <div>
-                        <select id="mail-type-select" class="w-full p-2.5 rounded-xl input-field text-sm"></select>
-                    </div>
-                    <div>
-                        <textarea id="mail-data-textarea" rows="4" placeholder="One item per line..." class="w-full p-2.5 rounded-xl input-field font-mono text-xs"></textarea>
-                    </div>
-                    <button id="add-mails-btn" class="w-full py-3 rounded-xl btn-buy font-bold text-sm">Add Items to Stock</button>
-                </div>
-
-                <div class="bg-white p-5 rounded-2xl border border-slate-200 space-y-3">
-                    <h3 class="font-bold text-sm text-slate-700">Replace / Refund Requests</h3>
-                    <div id="replace-requests-list" class="space-y-3"></div>
-                </div>
-            </div>
-
         </main>
 
-        <!-- ULTRA SLEEK FLOATING BOTTOM NAVIGATION (DEPOSIT REMOVED, WORK ADDED) -->
+        <!-- ULTRA SLEEK FLOATING BOTTOM NAVIGATION -->
         <div class="bottom-nav-container">
             <nav class="bottom-nav">
                 <div class="nav-item active" data-page="home-page" onclick="navigateTo('home-page')">
@@ -1035,39 +1032,36 @@
                     </div>
                     <span>Profile</span>
                 </div>
-                <div class="nav-item hidden" id="admin-nav-item" data-page="admin-page" onclick="navigateTo('admin-page')">
-                    <div class="nav-icon-wrapper">
-                        <i data-lucide="shield" class="w-5 h-5"></i>
-                    </div>
-                    <span>Admin</span>
-                </div>
             </nav>
         </div>
 
     </div>
 
-    <!-- VIP UPGRADE MODAL -->
-    <div id="vip-upgrade-modal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[90] p-4 backdrop-blur-sm">
-        <div class="bg-white rounded-3xl p-5 w-full max-w-sm space-y-4 max-h-[90vh] flex flex-col shadow-2xl">
-            <div class="flex items-center justify-between border-b pb-2">
-                <div class="flex items-center gap-2">
-                    <div class="p-2 bg-amber-100 text-amber-700 rounded-xl">
+    <!-- DIRECT PAYMENT VIP UPGRADE MODAL -->
+    <div id="vip-upgrade-modal" class="hidden fixed inset-0 bg-black/75 flex items-center justify-center z-[90] p-4 backdrop-blur-md">
+        <div class="bg-white rounded-3xl p-5 w-full max-w-sm space-y-4 max-h-[90vh] flex flex-col shadow-2xl border border-slate-100">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                <div class="flex items-center gap-2.5">
+                    <div class="p-2 bg-gradient-to-br from-amber-500 to-orange-600 text-white rounded-2xl shadow-md">
                         <i data-lucide="crown" class="w-5 h-5"></i>
                     </div>
                     <div>
-                        <h3 class="font-extrabold text-sm text-slate-900">VIP Upgrade & Unlock</h3>
-                        <p class="text-[10px] text-slate-500">উচ্চ আয়ের কাজের জন্য VIP লেভেল আনলক করুন</p>
+                        <h3 class="font-black text-sm text-slate-900 leading-tight">Instant VIP Upgrade</h3>
+                        <p class="text-[10.5px] text-amber-600 font-bold">সরাসরি গেটওয়ে পেমেন্টে আনলক করুন</p>
                     </div>
                 </div>
-                <button onclick="document.getElementById('vip-upgrade-modal').classList.add('hidden')" class="p-1.5 bg-slate-100 rounded-lg text-slate-500">
+                <button onclick="document.getElementById('vip-upgrade-modal').classList.add('hidden')" class="p-1.5 bg-slate-100 rounded-xl text-slate-500 hover:bg-slate-200">
                     <i data-lucide="x" class="w-4 h-4"></i>
                 </button>
             </div>
 
-            <div class="overflow-y-auto space-y-2.5 pr-1 flex-grow text-xs" id="vip-tier-cards-list"></div>
+            <div class="overflow-y-auto space-y-3 pr-1 flex-grow text-xs" id="vip-tier-cards-list"></div>
 
-            <div class="pt-2 border-t text-center">
-                <p class="text-[10px] text-slate-400 font-semibold">আপনার বর্তমান ব্যালেন্স থেকে VIP ফি কর্তন করা হবে।</p>
+            <div class="pt-2 border-t border-slate-100 text-center">
+                <p class="text-[10px] text-slate-400 font-semibold flex items-center justify-center gap-1">
+                    <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-500"></i>
+                    <span>bKash, Nagad ও Rocket দিয়ে সরাসরি অটোমেটিক অ্যাক্টিভেশন</span>
+                </p>
             </div>
         </div>
     </div>
@@ -1082,7 +1076,7 @@
             <div class="text-xs text-slate-600 text-left space-y-2 max-h-60 overflow-y-auto leading-relaxed bg-slate-50 p-3 rounded-2xl border border-slate-100">
                 <p>১. অ্যাকাউন্ট ক্রয়ের পর ইনভ্যালিড থাকলে ১৫ মিনিটের মধ্যে রিপোর্ট করতে হবে।</p>
                 <p>২. কাজের সাবমিশনে ভুল তথ্য দিলে অ্যাকাউন্ট সাসপেন্ড ও ব্যালেন্স বাতিল হতে পারে।</p>
-                <p>৩. VIP লেভেল আপগ্রেড ফি অফেরতযোগ্য।</p>
+                <p>৩. VIP লেভেল সরাসরি পেমেন্ট গেটওয়ে দিয়ে কার্যকর করা হয়।</p>
             </div>
             <button onclick="document.getElementById('policy-modal').classList.add('hidden')" class="w-full py-2.5 bg-blue-600 text-white font-bold rounded-xl text-xs">ঠিক আছে</button>
         </div>
@@ -1251,11 +1245,6 @@
 
     <!-- FIREBASE & CORE JAVASCRIPT LOGIC -->
     <script type="module">
-        const DEFAULT_ADMIN_UID = "6954647230";
-        
-        // -------------------------------------------------------------
-        // MULTI-FIREBASE ARCHITECTURE
-        // -------------------------------------------------------------
         const baseFirebaseConfig = {
             apiKey: "AIzaSyBopnlRjMScCBaKaxvYsZesAvzxtEjSFRw",
             authDomain: "rkrj-abffe.firebaseapp.com",
@@ -1270,33 +1259,26 @@
         import { 
             getFirestore, doc, setDoc, getDoc, collection, addDoc, serverTimestamp, 
             query, where, getDocs, orderBy, limit, runTransaction, getCountFromServer, 
-            writeBatch, updateDoc, Timestamp, increment 
+            updateDoc, Timestamp, increment 
         } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
-        // Named Firebase instances
-        const primaryApp = initializeApp(baseFirebaseConfig, "PRIMARY_USER_APP");
-        const homeApp = initializeApp(baseFirebaseConfig, "HOME_SHOP_APP");
-        const tasksApp = initializeApp(baseFirebaseConfig, "TASKS_REWARD_APP");
-        const workApp = initializeApp(baseFirebaseConfig, "WORK_PORTAL_APP");
-        const miscApp = initializeApp(baseFirebaseConfig, "MISC_SYSTEM_APP");
+        const primaryApp = initializeApp(baseFirebaseConfig);
+        const dbUser = getFirestore(primaryApp);
+        const dbHome = dbUser;
+        const dbWork = dbUser;
+        const dbMisc = dbUser;
 
-        const dbUser = getFirestore(primaryApp); // Master Users, Balance, VIP Level & Anti-Cheat Lock
-        const dbHome = getFirestore(homeApp);    // Products, Config & Purchases
-        const dbTasks = getFirestore(tasksApp);  // Tasks Ledger
-        const dbWork = getFirestore(workApp);    // VIP Jobs & Submissions
-        const dbMisc = getFirestore(miscApp);    // Notifications & Replacements
-
-        // VIP Tiers
+        // VIP Tiers with Direct Payment Gateways
         const VIP_TIERS = [
-            { level: 0, title: "VIP 0 (Free)", cost: 0, dailyLimit: 2, icon: "user", color: "from-slate-600 to-slate-800", desc: "ফ্রি কাজ: Gmail account sell, Facebook account sell ইত্যাদি।" },
-            { level: 1, title: "VIP 1 Bronze", cost: 100, dailyLimit: 5, icon: "shield", color: "from-amber-600 to-amber-800", desc: "মাইক্রো সার্ভে, ডেটা ভেরিফিকেশন ও অ্যাকাউন্ট টাস্ক।" },
-            { level: 2, title: "VIP 2 Silver", cost: 300, dailyLimit: 8, icon: "award", color: "from-slate-400 to-slate-600", desc: "বাল্ক অ্যাকাউন্ট ক্রিয়েশন ও সোশ্যাল মিডিয়া প্রোমোশন।" },
-            { level: 3, title: "VIP 3 Gold", cost: 600, dailyLimit: 12, icon: "crown", color: "from-yellow-500 to-amber-600", desc: "হাই-পেইং অ্যাপ টেস্টিং, রিভিউ ও প্রিমিয়াম টাস্ক।" },
-            { level: 4, title: "VIP 4 Platinum", cost: 1200, dailyLimit: 20, icon: "gem", color: "from-cyan-500 to-blue-600", desc: "অ্যাফিলিয়েট লিড ও স্পেশাল ক্যাম্পেইন জব।" },
-            { level: 5, title: "VIP 5 Master", cost: 2500, dailyLimit: 35, icon: "zap", color: "from-purple-600 to-indigo-800", desc: "মাস্টার প্রমোশন, এজেন্সি লেভেল জব ও আনলিমিটেড সাপোর্ট।" }
+            { level: 0, title: "VIP 0 Free Member", cost: 0, dailyLimit: 2, icon: "user", color: "from-slate-600 to-slate-800", desc: "ফ্রি কাজ: জিমেইল সেল, ফেসবুক অ্যাকাউন্ট সেল ইত্যাদি।" },
+            { level: 1, title: "VIP 1 Bronze Pro", cost: 100, dailyLimit: 5, icon: "shield", color: "from-amber-600 to-amber-800", desc: "মাইক্রো অ্যাপ রিভিউ, ডেটা ভেরিফিকেশন ও অ্যাকাউন্ট টাস্ক।" },
+            { level: 2, title: "VIP 2 Silver Elite", cost: 300, dailyLimit: 8, icon: "award", color: "from-slate-400 to-slate-600", desc: "বাল্ক অ্যাকাউন্ট ক্রিয়েশন ও সোশ্যাল মিডিয়া প্রোমোশন।" },
+            { level: 3, title: "VIP 3 Gold Master", cost: 600, dailyLimit: 12, icon: "crown", color: "from-yellow-500 to-amber-600", desc: "হাই-পেইং অ্যাপ টেস্টিং, রিভিউ ও স্পেশাল প্রিমিয়াম টাস্ক।" },
+            { level: 4, title: "VIP 4 Platinum Boss", cost: 1200, dailyLimit: 20, icon: "gem", color: "from-cyan-500 to-blue-600", desc: "অ্যাফিলিয়েট লিড ও হাই-টিকিট ক্যাম্পেইন আর্নিং।" },
+            { level: 5, title: "VIP 5 Ultimate Agency", cost: 2500, dailyLimit: 35, icon: "zap", color: "from-purple-600 to-indigo-800", desc: "মাস্টার প্রমোশন, এজেন্সি জবস ও আনলিমিটেড সাপোর্ট।" }
         ];
 
-        // Default Work Job Posts (VIP 0 to VIP 5)
+        // Default Work Job Posts
         const DEFAULT_WORK_POSTS = [
             {
                 id: "job_vip0_gmail",
@@ -1309,7 +1291,7 @@
             },
             {
                 id: "job_vip0_fb",
-                title: "Facebook Old/New Account Sell",
+                title: "Facebook Active Account Sell",
                 vipRequired: 0,
                 reward: 9.00,
                 dailyLimit: 2,
@@ -1318,16 +1300,16 @@
             },
             {
                 id: "job_vip0_tg_session",
-                title: "Telegram Number / Account Sell",
+                title: "Telegram Session / Account Sell",
                 vipRequired: 0,
                 reward: 12.00,
                 dailyLimit: 2,
                 category: "Account Sell",
-                desc: "টেলিগ্রামের সক্রিয় নম্বর অথবা সেশন কোড সাবমিট করুন।"
+                desc: "টেলিগ্রামের সক্রিয় নম্বর অথবা সেশন কোড ফরম্যাট অনুযায়ী সাবমিট করুন।"
             },
             {
                 id: "job_vip1_micro_task",
-                title: "App Review & 5-Star Rating (VIP 1)",
+                title: "App Store 5-Star Review (VIP 1)",
                 vipRequired: 1,
                 reward: 20.00,
                 dailyLimit: 5,
@@ -1336,39 +1318,39 @@
             },
             {
                 id: "job_vip2_bulk_gmail",
-                title: "USA Recovery Gmail Submit (VIP 2)",
+                title: "USA Recovery Gmail Bulk Submit (VIP 2)",
                 vipRequired: 2,
                 reward: 50.00,
                 dailyLimit: 8,
                 category: "Bulk Account",
-                desc: "ইউএসএ আইপি দিয়ে তৈরি রিকভারি মেইল যুক্ত ২টি জিমেইল সাবমিট করুন।"
+                desc: "ইউএসএ আইপি দিয়ে তৈরি রিকভারি মেইল যুক্ত ২টি ফ্রেশ জিমেইল সাবমিট করুন।"
             },
             {
                 id: "job_vip3_premium_sub",
-                title: "Premium Account Testing & Leads (VIP 3)",
+                title: "Premium Verification Task (VIP 3)",
                 vipRequired: 3,
                 reward: 110.00,
                 dailyLimit: 12,
                 category: "Verification",
-                desc: "প্রিমিয়াম পোর্টাল একাউন্ট সাইন আপ ও ভেরিফিকেশন লিঙ্ক প্রদান করুন।"
+                desc: "প্রিমিয়াম পোর্টাল একাউন্ট সাইন আপ ও ভেরিফিকেশন প্রুফ প্রদান করুন।"
             },
             {
                 id: "job_vip4_lead_gen",
-                title: "Affiliate Active Lead Generation (VIP 4)",
+                title: "Active Lead Generation Task (VIP 4)",
                 vipRequired: 4,
                 reward: 220.00,
                 dailyLimit: 20,
                 category: "Leads",
-                desc: "অ্যাফিলিয়েট সিস্টেমে ১ জন সক্রিয় রিয়েল ইউজার সাইন আপ করিয়ে তার টেলিগ্রাম আইডি দিন।"
+                desc: "সিস্টেমে ১ জন সক্রিয় রিয়েল ইউজার সাইন আপ করিয়ে তার টেলিগ্রাম আইডি দিন।"
             },
             {
                 id: "job_vip5_master_campaign",
-                title: "Master Campaign Promotion Task (VIP 5)",
+                title: "Agency Level Campaign Promotion (VIP 5)",
                 vipRequired: 5,
                 reward: 450.00,
                 dailyLimit: 35,
                 category: "Agency",
-                desc: "সোশ্যাল মিডিয়া পেজ বা গ্রুপে আমাদের ব্যানার প্রমোট করে পোস্টের পাবলিক লিংক দিন।"
+                desc: "সোশ্যাল মিডিয়া পেজ বা গ্রুপে আমাদের ব্যানার প্রমোট করে পোস্টের পাবলিক লিংক সাবমিট করুন।"
             }
         ];
 
@@ -1401,7 +1383,6 @@
         const loader = document.getElementById('loader');
         const getLoadingHTML = () => `<div class="flex justify-center p-8"><div class="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div></div>`;
 
-        // TOAST NOTIFICATIONS
         window.showToast = function(message, type = 'info') {
             const container = document.getElementById('toast-container');
             if (!container) return;
@@ -1427,7 +1408,7 @@
             setTimeout(() => {
                 toast.classList.remove('show');
                 setTimeout(() => toast.remove(), 300);
-            }, 3000);
+            }, 3200);
         };
 
         window.toggleSideDrawer = function(open) {
@@ -1508,7 +1489,6 @@
                 await setDoc(userRef, userData);
             }
 
-            // Drawer user details
             document.getElementById('drawer-user-name').textContent = userData.name || 'User';
             document.getElementById('drawer-user-id').textContent = `ID: ${userData.tgChatId}`;
             
@@ -1521,7 +1501,6 @@
                 document.getElementById('drawer-user-avatar').textContent = (userData.name || 'U').charAt(0).toUpperCase();
             }
 
-            // Ref link
             const botUser = appConfig.botUsername || "GmailHubBot";
             const refLink = `https://t.me/${botUser}?start=${userData.tgChatId}`;
             const refLinkEl = document.getElementById('task-ref-link');
@@ -1529,11 +1508,6 @@
 
             await fetchAppConfig();
             await loadUserNotifications();
-
-            const adminId = String(appConfig.adminTelegramId || DEFAULT_ADMIN_UID);
-            if (tgChatId === adminId) {
-                document.getElementById('admin-nav-item')?.classList.remove('hidden');
-            }
 
             updateUI();
             showMainPage('app-container');
@@ -1562,7 +1536,7 @@
         }
 
         // ==========================================
-        // WORK MARKETPLACE & DEDICATED APPLY PAGE
+        // WORK MARKETPLACE & NEW GRAPHIC DESIGN
         // ==========================================
         function renderWorkJobs() {
             const container = document.getElementById('work-jobs-feed-list');
@@ -1579,7 +1553,7 @@
             }
 
             if (filtered.length === 0) {
-                container.innerHTML = `<div class="bg-white p-8 rounded-2xl text-center text-slate-400 font-semibold border">এই ক্যাটাগরিতে বর্তমানে কোনো কাজ নেই।</div>`;
+                container.innerHTML = `<div class="bg-white p-8 rounded-3xl text-center text-slate-400 font-bold border border-dashed">এই ক্যাটাগরিতে বর্তমানে কোনো কাজ নেই।</div>`;
                 return;
             }
 
@@ -1589,36 +1563,39 @@
                 const isLocked = job.vipRequired > userVip;
 
                 return `
-                <div class="product-card p-4 space-y-3 border ${isLocked ? 'border-slate-200 bg-slate-50/60' : 'border-blue-100'}">
-                    <div class="flex items-start justify-between">
-                        <div class="space-y-1">
-                            <div class="flex items-center gap-1.5">
-                                <span class="px-2 py-0.5 text-[10px] font-black rounded-md ${isLocked ? 'bg-slate-200 text-slate-700' : 'bg-blue-100 text-blue-800'}">
+                <div class="work-job-card p-4.5 space-y-3.5 relative overflow-hidden ${isLocked ? 'opacity-90' : ''}">
+                    <div class="flex items-start justify-between gap-2">
+                        <div class="space-y-1.5 flex-1">
+                            <div class="flex items-center gap-2">
+                                <span class="px-2.5 py-0.5 text-[10.5px] font-black rounded-lg ${isLocked ? 'bg-slate-200 text-slate-700' : 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-sm'}">
                                     VIP ${job.vipRequired}
                                 </span>
-                                <span class="text-[10px] font-bold text-slate-600 bg-slate-100 px-2 py-0.5 rounded-md">${job.category || 'Task'}</span>
+                                <span class="text-[10px] font-bold text-slate-600 bg-slate-100 px-2.5 py-0.5 rounded-lg border border-slate-200">${job.category || 'Task'}</span>
+                                <span class="text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-md flex items-center gap-1">
+                                    <i data-lucide="clock" class="w-3 h-3"></i> ${job.dailyLimit || 1}x/day
+                                </span>
                             </div>
-                            <h4 class="font-black text-sm text-slate-900 leading-tight">${job.title}</h4>
-                            <p class="text-[11px] text-slate-500 line-clamp-2">${job.desc || ''}</p>
+                            <h4 class="font-black text-sm text-slate-900 leading-snug">${job.title}</h4>
+                            <p class="text-[11.5px] text-slate-500 line-clamp-2 leading-relaxed">${job.desc || ''}</p>
                         </div>
                     </div>
 
-                    <div class="flex items-center justify-between pt-2 border-t border-slate-100 text-xs">
-                        <div>
-                            <span class="text-[10px] text-slate-400 uppercase font-bold block">Reward</span>
-                            <span class="text-base font-black text-emerald-600">৳${parseFloat(job.reward).toFixed(2)}</span>
+                    <div class="flex items-center justify-between pt-3 border-t border-slate-100">
+                        <div class="bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-200/80">
+                            <span class="text-[9.5px] text-emerald-600 uppercase font-black tracking-wider block">Job Reward</span>
+                            <span class="text-base font-black text-emerald-700 font-mono">৳${parseFloat(job.reward).toFixed(2)}</span>
                         </div>
 
                         <div>
                             ${isLocked ? `
-                                <button onclick="openVipUpgradeModal()" class="px-4 py-2 rounded-xl text-xs font-black bg-slate-200 text-slate-600 hover:bg-amber-100 hover:text-amber-800 flex items-center gap-1 transition">
+                                <button onclick="openVipUpgradeModal()" class="px-4 py-2.5 rounded-xl text-xs font-black bg-gradient-to-r from-amber-500 to-orange-600 text-white shadow-md active:scale-95 flex items-center gap-1.5 transition">
                                     <i data-lucide="lock" class="w-3.5 h-3.5"></i>
-                                    <span>Unlock VIP ${job.vipRequired}</span>
+                                    <span>Buy VIP ${job.vipRequired}</span>
                                 </button>
                             ` : `
-                                <button onclick="openDedicatedWorkApplyPage('${job.id}')" class="btn-buy px-5 py-2 text-xs flex items-center gap-1">
-                                    <i data-lucide="arrow-right-circle" class="w-3.5 h-3.5"></i>
-                                    <span>Apply Now</span>
+                                <button onclick="openDedicatedWorkApplyPage('${job.id}')" class="btn-buy px-5 py-2.5 text-xs flex items-center gap-1.5 shadow-md">
+                                    <i data-lucide="arrow-right-circle" class="w-4 h-4"></i>
+                                    <span>Apply & Earn</span>
                                 </button>
                             `}
                         </div>
@@ -1644,19 +1621,18 @@
             if (view === 'jobs') {
                 feedContainer.classList.remove('hidden');
                 subsContainer.classList.add('hidden');
-                btnFeed.className = "flex-1 py-2.5 bg-blue-600 text-white rounded-xl font-bold text-xs shadow-sm transition";
-                btnSubs.className = "flex-1 py-2.5 bg-slate-100 text-slate-700 hover:bg-slate-200 rounded-xl font-bold text-xs transition";
+                btnFeed.className = "flex-1 py-2.5 bg-blue-600 text-white rounded-xl font-bold text-xs shadow-md transition";
+                btnSubs.className = "flex-1 py-2.5 bg-transparent text-slate-600 hover:text-slate-900 rounded-xl font-bold text-xs transition";
                 renderWorkJobs();
             } else {
                 feedContainer.classList.add('hidden');
                 subsContainer.classList.remove('hidden');
-                btnSubs.className = "flex-1 py-2.5 bg-blue-600 text-white rounded-xl font-bold text-xs shadow-sm transition";
-                btnFeed.className = "flex-1 py-2.5 bg-slate-100 text-slate-700 hover:bg-slate-200 rounded-xl font-bold text-xs transition";
+                btnSubs.className = "flex-1 py-2.5 bg-blue-600 text-white rounded-xl font-bold text-xs shadow-md transition";
+                btnFeed.className = "flex-1 py-2.5 bg-transparent text-slate-600 hover:text-slate-900 rounded-xl font-bold text-xs transition";
                 loadUserWorkSubmissions();
             }
         };
 
-        // Open Dedicated Full Page for Job & Submission
         window.openDedicatedWorkApplyPage = function(jobId) {
             const allPosts = (appConfig.workPosts && Array.isArray(appConfig.workPosts) && appConfig.workPosts.length > 0) 
                 ? appConfig.workPosts 
@@ -1702,7 +1678,6 @@
                 const todayStart = new Date();
                 todayStart.setHours(0,0,0,0);
 
-                // Anti-Double Income Check via Transaction/Query
                 const existingQuery = query(
                     collection(dbWork, "work_submissions"),
                     where("userId", "==", tgUserId),
@@ -1728,7 +1703,7 @@
                     submittedAt: serverTimestamp()
                 });
 
-                showToast("কাজ সফলভাবে সাবমিট হয়েছে! অ্যাডমিন যাচাই করে ব্যালেন্স যোগ করবেন।", "success");
+                showToast("কাজ সফলভাবে সাবমিট হয়েছে! অটো ভেরিফিকেশন শেষে ব্যালেন্স যুক্ত হবে।", "success");
                 navigateTo('work-page');
                 switchWorkView('my_subs');
             } catch(e) {
@@ -1751,7 +1726,7 @@
                 const snap = await getDocs(q);
 
                 if (snap.empty) {
-                    container.innerHTML = `<div class="bg-white p-8 rounded-2xl text-center text-slate-400 font-semibold border">আপনি এখনো কোনো কাজের প্রুফ সাবমিট করেননি।</div>`;
+                    container.innerHTML = `<div class="bg-white p-8 rounded-3xl text-center text-slate-400 font-semibold border border-dashed">আপনি এখনো কোনো কাজের প্রুফ সাবমিট করেননি।</div>`;
                     return;
                 }
 
@@ -1764,19 +1739,19 @@
                     const isRejected = s.status === 'rejected';
 
                     return `
-                    <div class="bg-white p-3.5 rounded-2xl border border-slate-200 space-y-2 shadow-sm text-xs">
+                    <div class="bg-white p-4 rounded-2xl border border-slate-200 space-y-2.5 shadow-sm text-xs">
                         <div class="flex items-center justify-between">
                             <div>
                                 <h4 class="font-black text-slate-800">${s.jobTitle}</h4>
                                 <span class="text-[10px] text-slate-400">${dateStr}</span>
                             </div>
-                            <span class="font-black text-sm text-emerald-600">৳${s.reward?.toFixed(2)}</span>
+                            <span class="font-black text-sm text-emerald-600 font-mono">৳${s.reward?.toFixed(2)}</span>
                         </div>
-                        <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-100 text-[11px] font-mono text-slate-700 break-all">
+                        <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 text-[11px] font-mono text-slate-700 break-all">
                             <b>Proof:</b> ${s.proof}
                         </div>
                         <div class="flex items-center justify-between pt-1">
-                            <span class="text-[10px] uppercase font-black px-2 py-0.5 rounded ${
+                            <span class="text-[10px] uppercase font-black px-2.5 py-1 rounded-lg ${
                                 isApproved ? 'bg-emerald-100 text-emerald-700' :
                                 isRejected ? 'bg-red-100 text-red-700' : 'bg-amber-100 text-amber-800'
                             }">
@@ -1791,6 +1766,9 @@
             }
         }
 
+        // ==========================================
+        // DIRECT GATEWAY VIP UPGRADE
+        // ==========================================
         window.openVipUpgradeModal = function() {
             const listEl = document.getElementById('vip-tier-cards-list');
             const currentVip = userData?.vipLevel || 0;
@@ -1800,37 +1778,37 @@
                 const isPassed = tier.level < currentVip;
 
                 return `
-                <div class="p-3.5 rounded-2xl border ${isCurrent ? 'border-amber-500 bg-amber-50/50' : 'border-slate-200 bg-white'} space-y-2">
+                <div class="p-4 rounded-2xl border ${isCurrent ? 'border-amber-500 bg-amber-50/40' : 'border-slate-200 bg-white'} space-y-2.5 shadow-sm">
                     <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-2">
-                            <div class="w-8 h-8 rounded-xl bg-gradient-to-br ${tier.color} text-white flex items-center justify-center font-black text-xs">
+                        <div class="flex items-center gap-2.5">
+                            <div class="w-9 h-9 rounded-xl bg-gradient-to-br ${tier.color} text-white flex items-center justify-center font-black text-xs shadow-md">
                                 <i data-lucide="${tier.icon}" class="w-4 h-4"></i>
                             </div>
                             <div>
-                                <h4 class="font-extrabold text-xs text-slate-900">${tier.title}</h4>
-                                <span class="text-[10px] text-slate-500">Daily limit: ${tier.dailyLimit} tasks</span>
+                                <h4 class="font-black text-xs text-slate-900">${tier.title}</h4>
+                                <span class="text-[10px] font-bold text-blue-600">Daily limit: ${tier.dailyLimit} tasks</span>
                             </div>
                         </div>
                         <div class="text-right">
-                            <span class="font-black text-xs text-slate-800">${tier.cost === 0 ? 'Free' : `৳${tier.cost}`}</span>
+                            <span class="font-black text-sm text-slate-900 font-mono">${tier.cost === 0 ? 'Free' : `৳${tier.cost}`}</span>
                         </div>
                     </div>
                     <p class="text-[10.5px] text-slate-600 leading-relaxed">${tier.desc}</p>
                     
-                    <div>
+                    <div class="pt-1">
                         ${isCurrent ? `
-                            <button disabled class="w-full py-2 bg-emerald-600 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-1">
+                            <button disabled class="w-full py-2.5 bg-emerald-600 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-1">
                                 <i data-lucide="check-circle" class="w-3.5 h-3.5"></i>
                                 <span>Current Active VIP</span>
                             </button>
                         ` : isPassed ? `
-                            <button disabled class="w-full py-2 bg-slate-100 text-slate-400 font-bold rounded-xl text-xs">
+                            <button disabled class="w-full py-2.5 bg-slate-100 text-slate-400 font-bold rounded-xl text-xs">
                                 Completed Tier
                             </button>
                         ` : `
-                            <button onclick="executeVipUpgrade(${tier.level}, ${tier.cost})" class="w-full py-2 btn-vip-upgrade text-white font-bold rounded-xl text-xs flex items-center justify-center gap-1">
+                            <button id="btn-vip-buy-${tier.level}" onclick="initiateVipDirectPayment(${tier.level}, ${tier.cost})" class="w-full py-2.5 btn-vip-upgrade text-white font-black rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-md">
                                 <i data-lucide="zap" class="w-3.5 h-3.5"></i>
-                                <span>Unlock for ৳${tier.cost}</span>
+                                <span>Pay ৳${tier.cost} with Gateway</span>
                             </button>
                         `}
                     </div>
@@ -1841,51 +1819,52 @@
             lucide.createIcons();
         };
 
-        window.executeVipUpgrade = async function(targetLevel, cost) {
-            if (!userData) return showToast("প্রথমে লগইন করুন", "error");
-            if ((userData.balance || 0) < cost) {
-                return showToast(`পর্যাপ্ত ব্যালেন্স নেই! প্রয়োজন ৳${cost.toFixed(2)} (ডিপোজিট করুন)`, "error");
+        window.initiateVipDirectPayment = async function(tierLevel, cost) {
+            if (!userData) return showToast('প্রথমে লগইন করুন', 'error');
+            const btn = document.getElementById(`btn-vip-buy-${tierLevel}`);
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = `<span class="animate-spin inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full mr-1"></span> Connecting Gateway...`;
             }
 
-            const confirmUpgrade = confirm(`আপনি কি ৳${cost} দিয়ে VIP ${targetLevel} আনলক করতে চান?`);
-            if (!confirmUpgrade) return;
-
-            const tgUserId = String(userData.tgChatId);
-            const userRef = doc(dbUser, "users", tgUserId);
+            const returnUrl = window.location.href.split('?')[0];
+            const payload = {
+                amount: String(cost),
+                success_url: returnUrl + `?status=success&upgrade_vip=${tierLevel}&vip_cost=${cost}`,
+                cancel_url: returnUrl + "?status=cancel",
+                webhook_url: returnUrl + "?status=webhook",
+                metadata: {
+                    userId: String(userData.tgChatId),
+                    paymentType: "vip_upgrade",
+                    targetVipLevel: tierLevel,
+                    cost: cost
+                }
+            };
 
             try {
-                await runTransaction(dbUser, async (t) => {
-                    const snap = await t.get(userRef);
-                    if (!snap.exists()) throw new Error("ইউজার পাওয়া যায়নি");
-                    const u = snap.data();
-
-                    if ((u.balance || 0) < cost) throw new Error("পর্যাপ্ত ব্যালেন্স নেই");
-                    if ((u.vipLevel || 0) >= targetLevel) throw new Error("আপনি ইতিমধ্যে এই লেভেলে আছেন");
-
-                    t.update(userRef, {
-                        balance: increment(-cost),
-                        vipLevel: targetLevel,
-                        vipUnlockedAt: serverTimestamp()
-                    });
-
-                    const upgradeLogRef = doc(collection(dbWork, "vip_upgrades"));
-                    t.set(upgradeLogRef, {
-                        userId: tgUserId,
-                        userName: u.name,
-                        targetLevel: targetLevel,
-                        cost: cost,
-                        createdAt: serverTimestamp()
-                    });
+                const res = await fetch('/api/payment?action=create', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
                 });
+                const data = await res.json();
+                let payUrl = data.payment_url || data.url || (data.data && (data.data.payment_url || data.data.url));
 
-                const userSnap = await getDoc(userRef);
-                userData = userSnap.data();
-                updateUI();
-                document.getElementById('vip-upgrade-modal').classList.add('hidden');
-                showToast(`অভিনন্দন! আপনার অ্যাকাউন্ট VIP ${targetLevel}-এ আপগ্রেড হয়েছে!`, "success");
-                renderWorkJobs();
+                if (payUrl) {
+                    window.location.href = payUrl;
+                } else {
+                    showToast(data.message || 'পেমেন্ট গেটওয়েতে সমস্যা হচ্ছে!', 'error');
+                    if (btn) {
+                        btn.disabled = false;
+                        btn.textContent = `Pay ৳${cost} with Gateway`;
+                    }
+                }
             } catch(e) {
-                showToast(e.message || "আপগ্রেড ব্যর্থ হয়েছে", "error");
+                showToast('গেটওয়ে সংযোগ ব্যর্থ হয়েছে', 'error');
+                if (btn) {
+                    btn.disabled = false;
+                    btn.textContent = `Pay ৳${cost} with Gateway`;
+                }
             }
         };
 
@@ -2073,7 +2052,8 @@
                 cancel_url: returnUrl + "?status=cancel",
                 webhook_url: returnUrl + "?status=webhook",
                 metadata: {
-                    userId: String(userData.tgChatId)
+                    userId: String(userData.tgChatId),
+                    paymentType: "wallet_deposit"
                 }
             };
 
@@ -2107,11 +2087,12 @@
             const urlParams = new URLSearchParams(window.location.search);
             const transactionId = urlParams.get('transaction_id') || urlParams.get('transactionId') || urlParams.get('trx_id') || urlParams.get('txid');
             const urlStatus = (urlParams.get('status') || '').toLowerCase();
+            const targetVipParam = urlParams.get('upgrade_vip');
+            const vipCostParam = urlParams.get('vip_cost');
 
             if (urlStatus === 'cancel' || urlStatus === 'failed') {
                 showToast('পেমেন্ট বাতিল করা হয়েছে', 'info');
                 window.history.replaceState({}, document.title, window.location.pathname);
-                navigateTo('pay-page');
                 return;
             }
 
@@ -2129,28 +2110,71 @@
                     const apiStatus = data.status ? String(data.status).toUpperCase() : "";
 
                     if (apiStatus === "COMPLETED" || apiStatus === "SUCCESS" || data.success === true) {
-                        let depositAmount = parseFloat(data.amount || 0);
                         let finalTxid = data.transaction_id || transactionId || ("TXN_" + Date.now());
+                        let isVipUpgrade = (data.metadata && data.metadata.paymentType === 'vip_upgrade') || !!targetVipParam;
+                        let targetVipLevel = parseInt((data.metadata && data.metadata.targetVipLevel) || targetVipParam || 0);
+                        let vipCost = parseFloat((data.metadata && data.metadata.cost) || vipCostParam || 0);
 
-                        let totalAddedAmount = depositAmount;
-                        if (depositAmount >= 2000) {
-                            totalAddedAmount += 200;
-                        }
+                        if (isVipUpgrade && targetVipLevel > 0) {
+                            await executeVipDirectPaymentUpgrade(targetVipLevel, vipCost, finalTxid, data);
+                        } else {
+                            let depositAmount = parseFloat(data.amount || 0);
+                            let totalAddedAmount = depositAmount;
+                            if (depositAmount >= 2000) totalAddedAmount += 200;
 
-                        if (depositAmount > 0 && userData) {
-                            await savePaymentAndUpdateBalance(totalAddedAmount, finalTxid, data);
-                            document.getElementById('displayTxid').textContent = finalTxid;
-                            document.getElementById('displayMethod').textContent = "NagorikPay";
-                            document.getElementById('displayAmount').textContent = `${totalAddedAmount.toFixed(2)} BDT`;
-                            document.getElementById('gateway-success-modal').classList.remove('hidden');
-                            window.history.replaceState({}, document.title, window.location.pathname);
+                            if (depositAmount > 0 && userData) {
+                                await savePaymentAndUpdateBalance(totalAddedAmount, finalTxid, data);
+                                document.getElementById('displayTxid').textContent = finalTxid;
+                                document.getElementById('displayMethod').textContent = "NagorikPay";
+                                document.getElementById('displayAmount').textContent = `${totalAddedAmount.toFixed(2)} BDT`;
+                                document.getElementById('gateway-success-modal').classList.remove('hidden');
+                            }
                         }
+                        window.history.replaceState({}, document.title, window.location.pathname);
                     } else {
                         showToast(data.message || 'পেমেন্ট ভেরিফিকেশন সম্পন্ন হয়নি', 'error');
                     }
                 } catch (e) {
                     showToast('ভেরিফিকেশনে সমস্যা দেখা দিয়েছে', 'error');
                 }
+            }
+        }
+
+        async function executeVipDirectPaymentUpgrade(targetLevel, cost, txid, fullData) {
+            if (!userData) return;
+            const tgChatId = String(userData.tgChatId);
+            const upgradeRef = doc(dbWork, "vip_upgrades", txid);
+            const userRef = doc(dbUser, "users", tgChatId);
+
+            try {
+                await runTransaction(dbUser, async (t) => {
+                    const snap = await t.get(upgradeRef);
+                    if (snap.exists()) return;
+
+                    t.set(upgradeRef, {
+                        userId: tgChatId,
+                        userName: userData.name || 'User',
+                        targetLevel: targetLevel,
+                        cost: cost,
+                        transactionId: txid,
+                        paymentDetails: fullData || null,
+                        status: "completed",
+                        createdAt: serverTimestamp()
+                    });
+
+                    t.update(userRef, {
+                        vipLevel: targetLevel,
+                        vipUnlockedAt: serverTimestamp()
+                    });
+                });
+
+                const userSnap = await getDoc(userRef);
+                userData = userSnap.data();
+                updateUI();
+                showToast(`🎉 অভিনন্দন! পেমেন্ট সফল হয়েছে এবং আপনার অ্যাকাউন্ট VIP ${targetLevel}-এ আপগ্রেড হয়েছে!`, 'success');
+                renderWorkJobs();
+            } catch(e) {
+                console.error(e);
             }
         }
 
@@ -2303,12 +2327,17 @@
         function updateUI() {
             if (!userData) return;
             const balanceFormatted = (userData.balance || 0).toFixed(2);
-            const vipText = `VIP ${userData.vipLevel || 0}`;
+            const userVip = userData.vipLevel || 0;
+            const vipText = `VIP ${userVip}`;
 
             document.getElementById('header-coin-balance').textContent = `৳${balanceFormatted}`;
             
             const workVipBadge = document.getElementById('work-user-vip-badge');
-            if (workVipBadge) workVipBadge.innerHTML = `<i data-lucide="crown" class="w-3 h-3 text-amber-400"></i> ${vipText} MEMBER`;
+            if (workVipBadge) workVipBadge.innerHTML = `<i data-lucide="crown" class="w-3.5 h-3.5 text-amber-400"></i> ${vipText} MEMBER`;
+
+            const currentTierObj = VIP_TIERS.find(t => t.level === userVip) || VIP_TIERS[0];
+            const statLimit = document.getElementById('work-stat-limit');
+            if (statLimit) statLimit.textContent = `${currentTierObj.dailyLimit} / Day`;
 
             const depBalance = document.getElementById('deposit-page-balance');
             if (depBalance) depBalance.textContent = `৳${balanceFormatted}`;
@@ -2344,8 +2373,7 @@
                 'orders-page': loadOrdersHistory,
                 'features-page': loadFeaturesPage,
                 'history-page': () => { loadManualOrdersHistory(); loadReplaceHistory(); },
-                'profile-page': loadProfilePage,
-                'admin-page': () => { loadAdminWorkSubmissions(); loadAdminManualOrders(); populateAdminMailTypes(); loadReplaceRequests(); }
+                'profile-page': loadProfilePage
             };
 
             if (routes[pageId]) routes[pageId]();
@@ -3076,243 +3104,6 @@
             } catch(e) {}
         }
 
-        // ==========================================
-        // ADMIN PANEL
-        // ==========================================
-        async function loadAdminWorkSubmissions() {
-            const list = document.getElementById('admin-work-submissions-list');
-            const countBadge = document.getElementById('admin-work-sub-count');
-            if (!list) return;
-
-            list.innerHTML = getLoadingHTML();
-            try {
-                const q = query(collection(dbWork, "work_submissions"), where("status", "==", "pending"));
-                const snap = await getDocs(q);
-
-                if (snap.empty) {
-                    list.innerHTML = '<p class="text-xs text-center text-slate-400 py-3">কোনো পেন্ডিং কাজের সাবমিশন নেই</p>';
-                    countBadge.textContent = '0 Pending';
-                    return;
-                }
-
-                countBadge.textContent = `${snap.docs.length} Pending`;
-
-                list.innerHTML = snap.docs.map(docSnap => {
-                    const sub = docSnap.data();
-                    const subId = docSnap.id;
-
-                    return `
-                    <div class="bg-amber-50/70 p-3.5 rounded-2xl border border-amber-200 space-y-2 text-xs">
-                        <div class="flex justify-between items-center font-bold">
-                            <span class="text-slate-800">${sub.jobTitle} (VIP ${sub.vipLevel})</span>
-                            <span class="text-emerald-700 font-black">৳${sub.reward?.toFixed(2)}</span>
-                        </div>
-                        <p class="text-slate-600 text-[11px]">User: <b>${sub.userName}</b> (TG ID: <code>${sub.userId}</code>)</p>
-                        
-                        <div class="bg-white p-2.5 rounded-xl border border-slate-200 text-slate-700 font-mono text-[11px] break-all">
-                            <b>Proof:</b> ${sub.proof}
-                            ${sub.link ? `<br><b>Link:</b> <a href="${sub.link}" target="_blank" class="text-blue-600 underline">${sub.link}</a>` : ''}
-                        </div>
-
-                        <div class="flex justify-end gap-2 pt-1">
-                            <button onclick="handleAdminRejectWorkSub('${subId}')" class="bg-red-500 text-white font-bold px-3 py-1.5 rounded-xl text-xs">Reject</button>
-                            <button onclick="handleAdminApproveWorkSub('${subId}', '${sub.userId}', ${sub.reward})" class="bg-emerald-600 text-white font-bold px-3 py-1.5 rounded-xl text-xs flex items-center gap-1">
-                                <i data-lucide="check" class="w-3.5 h-3.5"></i> Approve & Pay
-                            </button>
-                        </div>
-                    </div>`;
-                }).join('');
-                lucide.createIcons();
-            } catch(e) {
-                list.innerHTML = `<p class="text-xs text-red-500">${e.message}</p>`;
-            }
-        }
-
-        window.handleAdminApproveWorkSub = async function(subId, userId, reward) {
-            try {
-                await runTransaction(dbUser, async (t) => {
-                    const subRef = doc(dbWork, "work_submissions", subId);
-                    const userRef = doc(dbUser, "users", String(userId));
-
-                    t.update(subRef, { status: "approved", approvedAt: serverTimestamp() });
-                    t.update(userRef, { balance: increment(parseFloat(reward)) });
-                });
-
-                showToast("কাজের সাবমিশন অ্যাপ্রুভ এবং ইউজারের ব্যালেন্স যোগ হয়েছে!", "success");
-                loadAdminWorkSubmissions();
-            } catch(e) {
-                showToast(e.message || "অ্যাপ্রুভ করতে সমস্যা হয়েছে", "error");
-            }
-        };
-
-        window.handleAdminRejectWorkSub = async function(subId) {
-            try {
-                const subRef = doc(dbWork, "work_submissions", subId);
-                await updateDoc(subRef, { status: "rejected", rejectedAt: serverTimestamp() });
-                showToast("কাজের সাবমিশন বাতিল করা হয়েছে", "info");
-                loadAdminWorkSubmissions();
-            } catch(e) {
-                showToast(e.message, "error");
-            }
-        };
-
-        async function loadAdminManualOrders() {
-            const list = document.getElementById('admin-manual-orders-list');
-            const countBadge = document.getElementById('admin-manual-order-count');
-            if (!list) return;
-
-            list.innerHTML = getLoadingHTML();
-            try {
-                const q = query(collection(dbHome, "manual_orders"), where("status", "==", "pending"));
-                const snap = await getDocs(q);
-
-                if (snap.empty) {
-                    list.innerHTML = '<p class="text-xs text-center text-slate-400 py-3">কোনো পেন্ডিং অর্ডার নেই</p>';
-                    countBadge.textContent = '0 Pending';
-                    return;
-                }
-
-                countBadge.textContent = `${snap.docs.length} Pending`;
-
-                list.innerHTML = snap.docs.map(docSnap => {
-                    const po = docSnap.data();
-                    const poId = docSnap.id;
-                    const expiryMillis = po.expiresAt ? po.expiresAt.toDate().getTime() : 0;
-
-                    return `
-                    <div class="bg-orange-50/70 p-3.5 rounded-2xl border border-orange-200 space-y-2 text-xs">
-                        <div class="flex justify-between items-center font-bold">
-                            <span class="text-slate-800">${po.mailType} ${po.quantity ? `(${po.quantity} টি)` : ''} - ৳${po.cost}</span>
-                            <span class="live-order-countdown bg-orange-200/80 px-2 py-0.5 rounded-md" data-order-id="${poId}" data-expiry-time="${expiryMillis}">Calculating...</span>
-                        </div>
-                        <p class="text-slate-600 text-[11px]">User: <b>${po.userName}</b> (TG ID: <code>${po.userId}</code>)</p>
-                        
-                        <div class="space-y-1.5 pt-1">
-                            <input id="admin-manual-data-${poId}" type="text" placeholder="Email / IP / Account Info" class="w-full p-2 rounded-xl input-field text-xs">
-                            <input id="admin-manual-pass-${poId}" type="text" placeholder="Password / Key (Optional)" class="w-full p-2 rounded-xl input-field text-xs">
-                        </div>
-
-                        <div class="flex justify-end gap-2 pt-1">
-                            <button onclick="handleAdminCancelManualOrder('${poId}', '${po.userId}', ${po.cost}, '${po.mailType}')" class="bg-red-500 text-white font-bold px-3 py-1.5 rounded-xl text-xs">Reject & Refund</button>
-                            <button onclick="handleAdminApproveManualOrder('${poId}', '${po.userId}', ${po.cost}, '${po.mailType}')" class="bg-emerald-600 text-white font-bold px-3 py-1.5 rounded-xl text-xs flex items-center gap-1">
-                                <i data-lucide="send" class="w-3.5 h-3.5"></i> Deliver
-                            </button>
-                        </div>
-                    </div>`;
-                }).join('');
-                lucide.createIcons();
-            } catch (e) {
-                list.innerHTML = `<p class="text-xs text-red-500">${e.message}</p>`;
-            }
-        }
-
-        window.handleAdminApproveManualOrder = async function(orderId, userId, cost, mailType) {
-            const accData = document.getElementById(`admin-manual-data-${orderId}`)?.value.trim();
-            const accPass = document.getElementById(`admin-manual-pass-${orderId}`)?.value.trim() || '';
-
-            if (!accData) return showToast("অ্যাকাউন্টের ডাটা/ইমেইল লিখুন", "error");
-
-            try {
-                await runTransaction(dbUser, async (t) => {
-                    const moRef = doc(dbHome, "manual_orders", orderId);
-                    const counterRef = doc(dbHome, "counters", "item_purchase");
-                    const counterSnap = await t.get(counterRef);
-                    const saleId = counterSnap.exists() ? counterSnap.data().currentId : 1000;
-
-                    t.update(moRef, { status: "approved", deliveredData: accData, deliveredPass: accPass, fulfilledAt: serverTimestamp() });
-
-                    const purchaseRef = doc(collection(dbHome, "purchases"));
-                    t.set(purchaseRef, {
-                        saleId: saleId,
-                        userId: String(userId),
-                        mailType: mailType,
-                        category: "manual_order",
-                        cost: parseFloat(cost),
-                        purchasedAt: serverTimestamp(),
-                        mail: accData,
-                        password: accPass || null
-                    });
-                    t.set(counterRef, { currentId: saleId + 1 }, { merge: true });
-                });
-
-                showToast("অর্ডার ডেলিভারি সফল হয়েছে!", "success");
-                loadAdminManualOrders();
-            } catch(e) {
-                showToast(e.message || "ডেলিভারি করতে সমস্যা হয়েছে।", "error");
-            }
-        };
-
-        window.handleAdminCancelManualOrder = async function(orderId, userId, cost, mailType) {
-            try {
-                await runTransaction(dbUser, async (t) => {
-                    const moRef = doc(dbHome, "manual_orders", orderId);
-                    const userRef = doc(dbUser, "users", String(userId));
-                    t.update(moRef, { status: "cancelled_refunded", refundedAt: serverTimestamp() });
-                    t.update(userRef, { balance: increment(parseFloat(cost)) });
-                });
-
-                showToast("অর্ডার বাতিল ও রিফান্ড সম্পন্ন!", "info");
-                loadAdminManualOrders();
-            } catch(e) {
-                showToast(e.message, "error");
-            }
-        };
-
-        function populateAdminMailTypes() {
-            const selectEl = document.getElementById('mail-type-select');
-            selectEl.innerHTML = '<option value="">Select service to add stock...</option>';
-            [...(appConfig.mails || []), ...(appConfig.proxies || []), ...(appConfig.products || [])].forEach(item => {
-                selectEl.innerHTML += `<option value="${item.stockKey}">${item.type}</option>`;
-            });
-        }
-
-        async function handleAddMails() {
-            const stockKey = document.getElementById('mail-type-select').value;
-            const text = document.getElementById('mail-data-textarea').value.trim();
-            if (!stockKey || !text) return showToast("সব ঘর পূরণ করুন", "error");
-
-            const lines = text.split('\n').filter(l => l.trim().length > 0);
-            try {
-                const batch = writeBatch(dbHome);
-                lines.forEach(line => {
-                    const parts = line.split('/');
-                    const itemDoc = doc(collection(dbHome, stockKey));
-                    batch.set(itemDoc, {
-                        email: parts[0] || line,
-                        password: parts[1] || null,
-                        isSold: false,
-                        createdAt: serverTimestamp()
-                    });
-                });
-                await batch.commit();
-                showToast(`সফলভাবে ${lines.length} টি আইটেম যোগ হয়েছে!`, "success");
-                document.getElementById('mail-data-textarea').value = '';
-            } catch(e) {
-                showToast("যোগ করতে সমস্যা হয়েছে।", "error");
-            }
-        }
-
-        async function loadReplaceRequests() {
-            const listEl = document.getElementById('replace-requests-list');
-            if (!listEl) return;
-            try {
-                const q = query(collection(dbMisc, "replace_requests"), where("status", "==", "pending"));
-                const snap = await getDocs(q);
-                if (snap.empty) return listEl.innerHTML = '<p class="text-xs text-center text-slate-400">No pending reports</p>';
-                listEl.innerHTML = snap.docs.map(docSnap => {
-                    const req = docSnap.data();
-                    return `
-                    <div class="bg-white p-3.5 rounded-xl border space-y-2 text-xs">
-                        <div class="flex justify-between font-bold">
-                            <span>${req.userName} (${req.userId})</span>
-                            <span class="text-blue-600">৳${req.cost}</span>
-                        </div>
-                        <p class="text-slate-600">${req.mailType}: ${req.reason}</p>
-                    </div>`;
-                }).join('');
-            } catch(e) {}
-        }
-
         window.openReplaceModal = function(saleId, mailType, cost) {
             document.getElementById('replace-order-id').value = saleId;
             document.getElementById('replace-mail-type').value = mailType;
@@ -3369,12 +3160,11 @@
         };
 
         function setupEventListeners() {
-            document.getElementById('submit-replace-btn').addEventListener('click', handleSubmitReplace);
-            document.getElementById('submit-send-btn').addEventListener('click', handleSendBalance);
-            document.getElementById('features-receive-btn').addEventListener('click', () => {
+            document.getElementById('submit-replace-btn')?.addEventListener('click', handleSubmitReplace);
+            document.getElementById('submit-send-btn')?.addEventListener('click', handleSendBalance);
+            document.getElementById('features-receive-btn')?.addEventListener('click', () => {
                 copyToClipboard(userData.tgChatId, null, `রিসিভ আইডি কপি হয়েছে: ${userData.tgChatId}`);
             });
-            document.getElementById('add-mails-btn').addEventListener('click', handleAddMails);
         }
     </script>
 </body>
