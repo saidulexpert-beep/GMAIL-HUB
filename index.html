@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>GMAIL HUB - Marketplace & Work Portal</title>
+    <title>GMAIL HUB</title>
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -27,16 +27,16 @@
             -webkit-touch-callout: default;
         }
         .main-header {
-            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #2563eb 100%);
+            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
             color: #ffffff;
-            padding: 12px 16px;
+            padding: 10px 16px;
             position: sticky;
             top: 0;
             z-index: 40;
             box-shadow: 0 4px 20px rgba(37, 99, 235, 0.2);
         }
         .wallet-pill {
-            background: rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.15);
             border: 1px solid rgba(255, 255, 255, 0.25);
             backdrop-filter: blur(10px);
             border-radius: 9999px;
@@ -50,15 +50,15 @@
         .category-btn {
             background: #ffffff;
             color: #475569;
-            border: 1.5px solid #e2e8f0;
+            border: 1px solid #e2e8f0;
             border-radius: 14px;
-            padding: 9px 12px;
+            padding: 8px 10px;
             font-size: 0.78rem;
             font-weight: 700;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
+            gap: 5px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
             transition: all 0.2s ease;
             cursor: pointer;
@@ -68,13 +68,13 @@
             background: #2563eb;
             color: #ffffff;
             border-color: #2563eb;
-            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
         }
         .product-card {
             background: #ffffff;
-            border-radius: 20px;
+            border-radius: 18px;
             border: 1px solid #e2e8f0;
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
             transition: all 0.25s ease;
         }
         .product-card:hover {
@@ -121,18 +121,9 @@
             border-radius: 12px;
             transition: all 0.2s ease;
             box-shadow: 0 4px 14px rgba(234, 88, 12, 0.3);
+            cursor: pointer;
         }
         .btn-vip-direct-pay:active { transform: scale(0.96); }
-
-        .btn-vip-free {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            color: #ffffff;
-            font-weight: 800;
-            border-radius: 12px;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
-        }
-        .btn-vip-free:active { transform: scale(0.96); }
 
         /* ULTRA SLEEK FLOATING BOTTOM NAVIGATION */
         .bottom-nav-container {
@@ -236,7 +227,7 @@
             outline: none;
         }
 
-        /* 1. ORIGINAL INTRO LOADER */
+        /* 1. EXACT ORIGINAL INTRO LOADER */
         #loader {
             background: radial-gradient(circle at center, #0f172a 0%, #020617 100%);
         }
@@ -298,23 +289,22 @@
         .toast-item.toast-error { border-left-color: #ef4444; }
         .toast-item.toast-info { border-left-color: #3b82f6; }
 
-        /* LUXURY WORK & VIP STYLES */
-        .work-hero-gradient {
-            background: linear-gradient(135deg, #091224 0%, #0f2b5c 50%, #1e3a8a 100%);
-            border: 1px solid rgba(59, 130, 246, 0.3);
-            position: relative;
-            overflow: hidden;
-        }
-        .work-job-card {
-            background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+        /* BRAND NEW WORK CARDS STYLES */
+        .work-card-pro {
+            background: #ffffff;
             border: 1.5px solid #e2e8f0;
             border-radius: 22px;
+            box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
             transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .work-job-card:hover {
+        .work-card-pro:hover {
             border-color: #3b82f6;
-            box-shadow: 0 12px 30px rgba(37, 99, 235, 0.1);
+            box-shadow: 0 12px 28px rgba(37, 99, 235, 0.1);
             transform: translateY(-2px);
+        }
+        .reward-pill-box {
+            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+            border: 1.5px solid #a7f3d0;
         }
         .profile-hero-card {
             background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
@@ -519,68 +509,45 @@
                 </div>
             </div>
 
-            <!-- 2. BRAND NEW ULTRA-MODERN WORK PORTAL PAGE (VIP 0 to VIP 3) -->
+            <!-- 2. BRAND NEW WORK PORTAL PAGE (VIP 0 to VIP 3) -->
             <div id="work-page" class="p-4 space-y-4 sub-page">
                 
                 <!-- LUXURY WORK HERO BANNER -->
-                <div class="work-hero-gradient p-5 rounded-3xl text-white shadow-2xl relative">
-                    <div class="absolute -right-8 -top-8 w-40 h-40 bg-blue-500/20 rounded-full blur-3xl pointer-events-none"></div>
-                    <div class="absolute -left-8 -bottom-8 w-40 h-40 bg-indigo-500/20 rounded-full blur-3xl pointer-events-none"></div>
-                    
-                    <div class="relative z-10 space-y-3.5">
+                <div class="bg-gradient-to-br from-slate-900 via-indigo-950 to-blue-950 p-5 rounded-3xl text-white shadow-xl relative overflow-hidden border border-blue-500/20">
+                    <div class="absolute -right-6 -bottom-6 w-36 h-36 bg-blue-500/10 rounded-full blur-2xl pointer-events-none"></div>
+                    <div class="relative z-10 space-y-3">
                         <div class="flex items-center justify-between">
-                            <div class="flex items-center gap-2">
-                                <span id="work-user-vip-badge" class="px-3 py-1 rounded-full bg-amber-400/20 text-amber-300 text-[10px] font-black uppercase tracking-wider border border-amber-400/40 inline-flex items-center gap-1.5 shadow-sm">
-                                    <i data-lucide="crown" class="w-3.5 h-3.5 text-amber-400"></i> VIP 0 (FREE)
-                                </span>
-                            </div>
-                            <button onclick="openVipUpgradeModal()" class="px-3.5 py-1.5 rounded-xl btn-vip-direct-pay text-xs font-black flex items-center gap-1.5 shadow-lg active:scale-95 transition">
-                                <i data-lucide="zap" class="w-3.5 h-3.5 fill-current"></i> VIP Tiers
+                            <span id="work-user-vip-badge" class="px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 text-[10px] font-black uppercase tracking-wider border border-amber-400/30 inline-flex items-center gap-1.5">
+                                <i data-lucide="crown" class="w-3.5 h-3.5 text-amber-400"></i> VIP 0 FREE MEMBER
+                            </span>
+                            <button onclick="openVipUpgradeModal()" class="px-3.5 py-1.5 rounded-xl btn-vip-direct-pay text-xs font-black flex items-center gap-1 shadow-md active:scale-95 transition">
+                                <i data-lucide="zap" class="w-3.5 h-3.5"></i> VIP Tiers
                             </button>
                         </div>
 
                         <div>
-                            <h2 class="text-xl font-black tracking-tight text-white flex items-center gap-2">
-                                <span>Work & Micro Earnings</span>
-                                <span class="text-xs bg-blue-500/30 text-blue-300 px-2 py-0.5 rounded-full font-bold border border-blue-400/30">VIP 0-3</span>
-                            </h2>
-                            <p class="text-xs text-blue-200 mt-1 leading-relaxed">অ্যাকাউন্ট সেল, মাইক্রো রিভিউ ও ডেটা সাবমিট করে প্রতিদিন ইনস্ট্যান্ট আয় করুন।</p>
-                        </div>
-
-                        <!-- Micro Stats Indicator -->
-                        <div class="grid grid-cols-3 gap-2 pt-2 border-t border-white/10 text-center text-xs">
-                            <div class="bg-white/10 backdrop-blur-md p-2 rounded-xl border border-white/10">
-                                <span class="text-[9.5px] text-blue-200 block font-bold">Daily Limit</span>
-                                <span class="font-black text-sm text-white" id="work-stat-limit">2 / Day</span>
-                            </div>
-                            <div class="bg-white/10 backdrop-blur-md p-2 rounded-xl border border-white/10">
-                                <span class="text-[9.5px] text-emerald-300 block font-bold">Max Earning</span>
-                                <span class="font-black text-sm text-emerald-400">৳১৫০+</span>
-                            </div>
-                            <div class="bg-white/10 backdrop-blur-md p-2 rounded-xl border border-white/10">
-                                <span class="text-[9.5px] text-amber-300 block font-bold">Payout</span>
-                                <span class="font-black text-sm text-amber-300">Direct Gateway</span>
-                            </div>
+                            <h2 class="text-xl font-black tracking-tight text-white">Work Marketplace</h2>
+                            <p class="text-xs text-blue-200 mt-0.5">অ্যাকাউন্ট সেল ও মাইক্রো কাজ করে প্রতিদিন নিশ্চিত আয় করুন</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- VIP Filter Scrollable Chips (VIP 0 to VIP 3) -->
-                <div class="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none" id="work-vip-tabs-container">
-                    <button onclick="filterWorkCategory('all', this)" class="category-btn active text-xs whitespace-nowrap px-4 py-2.5 font-black">All Jobs</button>
-                    <button onclick="filterWorkCategory('vip0', this)" class="category-btn text-xs whitespace-nowrap px-3.5 py-2.5">VIP 0 (Free)</button>
-                    <button onclick="filterWorkCategory('vip1', this)" class="category-btn text-xs whitespace-nowrap px-3.5 py-2.5">VIP 1</button>
-                    <button onclick="filterWorkCategory('vip2', this)" class="category-btn text-xs whitespace-nowrap px-3.5 py-2.5">VIP 2</button>
-                    <button onclick="filterWorkCategory('vip3', this)" class="category-btn text-xs whitespace-nowrap px-3.5 py-2.5">VIP 3</button>
+                <div class="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none" id="work-vip-tabs-container">
+                    <button onclick="filterWorkCategory('all', this)" class="category-btn active text-xs whitespace-nowrap px-4 py-2 font-black">All Jobs</button>
+                    <button onclick="filterWorkCategory('vip0', this)" class="category-btn text-xs whitespace-nowrap px-3.5 py-2">VIP 0 Free</button>
+                    <button onclick="filterWorkCategory('vip1', this)" class="category-btn text-xs whitespace-nowrap px-3.5 py-2">VIP 1</button>
+                    <button onclick="filterWorkCategory('vip2', this)" class="category-btn text-xs whitespace-nowrap px-3.5 py-2">VIP 2</button>
+                    <button onclick="filterWorkCategory('vip3', this)" class="category-btn text-xs whitespace-nowrap px-3.5 py-2">VIP 3</button>
                 </div>
 
                 <!-- Switch View (Job Posts vs My Submissions) -->
-                <div class="flex gap-2 bg-slate-200/70 p-1 rounded-2xl">
+                <div class="flex gap-2">
                     <button id="btn-tab-work-feed" onclick="switchWorkView('jobs')" class="flex-1 py-2.5 bg-blue-600 text-white rounded-xl font-bold text-xs shadow-md transition">
                         Available Jobs
                     </button>
-                    <button id="btn-tab-work-my-subs" onclick="switchWorkView('my_subs')" class="flex-1 py-2.5 bg-transparent text-slate-600 hover:text-slate-900 rounded-xl font-bold text-xs transition">
-                        My Submissions
+                    <button id="btn-tab-work-my-subs" onclick="switchWorkView('my_subs')" class="flex-1 py-2.5 bg-slate-100 text-slate-700 hover:bg-slate-200 rounded-xl font-bold text-xs transition">
+                        My Work Submissions
                     </button>
                 </div>
 
@@ -591,7 +558,7 @@
                 <div id="work-user-submissions-list" class="space-y-3 hidden min-h-[220px]"></div>
             </div>
 
-            <!-- 2.1 DEDICATED WORK DETAIL & SUBMISSION PAGE -->
+            <!-- 2.1 DEDICATED WORK DETAIL & SUBMISSION PAGE (OPENS FOR VIP 0 & UNLOCKED JOBS) -->
             <div id="work-detail-page" class="p-4 space-y-4 sub-page">
                 <div class="flex items-center gap-2 mb-1">
                     <button onclick="navigateTo('work-page')" class="p-2 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 transition">
@@ -599,7 +566,7 @@
                     </button>
                     <div>
                         <h2 class="text-base font-extrabold text-slate-800" id="detail-job-heading">Job Overview & Apply</h2>
-                        <p class="text-[10.5px] text-slate-400">কাজের শর্তাবলী ভালোভাবে পড়ে জমা দিন</p>
+                        <p class="text-[10.5px] text-slate-400">কাজের শর্তাবলী ভালোভাবে পড়ে তথ্য সাবমিট করুন</p>
                     </div>
                 </div>
 
@@ -607,17 +574,17 @@
                 <div class="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm space-y-3">
                     <div class="flex items-center justify-between">
                         <span id="detail-job-vip-badge" class="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-blue-100 text-blue-700">VIP 0 FREE</span>
-                        <span id="detail-job-category" class="text-xs font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md">Account Sell</span>
+                        <span id="detail-job-category" class="text-xs font-bold text-slate-500 bg-slate-100 px-2.5 py-0.5 rounded-md">Account Sell</span>
                     </div>
 
                     <h3 class="text-lg font-black text-slate-900 leading-snug" id="detail-job-title">Job Title</h3>
 
                     <div class="grid grid-cols-2 gap-2 text-xs pt-1 border-t border-slate-100">
-                        <div class="bg-emerald-50 p-2.5 rounded-xl border border-emerald-100">
+                        <div class="bg-emerald-50 p-2.5 rounded-2xl border border-emerald-100">
                             <span class="text-[10px] uppercase font-bold text-emerald-600 block">প্রতি কাজে পাবেন</span>
                             <span class="text-base font-black text-emerald-700" id="detail-job-reward">৳0.00</span>
                         </div>
-                        <div class="bg-blue-50 p-2.5 rounded-xl border border-blue-100">
+                        <div class="bg-blue-50 p-2.5 rounded-2xl border border-blue-100">
                             <span class="text-[10px] uppercase font-bold text-blue-600 block">দৈনিক লিমিট</span>
                             <span class="text-base font-black text-blue-700" id="detail-job-limit">1 বার</span>
                         </div>
@@ -638,7 +605,7 @@
                     </h4>
                     <div id="detail-job-terms" class="text-xs text-slate-600 leading-relaxed bg-amber-50/50 p-3 rounded-2xl border border-amber-200/60 space-y-1">
                         <p>১. ভুল, নকল বা ইনভ্যালিড ডাটা সাবমিট করলে সরাসরি রিজেক্ট করা হবে।</p>
-                        <p>২. অ্যাডমিন দ্বারা ভেরিফাই হওয়ার সাথে সাথে আপনার মেইন অ্যাকাউন্টে ব্যালেন্স যুক্ত হবে।</p>
+                        <p>২. অ্যাডমিন দ্বারা ভেরিফাই হওয়ার সাথে সাথে আপনার অ্যাকাউন্টে ব্যালেন্স যুক্ত হবে।</p>
                         <p>৩. একই কাজ একাধিকবার স্প্যাম সাবমিট করলে অ্যাকাউন্ট ব্যান হতে পারে।</p>
                     </div>
                 </div>
@@ -842,7 +809,7 @@
                             <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span> Telegram Verified
                         </span>
                         <span id="profile-vip-pill" class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-500 text-slate-900 text-[10px] font-black uppercase tracking-wider shadow-sm">
-                            <i data-lucide="crown" class="w-3 h-3"></i> VIP 0 (Free)
+                            <i data-lucide="crown" class="w-3 h-3"></i> VIP 0 FREE
                         </span>
                     </div>
 
@@ -1410,11 +1377,12 @@
             document.getElementById('policy-modal').classList.remove('hidden');
         };
 
-        // Smooth handling on gateway return so user doesn't wait through full loader splash
+        // INSTANT & FAST INITIALIZATION ON GATEWAY RETURN
         window.onload = async () => {
             const urlParams = new URLSearchParams(window.location.search);
             const isReturningGateway = urlParams.has('status') || urlParams.has('transaction_id') || urlParams.has('transactionId') || urlParams.has('trx_id') || urlParams.has('upgrade_vip');
 
+            // If returning from gateway, bypass heavy intro splash instantly!
             if (isReturningGateway && loader) {
                 loader.style.display = 'none';
             }
@@ -1431,18 +1399,21 @@
             }
             lucide.createIcons();
             setupEventListeners();
+            
             await initUserSession();
             
-            await checkReturnPaymentStatus();
+            // Check return status in background without freezing UI
+            checkReturnPaymentStatus();
             checkAndRefundExpiredOrders();
             startCountdownTimerRoutine();
 
+            // Dismiss original intro loader smoothly
             if (!isReturningGateway && loader) {
                 setTimeout(() => {
                     loader.style.transition = 'opacity 0.4s ease';
                     loader.style.opacity = '0';
                     setTimeout(() => loader.style.display = 'none', 400);
-                }, 600);
+                }, 500);
             }
         };
 
@@ -1470,7 +1441,6 @@
                     photo_url: photoUrl,
                     balance: 0,
                     vipLevel: 0,
-                    hasClaimedFreeVip0: false, // VIP 0 free activation flag
                     hasClaimedTgBonus: false,
                     lastDailyCheckin: null,
                     createdAt: serverTimestamp()
@@ -1525,7 +1495,7 @@
         }
 
         // ==========================================
-        // WORK MARKETPLACE & VIP 0-3 LOGIC
+        // WORK MARKETPLACE (HIGH-END & DEDICATED VIP 0)
         // ==========================================
         function renderWorkJobs() {
             const container = document.getElementById('work-jobs-feed-list');
@@ -1546,48 +1516,50 @@
                 return;
             }
 
-            const isFreeVip0Claimed = userData?.hasClaimedFreeVip0 === true || (userData?.vipLevel && userData?.vipLevel > 0);
             const userVip = userData?.vipLevel || 0;
 
             container.innerHTML = filtered.map(job => {
-                const isVip0Job = job.vipRequired === 0;
-                const needsVip0Claim = isVip0Job && !isFreeVip0Claimed;
-                const isLockedTier = !isVip0Job && (userVip < job.vipRequired);
-                
+                const isVip0 = job.vipRequired === 0;
+                const isLocked = !isVip0 && (userVip < job.vipRequired);
                 const targetTierObj = VIP_TIERS.find(t => t.level === job.vipRequired) || { cost: 100 };
                 const tierCost = targetTierObj.cost;
 
+                let iconName = 'mail';
+                if (job.category.includes('FB')) iconName = 'facebook';
+                else if (job.category.includes('Account')) iconName = 'send';
+                else if (job.category.includes('App')) iconName = 'star';
+                else if (job.category.includes('Bulk')) iconName = 'layers';
+                else if (job.category.includes('Verification')) iconName = 'shield-check';
+
                 return `
-                <div class="work-job-card p-4.5 space-y-3.5 relative overflow-hidden ${isLockedTier ? 'opacity-90' : ''}">
-                    <div class="flex items-start justify-between gap-2">
-                        <div class="space-y-1.5 flex-1">
-                            <div class="flex items-center gap-2">
-                                <span class="px-2.5 py-0.5 text-[10.5px] font-black rounded-lg ${isLockedTier ? 'bg-amber-100 text-amber-800 border border-amber-300' : 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-sm'}">
-                                    ${isLockedTier ? `🔒 VIP ${job.vipRequired} Required` : `VIP ${job.vipRequired}`}
-                                </span>
-                                <span class="text-[10px] font-bold text-slate-600 bg-slate-100 px-2.5 py-0.5 rounded-lg border border-slate-200">${job.category || 'Task'}</span>
-                                <span class="text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-md flex items-center gap-1">
-                                    <i data-lucide="clock" class="w-3 h-3"></i> ${job.dailyLimit || 1}x/day
-                                </span>
+                <div class="work-card-pro p-4 space-y-3.5 relative overflow-hidden">
+                    <div class="flex items-start justify-between gap-3">
+                        <div class="flex items-start gap-3">
+                            <div class="w-11 h-11 rounded-2xl ${isLocked ? 'bg-amber-100 text-amber-700' : 'bg-blue-100 text-blue-700'} flex items-center justify-center flex-shrink-0 shadow-sm">
+                                <i data-lucide="${iconName}" class="w-5 h-5"></i>
                             </div>
-                            <h4 class="font-black text-sm text-slate-900 leading-snug">${job.title}</h4>
-                            <p class="text-[11.5px] text-slate-500 line-clamp-2 leading-relaxed">${job.desc || ''}</p>
+                            <div class="space-y-1">
+                                <div class="flex items-center gap-1.5 flex-wrap">
+                                    <span class="px-2 py-0.5 text-[9.5px] font-black rounded-md ${isLocked ? 'bg-amber-100 text-amber-900 border border-amber-300' : 'bg-blue-100 text-blue-800'}">
+                                        ${isVip0 ? 'VIP 0 FREE' : isLocked ? `🔒 VIP ${job.vipRequired} REQUIRED` : `VIP ${job.vipRequired}`}
+                                    </span>
+                                    <span class="text-[9.5px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md">${job.category || 'Task'}</span>
+                                </div>
+                                <h4 class="font-black text-sm text-slate-900 leading-snug">${job.title}</h4>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="flex items-center justify-between pt-3 border-t border-slate-100">
-                        <div class="bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-200/80">
-                            <span class="text-[9.5px] text-emerald-600 uppercase font-black tracking-wider block">Reward</span>
+                    <p class="text-[11.5px] text-slate-500 leading-relaxed pl-1">${job.desc || ''}</p>
+
+                    <div class="flex items-center justify-between pt-2.5 border-t border-slate-100">
+                        <div class="reward-pill-box px-3.5 py-1.5 rounded-xl">
+                            <span class="text-[9px] text-emerald-600 uppercase font-black tracking-wider block">Reward</span>
                             <span class="text-base font-black text-emerald-700 font-mono">৳${parseFloat(job.reward).toFixed(2)}</span>
                         </div>
 
                         <div>
-                            ${needsVip0Claim ? `
-                                <button onclick="claimFreeVip0()" class="btn-vip-free px-4 py-2.5 text-xs flex items-center gap-1.5 shadow-md">
-                                    <i data-lucide="gift" class="w-3.5 h-3.5"></i>
-                                    <span>Free Activate</span>
-                                </button>
-                            ` : isLockedTier ? `
+                            ${isLocked ? `
                                 <button onclick="initiateVipDirectPayment(${job.vipRequired}, ${tierCost})" class="btn-vip-direct-pay px-4 py-2.5 text-xs font-black flex items-center gap-1.5 shadow-md active:scale-95">
                                     <i data-lucide="zap" class="w-3.5 h-3.5 fill-current"></i>
                                     <span>Pay ${tierCost}৳</span>
@@ -1595,7 +1567,7 @@
                             ` : `
                                 <button onclick="openDedicatedWorkApplyPage('${job.id}')" class="btn-buy px-5 py-2.5 text-xs flex items-center gap-1.5 shadow-md">
                                     <i data-lucide="arrow-right-circle" class="w-4 h-4"></i>
-                                    <span>Apply & Earn</span>
+                                    <span>কাজ শুরু করুন</span>
                                 </button>
                             `}
                         </div>
@@ -1604,25 +1576,6 @@
             }).join('');
             lucide.createIcons();
         }
-
-        window.claimFreeVip0 = async function() {
-            if (!userData) return showToast("প্রথমে লগইন করুন", "error");
-            try {
-                const userRef = doc(dbUser, "users", String(userData.tgChatId));
-                await updateDoc(userRef, {
-                    vipLevel: 0,
-                    hasClaimedFreeVip0: true,
-                    vipUnlockedAt: serverTimestamp()
-                });
-                userData.vipLevel = 0;
-                userData.hasClaimedFreeVip0 = true;
-                updateUI();
-                renderWorkJobs();
-                showToast("🎉 VIP 0 Free সফলভাবে সক্রিয় করা হয়েছে!", "success");
-            } catch(e) {
-                showToast(e.message || "VIP 0 সক্রিয় করতে সমস্যা হয়েছে", "error");
-            }
-        };
 
         window.filterWorkCategory = function(vipLevelKey, btn) {
             document.querySelectorAll('#work-vip-tabs-container .category-btn').forEach(b => b.classList.remove('active'));
@@ -1641,17 +1594,18 @@
                 feedContainer.classList.remove('hidden');
                 subsContainer.classList.add('hidden');
                 btnFeed.className = "flex-1 py-2.5 bg-blue-600 text-white rounded-xl font-bold text-xs shadow-md transition";
-                btnSubs.className = "flex-1 py-2.5 bg-transparent text-slate-600 hover:text-slate-900 rounded-xl font-bold text-xs transition";
+                btnSubs.className = "flex-1 py-2.5 bg-slate-100 text-slate-700 hover:bg-slate-200 rounded-xl font-bold text-xs transition";
                 renderWorkJobs();
             } else {
                 feedContainer.classList.add('hidden');
                 subsContainer.classList.remove('hidden');
                 btnSubs.className = "flex-1 py-2.5 bg-blue-600 text-white rounded-xl font-bold text-xs shadow-md transition";
-                btnFeed.className = "flex-1 py-2.5 bg-transparent text-slate-600 hover:text-slate-900 rounded-xl font-bold text-xs transition";
+                btnFeed.className = "flex-1 py-2.5 bg-slate-100 text-slate-700 hover:bg-slate-200 rounded-xl font-bold text-xs transition";
                 loadUserWorkSubmissions();
             }
         };
 
+        // OPEN DEDICATED WORK APPLY & SUBMISSION PAGE
         window.openDedicatedWorkApplyPage = function(jobId) {
             const allPosts = (appConfig.workPosts && Array.isArray(appConfig.workPosts) && appConfig.workPosts.length > 0) 
                 ? appConfig.workPosts 
@@ -1668,7 +1622,7 @@
             document.getElementById('detail-job-category').textContent = job.category || 'Micro Task';
             document.getElementById('detail-job-reward').textContent = `৳${parseFloat(job.reward).toFixed(2)}`;
             document.getElementById('detail-job-limit').textContent = `${job.dailyLimit || 1} বার / দিন`;
-            document.getElementById('detail-job-description').textContent = job.desc || 'কোনো অতিরিক্ত বিবরণ পাওয়া যায়নি।';
+            document.getElementById('detail-job-description').textContent = job.desc || 'কোনো অতিরিক্ত বিবরণ দেওয়া হয়নি।';
             document.getElementById('work-proof-text').value = '';
             document.getElementById('work-link-text').value = '';
 
@@ -1791,10 +1745,9 @@
         window.openVipUpgradeModal = function() {
             const listEl = document.getElementById('vip-tier-cards-list');
             const currentVip = userData?.vipLevel || 0;
-            const isFreeActive = userData?.hasClaimedFreeVip0 === true || currentVip > 0;
 
             listEl.innerHTML = VIP_TIERS.map(tier => {
-                const isCurrent = tier.level === currentVip && (tier.level > 0 || isFreeActive);
+                const isCurrent = tier.level === currentVip;
                 const isPassed = tier.level < currentVip;
 
                 return `
@@ -1824,11 +1777,6 @@
                         ` : isPassed ? `
                             <button disabled class="w-full py-2.5 bg-slate-100 text-slate-400 font-bold rounded-xl text-xs">
                                 Completed Tier
-                            </button>
-                        ` : tier.level === 0 ? `
-                            <button onclick="claimFreeVip0(); document.getElementById('vip-upgrade-modal').classList.add('hidden');" class="w-full py-2.5 btn-vip-free text-white font-black rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-md">
-                                <i data-lucide="gift" class="w-3.5 h-3.5"></i>
-                                <span>Activate Free VIP 0</span>
                             </button>
                         ` : `
                             <button id="btn-vip-buy-${tier.level}" onclick="initiateVipDirectPayment(${tier.level}, ${tier.cost})" class="w-full py-2.5 btn-vip-direct-pay text-white font-black rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-md">
@@ -2176,7 +2124,6 @@
 
                     t.update(userRef, {
                         vipLevel: targetLevel,
-                        hasClaimedFreeVip0: true,
                         vipUnlockedAt: serverTimestamp()
                     });
                 });
@@ -2346,11 +2293,7 @@
             document.getElementById('header-coin-balance').textContent = `৳${balanceFormatted}`;
             
             const workVipBadge = document.getElementById('work-user-vip-badge');
-            if (workVipBadge) workVipBadge.innerHTML = `<i data-lucide="crown" class="w-3.5 h-3.5 text-amber-400"></i> ${vipText} ${userVip === 0 ? '(Free)' : 'PRO'}`;
-
-            const currentTierObj = VIP_TIERS.find(t => t.level === userVip) || VIP_TIERS[0];
-            const statLimit = document.getElementById('work-stat-limit');
-            if (statLimit) statLimit.textContent = `${currentTierObj.dailyLimit} / Day`;
+            if (workVipBadge) workVipBadge.innerHTML = `<i data-lucide="crown" class="w-3.5 h-3.5 text-amber-400"></i> ${vipText} ${userVip === 0 ? 'FREE MEMBER' : 'PRO'}`;
 
             const depBalance = document.getElementById('deposit-page-balance');
             if (depBalance) depBalance.textContent = `৳${balanceFormatted}`;
@@ -2359,7 +2302,7 @@
             if (profileStatBal) profileStatBal.textContent = `৳${balanceFormatted}`;
 
             const profileVipPill = document.getElementById('profile-vip-pill');
-            if (profileVipPill) profileVipPill.innerHTML = `<i data-lucide="crown" class="w-3 h-3"></i> ${vipText}`;
+            if (profileVipPill) profileVipPill.innerHTML = `<i data-lucide="crown" class="w-3 h-3"></i> ${vipText} ${userVip === 0 ? 'FREE' : ''}`;
             
             lucide.createIcons();
         }
