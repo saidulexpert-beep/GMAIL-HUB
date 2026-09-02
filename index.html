@@ -20,7 +20,7 @@
             user-select: none;
             -webkit-touch-callout: none;
         }
-        input, textarea, #orders-purchase-history .font-mono, #replace-history-list .text-sm, .selectable-text, #work-proof-text, #work-link-text {
+        input, textarea, select, #orders-purchase-history .font-mono, #replace-history-list .text-sm, .selectable-text, #work-proof-text, #work-link-text {
             -webkit-user-select: text;
             -ms-user-select: text;
             user-select: text;
@@ -114,16 +114,27 @@
         }
         .btn-order-orange:active { transform: scale(0.96); }
 
-        .btn-vip-direct-pay {
-            background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);
+        .btn-master-pay {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 50%, #b45309 100%);
             color: #ffffff;
             font-weight: 800;
             border-radius: 12px;
             transition: all 0.2s ease;
-            box-shadow: 0 4px 14px rgba(234, 88, 12, 0.3);
+            box-shadow: 0 4px 14px rgba(217, 119, 6, 0.35);
             cursor: pointer;
         }
-        .btn-vip-direct-pay:active { transform: scale(0.96); }
+        .btn-master-pay:active { transform: scale(0.96); }
+
+        .btn-vip0-unlock {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: #ffffff;
+            font-weight: 800;
+            border-radius: 12px;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
+            cursor: pointer;
+        }
+        .btn-vip0-unlock:active { transform: scale(0.96); }
 
         /* ULTRA SLEEK FLOATING BOTTOM NAVIGATION */
         .bottom-nav-container {
@@ -227,7 +238,6 @@
             outline: none;
         }
 
-        /* 1. EXACT ORIGINAL INTRO LOADER */
         #loader {
             background: radial-gradient(circle at center, #0f172a 0%, #020617 100%);
         }
@@ -289,7 +299,7 @@
         .toast-item.toast-error { border-left-color: #ef4444; }
         .toast-item.toast-info { border-left-color: #3b82f6; }
 
-        /* BRAND NEW WORK CARDS STYLES */
+        /* WORK CARDS STYLES */
         .work-card-pro {
             background: #ffffff;
             border: 1.5px solid #e2e8f0;
@@ -325,7 +335,7 @@
     <!-- TOAST CONTAINER -->
     <div id="toast-container" class="toast-container"></div>
 
-    <!-- 1. ORIGINAL INTRO LOADER -->
+    <!-- INTRO LOADER -->
     <div id="loader" class="fixed inset-0 flex flex-col items-center justify-center z-[100] p-6 select-none text-white">
         <div class="relative flex items-center justify-center mb-6">
             <div class="w-20 h-20 rounded-full border-4 border-blue-500/20 border-t-blue-400 border-r-indigo-400 animate-spin"></div>
@@ -341,7 +351,7 @@
                 <span class="text-gray-500">•</span>
                 <span class="px-2.5 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 text-[11px] font-black border border-indigo-500/40">VPN</span>
                 <span class="text-gray-500">•</span>
-                <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[11px] font-black border border-emerald-500/40">PROXY</span>
+                <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[11px] font-black border border-emerald-500/40">WORK</span>
             </div>
             <p class="text-xs text-slate-400 font-medium tracking-wide">Automated & Verified Accounts Gateway</p>
         </div>
@@ -378,7 +388,7 @@
                 </div>
             </div>
 
-            <!-- 1. WALLET & TRANSFER SECTION -->
+            <!-- WALLET & TRANSFER SECTION -->
             <div class="space-y-1 text-xs font-bold text-slate-700">
                 <div class="px-2 py-1 text-[10px] uppercase tracking-wider text-slate-400 font-black">Finances & History</div>
                 
@@ -407,7 +417,7 @@
                 </button>
             </div>
 
-            <!-- 2. COMMUNITY & SUPPORT -->
+            <!-- COMMUNITY & SUPPORT -->
             <div class="space-y-1 text-xs font-bold text-slate-700 pt-2 border-t border-slate-100">
                 <div class="px-2 py-1 text-[10px] uppercase tracking-wider text-slate-400 font-black">Support & Community</div>
                 
@@ -421,7 +431,7 @@
                 </a>
             </div>
 
-            <!-- 3. TOOLS & POLICIES -->
+            <!-- TOOLS & POLICIES -->
             <div class="space-y-1 text-xs font-bold text-slate-700 pt-2 border-t border-slate-100">
                 <div class="px-2 py-1 text-[10px] uppercase tracking-wider text-slate-400 font-black">Policies & System</div>
 
@@ -509,39 +519,30 @@
                 </div>
             </div>
 
-            <!-- 2. BRAND NEW WORK PORTAL PAGE (VIP 0 to VIP 3) -->
+            <!-- 2. WORK PORTAL PAGE (VIP 0 FREE & MASTER WORK) -->
             <div id="work-page" class="p-4 space-y-4 sub-page">
                 
                 <!-- LUXURY WORK HERO BANNER -->
                 <div class="bg-gradient-to-br from-slate-900 via-indigo-950 to-blue-950 p-5 rounded-3xl text-white shadow-xl relative overflow-hidden border border-blue-500/20">
                     <div class="absolute -right-6 -bottom-6 w-36 h-36 bg-blue-500/10 rounded-full blur-2xl pointer-events-none"></div>
-                    <div class="relative z-10 space-y-3">
+                    <div class="relative z-10 space-y-2">
                         <div class="flex items-center justify-between">
-                            <span id="work-user-vip-badge" class="px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 text-[10px] font-black uppercase tracking-wider border border-amber-400/30 inline-flex items-center gap-1.5">
-                                <i data-lucide="crown" class="w-3.5 h-3.5 text-amber-400"></i> VIP 0 FREE MEMBER
+                            <span id="work-user-status-badge" class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-black uppercase tracking-wider border border-emerald-400/30 inline-flex items-center gap-1.5">
+                                <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-400"></i> Active Member
                             </span>
-                            <button onclick="openVipUpgradeModal()" class="px-3.5 py-1.5 rounded-xl btn-vip-direct-pay text-xs font-black flex items-center gap-1 shadow-md active:scale-95 transition">
-                                <i data-lucide="zap" class="w-3.5 h-3.5"></i> VIP Tiers
-                            </button>
+                            <span class="text-[10.5px] font-bold text-amber-400 bg-amber-400/10 px-2.5 py-1 rounded-lg border border-amber-400/20 flex items-center gap-1">
+                                <i data-lucide="sparkles" class="w-3 h-3"></i> 100% Guaranteed Income
+                            </span>
                         </div>
 
                         <div>
                             <h2 class="text-xl font-black tracking-tight text-white">Work Marketplace</h2>
-                            <p class="text-xs text-blue-200 mt-0.5">অ্যাকাউন্ট সেল ও মাইক্রো কাজ করে প্রতিদিন নিশ্চিত আয় করুন</p>
+                            <p class="text-xs text-blue-200 mt-0.5">অ্যাকাউন্ট সেল ও মাস্টার কাজ করে প্রতিদিন নিশ্চিত আয় করুন</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- VIP Filter Scrollable Chips (VIP 0 to VIP 3) -->
-                <div class="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none" id="work-vip-tabs-container">
-                    <button onclick="filterWorkCategory('all', this)" class="category-btn active text-xs whitespace-nowrap px-4 py-2 font-black">All Jobs</button>
-                    <button onclick="filterWorkCategory('vip0', this)" class="category-btn text-xs whitespace-nowrap px-3.5 py-2">VIP 0 Free</button>
-                    <button onclick="filterWorkCategory('vip1', this)" class="category-btn text-xs whitespace-nowrap px-3.5 py-2">VIP 1</button>
-                    <button onclick="filterWorkCategory('vip2', this)" class="category-btn text-xs whitespace-nowrap px-3.5 py-2">VIP 2</button>
-                    <button onclick="filterWorkCategory('vip3', this)" class="category-btn text-xs whitespace-nowrap px-3.5 py-2">VIP 3</button>
-                </div>
-
-                <!-- Switch View (Job Posts vs My Submissions) -->
+                <!-- Switch View (Job Cards vs My Submissions) -->
                 <div class="flex gap-2">
                     <button id="btn-tab-work-feed" onclick="switchWorkView('jobs')" class="flex-1 py-2.5 bg-blue-600 text-white rounded-xl font-bold text-xs shadow-md transition">
                         Available Jobs
@@ -551,62 +552,136 @@
                     </button>
                 </div>
 
-                <!-- Jobs Feed Container -->
-                <div id="work-jobs-feed-list" class="space-y-3 min-h-[220px]"></div>
+                <!-- Jobs Feed Container (VIP 0 and Master Work Cards) -->
+                <div id="work-jobs-feed-list" class="space-y-4 min-h-[220px]">
+                    
+                    <!-- 1. VIP 0 FREE MEMBER CARD -->
+                    <div class="work-card-pro p-5 space-y-4 border-2 border-emerald-200/80 bg-gradient-to-b from-white to-emerald-50/20">
+                        <div class="flex items-start justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-black shadow-sm">
+                                    <i data-lucide="user-check" class="w-6 h-6"></i>
+                                </div>
+                                <div>
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="px-2.5 py-0.5 text-[10px] font-black rounded-md bg-emerald-100 text-emerald-800 border border-emerald-300">
+                                            VIP 0 FREE
+                                        </span>
+                                        <span class="text-[10px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md">Account Sell</span>
+                                    </div>
+                                    <h3 class="font-black text-base text-slate-900 mt-0.5">ফ্রি অ্যাকাউন্ট সেল পোর্টাল</h3>
+                                </div>
+                            </div>
+                            <span class="text-[11px] font-black text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200 font-mono">0৳ Fee</span>
+                        </div>
+
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            যেকোনো ফ্রেশ অথবা রিকভারি মেইল যুক্ত <b>Gmail, Active Facebook ID, Telegram Account/Session</b> অথবা অন্যান্য অ্যাকাউন্ট জমা দিয়ে সরাসরি ইনকাম করুন।
+                        </p>
+
+                        <div class="grid grid-cols-2 gap-2 text-xs">
+                            <div class="reward-pill-box p-2.5 rounded-xl">
+                                <span class="text-[9.5px] font-black text-emerald-700 uppercase block">প্রতি কাজে পাবেন</span>
+                                <span class="text-base font-black text-emerald-800 font-mono">৳৬.০০ - ৳১২.০০</span>
+                            </div>
+                            <div class="bg-blue-50 p-2.5 rounded-xl border border-blue-100">
+                                <span class="text-[9.5px] font-black text-blue-700 uppercase block">দৈনিক লিমিট</span>
+                                <span class="text-base font-black text-blue-800 font-mono">আনলিমিটেড</span>
+                            </div>
+                        </div>
+
+                        <div class="pt-1" id="vip0-action-container">
+                            <!-- Injected dynamically via JS (Pay 0 Unlock or Apply) -->
+                        </div>
+                    </div>
+
+                    <!-- 2. MASTER WORK PREMIUM CARD -->
+                    <div class="work-card-pro p-5 space-y-4 border-2 border-amber-300 bg-gradient-to-b from-white to-amber-50/30 relative overflow-hidden shadow-lg">
+                        <div class="absolute -right-8 -top-8 w-24 h-24 bg-amber-400/10 rounded-full blur-xl pointer-events-none"></div>
+
+                        <div class="flex items-start justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-600 text-white flex items-center justify-center font-black shadow-md">
+                                    <i data-lucide="crown" class="w-6 h-6"></i>
+                                </div>
+                                <div>
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="px-2.5 py-0.5 text-[10px] font-black rounded-md bg-amber-500 text-slate-950">
+                                            MASTER WORK
+                                        </span>
+                                        <span class="text-[10px] font-bold text-amber-700 bg-amber-100 px-2 py-0.5 rounded-md">Live Training</span>
+                                    </div>
+                                    <h3 class="font-black text-base text-slate-900 mt-0.5">মাস্টার ওয়ার্ক (হাই-পেইং টাস্ক)</h3>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-xs font-black text-amber-700 bg-amber-100 px-2.5 py-1 rounded-full border border-amber-300 font-mono">৫০৳ ফি</span>
+                            </div>
+                        </div>
+
+                        <!-- EXPLANATION OF WHY 50 TAKA IS CHARGED -->
+                        <div class="bg-amber-50/90 border border-amber-200/90 p-3 rounded-2xl text-xs space-y-1.5">
+                            <div class="flex items-center gap-1.5 text-amber-900 font-extrabold">
+                                <i data-lucide="help-circle" class="w-4 h-4 text-amber-600"></i>
+                                <span>টাকাটা কেন নেওয়া হচ্ছে?</span>
+                            </div>
+                            <p class="text-[11.5px] text-amber-950/80 leading-relaxed">
+                                এই <b>৳৫০ টাকা ফি</b> মূলত লাইভ কাজ পুরোপুরি হাতে-কলমে <b>শেখানোর</b> জন্য নেওয়া হচ্ছে। একবার কাজ শিখে একটি কাজ সফলভাবে জমা দিলেই আপনি পাচ্ছেন <b>১৫০ টাকা</b>!
+                            </p>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-2 text-xs">
+                            <div class="bg-gradient-to-br from-emerald-50 to-green-100 p-2.5 rounded-xl border border-emerald-200">
+                                <span class="text-[9.5px] font-black text-emerald-700 uppercase block">১টি কাজ করলেই পাবেন</span>
+                                <span class="text-lg font-black text-emerald-800 font-mono">৳১৫০.০০</span>
+                            </div>
+                            <div class="bg-amber-50 p-2.5 rounded-xl border border-amber-200">
+                                <span class="text-[9.5px] font-black text-amber-700 uppercase block">প্রয়োজনীয় ফি</span>
+                                <span class="text-lg font-black text-amber-900 font-mono">৳৫০.০০</span>
+                            </div>
+                        </div>
+
+                        <div class="pt-1" id="master-work-action-container">
+                            <!-- Injected dynamically via JS (Pay 50 Unlock or Apply) -->
+                        </div>
+                    </div>
+
+                </div>
 
                 <!-- Submissions History Container -->
                 <div id="work-user-submissions-list" class="space-y-3 hidden min-h-[220px]"></div>
             </div>
 
-            <!-- 2.1 DEDICATED WORK DETAIL & SUBMISSION PAGE (OPENS FOR VIP 0 & UNLOCKED JOBS) -->
+            <!-- 2.1 WORK SUBMISSION PAGE (GMAIL, FB, MASTER & OTHERS) -->
             <div id="work-detail-page" class="p-4 space-y-4 sub-page">
                 <div class="flex items-center gap-2 mb-1">
                     <button onclick="navigateTo('work-page')" class="p-2 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 transition">
                         <i data-lucide="arrow-left" class="w-4 h-4 text-slate-700"></i>
                     </button>
                     <div>
-                        <h2 class="text-base font-extrabold text-slate-800" id="detail-job-heading">Job Overview & Apply</h2>
-                        <p class="text-[10.5px] text-slate-400">কাজের শর্তাবলী ভালোভাবে পড়ে তথ্য সাবমিট করুন</p>
+                        <h2 class="text-base font-extrabold text-slate-800" id="detail-job-heading">কাজ সাবমিশন পোর্টাল</h2>
+                        <p class="text-[10.5px] text-slate-400">সঠিক তথ্য পূরণ করে সাবমিট করুন</p>
                     </div>
                 </div>
 
                 <!-- Job Info Banner Card -->
                 <div class="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm space-y-3">
                     <div class="flex items-center justify-between">
-                        <span id="detail-job-vip-badge" class="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-blue-100 text-blue-700">VIP 0 FREE</span>
+                        <span id="detail-job-badge" class="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-emerald-100 text-emerald-700">VIP 0 FREE</span>
                         <span id="detail-job-category" class="text-xs font-bold text-slate-500 bg-slate-100 px-2.5 py-0.5 rounded-md">Account Sell</span>
                     </div>
 
-                    <h3 class="text-lg font-black text-slate-900 leading-snug" id="detail-job-title">Job Title</h3>
+                    <h3 class="text-lg font-black text-slate-900 leading-snug" id="detail-job-title">অ্যাকাউন্ট সাবমিট করুন</h3>
 
                     <div class="grid grid-cols-2 gap-2 text-xs pt-1 border-t border-slate-100">
                         <div class="bg-emerald-50 p-2.5 rounded-2xl border border-emerald-100">
-                            <span class="text-[10px] uppercase font-bold text-emerald-600 block">প্রতি কাজে পাবেন</span>
-                            <span class="text-base font-black text-emerald-700" id="detail-job-reward">৳0.00</span>
+                            <span class="text-[10px] uppercase font-bold text-emerald-600 block">কাজের রিওয়ার্ড</span>
+                            <span class="text-base font-black text-emerald-700" id="detail-job-reward">৳6.00 - ৳150.00</span>
                         </div>
                         <div class="bg-blue-50 p-2.5 rounded-2xl border border-blue-100">
-                            <span class="text-[10px] uppercase font-bold text-blue-600 block">দৈনিক লিমিট</span>
-                            <span class="text-base font-black text-blue-700" id="detail-job-limit">1 বার</span>
+                            <span class="text-[10px] uppercase font-bold text-blue-600 block">ভেরিফিকেশন সময়</span>
+                            <span class="text-base font-black text-blue-700" id="detail-job-time">ইনস্ট্যান্ট / অটো</span>
                         </div>
-                    </div>
-                </div>
-
-                <!-- Job Description & Terms -->
-                <div class="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm space-y-3">
-                    <h4 class="text-xs font-black uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
-                        <i data-lucide="file-text" class="w-4 h-4 text-blue-600"></i>
-                        <span>কাজের বিস্তারিত বিবরণ ও নির্দেশিকা</span>
-                    </h4>
-                    <div id="detail-job-description" class="text-xs text-slate-600 leading-relaxed bg-slate-50 p-3 rounded-2xl border border-slate-100 font-normal"></div>
-
-                    <h4 class="text-xs font-black uppercase tracking-wider text-slate-700 pt-2 flex items-center gap-1.5">
-                        <i data-lucide="shield-alert" class="w-4 h-4 text-amber-600"></i>
-                        <span>বাধ্যতামূলক শর্তাবলী (Rules & Terms)</span>
-                    </h4>
-                    <div id="detail-job-terms" class="text-xs text-slate-600 leading-relaxed bg-amber-50/50 p-3 rounded-2xl border border-amber-200/60 space-y-1">
-                        <p>১. ভুল, নকল বা ইনভ্যালিড ডাটা সাবমিট করলে সরাসরি রিজেক্ট করা হবে।</p>
-                        <p>২. অ্যাডমিন দ্বারা ভেরিফাই হওয়ার সাথে সাথে আপনার অ্যাকাউন্টে ব্যালেন্স যুক্ত হবে।</p>
-                        <p>৩. একই কাজ একাধিকবার স্প্যাম সাবমিট করলে অ্যাকাউন্ট ব্যান হতে পারে।</p>
                     </div>
                 </div>
 
@@ -618,16 +693,27 @@
                     </h4>
 
                     <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1">অ্যাকাউন্ট বা তথ্যের বিবরণ (ইমেইল/পাসওয়ার্ড/প্রুফ):</label>
-                        <textarea id="work-proof-text" rows="4" placeholder="ফরম্যাট অনুযায়ী ইমেইল/পাসওয়ার্ড অথবা কাজের প্রমাণ বিস্তারিত লিখুন..." class="w-full p-3 rounded-2xl input-field text-xs font-mono"></textarea>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">কাজের ধরন বা অ্যাকাউন্ট টাইপ:</label>
+                        <select id="work-category-select" class="w-full p-3 rounded-2xl input-field text-xs font-bold bg-white">
+                            <option value="Gmail Account Sell">Gmail Account Sell (৳৬.০০ - ৳১০.০০)</option>
+                            <option value="Facebook Account Sell">Facebook Active Account Sell (৳৯.০০)</option>
+                            <option value="Telegram Session Sell">Telegram Account / Session (৳১২.০০)</option>
+                            <option value="Master Work Task">Master Work Live Task (৳১৫০.০০)</option>
+                            <option value="Other Account Sell">Other Account / Service</option>
+                        </select>
                     </div>
 
                     <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1">স্ক্রিনশট / রেফারেন্স লিংক (যদি থাকে):</label>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">অ্যাকাউন্ট বা তথ্যের বিবরণ (ইমেইল/পাসওয়ার্ড/প্রুফ):</label>
+                        <textarea id="work-proof-text" rows="4" placeholder="ফরম্যাট অনুযায়ী: ইমেইল | পাসওয়ার্ড | রিকভারি অথবা কাজের প্রুফ লিখুন..." class="w-full p-3 rounded-2xl input-field text-xs font-mono"></textarea>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">স্ক্রিনশট / ড্রাইভ লিংক (যদি থাকে):</label>
                         <input id="work-link-text" type="text" placeholder="https://..." class="w-full p-2.5 rounded-xl input-field text-xs">
                     </div>
 
-                    <button id="btn-submit-dedicated-work" onclick="submitDedicatedWorkJob()" class="w-full py-3.5 rounded-2xl btn-buy font-extrabold text-sm flex items-center justify-center gap-2 shadow-lg">
+                    <button id="btn-submit-dedicated-work" onclick="submitWorkJobData()" class="w-full py-3.5 rounded-2xl btn-buy font-extrabold text-sm flex items-center justify-center gap-2 shadow-lg">
                         <i data-lucide="check-circle" class="w-4 h-4"></i>
                         <span>সাবমিট করুন (Submit Work)</span>
                     </button>
@@ -725,7 +811,7 @@
                     <p class="text-xs text-orange-100 leading-relaxed">সহজ টাস্ক পূরণ করে সরাসরি আপনার অ্যাকাউন্টে ফ্রি ব্যালেন্স আয় করুন!</p>
                 </div>
 
-                <!-- Task 1: Daily Check-in -->
+                <!-- Task 1: Daily Check-in (Reset at 1:00 AM) -->
                 <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
                     <div class="flex items-center gap-3">
                         <div class="w-10 h-10 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center font-bold">
@@ -733,11 +819,11 @@
                         </div>
                         <div>
                             <h4 class="font-extrabold text-xs text-slate-800">দৈনিক চেক-ইন বোনাস</h4>
-                            <p class="text-[11px] text-slate-500">প্রতি ২৪ ঘণ্টায় একবার ফ্রি ক্যাশ</p>
+                            <p class="text-[11px] text-slate-500" id="daily-checkin-subtitle">প্রতিদিন রাত ০১:০০ টায় রিসেট হবে</p>
                         </div>
                     </div>
                     <button id="btn-daily-checkin" onclick="handleDailyCheckin()" class="px-3.5 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-xl font-extrabold text-xs shadow-sm transition active:scale-95 flex items-center gap-1">
-                        <span>+৳০.২০</span>
+                        <span>+৳০.২০ Claim</span>
                     </button>
                 </div>
 
@@ -808,8 +894,8 @@
                         <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-black uppercase tracking-wider border border-emerald-400/30">
                             <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span> Telegram Verified
                         </span>
-                        <span id="profile-vip-pill" class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-500 text-slate-900 text-[10px] font-black uppercase tracking-wider shadow-sm">
-                            <i data-lucide="crown" class="w-3 h-3"></i> VIP 0 FREE
+                        <span id="profile-master-pill" class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-500 text-slate-900 text-[10px] font-black uppercase tracking-wider shadow-sm">
+                            <i data-lucide="award" class="w-3 h-3"></i> FREE MEMBER
                         </span>
                     </div>
 
@@ -858,10 +944,10 @@
                         <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400"></i>
                     </button>
 
-                    <button onclick="openVipUpgradeModal()" class="w-full p-3 flex items-center justify-between hover:bg-slate-50 rounded-xl transition">
+                    <button onclick="navigateTo('work-page')" class="w-full p-3 flex items-center justify-between hover:bg-slate-50 rounded-xl transition">
                         <div class="flex items-center gap-2.5">
                             <div class="p-1.5 bg-amber-50 text-amber-600 rounded-lg"><i data-lucide="crown" class="w-4 h-4"></i></div>
-                            <span>VIP লেভেল আপগ্রেড (Direct Gateway)</span>
+                            <span>মাস্টার ওয়ার্ক ও জব পোর্টাল</span>
                         </div>
                         <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400"></i>
                     </button>
@@ -1002,31 +1088,23 @@
 
     </div>
 
-    <!-- DIRECT PAYMENT VIP UPGRADE MODAL (VIP 0 to VIP 3) -->
-    <div id="vip-upgrade-modal" class="hidden fixed inset-0 bg-black/75 flex items-center justify-center z-[90] p-4 backdrop-blur-md">
-        <div class="bg-white rounded-3xl p-5 w-full max-w-sm space-y-4 max-h-[90vh] flex flex-col shadow-2xl border border-slate-100">
-            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-                <div class="flex items-center gap-2.5">
-                    <div class="p-2 bg-gradient-to-br from-amber-500 to-orange-600 text-white rounded-2xl shadow-md">
-                        <i data-lucide="crown" class="w-5 h-5"></i>
-                    </div>
-                    <div>
-                        <h3 class="font-black text-sm text-slate-900 leading-tight">Instant VIP Upgrade</h3>
-                        <p class="text-[10.5px] text-amber-600 font-bold">সরাসরি গেটওয়ে পেমেন্টে আনলক করুন</p>
-                    </div>
-                </div>
-                <button onclick="document.getElementById('vip-upgrade-modal').classList.add('hidden')" class="p-1.5 bg-slate-100 rounded-xl text-slate-500 hover:bg-slate-200">
-                    <i data-lucide="x" class="w-4 h-4"></i>
-                </button>
+    <!-- MASTER WORK BALANCE CONFIRMATION MODAL -->
+    <div id="master-confirm-modal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center z-[90] p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-3xl p-6 w-full max-w-sm space-y-4 text-center shadow-2xl">
+            <div class="w-14 h-14 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center mx-auto">
+                <i data-lucide="crown" class="w-7 h-7"></i>
             </div>
-
-            <div class="overflow-y-auto space-y-3 pr-1 flex-grow text-xs" id="vip-tier-cards-list"></div>
-
-            <div class="pt-2 border-t border-slate-100 text-center">
-                <p class="text-[10px] text-slate-400 font-semibold flex items-center justify-center gap-1">
-                    <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-500"></i>
-                    <span>bKash, Nagad ও Rocket দিয়ে সরাসরি অটোমেটিক অ্যাক্টিভেশন</span>
-                </p>
+            <div>
+                <h3 class="text-base font-black text-slate-800">Master Work আনলক করুন</h3>
+                <p class="text-xs text-slate-500 mt-1">আপনার ওয়ালেট ব্যালেন্স থেকে ৫০ টাকা কেটে মাস্টার ওয়ার্ক লাইভ ট্রেনিং আনলক করা হবে।</p>
+            </div>
+            <div class="bg-amber-50 p-3 rounded-2xl border border-amber-200 text-xs text-amber-900 font-bold flex justify-between items-center">
+                <span>প্রয়োজনীয় ফি:</span>
+                <span class="text-base font-mono font-black text-amber-700">৳৫০.০০</span>
+            </div>
+            <div class="flex gap-2">
+                <button onclick="document.getElementById('master-confirm-modal').classList.add('hidden')" class="w-1/2 py-2.5 bg-slate-100 font-bold rounded-xl text-xs">বাতিল</button>
+                <button id="btn-confirm-master-wallet" onclick="confirmUnlockMasterWithWallet()" class="w-1/2 py-2.5 btn-master-pay font-bold rounded-xl text-xs">Unlock Now</button>
             </div>
         </div>
     </div>
@@ -1040,8 +1118,8 @@
             <h3 class="text-base font-extrabold text-slate-800">রিপ্লেসমেন্ট ও কাজের নিয়মাবলী</h3>
             <div class="text-xs text-slate-600 text-left space-y-2 max-h-60 overflow-y-auto leading-relaxed bg-slate-50 p-3 rounded-2xl border border-slate-100">
                 <p>১. অ্যাকাউন্ট ক্রয়ের পর ইনভ্যালিড থাকলে ১৫ মিনিটের মধ্যে রিপোর্ট করতে হবে।</p>
-                <p>২. কাজের সাবমিশনে ভুল তথ্য দিলে অ্যাকাউন্ট সাসপেন্ড ও ব্যালেন্স বাতিল হতে পারে।</p>
-                <p>৩. VIP লেভেল সরাসরি পেমেন্ট গেটওয়ে দিয়ে কার্যকর করা হয়।</p>
+                <p>২. কাজের সাবমিশনে ভুল বা স্প্যাম তথ্য দিলে অ্যাকাউন্ট স্থগিত হতে পারে।</p>
+                <p>৩. মাস্টার ওয়ার্ক ফি লাইভ কাজ শেখানোর উদ্দেশ্যে সংগৃহীত হয়।</p>
             </div>
             <button onclick="document.getElementById('policy-modal').classList.add('hidden')" class="w-full py-2.5 bg-blue-600 text-white font-bold rounded-xl text-xs">ঠিক আছে</button>
         </div>
@@ -1136,7 +1214,7 @@
             <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto">
                 <i data-lucide="check-circle" class="w-10 h-10 stroke-[2.5]"></i>
             </div>
-            <h3 class="text-emerald-600 font-bold text-sm">পেমেন্ট সফলভাবে রিসিভ হয়েছে!</h3>
+            <h3 class="text-emerald-600 font-bold text-sm" id="gateway-success-status-msg">পেমেন্ট সফলভাবে সম্পন্ন হয়েছে!</h3>
             <h2 class="text-xl font-black text-slate-800">Payment Successful!</h2>
             
             <div class="bg-slate-50 p-3.5 rounded-2xl border border-dashed border-slate-300 text-left space-y-2 text-xs">
@@ -1146,7 +1224,7 @@
             </div>
 
             <button onclick="document.getElementById('gateway-success-modal').classList.add('hidden'); navigateTo('home-page');" class="w-full py-3.5 rounded-xl btn-gateway-pay font-bold text-sm">
-                Return to Shop
+                Continue
             </button>
         </div>
     </div>
@@ -1233,82 +1311,14 @@
         const dbWork = dbUser;
         const dbMisc = dbUser;
 
-        // VIP Tiers (VIP 0 to VIP 3 only)
-        const VIP_TIERS = [
-            { level: 0, title: "VIP 0 Free Member", cost: 0, dailyLimit: 2, icon: "user", color: "from-slate-600 to-slate-800", desc: "ফ্রি কাজ: জিমেইল সেল, ফেসবুক অ্যাকাউন্ট সেল ইত্যাদি।" },
-            { level: 1, title: "VIP 1 Bronze Pro", cost: 100, dailyLimit: 5, icon: "shield", color: "from-amber-600 to-amber-800", desc: "মাইক্রো অ্যাপ রিভিউ, ডেটা ভেরিফিকেশন ও অ্যাকাউন্ট টাস্ক।" },
-            { level: 2, title: "VIP 2 Silver Elite", cost: 300, dailyLimit: 8, icon: "award", color: "from-slate-400 to-slate-600", desc: "বাল্ক অ্যাকাউন্ট ক্রিয়েশন ও সোশ্যাল মিডিয়া প্রোমোশন।" },
-            { level: 3, title: "VIP 3 Gold Master", cost: 600, dailyLimit: 12, icon: "crown", color: "from-yellow-500 to-amber-600", desc: "হাই-পেইং অ্যাপ টেস্টিং, রিভিউ ও প্রিমিয়াম ভেরিফিকেশন।" }
-        ];
-
-        // Default Work Job Posts (VIP 0 to VIP 3 only)
-        const DEFAULT_WORK_POSTS = [
-            {
-                id: "job_vip0_gmail",
-                title: "Gmail Account Submit & Sell",
-                vipRequired: 0,
-                reward: 6.00,
-                dailyLimit: 2,
-                category: "Gmail Sell",
-                desc: "যেকোনো ফ্রেশ অথবা রিকভারি মেইল যুক্ত Gmail অ্যাকাউন্ট (ইমেইল এবং পাসওয়ার্ড) সাবমিট করুন।"
-            },
-            {
-                id: "job_vip0_fb",
-                title: "Facebook Active Account Sell",
-                vipRequired: 0,
-                reward: 9.00,
-                dailyLimit: 2,
-                category: "FB Sell",
-                desc: "সক্রিয় ফেসবুক অ্যাকাউন্ট আইডি এবং পাসওয়ার্ড সাবমিট করুন।"
-            },
-            {
-                id: "job_vip0_tg_session",
-                title: "Telegram Session / Account Sell",
-                vipRequired: 0,
-                reward: 12.00,
-                dailyLimit: 2,
-                category: "Account Sell",
-                desc: "টেলিগ্রামের সক্রিয় নম্বর অথবা সেশন কোড ফরম্যাট অনুযায়ী সাবমিট করুন।"
-            },
-            {
-                id: "job_vip1_micro_task",
-                title: "App Store 5-Star Review (VIP 1)",
-                vipRequired: 1,
-                reward: 20.00,
-                dailyLimit: 5,
-                category: "App Testing",
-                desc: "প্লেস্টোরে গিয়ে নির্দিষ্ট অ্যাপে ৫ স্টার রিভিউ দিয়ে স্ক্রিনশটের পাবলিক লিংক বা বিবরণ সাবমিট করুন।"
-            },
-            {
-                id: "job_vip2_bulk_gmail",
-                title: "USA Recovery Gmail Bulk Submit (VIP 2)",
-                vipRequired: 2,
-                reward: 50.00,
-                dailyLimit: 8,
-                category: "Bulk Account",
-                desc: "ইউএসএ আইপি দিয়ে তৈরি রিকভারি মেইল যুক্ত ২টি ফ্রেশ জিমেইল সাবমিট করুন।"
-            },
-            {
-                id: "job_vip3_premium_sub",
-                title: "Premium Verification Task (VIP 3)",
-                vipRequired: 3,
-                reward: 110.00,
-                dailyLimit: 12,
-                category: "Verification",
-                desc: "প্রিমিয়াম পোর্টাল একাউন্ট সাইন আপ ও ভেরিফিকেশন প্রুফ প্রদান করুন।"
-            }
-        ];
-
         let currentUserTg = null;
         let userData = null;
         let appConfig = {};
         let selectedCategory = 'all';
-        let selectedWorkCategory = 'all';
         let userPurchasesCache = [];
         let displayedProductsCache = [];
         let activeBuyModalData = null;
         let activeManualModalData = null;
-        let currentActiveJobDetail = null;
         let countdownTimerInterval = null;
         let allUserNotifications = [];
         let lastPurchasedItemsBatch = [];
@@ -1377,12 +1387,26 @@
             document.getElementById('policy-modal').classList.remove('hidden');
         };
 
-        // INSTANT & FAST INITIALIZATION ON GATEWAY RETURN
+        // --- 1:00 AM BANGLADESH TIME CYCLE HELPER ---
+        function getCycleStart1AM() {
+            const now = new Date();
+            const bstOffset = 6 * 60 * 60 * 1000;
+            const bstNow = new Date(now.getTime() + bstOffset);
+            
+            const cycleDate = new Date(bstNow);
+            cycleDate.setUTCHours(1, 0, 0, 0);
+
+            if (bstNow.getUTCHours() < 1) {
+                cycleDate.setUTCDate(cycleDate.getUTCDate() - 1);
+            }
+            return cycleDate.getTime() - bstOffset;
+        }
+
+        // --- APP ENTRY INITIALIZATION & GATEWAY FIX ---
         window.onload = async () => {
             const urlParams = new URLSearchParams(window.location.search);
-            const isReturningGateway = urlParams.has('status') || urlParams.has('transaction_id') || urlParams.has('transactionId') || urlParams.has('trx_id') || urlParams.has('upgrade_vip');
+            const isReturningGateway = urlParams.has('status') || urlParams.has('transaction_id') || urlParams.has('transactionId') || urlParams.has('trx_id') || urlParams.has('unlock_master');
 
-            // If returning from gateway, bypass heavy intro splash instantly!
             if (isReturningGateway && loader) {
                 loader.style.display = 'none';
             }
@@ -1397,23 +1421,23 @@
             } catch (e) {
                 currentUserTg = { id: "6954647230", first_name: "User", username: "account" };
             }
+
             lucide.createIcons();
             setupEventListeners();
             
-            await initUserSession();
-            
-            // Check return status in background without freezing UI
-            checkReturnPaymentStatus();
-            checkAndRefundExpiredOrders();
-            startCountdownTimerRoutine();
-
-            // Dismiss original intro loader smoothly
-            if (!isReturningGateway && loader) {
-                setTimeout(() => {
-                    loader.style.transition = 'opacity 0.4s ease';
+            try {
+                await initUserSession();
+                await checkReturnPaymentStatus();
+                checkAndRefundExpiredOrders();
+                startCountdownTimerRoutine();
+            } catch(err) {
+                console.error("App startup error:", err);
+            } finally {
+                if (loader) {
+                    loader.style.transition = 'opacity 0.3s ease';
                     loader.style.opacity = '0';
-                    setTimeout(() => loader.style.display = 'none', 400);
-                }, 500);
+                    setTimeout(() => { if (loader) loader.style.display = 'none'; }, 300);
+                }
             }
         };
 
@@ -1427,7 +1451,8 @@
 
             if (userSnap.exists()) {
                 userData = userSnap.data();
-                if (userData.vipLevel === undefined) userData.vipLevel = 0;
+                if (userData.unlockedVip0 === undefined) userData.unlockedVip0 = false;
+                if (userData.unlockedMasterWork === undefined) userData.unlockedMasterWork = false;
                 await updateDoc(userRef, {
                     name: userFullName,
                     photo_url: photoUrl,
@@ -1440,7 +1465,8 @@
                     username: currentUserTg.username || null,
                     photo_url: photoUrl,
                     balance: 0,
-                    vipLevel: 0,
+                    unlockedVip0: false,
+                    unlockedMasterWork: false,
                     hasClaimedTgBonus: false,
                     lastDailyCheckin: null,
                     createdAt: serverTimestamp()
@@ -1488,100 +1514,183 @@
 
                 renderDynamicCategories();
                 renderTelegramTaskUI();
+                renderDailyCheckinState();
             } catch (e) {
                 renderDynamicCategories();
                 renderTelegramTaskUI();
+                renderDailyCheckinState();
             }
         }
 
         // ==========================================
-        // WORK MARKETPLACE (HIGH-END & DEDICATED VIP 0)
+        // WORK MARKETPLACE (VIP 0 FREE & MASTER WORK)
         // ==========================================
-        function renderWorkJobs() {
-            const container = document.getElementById('work-jobs-feed-list');
-            if (!container) return;
+        function renderWorkCards() {
+            if (!userData) return;
+            const vip0Unlocked = !!userData.unlockedVip0;
+            const masterUnlocked = !!userData.unlockedMasterWork;
 
-            const allPosts = (appConfig.workPosts && Array.isArray(appConfig.workPosts) && appConfig.workPosts.length > 0) 
-                ? appConfig.workPosts.filter(p => p.vipRequired <= 3) 
-                : DEFAULT_WORK_POSTS;
-
-            let filtered = allPosts;
-            if (selectedWorkCategory !== 'all') {
-                const targetVip = parseInt(selectedWorkCategory.replace('vip', ''));
-                filtered = allPosts.filter(p => p.vipRequired === targetVip);
+            // VIP 0 Action
+            const vip0Container = document.getElementById('vip0-action-container');
+            if (vip0Container) {
+                if (vip0Unlocked) {
+                    vip0Container.innerHTML = `
+                        <button onclick="openDedicatedWorkApplyPage('vip0')" class="w-full py-3 rounded-xl btn-buy font-extrabold text-xs flex items-center justify-center gap-2 shadow-md">
+                            <i data-lucide="arrow-right-circle" class="w-4 h-4"></i>
+                            <span>Apply / কাজ শুরু করুন (Unlocked)</span>
+                        </button>
+                    `;
+                } else {
+                    vip0Container.innerHTML = `
+                        <button id="btn-unlock-vip0" onclick="unlockVip0Free()" class="w-full py-3 rounded-xl btn-vip0-unlock text-white font-black text-xs flex items-center justify-center gap-2 shadow-md">
+                            <i data-lucide="lock-open" class="w-4 h-4"></i>
+                            <span>PAY 0৳ UNLOCK</span>
+                        </button>
+                    `;
+                }
             }
 
-            if (filtered.length === 0) {
-                container.innerHTML = `<div class="bg-white p-8 rounded-3xl text-center text-slate-400 font-bold border border-dashed">এই ক্যাটাগরিতে বর্তমানে কোনো কাজ নেই।</div>`;
-                return;
+            // Master Work Action
+            const masterContainer = document.getElementById('master-work-action-container');
+            if (masterContainer) {
+                if (masterUnlocked) {
+                    masterContainer.innerHTML = `
+                        <button onclick="openDedicatedWorkApplyPage('master')" class="w-full py-3 rounded-xl btn-master-pay text-white font-black text-xs flex items-center justify-center gap-2 shadow-md">
+                            <i data-lucide="check-circle" class="w-4 h-4"></i>
+                            <span>Apply / কাজ শুরু করুন (Master Unlocked)</span>
+                        </button>
+                    `;
+                } else {
+                    masterContainer.innerHTML = `
+                        <button id="btn-unlock-master" onclick="handleMasterWorkUnlockClick()" class="w-full py-3 rounded-xl btn-master-pay text-white font-black text-xs flex items-center justify-center gap-2 shadow-md">
+                            <i data-lucide="zap" class="w-4 h-4 fill-current"></i>
+                            <span>PAY 50৳ UNLOCK</span>
+                        </button>
+                    `;
+                }
             }
-
-            const userVip = userData?.vipLevel || 0;
-
-            container.innerHTML = filtered.map(job => {
-                const isVip0 = job.vipRequired === 0;
-                const isLocked = !isVip0 && (userVip < job.vipRequired);
-                const targetTierObj = VIP_TIERS.find(t => t.level === job.vipRequired) || { cost: 100 };
-                const tierCost = targetTierObj.cost;
-
-                let iconName = 'mail';
-                if (job.category.includes('FB')) iconName = 'facebook';
-                else if (job.category.includes('Account')) iconName = 'send';
-                else if (job.category.includes('App')) iconName = 'star';
-                else if (job.category.includes('Bulk')) iconName = 'layers';
-                else if (job.category.includes('Verification')) iconName = 'shield-check';
-
-                return `
-                <div class="work-card-pro p-4 space-y-3.5 relative overflow-hidden">
-                    <div class="flex items-start justify-between gap-3">
-                        <div class="flex items-start gap-3">
-                            <div class="w-11 h-11 rounded-2xl ${isLocked ? 'bg-amber-100 text-amber-700' : 'bg-blue-100 text-blue-700'} flex items-center justify-center flex-shrink-0 shadow-sm">
-                                <i data-lucide="${iconName}" class="w-5 h-5"></i>
-                            </div>
-                            <div class="space-y-1">
-                                <div class="flex items-center gap-1.5 flex-wrap">
-                                    <span class="px-2 py-0.5 text-[9.5px] font-black rounded-md ${isLocked ? 'bg-amber-100 text-amber-900 border border-amber-300' : 'bg-blue-100 text-blue-800'}">
-                                        ${isVip0 ? 'VIP 0 FREE' : isLocked ? `🔒 VIP ${job.vipRequired} REQUIRED` : `VIP ${job.vipRequired}`}
-                                    </span>
-                                    <span class="text-[9.5px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md">${job.category || 'Task'}</span>
-                                </div>
-                                <h4 class="font-black text-sm text-slate-900 leading-snug">${job.title}</h4>
-                            </div>
-                        </div>
-                    </div>
-
-                    <p class="text-[11.5px] text-slate-500 leading-relaxed pl-1">${job.desc || ''}</p>
-
-                    <div class="flex items-center justify-between pt-2.5 border-t border-slate-100">
-                        <div class="reward-pill-box px-3.5 py-1.5 rounded-xl">
-                            <span class="text-[9px] text-emerald-600 uppercase font-black tracking-wider block">Reward</span>
-                            <span class="text-base font-black text-emerald-700 font-mono">৳${parseFloat(job.reward).toFixed(2)}</span>
-                        </div>
-
-                        <div>
-                            ${isLocked ? `
-                                <button onclick="initiateVipDirectPayment(${job.vipRequired}, ${tierCost})" class="btn-vip-direct-pay px-4 py-2.5 text-xs font-black flex items-center gap-1.5 shadow-md active:scale-95">
-                                    <i data-lucide="zap" class="w-3.5 h-3.5 fill-current"></i>
-                                    <span>Pay ${tierCost}৳</span>
-                                </button>
-                            ` : `
-                                <button onclick="openDedicatedWorkApplyPage('${job.id}')" class="btn-buy px-5 py-2.5 text-xs flex items-center gap-1.5 shadow-md">
-                                    <i data-lucide="arrow-right-circle" class="w-4 h-4"></i>
-                                    <span>কাজ শুরু করুন</span>
-                                </button>
-                            `}
-                        </div>
-                    </div>
-                </div>`;
-            }).join('');
             lucide.createIcons();
         }
 
-        window.filterWorkCategory = function(vipLevelKey, btn) {
-            document.querySelectorAll('#work-vip-tabs-container .category-btn').forEach(b => b.classList.remove('active'));
-            if (btn) btn.classList.add('active');
-            selectedWorkCategory = vipLevelKey;
-            renderWorkJobs();
+        window.unlockVip0Free = async function() {
+            if (!userData) return showToast("প্রথমে লগইন করুন", "error");
+            const btn = document.getElementById('btn-unlock-vip0');
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = `<span class="animate-spin inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full mr-2"></span> Unlocking...`;
+            }
+
+            try {
+                const userRef = doc(dbUser, "users", String(userData.tgChatId));
+                await updateDoc(userRef, {
+                    unlockedVip0: true,
+                    vip0UnlockedAt: serverTimestamp()
+                });
+                userData.unlockedVip0 = true;
+                showToast("অভিনন্দন! VIP 0 সফলভাবে আনলক হয়েছে!", "success");
+                renderWorkCards();
+                updateUI();
+            } catch(e) {
+                showToast("আনলক ব্যর্থ হয়েছে!", "error");
+            } finally {
+                if (btn) btn.disabled = false;
+            }
+        };
+
+        window.handleMasterWorkUnlockClick = function() {
+            if (!userData) return showToast("প্রথমে লগইন করুন", "error");
+            const userBalance = userData.balance || 0;
+
+            if (userBalance >= 50) {
+                document.getElementById('master-confirm-modal').classList.remove('hidden');
+                lucide.createIcons();
+            } else {
+                showToast("পর্যাপ্ত ব্যালেন্স নেই, পেমেন্ট গেটওয়েতে নিয়ে যাওয়া হচ্ছে...", "info");
+                setTimeout(() => {
+                    initiateMasterWorkGatewayPayment();
+                }, 700);
+            }
+        };
+
+        window.confirmUnlockMasterWithWallet = async function() {
+            if (!userData) return;
+            const btn = document.getElementById('btn-confirm-master-wallet');
+            btn.disabled = true;
+            btn.textContent = "Processing...";
+
+            try {
+                const userRef = doc(dbUser, "users", String(userData.tgChatId));
+                await runTransaction(dbUser, async (t) => {
+                    const snap = await t.get(userRef);
+                    if (!snap.exists()) throw new Error("ইউজার পাওয়া যায়নি");
+                    const bal = snap.data().balance || 0;
+                    if (bal < 50) throw new Error("পর্যাপ্ত ব্যালেন্স নেই");
+
+                    t.update(userRef, {
+                        balance: bal - 50,
+                        unlockedMasterWork: true,
+                        masterUnlockedAt: serverTimestamp()
+                    });
+
+                    const logRef = doc(collection(dbWork, "master_unlock_logs"));
+                    t.set(logRef, {
+                        userId: String(userData.tgChatId),
+                        userName: userData.name || 'User',
+                        amount: 50,
+                        method: "wallet_balance",
+                        createdAt: serverTimestamp()
+                    });
+                });
+
+                userData.balance -= 50;
+                userData.unlockedMasterWork = true;
+                document.getElementById('master-confirm-modal').classList.add('hidden');
+                showToast("🎉 অভিনন্দন! Master Work সফলভাবে আনলক হয়েছে!", "success");
+                updateUI();
+                renderWorkCards();
+            } catch(e) {
+                showToast(e.message || "আনলক করা সম্ভব হয়নি", "error");
+            } finally {
+                btn.disabled = false;
+                btn.textContent = "Unlock Now";
+            }
+        };
+
+        window.initiateMasterWorkGatewayPayment = async function() {
+            if (!userData) return showToast('প্রথমে লগইন করুন', 'error');
+            const returnUrl = window.location.href.split('?')[0];
+
+            const payload = {
+                amount: "50",
+                success_url: returnUrl + "?status=success&unlock_master=true&amount=50",
+                cancel_url: returnUrl + "?status=cancel",
+                webhook_url: returnUrl + "?status=webhook",
+                metadata: {
+                    userId: String(userData.tgChatId),
+                    paymentType: "unlock_master_work",
+                    amount: 50
+                }
+            };
+
+            showToast("গেটওয়েতে রিডাইরেক্ট করা হচ্ছে...", "info");
+
+            try {
+                const res = await fetch('/api/payment?action=create', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                let payUrl = data.payment_url || data.url || (data.data && (data.data.payment_url || data.data.url));
+
+                if (payUrl) {
+                    window.location.href = payUrl;
+                } else {
+                    showToast(data.message || 'পেমেন্ট গেটওয়েতে সমস্যা হচ্ছে!', 'error');
+                }
+            } catch(e) {
+                showToast('গেটওয়ে সংযোগ ব্যর্থ হয়েছে', 'error');
+            }
         };
 
         window.switchWorkView = function(view) {
@@ -1595,7 +1704,7 @@
                 subsContainer.classList.add('hidden');
                 btnFeed.className = "flex-1 py-2.5 bg-blue-600 text-white rounded-xl font-bold text-xs shadow-md transition";
                 btnSubs.className = "flex-1 py-2.5 bg-slate-100 text-slate-700 hover:bg-slate-200 rounded-xl font-bold text-xs transition";
-                renderWorkJobs();
+                renderWorkCards();
             } else {
                 feedContainer.classList.add('hidden');
                 subsContainer.classList.remove('hidden');
@@ -1605,71 +1714,63 @@
             }
         };
 
-        // OPEN DEDICATED WORK APPLY & SUBMISSION PAGE
-        window.openDedicatedWorkApplyPage = function(jobId) {
-            const allPosts = (appConfig.workPosts && Array.isArray(appConfig.workPosts) && appConfig.workPosts.length > 0) 
-                ? appConfig.workPosts 
-                : DEFAULT_WORK_POSTS;
+        // OPEN WORK SUBMISSION PAGE
+        window.openDedicatedWorkApplyPage = function(type) {
+            const isMaster = type === 'master';
+            document.getElementById('detail-job-heading').textContent = isMaster ? "Master Work Submission" : "VIP 0 Account Sell Submission";
+            document.getElementById('detail-job-title').textContent = isMaster ? "Master Work Live Task" : "Gmail, FB & Account Sell";
+            document.getElementById('detail-job-badge').textContent = isMaster ? "MASTER WORK" : "VIP 0 FREE";
+            document.getElementById('detail-job-badge').className = isMaster ? "px-2.5 py-0.5 rounded-full text-[10px] font-black bg-amber-100 text-amber-900 border border-amber-300" : "px-2.5 py-0.5 rounded-full text-[10px] font-black bg-emerald-100 text-emerald-700";
+            document.getElementById('detail-job-category').textContent = isMaster ? "Live High-Paying" : "Account Sell";
+            document.getElementById('detail-job-reward').textContent = isMaster ? "৳১৫০.০০" : "৳৬.০০ - ৳১২.০০";
+            
+            const selectEl = document.getElementById('work-category-select');
+            if (isMaster) {
+                selectEl.value = "Master Work Task";
+            } else {
+                selectEl.value = "Gmail Account Sell";
+            }
 
-            const job = allPosts.find(p => p.id === jobId);
-            if (!job) return;
-
-            currentActiveJobDetail = job;
-
-            document.getElementById('detail-job-heading').textContent = job.title;
-            document.getElementById('detail-job-title').textContent = job.title;
-            document.getElementById('detail-job-vip-badge').textContent = `VIP ${job.vipRequired} REQUIREMENT`;
-            document.getElementById('detail-job-category').textContent = job.category || 'Micro Task';
-            document.getElementById('detail-job-reward').textContent = `৳${parseFloat(job.reward).toFixed(2)}`;
-            document.getElementById('detail-job-limit').textContent = `${job.dailyLimit || 1} বার / দিন`;
-            document.getElementById('detail-job-description').textContent = job.desc || 'কোনো অতিরিক্ত বিবরণ দেওয়া হয়নি।';
             document.getElementById('work-proof-text').value = '';
             document.getElementById('work-link-text').value = '';
 
             navigateTo('work-detail-page');
         };
 
-        window.submitDedicatedWorkJob = async function() {
-            if (!userData || !currentActiveJobDetail) return;
+        window.submitWorkJobData = async function() {
+            if (!userData) return;
+            const category = document.getElementById('work-category-select').value;
             const proof = document.getElementById('work-proof-text').value.trim();
             const link = document.getElementById('work-link-text').value.trim();
 
             if (!proof) return showToast("অনুগ্রহ করে কাজের ডাটা বা বিবরণ লিখুন!", "error");
 
             const tgUserId = String(userData.tgChatId);
-            const userVip = userData.vipLevel || 0;
+            const isMaster = category === "Master Work Task";
 
-            if (currentActiveJobDetail.vipRequired > userVip) {
-                return showToast("আপনার VIP লেভেল এই কাজের জন্য যথেষ্ট নয়!", "error");
+            if (isMaster && !userData.unlockedMasterWork) {
+                return showToast("মাস্টার ওয়ার্ক জমা দিতে প্রথমে ৫০৳ দিয়ে আনলক করুন!", "error");
             }
+            if (!isMaster && !userData.unlockedVip0) {
+                return showToast("প্রথমে VIP 0 আনলক করুন!", "error");
+            }
+
+            let rewardAmt = 6.00;
+            if (isMaster) rewardAmt = 150.00;
+            else if (category.includes('Facebook')) rewardAmt = 9.00;
+            else if (category.includes('Telegram')) rewardAmt = 12.00;
 
             const btn = document.getElementById('btn-submit-dedicated-work');
             btn.disabled = true;
             btn.innerHTML = `<span class="animate-spin inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full mr-2"></span> Submitting...`;
 
             try {
-                const todayStart = new Date();
-                todayStart.setHours(0,0,0,0);
-
-                const existingQuery = query(
-                    collection(dbWork, "work_submissions"),
-                    where("userId", "==", tgUserId),
-                    where("jobId", "==", currentActiveJobDetail.id),
-                    where("submittedAt", ">=", Timestamp.fromDate(todayStart))
-                );
-
-                const existingSnap = await getDocs(existingQuery);
-                if (existingSnap.size >= (currentActiveJobDetail.dailyLimit || 1)) {
-                    throw new Error(`আপনি আজ এই কাজের দৈনিক লিমিট (${currentActiveJobDetail.dailyLimit || 1} বার) পূর্ণ করেছেন!`);
-                }
-
                 await addDoc(collection(dbWork, "work_submissions"), {
                     userId: tgUserId,
                     userName: userData.name || 'User',
-                    jobId: currentActiveJobDetail.id,
-                    jobTitle: currentActiveJobDetail.title,
-                    vipLevel: currentActiveJobDetail.vipRequired,
-                    reward: parseFloat(currentActiveJobDetail.reward),
+                    jobTitle: category,
+                    category: category,
+                    reward: rewardAmt,
                     proof: proof,
                     link: link || null,
                     status: "pending",
@@ -1718,7 +1819,7 @@
                                 <h4 class="font-black text-slate-800">${s.jobTitle}</h4>
                                 <span class="text-[10px] text-slate-400">${dateStr}</span>
                             </div>
-                            <span class="font-black text-sm text-emerald-600 font-mono">৳${s.reward?.toFixed(2)}</span>
+                            <span class="font-black text-sm text-emerald-600 font-mono">৳${parseFloat(s.reward || 0).toFixed(2)}</span>
                         </div>
                         <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 text-[11px] font-mono text-slate-700 break-all">
                             <b>Proof:</b> ${s.proof}
@@ -1740,111 +1841,38 @@
         }
 
         // ==========================================
-        // DIRECT GATEWAY VIP UPGRADE (0 to 3)
+        // TASK & DAILY REWARDS (RESET AT 1:00 AM)
         // ==========================================
-        window.openVipUpgradeModal = function() {
-            const listEl = document.getElementById('vip-tier-cards-list');
-            const currentVip = userData?.vipLevel || 0;
+        function renderDailyCheckinState() {
+            const btn = document.getElementById('btn-daily-checkin');
+            const subTitle = document.getElementById('daily-checkin-subtitle');
+            if (!btn || !userData) return;
 
-            listEl.innerHTML = VIP_TIERS.map(tier => {
-                const isCurrent = tier.level === currentVip;
-                const isPassed = tier.level < currentVip;
+            const cycleStart = getCycleStart1AM();
+            const lastCheckMillis = userData.lastDailyCheckin?.toDate ? userData.lastDailyCheckin.toDate().getTime() : 0;
 
-                return `
-                <div class="p-4 rounded-2xl border ${isCurrent ? 'border-amber-500 bg-amber-50/40' : 'border-slate-200 bg-white'} space-y-2.5 shadow-sm">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-2.5">
-                            <div class="w-9 h-9 rounded-xl bg-gradient-to-br ${tier.color} text-white flex items-center justify-center font-black text-xs shadow-md">
-                                <i data-lucide="${tier.icon}" class="w-4 h-4"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-black text-xs text-slate-900">${tier.title}</h4>
-                                <span class="text-[10px] font-bold text-blue-600">Daily limit: ${tier.dailyLimit} tasks</span>
-                            </div>
-                        </div>
-                        <div class="text-right">
-                            <span class="font-black text-sm text-slate-900 font-mono">${tier.cost === 0 ? 'Free' : `৳${tier.cost}`}</span>
-                        </div>
-                    </div>
-                    <p class="text-[10.5px] text-slate-600 leading-relaxed">${tier.desc}</p>
-                    
-                    <div class="pt-1">
-                        ${isCurrent ? `
-                            <button disabled class="w-full py-2.5 bg-emerald-600 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-1">
-                                <i data-lucide="check-circle" class="w-3.5 h-3.5"></i>
-                                <span>Current Active</span>
-                            </button>
-                        ` : isPassed ? `
-                            <button disabled class="w-full py-2.5 bg-slate-100 text-slate-400 font-bold rounded-xl text-xs">
-                                Completed Tier
-                            </button>
-                        ` : `
-                            <button id="btn-vip-buy-${tier.level}" onclick="initiateVipDirectPayment(${tier.level}, ${tier.cost})" class="w-full py-2.5 btn-vip-direct-pay text-white font-black rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-md">
-                                <i data-lucide="zap" class="w-3.5 h-3.5"></i>
-                                <span>Pay ${tier.cost}৳ with Gateway</span>
-                            </button>
-                        `}
-                    </div>
-                </div>`;
-            }).join('');
-
-            document.getElementById('vip-upgrade-modal').classList.remove('hidden');
-            lucide.createIcons();
-        };
-
-        window.initiateVipDirectPayment = async function(tierLevel, cost) {
-            if (!userData) return showToast('প্রথমে লগইন করুন', 'error');
-            const returnUrl = window.location.href.split('?')[0];
-
-            const payload = {
-                amount: String(cost),
-                success_url: returnUrl + `?status=success&upgrade_vip=${tierLevel}&vip_cost=${cost}`,
-                cancel_url: returnUrl + "?status=cancel",
-                webhook_url: returnUrl + "?status=webhook",
-                metadata: {
-                    userId: String(userData.tgChatId),
-                    paymentType: "vip_upgrade",
-                    targetVipLevel: tierLevel,
-                    cost: cost
-                }
-            };
-
-            showToast("গেটওয়েতে রিডাইরেক্ট করা হচ্ছে...", "info");
-
-            try {
-                const res = await fetch('/api/payment?action=create', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-                const data = await res.json();
-                let payUrl = data.payment_url || data.url || (data.data && (data.data.payment_url || data.data.url));
-
-                if (payUrl) {
-                    window.location.href = payUrl;
-                } else {
-                    showToast(data.message || 'পেমেন্ট গেটওয়েতে সমস্যা হচ্ছে!', 'error');
-                }
-            } catch(e) {
-                showToast('গেটওয়ে সংযোগ ব্যর্থ হয়েছে', 'error');
+            if (lastCheckMillis >= cycleStart) {
+                btn.disabled = true;
+                btn.className = "px-3.5 py-2 bg-slate-200 text-slate-500 rounded-xl font-extrabold text-xs cursor-not-allowed flex items-center gap-1 border border-slate-300";
+                btn.innerHTML = `<i data-lucide="check" class="w-3.5 h-3.5"></i> <span>Next Day (রাত ০১:০০ টায়)</span>`;
+                if (subTitle) subTitle.textContent = "আজকের বোনাস ক্লেইম করা হয়েছে";
+            } else {
+                btn.disabled = false;
+                btn.className = "px-3.5 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-xl font-extrabold text-xs shadow-sm transition active:scale-95 flex items-center gap-1";
+                btn.innerHTML = `<span>+৳০.২০ Claim</span>`;
+                if (subTitle) subTitle.textContent = "প্রতিদিন রাত ০১:০০ টায় রিসেট হবে";
             }
-        };
+            lucide.createIcons();
+        }
 
-        // ==========================================
-        // TASK & DAILY REWARDS
-        // ==========================================
         window.handleDailyCheckin = async function() {
             if (!userData) return showToast("প্রথমে লগইন করুন", "error");
             
-            const now = new Date();
-            const lastCheck = userData.lastDailyCheckin ? userData.lastDailyCheckin.toDate() : null;
+            const cycleStart = getCycleStart1AM();
+            const lastCheckMillis = userData.lastDailyCheckin?.toDate ? userData.lastDailyCheckin.toDate().getTime() : 0;
 
-            if (lastCheck) {
-                const diffHours = (now - lastCheck) / (1000 * 60 * 60);
-                if (diffHours < 24) {
-                    const remainH = Math.ceil(24 - diffHours);
-                    return showToast(`আজকের বোনাস নেওয়া হয়েছে! অপেক্ষা করুন ${remainH} ঘণ্টা`, "info");
-                }
+            if (lastCheckMillis >= cycleStart) {
+                return showToast("আজকের বোনাস নেওয়া হয়েছে! পরবর্তী ক্লেইম রাত ০১:০০ টায় (Next Day)", "info");
             }
 
             const btn = document.getElementById('btn-daily-checkin');
@@ -1860,11 +1888,12 @@
                 userData.balance = (userData.balance || 0) + 0.20;
                 userData.lastDailyCheckin = Timestamp.now();
                 updateUI();
+                renderDailyCheckinState();
                 showToast("অভিনন্দন! দৈনিক চেক-ইন বোনাস ৳০.২০ যুক্ত হয়েছে!", "success");
             } catch(e) {
                 showToast("চেক-ইন ব্যর্থ হয়েছে", "error");
             } finally {
-                if (btn) btn.disabled = false;
+                renderDailyCheckinState();
             }
         };
 
@@ -2049,8 +2078,7 @@
             const urlParams = new URLSearchParams(window.location.search);
             const transactionId = urlParams.get('transaction_id') || urlParams.get('transactionId') || urlParams.get('trx_id') || urlParams.get('txid');
             const urlStatus = (urlParams.get('status') || '').toLowerCase();
-            const targetVipParam = urlParams.get('upgrade_vip');
-            const vipCostParam = urlParams.get('vip_cost');
+            const isUnlockMaster = urlParams.get('unlock_master') === 'true';
 
             if (urlStatus === 'cancel' || urlStatus === 'failed') {
                 showToast('পেমেন্ট বাতিল করা হয়েছে', 'info');
@@ -2071,12 +2099,10 @@
 
                     if (apiStatus === "COMPLETED" || apiStatus === "SUCCESS" || data.success === true) {
                         let finalTxid = data.transaction_id || transactionId || ("TXN_" + Date.now());
-                        let isVipUpgrade = (data.metadata && data.metadata.paymentType === 'vip_upgrade') || !!targetVipParam;
-                        let targetVipLevel = parseInt((data.metadata && data.metadata.targetVipLevel) || targetVipParam || 0);
-                        let vipCost = parseFloat((data.metadata && data.metadata.cost) || vipCostParam || 0);
+                        let isMasterPayment = (data.metadata && data.metadata.paymentType === 'unlock_master_work') || isUnlockMaster;
 
-                        if (isVipUpgrade && targetVipLevel > 0) {
-                            await executeVipDirectPaymentUpgrade(targetVipLevel, vipCost, finalTxid, data);
+                        if (isMasterPayment) {
+                            await executeMasterWorkDirectPaymentUpgrade(finalTxid, data);
                         } else {
                             let depositAmount = parseFloat(data.amount || 0);
                             let totalAddedAmount = depositAmount;
@@ -2087,6 +2113,7 @@
                                 document.getElementById('displayTxid').textContent = finalTxid;
                                 document.getElementById('displayMethod').textContent = "NagorikPay";
                                 document.getElementById('displayAmount').textContent = `${totalAddedAmount.toFixed(2)} BDT`;
+                                document.getElementById('gateway-success-status-msg').textContent = "ওয়ালেট ডিপোজিট সফল হয়েছে!";
                                 document.getElementById('gateway-success-modal').classList.remove('hidden');
                             }
                         }
@@ -2100,39 +2127,43 @@
             }
         }
 
-        async function executeVipDirectPaymentUpgrade(targetLevel, cost, txid, fullData) {
+        async function executeMasterWorkDirectPaymentUpgrade(txid, fullData) {
             if (!userData) return;
             const tgChatId = String(userData.tgChatId);
-            const upgradeRef = doc(dbWork, "vip_upgrades", txid);
+            const logRef = doc(dbWork, "master_unlock_logs", txid);
             const userRef = doc(dbUser, "users", tgChatId);
 
             try {
                 await runTransaction(dbUser, async (t) => {
-                    const snap = await t.get(upgradeRef);
+                    const snap = await t.get(logRef);
                     if (snap.exists()) return;
 
-                    t.set(upgradeRef, {
+                    t.set(logRef, {
                         userId: tgChatId,
                         userName: userData.name || 'User',
-                        targetLevel: targetLevel,
-                        cost: cost,
+                        amount: 50,
+                        method: "gateway",
                         transactionId: txid,
                         paymentDetails: fullData || null,
-                        status: "completed",
                         createdAt: serverTimestamp()
                     });
 
                     t.update(userRef, {
-                        vipLevel: targetLevel,
-                        vipUnlockedAt: serverTimestamp()
+                        unlockedMasterWork: true,
+                        masterUnlockedAt: serverTimestamp()
                     });
                 });
 
                 const userSnap = await getDoc(userRef);
                 userData = userSnap.data();
                 updateUI();
-                showToast(`🎉 অভিনন্দন! পেমেন্ট সফল হয়েছে এবং আপনার অ্যাকাউন্ট VIP ${targetLevel}-এ আপগ্রেড হয়েছে!`, 'success');
-                renderWorkJobs();
+                renderWorkCards();
+                
+                document.getElementById('displayTxid').textContent = txid;
+                document.getElementById('displayMethod').textContent = "NagorikPay";
+                document.getElementById('displayAmount').textContent = "50.00 BDT";
+                document.getElementById('gateway-success-status-msg').textContent = "মাস্টার ওয়ার্ক সফলভাবে আনলক হয়েছে!";
+                document.getElementById('gateway-success-modal').classList.remove('hidden');
             } catch(e) {
                 console.error(e);
             }
@@ -2287,23 +2318,28 @@
         function updateUI() {
             if (!userData) return;
             const balanceFormatted = (userData.balance || 0).toFixed(2);
-            const userVip = userData.vipLevel || 0;
-            const vipText = `VIP ${userVip}`;
+            const isMaster = !!userData.unlockedMasterWork;
 
             document.getElementById('header-coin-balance').textContent = `৳${balanceFormatted}`;
             
-            const workVipBadge = document.getElementById('work-user-vip-badge');
-            if (workVipBadge) workVipBadge.innerHTML = `<i data-lucide="crown" class="w-3.5 h-3.5 text-amber-400"></i> ${vipText} ${userVip === 0 ? 'FREE MEMBER' : 'PRO'}`;
-
             const depBalance = document.getElementById('deposit-page-balance');
             if (depBalance) depBalance.textContent = `৳${balanceFormatted}`;
 
             const profileStatBal = document.getElementById('profile-stat-balance');
             if (profileStatBal) profileStatBal.textContent = `৳${balanceFormatted}`;
 
-            const profileVipPill = document.getElementById('profile-vip-pill');
-            if (profileVipPill) profileVipPill.innerHTML = `<i data-lucide="crown" class="w-3 h-3"></i> ${vipText} ${userVip === 0 ? 'FREE' : ''}`;
+            const profileMasterPill = document.getElementById('profile-master-pill');
+            if (profileMasterPill) {
+                profileMasterPill.innerHTML = isMaster 
+                    ? `<i data-lucide="crown" class="w-3 h-3 text-white"></i> MASTER MEMBER`
+                    : `<i data-lucide="award" class="w-3 h-3"></i> FREE MEMBER`;
+                profileMasterPill.className = isMaster
+                    ? `inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-500 text-white text-[10px] font-black uppercase tracking-wider shadow-sm`
+                    : `inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-500 text-white text-[10px] font-black uppercase tracking-wider shadow-sm`;
+            }
             
+            renderWorkCards();
+            renderDailyCheckinState();
             lucide.createIcons();
         }
 
@@ -2323,9 +2359,9 @@
 
             const routes = {
                 'home-page': renderProductsBySelection,
-                'work-page': () => { updateUI(); renderWorkJobs(); },
+                'work-page': () => { updateUI(); renderWorkCards(); },
                 'pay-page': updateUI,
-                'task-page': renderTelegramTaskUI,
+                'task-page': () => { renderTelegramTaskUI(); renderDailyCheckinState(); },
                 'orders-page': loadOrdersHistory,
                 'features-page': loadFeaturesPage,
                 'history-page': () => { loadManualOrdersHistory(); loadReplaceHistory(); },
