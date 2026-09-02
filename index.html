@@ -121,7 +121,6 @@
         }
         .btn-vip-direct-pay:active { transform: scale(0.96); }
 
-        /* FLOATING BOTTOM NAVIGATION */
         .bottom-nav-container {
             position: fixed;
             bottom: 12px;
@@ -216,7 +215,6 @@
             outline: none;
         }
 
-        /* TOAST */
         .toast-container {
             position: fixed;
             top: 16px;
@@ -252,7 +250,6 @@
         .toast-item.toast-error { border-left-color: #ef4444; }
         .toast-item.toast-info { border-left-color: #3b82f6; }
 
-        /* VIP LUXURY CARDS */
         .vip-card-pro {
             background: #ffffff;
             border-radius: 22px;
@@ -314,7 +311,7 @@
         </div>
     </div>
 
-    <!-- SIDEBAR DRAWER (WITH ORDERS INCLUDED) -->
+    <!-- SIDEBAR DRAWER -->
     <div id="side-drawer-overlay" class="fixed inset-0 z-[80] hidden" onclick="toggleSideDrawer(false)"></div>
     <div id="side-drawer" class="fixed top-0 left-0 bottom-0 w-72 bg-white z-[85] shadow-2xl flex flex-col justify-between -translate-x-full border-r border-slate-200">
         <div class="p-5 space-y-4 overflow-y-auto">
@@ -333,7 +330,6 @@
                 </button>
             </div>
 
-            <!-- User Mini Badge in Drawer -->
             <div class="bg-gradient-to-br from-slate-50 to-blue-50/50 p-3 rounded-2xl border border-slate-200/80 flex items-center gap-2.5">
                 <div class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-black text-sm overflow-hidden">
                     <span id="drawer-user-avatar">U</span>
@@ -344,11 +340,9 @@
                 </div>
             </div>
 
-            <!-- Drawer Links -->
             <div class="space-y-1 text-xs font-bold text-slate-700">
                 <div class="px-2 py-1 text-[10px] uppercase tracking-wider text-slate-400 font-black">Menu & Services</div>
                 
-                <!-- Orders in Side Menu -->
                 <button onclick="toggleSideDrawer(false); navigateTo('orders-page')" class="w-full flex items-center gap-3 p-2.5 rounded-xl hover:bg-blue-50 text-slate-700 hover:text-blue-600 transition text-left">
                     <div class="p-1.5 bg-blue-100 text-blue-600 rounded-lg"><i data-lucide="shopping-bag" class="w-4 h-4"></i></div>
                     <div class="flex-grow flex justify-between items-center">
@@ -400,7 +394,7 @@
             </div>
         </header>
 
-        <!-- TOP ACTIVATION NOTIFICATION BANNER (IF ACCOUNT NOT ACTIVE) -->
+        <!-- TOP ACTIVATION NOTIFICATION BANNER -->
         <div id="account-activation-banner" class="hidden bg-gradient-to-r from-amber-500 via-orange-600 to-red-500 text-white p-3 px-4 shadow-md flex items-center justify-between animate-pulse">
             <div class="flex items-center gap-2">
                 <i data-lucide="alert-triangle" class="w-4 h-4 text-amber-200 flex-shrink-0"></i>
@@ -417,10 +411,8 @@
         <!-- MAIN CONTENT -->
         <main class="flex-grow pb-28">
 
-            <!-- 1. HOME PAGE (SEARCH BAR REPLACED WITH MY ORDERS BUTTON) -->
+            <!-- 1. HOME PAGE -->
             <div id="home-page" class="p-4 space-y-3.5 sub-page">
-                
-                <!-- SLEEK ORDERS ACCESS BANNER/BUTTON (REPLACED SEARCH BAR) -->
                 <div onclick="navigateTo('orders-page')" class="bg-gradient-to-r from-slate-900 via-blue-950 to-indigo-900 text-white p-3.5 rounded-2xl flex items-center justify-between shadow-md border border-blue-500/30 cursor-pointer active:scale-98 transition">
                     <div class="flex items-center gap-3">
                         <div class="w-10 h-10 rounded-xl bg-blue-600/30 border border-blue-400/30 flex items-center justify-center text-blue-300">
@@ -457,7 +449,7 @@
                 </div>
             </div>
 
-            <!-- 2. WORK MARKETPLACE PAGE (VIP TIERS: NOB, Pro, Pro Master) -->
+            <!-- 2. WORK MARKETPLACE PAGE -->
             <div id="work-page" class="p-4 space-y-4 sub-page">
                 <div class="bg-gradient-to-br from-slate-900 via-indigo-950 to-blue-950 p-5 rounded-3xl text-white shadow-xl relative overflow-hidden border border-blue-500/20">
                     <div class="relative z-10 space-y-2">
@@ -472,12 +464,8 @@
                     </div>
                 </div>
 
-                <!-- 3 LUXURY VIP CARDS -->
-                <div class="space-y-3" id="vip-cards-container">
-                    <!-- Dynamic VIP Cards -->
-                </div>
+                <div class="space-y-3" id="vip-cards-container"></div>
 
-                <!-- Submissions History Button -->
                 <div class="pt-2">
                     <button onclick="switchWorkView('my_subs')" class="w-full py-3 bg-white border border-slate-200 text-slate-800 rounded-2xl font-bold text-xs flex items-center justify-center gap-2 shadow-sm hover:bg-slate-50">
                         <i data-lucide="history" class="w-4 h-4 text-blue-600"></i>
@@ -485,11 +473,10 @@
                     </button>
                 </div>
 
-                <!-- Submissions History Container -->
                 <div id="work-user-submissions-list" class="space-y-3 hidden min-h-[220px]"></div>
             </div>
 
-            <!-- 2.1 VIP WORK DETAIL, SUBMISSION & PRO MASTER TRAINING PAGE -->
+            <!-- 2.1 VIP WORK DETAIL PAGE -->
             <div id="work-detail-page" class="p-4 space-y-4 sub-page">
                 <div class="flex items-center gap-2 mb-1">
                     <button onclick="navigateTo('work-page')" class="p-2 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 transition">
@@ -501,7 +488,6 @@
                     </div>
                 </div>
 
-                <!-- SPECIAL TRAINING / WORK TUTORIAL BOX FOR PRO MASTER -->
                 <div id="pro-master-training-box" class="hidden bg-gradient-to-br from-amber-500/10 via-orange-500/10 to-amber-500/5 p-4 rounded-3xl border border-amber-300 space-y-2.5">
                     <div class="flex items-center gap-2 text-amber-900 font-black text-xs">
                         <i data-lucide="graduation-cap" class="w-4 h-4 text-amber-600"></i>
@@ -514,7 +500,6 @@
                     </div>
                 </div>
 
-                <!-- Account Category Selection (Gmail, Facebook, Other) -->
                 <div class="grid grid-cols-3 gap-2">
                     <button type="button" onclick="setSubmitAccountCategory('GMAIL')" id="tab-sub-gmail" class="py-2.5 rounded-xl font-black text-xs bg-blue-600 text-white shadow flex items-center justify-center gap-1.5 transition">
                         <i data-lucide="mail" class="w-3.5 h-3.5"></i> Gmail
@@ -527,7 +512,6 @@
                     </button>
                 </div>
 
-                <!-- Submission Form Area -->
                 <div class="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm space-y-3.5">
                     <div class="flex items-center justify-between pb-2 border-b border-slate-100">
                         <span class="text-xs font-black text-slate-700 uppercase" id="current-sub-category-label">GMAIL ACCOUNT SUBMIT</span>
@@ -609,7 +593,6 @@
                     <p class="text-xs text-orange-100 leading-relaxed">সহজ টাস্ক পূরণ করে ফ্রি ব্যালেন্স আয় করুন!</p>
                 </div>
 
-                <!-- Daily Check-in -->
                 <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
                     <div class="flex items-center gap-3">
                         <div class="w-10 h-10 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center font-bold">
@@ -625,7 +608,6 @@
                     </button>
                 </div>
 
-                <!-- Official Telegram Channel Join -->
                 <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm space-y-3">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-3">
@@ -643,7 +625,7 @@
                 </div>
             </div>
 
-            <!-- 5. BRAND NEW DEDICATED REFERRAL PAGE (REPLACED ORDERS IN BOTTOM NAV) -->
+            <!-- 5. REFERRAL PAGE -->
             <div id="refer-page" class="p-4 space-y-4 sub-page">
                 <div class="bg-gradient-to-br from-indigo-900 via-blue-900 to-slate-900 p-5 rounded-3xl text-white shadow-xl relative overflow-hidden border border-blue-500/20">
                     <div class="relative z-10 space-y-2">
@@ -655,7 +637,6 @@
                     </div>
                 </div>
 
-                <!-- Referral Stats Grid -->
                 <div class="grid grid-cols-3 gap-2 text-center">
                     <div class="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-sm">
                         <p class="text-[9.5px] font-extrabold text-slate-400 uppercase">মোট রেফার</p>
@@ -671,7 +652,6 @@
                     </div>
                 </div>
 
-                <!-- Referral Link Box -->
                 <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm space-y-2.5">
                     <div class="flex items-center justify-between">
                         <span class="text-xs font-black text-slate-700">আপনার ব্যক্তিগত রেফার লিংক:</span>
@@ -686,7 +666,6 @@
                     </div>
                 </div>
 
-                <!-- Referral List Header & Container -->
                 <div class="space-y-2.5">
                     <div class="flex items-center justify-between">
                         <h3 class="text-xs font-black uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
@@ -695,14 +674,11 @@
                         </h3>
                         <span class="text-[10.5px] text-slate-400 font-bold" id="ref-list-count-badge">০ জন</span>
                     </div>
-
-                    <div id="referred-users-list-container" class="space-y-2.5 min-h-[160px]">
-                        <!-- Dynamic Referral Users List -->
-                    </div>
+                    <div id="referred-users-list-container" class="space-y-2.5 min-h-[160px]"></div>
                 </div>
             </div>
 
-            <!-- 6. ORDERS PAGE (ACCESSIBLE VIA MENU & HOME BANNER) -->
+            <!-- 6. ORDERS PAGE -->
             <div id="orders-page" class="p-4 space-y-4 sub-page">
                 <div class="flex items-center justify-between border-b border-slate-200 pb-3">
                     <div class="flex items-center gap-2">
@@ -809,7 +785,7 @@
 
         </main>
 
-        <!-- FLOATING BOTTOM NAVIGATION (WITH REFER BUTTON IN PLACE OF ORDERS) -->
+        <!-- FLOATING BOTTOM NAVIGATION -->
         <div class="bottom-nav-container">
             <nav class="bottom-nav">
                 <div class="nav-item active" data-page="home-page" onclick="navigateTo('home-page')">
@@ -884,7 +860,7 @@
         </div>
     </div>
 
-    <!-- FIREBASE & CORE JAVASCRIPT LOGIC -->
+    <!-- FIREBASE & SCRIPT LOGIC -->
     <script type="module">
         const baseFirebaseConfig = {
             apiKey: "AIzaSyBopnlRjMScCBaKaxvYsZesAvzxtEjSFRw",
@@ -899,14 +875,14 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
         import { 
             getFirestore, doc, setDoc, getDoc, collection, addDoc, serverTimestamp, 
-            query, where, getDocs, limit, runTransaction, getCountFromServer, 
+            query, where, getDocs, limit, runTransaction, 
             updateDoc, increment 
         } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
         const primaryApp = initializeApp(baseFirebaseConfig);
         const db = getFirestore(primaryApp);
 
-        // 3 VIP TIERS (NOB, Pro, Pro Master with 50 TK Fee & Training)
+        // 3 VIP TIERS
         const VIP_TIERS = [
             { level: 0, title: "NOB", cost: 0, rewardBase: 6.00, icon: "shield", color: "from-slate-700 to-slate-900", desc: "ফ্রি মেম্বার - সাধারণ একাউন্ট সাবমিট করুন।" },
             { level: 1, title: "Pro", cost: 100, rewardBase: 12.00, icon: "zap", color: "from-blue-600 to-indigo-700", desc: "প্রো মেম্বার - উচ্চ মূল্যের অ্যাকাউন্ট সাবমিশন ও সাপোর্ট।" },
@@ -915,8 +891,6 @@
 
         let currentUserTg = null;
         let userData = null;
-        let selectedCategory = 'all';
-        let displayedProductsCache = [];
         let currentSelectedVip = VIP_TIERS[0];
         let currentAccountCategory = 'GMAIL';
         let userPurchasesCache = [];
@@ -951,7 +925,6 @@
             }
         };
 
-        // ONLOAD INITIALIZATION
         window.onload = async () => {
             const urlParams = new URLSearchParams(window.location.search);
             const isReturningFromGateway = urlParams.has('transaction_id') || urlParams.has('transactionId') || urlParams.has('status') || urlParams.has('upgrade_vip') || urlParams.has('activate_account');
@@ -1020,7 +993,6 @@
             document.getElementById('drawer-user-name').textContent = userData.name;
             document.getElementById('drawer-user-id').textContent = `ID: ${userData.tgChatId}`;
             
-            // Format Dedicated Referral Link
             const refLink = `https://t.me/Gmail_HUB7bot/buy?startapp=${userData.tgChatId}`;
             const refEl = document.getElementById('dedicated-ref-link-display');
             if (refEl) refEl.textContent = refLink;
@@ -1055,9 +1027,6 @@
             lucide.createIcons();
         }
 
-        // ==========================================
-        // VIP WORK MARKETPLACE (NOB, Pro, Pro Master)
-        // ==========================================
         function renderVipCards() {
             const container = document.getElementById('vip-cards-container');
             if (!container) return;
@@ -1127,7 +1096,6 @@
             currentSelectedVip = target;
             document.getElementById('selected-vip-title').textContent = `${target.title} - Account Submit Hub`;
             
-            // Show special learning/training box if Pro Master
             const trainingBox = document.getElementById('pro-master-training-box');
             if (target.level === 2) {
                 trainingBox.classList.remove('hidden');
@@ -1209,9 +1177,6 @@
             }
         };
 
-        // ==========================================
-        // REFERRAL SYSTEM & REFERRED USERS LIST
-        // ==========================================
         async function loadReferralPageData() {
             if (!userData) return;
             const tgId = String(userData.tgChatId);
@@ -1284,7 +1249,7 @@
         };
 
         // ==========================================
-        // ACCOUNT ACTIVATION (10 BDT)
+        // FIXED ACCOUNT ACTIVATION
         // ==========================================
         window.openAccountActivationModal = function() {
             document.getElementById('account-activation-modal').classList.remove('hidden');
@@ -1297,23 +1262,33 @@
             try {
                 await runTransaction(db, async (transaction) => {
                     const userRef = doc(db, "users", String(userData.tgChatId));
-                    const userSnap = await transaction.get(userRef);
-                    if (userSnap.data().balance < 10) throw new Error("ব্যালেন্স নেই");
+                    const inviterRef = userData.referredBy ? doc(db, "users", String(userData.referredBy)) : null;
 
+                    // 1. ALL READS FIRST
+                    const userSnap = await transaction.get(userRef);
+                    if (!userSnap.exists() || (userSnap.data().balance || 0) < 10) {
+                        throw new Error("আপনার পর্যাপ্ত ব্যালেন্স নেই।");
+                    }
+                    if (userSnap.data().isAccountActive) {
+                        throw new Error("আপনার অ্যাকাউন্ট ইতিমধ্যে একটিভ রয়েছে।");
+                    }
+
+                    let inviterSnap = null;
+                    if (inviterRef) {
+                        inviterSnap = await transaction.get(inviterRef);
+                    }
+
+                    // 2. ALL WRITES AFTER READS
                     transaction.update(userRef, {
                         balance: increment(-10),
                         isAccountActive: true,
                         activatedAt: serverTimestamp()
                     });
 
-                    if (userData.referredBy) {
-                        const inviterRef = doc(db, "users", String(userData.referredBy));
-                        const inviterSnap = await transaction.get(inviterRef);
-                        if (inviterSnap.exists()) {
-                            transaction.update(inviterRef, {
-                                balance: increment(10)
-                            });
-                        }
+                    if (inviterRef && inviterSnap && inviterSnap.exists()) {
+                        transaction.update(inviterRef, {
+                            balance: increment(10)
+                        });
                     }
                 });
 
@@ -1370,11 +1345,18 @@
                 
                 if (activateAccount) {
                     await runTransaction(db, async (t) => {
+                        const inviterRef = userData.referredBy ? doc(db, "users", String(userData.referredBy)) : null;
+                        
+                        // READ FIRST
+                        let invSnap = null;
+                        if (inviterRef) {
+                            invSnap = await t.get(inviterRef);
+                        }
+
+                        // WRITES AFTER READS
                         t.update(userRef, { isAccountActive: true });
-                        if (userData.referredBy) {
-                            const inviterRef = doc(db, "users", String(userData.referredBy));
-                            const invSnap = await t.get(inviterRef);
-                            if (invSnap.exists()) t.update(inviterRef, { balance: increment(10) });
+                        if (inviterRef && invSnap && invSnap.exists()) {
+                            t.update(inviterRef, { balance: increment(10) });
                         }
                     });
                     userData.isAccountActive = true;
@@ -1392,9 +1374,6 @@
             }
         }
 
-        // ==========================================
-        // NAVIGATION ROUTER
-        // ==========================================
         window.navigateTo = function(pageId) {
             if ((pageId === 'work-page' || pageId === 'task-page') && userData && !userData.isAccountActive) {
                 openAccountActivationModal();
