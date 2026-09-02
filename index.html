@@ -121,7 +121,7 @@
         }
         .btn-vip-direct-pay:active { transform: scale(0.96); }
 
-        /* BOTTOM NAVIGATION */
+        /* FLOATING BOTTOM NAVIGATION */
         .bottom-nav-container {
             position: fixed;
             bottom: 12px;
@@ -284,7 +284,7 @@
     <!-- TOAST CONTAINER -->
     <div id="toast-container" class="toast-container"></div>
 
-    <!-- 1. DEDICATED CHECKING PAYMENT LANDING INTERFACE -->
+    <!-- 1. CHECKING PAYMENT LANDING INTERFACE -->
     <div id="payment-checking-overlay" class="fixed inset-0 bg-slate-950/95 backdrop-blur-md z-[120] flex flex-col items-center justify-center p-6 text-white text-center hidden select-none">
         <div class="relative flex items-center justify-center mb-6">
             <div class="w-24 h-24 rounded-full border-4 border-blue-500/20 border-t-blue-500 border-r-indigo-500 animate-spin"></div>
@@ -314,7 +314,7 @@
         </div>
     </div>
 
-    <!-- SIDEBAR DRAWER -->
+    <!-- SIDEBAR DRAWER (WITH ORDERS INCLUDED) -->
     <div id="side-drawer-overlay" class="fixed inset-0 z-[80] hidden" onclick="toggleSideDrawer(false)"></div>
     <div id="side-drawer" class="fixed top-0 left-0 bottom-0 w-72 bg-white z-[85] shadow-2xl flex flex-col justify-between -translate-x-full border-r border-slate-200">
         <div class="p-5 space-y-4 overflow-y-auto">
@@ -335,8 +335,7 @@
 
             <!-- User Mini Badge in Drawer -->
             <div class="bg-gradient-to-br from-slate-50 to-blue-50/50 p-3 rounded-2xl border border-slate-200/80 flex items-center gap-2.5">
-                <div class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-black text-sm overflow-hidden" id="drawer-user-avatar-wrap">
-                    <img id="drawer-user-avatar-img" class="w-full h-full object-cover hidden" alt="User">
+                <div class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-black text-sm overflow-hidden">
                     <span id="drawer-user-avatar">U</span>
                 </div>
                 <div class="overflow-hidden">
@@ -347,7 +346,17 @@
 
             <!-- Drawer Links -->
             <div class="space-y-1 text-xs font-bold text-slate-700">
-                <div class="px-2 py-1 text-[10px] uppercase tracking-wider text-slate-400 font-black">Finances</div>
+                <div class="px-2 py-1 text-[10px] uppercase tracking-wider text-slate-400 font-black">Menu & Services</div>
+                
+                <!-- Orders in Side Menu -->
+                <button onclick="toggleSideDrawer(false); navigateTo('orders-page')" class="w-full flex items-center gap-3 p-2.5 rounded-xl hover:bg-blue-50 text-slate-700 hover:text-blue-600 transition text-left">
+                    <div class="p-1.5 bg-blue-100 text-blue-600 rounded-lg"><i data-lucide="shopping-bag" class="w-4 h-4"></i></div>
+                    <div class="flex-grow flex justify-between items-center">
+                        <span>Orders (আমার অর্ডারসমূহ)</span>
+                        <span class="text-[10px] text-blue-600 font-black bg-blue-50 px-2 py-0.5 rounded-md">ক্রয় তালিকা</span>
+                    </div>
+                </button>
+
                 <button onclick="toggleSideDrawer(false); navigateTo('pay-page')" class="w-full flex items-center gap-3 p-2.5 rounded-xl hover:bg-blue-50 text-slate-700 hover:text-blue-600 transition text-left">
                     <div class="p-1.5 bg-emerald-100 text-emerald-600 rounded-lg"><i data-lucide="wallet" class="w-4 h-4"></i></div>
                     <span>Deposit Balance</span>
@@ -396,7 +405,7 @@
             <div class="flex items-center gap-2">
                 <i data-lucide="alert-triangle" class="w-4 h-4 text-amber-200 flex-shrink-0"></i>
                 <div class="text-xs font-bold leading-tight">
-                    <span>ইনকাম করতে একাউন্ট একটিভ করুন</span>
+                    <span>ইনকাম করতে একাউন্ট এক্টিভ করুন</span>
                     <span class="text-[10px] text-amber-100 block">মাত্র ১০ টাকা দিয়ে আনলক করুন</span>
                 </div>
             </div>
@@ -408,11 +417,26 @@
         <!-- MAIN CONTENT -->
         <main class="flex-grow pb-28">
 
-            <!-- 1. HOME PAGE -->
+            <!-- 1. HOME PAGE (SEARCH BAR REPLACED WITH MY ORDERS BUTTON) -->
             <div id="home-page" class="p-4 space-y-3.5 sub-page">
-                <div class="relative">
-                    <input id="product-search-input" oninput="filterProductsSearch(this.value)" type="text" placeholder="সার্ভিস বা ইমেইল খুঁজুন..." class="w-full py-2.5 pl-9 pr-4 rounded-xl input-field text-xs font-semibold">
-                    <i data-lucide="search" class="w-4 h-4 absolute left-3 top-3 text-slate-400"></i>
+                
+                <!-- SLEEK ORDERS ACCESS BANNER/BUTTON (REPLACED SEARCH BAR) -->
+                <div onclick="navigateTo('orders-page')" class="bg-gradient-to-r from-slate-900 via-blue-950 to-indigo-900 text-white p-3.5 rounded-2xl flex items-center justify-between shadow-md border border-blue-500/30 cursor-pointer active:scale-98 transition">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-blue-600/30 border border-blue-400/30 flex items-center justify-center text-blue-300">
+                            <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-extrabold text-sm leading-tight text-white flex items-center gap-1.5">
+                                <span>আমার অর্ডারসমূহ (My Orders)</span>
+                                <span class="bg-blue-500/30 text-blue-200 text-[9px] px-2 py-0.5 rounded-full border border-blue-400/30">ইতিহাস</span>
+                            </h3>
+                            <p class="text-[10.5px] text-slate-300 mt-0.5">ক্রয়কৃত সকল একাউন্ট ও ডেলিভারি দেখুন</p>
+                        </div>
+                    </div>
+                    <div class="bg-white/10 hover:bg-white/20 p-2 rounded-xl text-white transition">
+                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </div>
                 </div>
 
                 <div class="grid grid-cols-3 gap-2" id="category-filter-grid"></div>
@@ -433,7 +457,7 @@
                 </div>
             </div>
 
-            <!-- 2. WORK MARKETPLACE PAGE (VIP TIERS: NOB, ডায়মন্ড, Pro Master) -->
+            <!-- 2. WORK MARKETPLACE PAGE (VIP TIERS: NOB, Pro, Pro Master) -->
             <div id="work-page" class="p-4 space-y-4 sub-page">
                 <div class="bg-gradient-to-br from-slate-900 via-indigo-950 to-blue-950 p-5 rounded-3xl text-white shadow-xl relative overflow-hidden border border-blue-500/20">
                     <div class="relative z-10 space-y-2">
@@ -444,13 +468,13 @@
                             <span class="text-[11px] font-extrabold text-amber-400">Work & Earn 24/7</span>
                         </div>
                         <h2 class="text-xl font-black tracking-tight text-white">VIP Work Marketplace</h2>
-                        <p class="text-xs text-blue-200">নিচের যেকোনো VIP কার্ডে ক্লিক করে একাউন্ট সাবমিট করুন</p>
+                        <p class="text-xs text-blue-200">যেকোনো VIP কার্ডে ক্লিক করে কাজ ও একাউন্ট জমা দিন</p>
                     </div>
                 </div>
 
                 <!-- 3 LUXURY VIP CARDS -->
                 <div class="space-y-3" id="vip-cards-container">
-                    <!-- Cards will be injected dynamically -->
+                    <!-- Dynamic VIP Cards -->
                 </div>
 
                 <!-- Submissions History Button -->
@@ -465,7 +489,7 @@
                 <div id="work-user-submissions-list" class="space-y-3 hidden min-h-[220px]"></div>
             </div>
 
-            <!-- 2.1 VIP WORK DETAIL & MULTI-ACCOUNT SUBMISSION PAGE -->
+            <!-- 2.1 VIP WORK DETAIL, SUBMISSION & PRO MASTER TRAINING PAGE -->
             <div id="work-detail-page" class="p-4 space-y-4 sub-page">
                 <div class="flex items-center gap-2 mb-1">
                     <button onclick="navigateTo('work-page')" class="p-2 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 transition">
@@ -473,7 +497,20 @@
                     </button>
                     <div>
                         <h2 class="text-base font-extrabold text-slate-800" id="selected-vip-title">VIP Hub</h2>
-                        <p class="text-[10.5px] text-slate-400">অ্যাকাউন্টের তথ্য নির্ভুলভাবে সাবমিট করুন</p>
+                        <p class="text-[10.5px] text-slate-400" id="selected-vip-subtitle">অ্যাকাউন্টের তথ্য নির্ভুলভাবে সাবমিট করুন</p>
+                    </div>
+                </div>
+
+                <!-- SPECIAL TRAINING / WORK TUTORIAL BOX FOR PRO MASTER -->
+                <div id="pro-master-training-box" class="hidden bg-gradient-to-br from-amber-500/10 via-orange-500/10 to-amber-500/5 p-4 rounded-3xl border border-amber-300 space-y-2.5">
+                    <div class="flex items-center gap-2 text-amber-900 font-black text-xs">
+                        <i data-lucide="graduation-cap" class="w-4 h-4 text-amber-600"></i>
+                        <span>Pro Master স্পেশাল কাজ ও ট্রেনিং গাইড</span>
+                    </div>
+                    <div class="text-xs text-slate-700 space-y-1.5 leading-relaxed bg-white/80 p-3 rounded-2xl border border-amber-200/60">
+                        <p><b>১. Gmail মেকিং ও আনলিমিটেড ক্রিয়েশন:</b> USA/UK ভিপিএন ও রিকভারি মেইল দিয়ে প্রতি জিমেইল তৈরি করার নিয়ম শিখুন।</p>
+                        <p><b>২. Facebook ভেরিফাইড আইডি:</b> ওল্ড/একটিভ ফেসবুক আইডি তৈরি এবং ২এফএ কোড সেটআপ পদ্ধতি।</p>
+                        <p><b>৩. বাল্ক ডেলিভারি:</b> প্রতিদিন ৫০-১০০ একাউন্ট একসাথে সেল করে নিশ্চিত ইনকাম করুন।</p>
                     </div>
                 </div>
 
@@ -510,11 +547,6 @@
                     <div>
                         <label class="block text-xs font-bold text-slate-700 mb-1">রিকভারি মেইল / 2FA কী / অতিরিক্ত ডাটা:</label>
                         <textarea id="acc-extra-input" rows="2" placeholder="Recovery email / 2FA Code (যদি থাকে)" class="w-full p-2.5 rounded-xl input-field text-xs font-mono"></textarea>
-                    </div>
-
-                    <div class="bg-blue-50/70 p-3 rounded-2xl border border-blue-100 text-[11px] text-blue-900 space-y-1">
-                        <p>• সঠিক তথ্য সাবমিট করলে ভেরিফাই শেষে সরাসরি ব্যালেন্স যুক্ত হবে।</p>
-                        <p>• ভুল বা ফেক তথ্য দিলে অ্যাকাউন্ট ব্লক করা হতে পারে।</p>
                     </div>
 
                     <button id="btn-submit-account-work" onclick="submitVipAccountData()" class="w-full py-3.5 rounded-2xl btn-buy font-extrabold text-xs flex items-center justify-center gap-2 shadow-lg">
@@ -574,7 +606,7 @@
             <div id="task-page" class="p-4 space-y-4 sub-page">
                 <div class="bg-gradient-to-br from-amber-500 via-orange-500 to-red-500 p-5 rounded-3xl text-white shadow-lg space-y-2 relative overflow-hidden">
                     <h2 class="text-xl font-black">Tasks & Free Cash</h2>
-                    <p class="text-xs text-orange-100 leading-relaxed">সহজ টাস্ক পূরণ করে ও রেফার করে ফ্রি ব্যালেন্স আয় করুন!</p>
+                    <p class="text-xs text-orange-100 leading-relaxed">সহজ টাস্ক পূরণ করে ফ্রি ব্যালেন্স আয় করুন!</p>
                 </div>
 
                 <!-- Daily Check-in -->
@@ -609,48 +641,87 @@
                     </div>
                     <div id="tg-task-action-container"></div>
                 </div>
+            </div>
 
-                <!-- Referral Task with ৳10 / Refer -->
+            <!-- 5. BRAND NEW DEDICATED REFERRAL PAGE (REPLACED ORDERS IN BOTTOM NAV) -->
+            <div id="refer-page" class="p-4 space-y-4 sub-page">
+                <div class="bg-gradient-to-br from-indigo-900 via-blue-900 to-slate-900 p-5 rounded-3xl text-white shadow-xl relative overflow-hidden border border-blue-500/20">
+                    <div class="relative z-10 space-y-2">
+                        <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-black uppercase tracking-wider border border-emerald-400/30 inline-flex items-center gap-1">
+                            <i data-lucide="gift" class="w-3 h-3"></i> ৳10 / Active Refer
+                        </span>
+                        <h2 class="text-xl font-black tracking-tight text-white">Refer & Earn System</h2>
+                        <p class="text-xs text-blue-200">প্রতিটি সফল একাউন্ট একটিভ রেফারে পাবেন সরাসরি ১০ টাকা!</p>
+                    </div>
+                </div>
+
+                <!-- Referral Stats Grid -->
+                <div class="grid grid-cols-3 gap-2 text-center">
+                    <div class="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-sm">
+                        <p class="text-[9.5px] font-extrabold text-slate-400 uppercase">মোট রেফার</p>
+                        <p id="ref-stat-total" class="text-base font-black text-slate-800 mt-1">0</p>
+                    </div>
+                    <div class="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-sm">
+                        <p class="text-[9.5px] font-extrabold text-slate-400 uppercase">সক্রিয় রেফার</p>
+                        <p id="ref-stat-active" class="text-base font-black text-emerald-600 mt-1">0</p>
+                    </div>
+                    <div class="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-sm">
+                        <p class="text-[9.5px] font-extrabold text-slate-400 uppercase">রেফার ইনকাম</p>
+                        <p id="ref-stat-earned" class="text-base font-black text-blue-600 mt-1">৳0.00</p>
+                    </div>
+                </div>
+
+                <!-- Referral Link Box -->
                 <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm space-y-2.5">
                     <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-2xl bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold">
-                                <i data-lucide="users" class="w-5 h-5"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-extrabold text-xs text-slate-800">বন্ধু রেফার করুন (৳১০ প্রতি রেফারে)</h4>
-                                <p class="text-[11px] text-slate-500">রেফারকৃত ইউজার একাউন্ট একটিভ করলে পাবেন ১০ টাকা</p>
-                            </div>
-                        </div>
-                        <span class="text-xs font-black text-indigo-600 bg-indigo-50 border border-indigo-200 px-2.5 py-1 rounded-full">+৳১০.০০</span>
+                        <span class="text-xs font-black text-slate-700">আপনার ব্যক্তিগত রেফার লিংক:</span>
+                        <span class="text-[10px] text-blue-600 font-bold bg-blue-50 px-2 py-0.5 rounded-md">10 BDT Bonus</span>
                     </div>
                     <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-100 flex items-center justify-between">
-                        <span class="text-[11px] font-mono text-slate-600 truncate mr-2" id="task-ref-link">https://t.me/Gmail_HUB7bot/buy</span>
-                        <button onclick="copyReferralLink()" class="px-3 py-1.5 bg-indigo-600 text-white rounded-lg text-xs font-bold flex items-center gap-1 active:scale-95 transition">
+                        <span class="text-[11px] font-mono text-slate-600 truncate mr-2" id="dedicated-ref-link-display">https://t.me/Gmail_HUB7bot/buy</span>
+                        <button onclick="copyReferralLink()" class="px-3 py-1.5 bg-blue-600 text-white rounded-lg text-xs font-bold flex items-center gap-1 active:scale-95 transition">
                             <i data-lucide="copy" class="w-3.5 h-3.5"></i>
                             <span>Copy</span>
                         </button>
                     </div>
                 </div>
+
+                <!-- Referral List Header & Container -->
+                <div class="space-y-2.5">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-xs font-black uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
+                            <i data-lucide="users" class="w-4 h-4 text-blue-600"></i>
+                            <span>রেফার করা ইউজারদের তালিকা</span>
+                        </h3>
+                        <span class="text-[10.5px] text-slate-400 font-bold" id="ref-list-count-badge">০ জন</span>
+                    </div>
+
+                    <div id="referred-users-list-container" class="space-y-2.5 min-h-[160px]">
+                        <!-- Dynamic Referral Users List -->
+                    </div>
+                </div>
             </div>
 
-            <!-- 5. ORDERS PAGE -->
+            <!-- 6. ORDERS PAGE (ACCESSIBLE VIA MENU & HOME BANNER) -->
             <div id="orders-page" class="p-4 space-y-4 sub-page">
                 <div class="flex items-center justify-between border-b border-slate-200 pb-3">
-                    <div>
-                        <h2 class="text-xl font-black text-slate-800">Your Orders</h2>
-                        <p class="text-xs text-slate-500">আপনার ক্রয়কৃত সকল আইটেমের তালিকা</p>
-                    </div>
-                    <div class="flex gap-2">
-                        <button onclick="copyAllOrdersExcelFormat()" class="bg-blue-50 text-blue-600 p-2 rounded-xl text-xs font-bold flex items-center gap-1 border border-blue-200">
-                            <i data-lucide="copy" class="w-3.5 h-3.5"></i> COPY
+                    <div class="flex items-center gap-2">
+                        <button onclick="navigateTo('home-page')" class="p-2 rounded-xl bg-white border border-slate-200">
+                            <i data-lucide="arrow-left" class="w-4 h-4"></i>
                         </button>
+                        <div>
+                            <h2 class="text-base font-black text-slate-800">Your Orders</h2>
+                            <p class="text-[10px] text-slate-500">আপনার ক্রয়কৃত সকল আইটেমের তালিকা</p>
+                        </div>
                     </div>
+                    <button onclick="copyAllOrdersExcelFormat()" class="bg-blue-50 text-blue-600 p-2 rounded-xl text-xs font-bold flex items-center gap-1 border border-blue-200">
+                        <i data-lucide="copy" class="w-3.5 h-3.5"></i> COPY
+                    </button>
                 </div>
                 <div id="orders-purchase-history" class="space-y-3 min-h-[200px]"></div>
             </div>
 
-            <!-- 6. PROFILE PAGE -->
+            <!-- 7. PROFILE PAGE -->
             <div id="profile-page" class="p-4 space-y-4 sub-page">
                 <div class="profile-hero-card p-6 rounded-3xl text-white shadow-2xl text-center space-y-3">
                     <div class="flex items-center justify-between">
@@ -664,7 +735,6 @@
 
                     <div class="relative w-20 h-20 mx-auto my-2">
                         <div class="w-full h-full rounded-full bg-slate-950 flex items-center justify-center font-black text-2xl text-white border-2 border-blue-400">
-                            <img id="profile-avatar-img" class="w-full h-full object-cover hidden rounded-full" alt="Profile">
                             <span id="profile-initials">U</span>
                         </div>
                     </div>
@@ -685,9 +755,26 @@
                         <p id="profile-stat-work-subs" class="text-base font-black text-emerald-600 mt-1">0</p>
                     </div>
                 </div>
+
+                <div class="bg-white p-2 rounded-2xl border border-slate-200 shadow-sm divide-y divide-slate-100 text-xs font-bold">
+                    <button onclick="navigateTo('orders-page')" class="w-full p-3 flex items-center justify-between hover:bg-slate-50 rounded-xl transition">
+                        <div class="flex items-center gap-2.5">
+                            <div class="p-1.5 bg-blue-50 text-blue-600 rounded-lg"><i data-lucide="shopping-bag" class="w-4 h-4"></i></div>
+                            <span>আমার অর্ডারসমূহ (Orders History)</span>
+                        </div>
+                        <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400"></i>
+                    </button>
+                    <button onclick="navigateTo('refer-page')" class="w-full p-3 flex items-center justify-between hover:bg-slate-50 rounded-xl transition">
+                        <div class="flex items-center gap-2.5">
+                            <div class="p-1.5 bg-indigo-50 text-indigo-600 rounded-lg"><i data-lucide="gift" class="w-4 h-4"></i></div>
+                            <span>রেফার ও ইনকাম লিস্ট</span>
+                        </div>
+                        <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400"></i>
+                    </button>
+                </div>
             </div>
 
-            <!-- 7. WALLET TRANSFERS PAGE -->
+            <!-- 8. WALLET TRANSFERS PAGE -->
             <div id="features-page" class="p-4 space-y-5 sub-page">
                 <div class="flex items-center gap-2 mb-2">
                     <button onclick="navigateTo('home-page')" class="p-2 rounded-xl bg-white border border-slate-200">
@@ -709,7 +796,7 @@
                 </div>
             </div>
 
-            <!-- 8. HISTORY PAGE -->
+            <!-- 9. HISTORY PAGE -->
             <div id="history-page" class="p-4 space-y-6 sub-page">
                 <div class="flex items-center gap-2 mb-2">
                     <button onclick="navigateTo('home-page')" class="p-2 rounded-xl bg-white border border-slate-200">
@@ -722,7 +809,7 @@
 
         </main>
 
-        <!-- FLOATING BOTTOM NAVIGATION -->
+        <!-- FLOATING BOTTOM NAVIGATION (WITH REFER BUTTON IN PLACE OF ORDERS) -->
         <div class="bottom-nav-container">
             <nav class="bottom-nav">
                 <div class="nav-item active" data-page="home-page" onclick="navigateTo('home-page')">
@@ -737,9 +824,9 @@
                     <div class="nav-icon-wrapper"><i data-lucide="gift" class="w-5 h-5"></i></div>
                     <span>Tasks</span>
                 </div>
-                <div class="nav-item" data-page="orders-page" onclick="navigateTo('orders-page')">
-                    <div class="nav-icon-wrapper"><i data-lucide="shopping-bag" class="w-5 h-5"></i></div>
-                    <span>Orders</span>
+                <div class="nav-item" data-page="refer-page" onclick="navigateTo('refer-page')">
+                    <div class="nav-icon-wrapper"><i data-lucide="users" class="w-5 h-5"></i></div>
+                    <span>Refer</span>
                 </div>
                 <div class="nav-item" data-page="profile-page" onclick="navigateTo('profile-page')">
                     <div class="nav-icon-wrapper"><i data-lucide="user" class="w-5 h-5"></i></div>
@@ -787,7 +874,7 @@
             <h3 class="text-base font-bold text-slate-800" id="buy-modal-title">Buy Service</h3>
             <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200 flex items-center justify-between text-xs">
                 <span class="font-bold text-slate-700">পরিমাণ:</span>
-                <input id="buy-modal-qty-input" type="number" value="1" min="1" oninput="handleBuyModalQtyInput(this)" class="w-16 p-1.5 rounded-lg border text-center font-bold">
+                <input id="buy-modal-qty-input" type="number" value="1" min="1" class="w-16 p-1.5 rounded-lg border text-center font-bold">
             </div>
             <div class="text-xs text-blue-900 font-bold" id="buy-modal-price">৳0.00</div>
             <div class="flex gap-2">
@@ -797,24 +884,7 @@
         </div>
     </div>
 
-    <!-- GATEWAY PAYMENT SUCCESS MODAL -->
-    <div id="gateway-success-modal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center z-[85] p-4 backdrop-blur-sm">
-        <div class="bg-white rounded-3xl p-6 w-full max-w-sm space-y-4 text-center shadow-2xl">
-            <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto">
-                <i data-lucide="check-circle" class="w-10 h-10"></i>
-            </div>
-            <h2 class="text-xl font-black text-slate-800">পেমেন্ট সফল হয়েছে!</h2>
-            <div class="bg-slate-50 p-3 rounded-2xl border border-dashed text-left space-y-1 text-xs">
-                <div>TXID: <span id="displayTxid" class="font-mono font-bold text-purple-600"></span></div>
-                <div>Amount: <span id="displayAmount" class="font-bold text-slate-900"></span></div>
-            </div>
-            <button onclick="document.getElementById('gateway-success-modal').classList.add('hidden'); navigateTo('home-page');" class="w-full py-3.5 rounded-xl btn-gateway-pay font-bold text-xs">
-                Return to Shop
-            </button>
-        </div>
-    </div>
-
-    <!-- FIREBASE & CORE SCRIPT LOGIC -->
+    <!-- FIREBASE & CORE JAVASCRIPT LOGIC -->
     <script type="module">
         const baseFirebaseConfig = {
             apiKey: "AIzaSyBopnlRjMScCBaKaxvYsZesAvzxtEjSFRw",
@@ -830,26 +900,26 @@
         import { 
             getFirestore, doc, setDoc, getDoc, collection, addDoc, serverTimestamp, 
             query, where, getDocs, limit, runTransaction, getCountFromServer, 
-            updateDoc, Timestamp, increment 
+            updateDoc, increment 
         } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
         const primaryApp = initializeApp(baseFirebaseConfig);
         const db = getFirestore(primaryApp);
 
-        // 3 VIP TIERS AS REQUESTED
+        // 3 VIP TIERS (NOB, Pro, Pro Master with 50 TK Fee & Training)
         const VIP_TIERS = [
-            { level: 0, title: "NOB", cost: 0, rewardBase: 6.00, icon: "shield", color: "from-slate-700 to-slate-900", desc: "ফ্রি মেম্বার - Gmail, FB এবং সাধারণ অ্যাকাউন্ট সাবমিট করুন।" },
-            { level: 1, title: "ডায়মন্ড", cost: 150, rewardBase: 15.00, icon: "gem", color: "from-cyan-600 to-blue-700", desc: "ডায়মন্ড টিয়ার - উচ্চ রেটের অ্যাকাউন্ট এবং রিভিউ টাস্ক।" },
-            { level: 2, title: "Pro Master", cost: 350, rewardBase: 35.00, icon: "crown", color: "from-amber-500 to-orange-600", desc: "প্রো মাস্টার - প্রিমিয়াম ভেরিফাইড বাল্ক অ্যাকাউন্ট ও স্পেশাল জব।" }
+            { level: 0, title: "NOB", cost: 0, rewardBase: 6.00, icon: "shield", color: "from-slate-700 to-slate-900", desc: "ফ্রি মেম্বার - সাধারণ একাউন্ট সাবমিট করুন।" },
+            { level: 1, title: "Pro", cost: 100, rewardBase: 12.00, icon: "zap", color: "from-blue-600 to-indigo-700", desc: "প্রো মেম্বার - উচ্চ মূল্যের অ্যাকাউন্ট সাবমিশন ও সাপোর্ট।" },
+            { level: 2, title: "Pro Master", cost: 50, rewardBase: 25.00, icon: "crown", color: "from-amber-500 to-orange-600", desc: "প্রো মাস্টার - কাজ শেখানো হবে এবং আনলিমিটেড বাল্ক একাউন্ট সেল।" }
         ];
 
         let currentUserTg = null;
         let userData = null;
         let selectedCategory = 'all';
         let displayedProductsCache = [];
-        let activeBuyModalData = null;
         let currentSelectedVip = VIP_TIERS[0];
         let currentAccountCategory = 'GMAIL';
+        let userPurchasesCache = [];
 
         const loader = document.getElementById('loader');
         const checkingOverlay = document.getElementById('payment-checking-overlay');
@@ -886,7 +956,6 @@
             const urlParams = new URLSearchParams(window.location.search);
             const isReturningFromGateway = urlParams.has('transaction_id') || urlParams.has('transactionId') || urlParams.has('status') || urlParams.has('upgrade_vip') || urlParams.has('activate_account');
 
-            // If returning from payment gateway, immediately show professional checking landing screen
             if (isReturningFromGateway) {
                 if (loader) loader.style.display = 'none';
                 if (checkingOverlay) checkingOverlay.classList.remove('hidden');
@@ -903,7 +972,6 @@
             lucide.createIcons();
             await initUserSession();
 
-            // Process Gateway Return Check
             if (isReturningFromGateway) {
                 await checkReturnPaymentStatus();
                 if (checkingOverlay) checkingOverlay.classList.add('hidden');
@@ -921,7 +989,6 @@
             const userRef = doc(db, "users", tgChatId);
             const userSnap = await getDoc(userRef);
 
-            // Read Telegram WebApp start parameter for Referrals
             const startParam = window.Telegram?.WebApp?.initDataUnsafe?.start_param || "";
             let inviterId = null;
             if (startParam && startParam.startsWith('ref_')) {
@@ -953,9 +1020,9 @@
             document.getElementById('drawer-user-name').textContent = userData.name;
             document.getElementById('drawer-user-id').textContent = `ID: ${userData.tgChatId}`;
             
-            // Set dynamic referral link
+            // Format Dedicated Referral Link
             const refLink = `https://t.me/Gmail_HUB7bot/buy?startapp=${userData.tgChatId}`;
-            const refEl = document.getElementById('task-ref-link');
+            const refEl = document.getElementById('dedicated-ref-link-display');
             if (refEl) refEl.textContent = refLink;
 
             updateUI();
@@ -971,7 +1038,6 @@
             document.getElementById('deposit-page-balance').textContent = `৳${bal}`;
             document.getElementById('profile-stat-balance').textContent = `৳${bal}`;
             
-            // Activation Banner Condition
             const banner = document.getElementById('account-activation-banner');
             if (!userData.isAccountActive) {
                 banner.classList.remove('hidden');
@@ -990,7 +1056,7 @@
         }
 
         // ==========================================
-        // VIP WORK MARKETPLACE (NOB, ডায়মন্ড, Pro Master)
+        // VIP WORK MARKETPLACE (NOB, Pro, Pro Master)
         // ==========================================
         function renderVipCards() {
             const container = document.getElementById('vip-cards-container');
@@ -1001,6 +1067,7 @@
             container.innerHTML = VIP_TIERS.map(tier => {
                 const isActive = userVip >= tier.level;
                 const isCurrentActive = userVip === tier.level;
+                const isProMaster = tier.level === 2;
 
                 return `
                 <div onclick="handleVipCardClick(${tier.level})" class="vip-card-pro p-4 space-y-3 ${isCurrentActive ? 'active-tier' : ''}">
@@ -1013,6 +1080,7 @@
                                 <div class="flex items-center gap-2">
                                     <h3 class="font-black text-slate-900 text-sm">${tier.title}</h3>
                                     ${tier.level === 0 ? '<span class="text-[10px] bg-slate-100 text-slate-700 px-2 py-0.5 rounded font-bold">FREE</span>' : ''}
+                                    ${isProMaster ? '<span class="text-[10px] bg-amber-100 text-amber-900 border border-amber-300 px-2 py-0.5 rounded font-bold">কাজ শেখানো হবে</span>' : ''}
                                 </div>
                                 <p class="text-[11px] text-slate-500 mt-0.5">${tier.desc}</p>
                             </div>
@@ -1031,7 +1099,7 @@
                                 </span>
                             ` : `
                                 <button onclick="event.stopPropagation(); initiateVipUpgradePayment(${tier.level}, ${tier.cost})" class="btn-vip-direct-pay px-3.5 py-1.5 text-xs flex items-center gap-1">
-                                    <i data-lucide="zap" class="w-3.5 h-3.5"></i> আনলক ৳${tier.cost}
+                                    <i data-lucide="zap" class="w-3.5 h-3.5"></i> এক্টিভ ফি ৳${tier.cost}
                                 </button>
                             `}
                         </div>
@@ -1058,6 +1126,17 @@
 
             currentSelectedVip = target;
             document.getElementById('selected-vip-title').textContent = `${target.title} - Account Submit Hub`;
+            
+            // Show special learning/training box if Pro Master
+            const trainingBox = document.getElementById('pro-master-training-box');
+            if (target.level === 2) {
+                trainingBox.classList.remove('hidden');
+                document.getElementById('selected-vip-subtitle').textContent = "কাজ শিখে একাউন্ট তৈরি ও সাবমিট করুন";
+            } else {
+                trainingBox.classList.add('hidden');
+                document.getElementById('selected-vip-subtitle').textContent = "অ্যাকাউন্টের তথ্য নির্ভুলভাবে সাবমিট করুন";
+            }
+
             setSubmitAccountCategory('GMAIL');
             navigateTo('work-detail-page');
         };
@@ -1131,7 +1210,81 @@
         };
 
         // ==========================================
-        // ACCOUNT ACTIVATION & 10 TK REFERRAL LOGIC
+        // REFERRAL SYSTEM & REFERRED USERS LIST
+        // ==========================================
+        async function loadReferralPageData() {
+            if (!userData) return;
+            const tgId = String(userData.tgChatId);
+            const container = document.getElementById('referred-users-list-container');
+            container.innerHTML = `<div class="flex justify-center p-6"><div class="w-6 h-6 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div></div>`;
+
+            try {
+                const q = query(collection(db, "users"), where("referredBy", "==", tgId));
+                const snap = await getDocs(q);
+
+                const totalRefs = snap.size;
+                let activeRefs = 0;
+                const referredUsers = [];
+
+                snap.forEach(docSnap => {
+                    const data = docSnap.data();
+                    if (data.isAccountActive) activeRefs++;
+                    referredUsers.push(data);
+                });
+
+                const totalEarned = activeRefs * 10;
+
+                document.getElementById('ref-stat-total').textContent = String(totalRefs);
+                document.getElementById('ref-stat-active').textContent = String(activeRefs);
+                document.getElementById('ref-stat-earned').textContent = `৳${totalEarned.toFixed(2)}`;
+                document.getElementById('ref-list-count-badge').textContent = `${totalRefs} জন`;
+
+                if (referredUsers.length === 0) {
+                    container.innerHTML = `<div class="bg-white p-6 rounded-2xl border text-center text-xs text-slate-400 font-semibold">আপনার রেফার লিংকে এখনো কেউ জয়েন করেনি।</div>`;
+                    return;
+                }
+
+                container.innerHTML = referredUsers.map(user => {
+                    const isActive = user.isAccountActive === true;
+                    return `
+                    <div class="bg-white p-3.5 rounded-2xl border border-slate-200 flex items-center justify-between text-xs shadow-sm">
+                        <div class="flex items-center gap-2.5">
+                            <div class="w-9 h-9 rounded-full ${isActive ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-600'} flex items-center justify-center font-bold">
+                                <i data-lucide="${isActive ? 'user-check' : 'user-x'}" class="w-4 h-4"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-black text-slate-800">${user.name || 'User'}</h4>
+                                <span class="text-[10px] font-mono text-slate-400">ID: ${user.tgChatId}</span>
+                            </div>
+                        </div>
+                        <div>
+                            ${isActive ? `
+                                <span class="px-2.5 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-lg text-[10.5px] font-black flex items-center gap-1">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Active (+৳১০)
+                                </span>
+                            ` : `
+                                <span class="px-2.5 py-1 bg-amber-50 text-amber-700 border border-amber-200 rounded-lg text-[10.5px] font-bold">
+                                    Inactive (Pending)
+                                </span>
+                            `}
+                        </div>
+                    </div>`;
+                }).join('');
+                lucide.createIcons();
+            } catch(e) {
+                container.innerHTML = `<div class="text-xs text-red-500 text-center p-4">ডাটা লোড করতে সমস্যা হয়েছে</div>`;
+            }
+        }
+
+        window.copyReferralLink = function() {
+            const link = `https://t.me/Gmail_HUB7bot/buy?startapp=${userData?.tgChatId || ''}`;
+            navigator.clipboard.writeText(link).then(() => {
+                showToast("রেফারেল লিংক কপি হয়েছে! (প্রতি এক্টিভ রেফারে ১০ টাকা)", "success");
+            });
+        };
+
+        // ==========================================
+        // ACCOUNT ACTIVATION (10 BDT)
         // ==========================================
         window.openAccountActivationModal = function() {
             document.getElementById('account-activation-modal').classList.remove('hidden');
@@ -1153,7 +1306,6 @@
                         activatedAt: serverTimestamp()
                     });
 
-                    // If referred by someone, reward the referrer 10 BDT!
                     if (userData.referredBy) {
                         const inviterRef = doc(db, "users", String(userData.referredBy));
                         const inviterSnap = await transaction.get(inviterRef);
@@ -1212,7 +1364,6 @@
             const isSuccess = (urlParams.get('status') || '').toLowerCase() === 'success';
             const activateAccount = urlParams.get('activate_account');
             const upgradeVip = urlParams.get('upgrade_vip');
-            const txid = urlParams.get('transaction_id') || ("TXN_" + Date.now());
 
             if (isSuccess && userData) {
                 const userRef = doc(db, "users", String(userData.tgChatId));
@@ -1241,16 +1392,10 @@
             }
         }
 
-        window.copyReferralLink = function() {
-            const link = `https://t.me/Gmail_HUB7bot/buy?startapp=${userData?.tgChatId || ''}`;
-            navigator.clipboard.writeText(link).then(() => {
-                showToast("রেফারেল লিংক কপি হয়েছে! (প্রতি রেফারে ১০ টাকা)", "success");
-            });
-        };
-
+        // ==========================================
         // NAVIGATION ROUTER
+        // ==========================================
         window.navigateTo = function(pageId) {
-            // Protect Work & Task page if not active
             if ((pageId === 'work-page' || pageId === 'task-page') && userData && !userData.isAccountActive) {
                 openAccountActivationModal();
                 return;
@@ -1263,12 +1408,44 @@
             document.querySelectorAll('.nav-item').forEach(item => {
                 item.classList.toggle('active', item.dataset.page === pageId);
             });
+
+            if (pageId === 'refer-page') loadReferralPageData();
+            if (pageId === 'orders-page') loadOrdersHistory();
             lucide.createIcons();
         };
 
         function showMainPage(id) {
             document.querySelectorAll('.main-page').forEach(p => p.classList.remove('active'));
             document.getElementById(id).classList.add('active');
+        }
+
+        async function loadOrdersHistory() {
+            const listEl = document.getElementById('orders-purchase-history');
+            listEl.innerHTML = `<div class="flex justify-center p-6"><div class="w-6 h-6 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div></div>`;
+            try {
+                const q = query(collection(db, "purchases"), where("userId", "in", [String(userData.tgChatId), Number(userData.tgChatId)]));
+                const snap = await getDocs(q);
+
+                if (snap.empty) {
+                    listEl.innerHTML = `<div class="bg-white p-8 rounded-2xl text-center text-slate-400 font-semibold border">আপনার কোনো অর্ডার ইতিহাস নেই।</div>`;
+                    return;
+                }
+
+                userPurchasesCache = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                listEl.innerHTML = userPurchasesCache.map(p => `
+                    <div class="product-card p-4 space-y-2">
+                        <div class="flex justify-between items-center">
+                            <h4 class="font-extrabold text-sm text-slate-800">${p.mailType || 'Account'}</h4>
+                            <span class="text-sm font-black text-blue-600">৳${p.cost || '0.00'}</span>
+                        </div>
+                        <div class="bg-slate-50 p-2.5 rounded-xl text-xs font-mono break-all text-slate-700">
+                            ${p.mail || ''} | ${p.password || ''}
+                        </div>
+                    </div>`).join('');
+                lucide.createIcons();
+            } catch(e) {
+                listEl.innerHTML = `<p class="text-center text-red-500 text-xs">${e.message}</p>`;
+            }
         }
     </script>
 </body>
