@@ -1993,7 +1993,7 @@
 
             if (masterUnlocked) {
                 if (mBox1Title) mBox1Title.textContent = "Pending tasks";
-                if (mBox1Val) mBox1Val.textContent = `${stats.masterPending} টি`;
+                if (mBox1Val) mBox1Val.textContent = `${stats.masterPending} `;
                 if (mBox2Title) mBox2Title.textContent = "টোটাল ইনকাম";
                 if (mBox2Val) mBox2Val.textContent = `৳${stats.masterEarned.toFixed(2)}`;
 
@@ -2009,14 +2009,14 @@
                         masterContainer.innerHTML = `
                             <button onclick="showToast('আপনার আবেদনটি পর্যালোচনায় আছে। খুব শীঘ্রই টিম যোগাযোগ করবে।', 'info')" class="w-full py-3 rounded-xl bg-amber-100 text-amber-900 border border-amber-300 font-black text-xs flex items-center justify-center gap-2 shadow-sm">
                                 <i data-lucide="clock" class="w-4 h-4"></i>
-                                <span>ট্রেনিং আবেদন প্রক্রিয়াধীন (Under Review)</span>
+                                <span>আমারা খুব শীঘ্রই আপনার সাথে যোগাযোগ করছি</span>
                             </button>
                         `;
                     } else {
                         masterContainer.innerHTML = `
                             <button onclick="openMasterWorkApplicationPage()" class="w-full py-3 rounded-xl btn-master-pay text-white font-black text-xs flex items-center justify-center gap-2 shadow-md">
                                 <i data-lucide="file-text" class="w-4 h-4"></i>
-                                <span>লাইভ ট্রেনিং আবেদন করুন (Apply Now)</span>
+                                <span>Apply Now</span>
                             </button>
                         `;
                     }
@@ -2025,7 +2025,7 @@
                 if (mBox1Title) mBox1Title.textContent = "প্রতি অ্যাকাউন্টে পাবেন";
                 if (mBox1Val) mBox1Val.textContent = "৳১২০ - ৳১৫০";
                 if (mBox2Title) mBox2Title.textContent = "কাজের সুযোগ";
-                if (mBox2Val) mBox2Val.textContent = "প্রতিদিন একাধিক";
+                if (mBox2Val) mBox2Val.textContent = "একাধিক";
 
                 if (masterContainer) {
                     masterContainer.innerHTML = `
