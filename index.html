@@ -506,11 +506,11 @@
             <div class="flex items-center gap-2">
                 <i data-lucide="alert-triangle" class="w-4 h-4 text-amber-200 flex-shrink-0"></i>
                 <div class="text-xs font-bold leading-tight">
-                    <span>ইনকাম করতে একাউন্ট একটিভ করুন</span>
+                    <span>রেফার ইনকাম পেতে একাউন্ট একটিভ করুন</span>
                     <span class="text-[10px] text-amber-100 block">মাত্র ১০ টাকা দিয়ে একাউন্ট সক্রিয় করুন</span>
                 </div>
             </div>
-            <button onclick="activateAccountViaGateway()" class="px-3 py-1.5 bg-white text-slate-900 rounded-xl font-black text-xs shadow hover:bg-slate-100 active:scale-95 transition">
+            <button onclick="openAccountActivationModal()" class="px-3 py-1.5 bg-white text-slate-900 rounded-xl font-black text-xs shadow hover:bg-slate-100 active:scale-95 transition">
                 একটিভ করুন
             </button>
         </div>
@@ -546,136 +546,113 @@
 
             <!-- 2. WORK PORTAL PAGE -->
             <div id="work-page" class="p-4 space-y-4 sub-page">
-                <!-- Lock overlay if account is not active -->
-                <div id="work-locked-screen" class="hidden bg-white p-6 rounded-3xl border border-slate-200 text-center space-y-4 shadow-sm">
-                    <div class="w-16 h-16 rounded-3xl bg-amber-100 text-amber-600 flex items-center justify-center mx-auto">
-                        <i data-lucide="lock" class="w-8 h-8"></i>
+                <div class="bg-gradient-to-br from-slate-900 via-indigo-950 to-blue-950 p-5 rounded-3xl text-white shadow-xl relative overflow-hidden border border-blue-500/20">
+                    <div class="absolute -right-6 -bottom-6 w-36 h-36 bg-blue-500/10 rounded-full blur-2xl pointer-events-none"></div>
+                    <div class="relative z-10 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span id="work-user-status-badge" class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-black uppercase tracking-wider border border-emerald-400/30 inline-flex items-center gap-1.5">
+                                <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-400"></i> Active Member
+                            </span>
+                            <span class="text-[10.5px] font-bold text-amber-300 bg-amber-400/10 px-2.5 py-1 rounded-lg border border-amber-400/20 flex items-center gap-1">
+                                <i data-lucide="sparkles" class="w-3.5 h-3.5 text-amber-400"></i> Daily Real Earning
+                            </span>
+                        </div>
+
+                        <div>
+                            <h2 class="text-xl font-black tracking-tight text-white">Work Marketplace</h2>
+                            <p class="text-xs text-blue-200 mt-0.5">অ্যাকাউন্ট সেল ও মাস্টার কাজ করে প্রতিদিন নিশ্চিত আয় করুন</p>
+                        </div>
                     </div>
-                    <div>
-                        <h3 class="text-base font-black text-slate-800">ওয়ার্ক পোর্টাল লক রয়েছে</h3>
-                        <p class="text-xs text-slate-500 mt-1 leading-relaxed">কাজ করতে ও ইনকাম করতে প্রথমে ১০ টাকা দিয়ে আপনার অ্যাকাউন্ট সক্রিয় করুন।</p>
-                    </div>
-                    <button onclick="activateAccountViaGateway()" class="w-full py-3.5 btn-gateway-pay text-white font-extrabold rounded-2xl text-xs flex items-center justify-center gap-2">
-                        <i data-lucide="zap" class="w-4 h-4"></i>
-                        <span>১০ টাকায় একাউন্ট একটিভ করুন</span>
+                </div>
+
+                <div class="flex gap-2">
+                    <button id="btn-tab-work-feed" onclick="switchWorkView('jobs')" class="flex-1 py-2.5 bg-blue-600 text-white rounded-xl font-bold text-xs shadow-md transition">
+                        Available Jobs
+                    </button>
+                    <button id="btn-tab-work-my-subs" onclick="switchWorkView('my_subs')" class="flex-1 py-2.5 bg-slate-100 text-slate-700 hover:bg-slate-200 rounded-xl font-bold text-xs transition">
+                        My Work Submissions
                     </button>
                 </div>
 
-                <div id="work-content-section" class="space-y-4">
-                    <div class="bg-gradient-to-br from-slate-900 via-indigo-950 to-blue-950 p-5 rounded-3xl text-white shadow-xl relative overflow-hidden border border-blue-500/20">
-                        <div class="absolute -right-6 -bottom-6 w-36 h-36 bg-blue-500/10 rounded-full blur-2xl pointer-events-none"></div>
-                        <div class="relative z-10 space-y-2">
-                            <div class="flex items-center justify-between">
-                                <span id="work-user-status-badge" class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-black uppercase tracking-wider border border-emerald-400/30 inline-flex items-center gap-1.5">
-                                    <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-400"></i> Active Member
-                                </span>
-                                <span class="text-[10.5px] font-bold text-amber-300 bg-amber-400/10 px-2.5 py-1 rounded-lg border border-amber-400/20 flex items-center gap-1">
-                                    <i data-lucide="sparkles" class="w-3.5 h-3.5 text-amber-400"></i> Daily Real Earning
-                                </span>
-                            </div>
-
-                            <div>
-                                <h2 class="text-xl font-black tracking-tight text-white">Work Marketplace</h2>
-                                <p class="text-xs text-blue-200 mt-0.5">অ্যাকাউন্ট সেল ও মাস্টার কাজ করে প্রতিদিন নিশ্চিত আয় করুন</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="flex gap-2">
-                        <button id="btn-tab-work-feed" onclick="switchWorkView('jobs')" class="flex-1 py-2.5 bg-blue-600 text-white rounded-xl font-bold text-xs shadow-md transition">
-                            Available Jobs
-                        </button>
-                        <button id="btn-tab-work-my-subs" onclick="switchWorkView('my_subs')" class="flex-1 py-2.5 bg-slate-100 text-slate-700 hover:bg-slate-200 rounded-xl font-bold text-xs transition">
-                            My Work Submissions
-                        </button>
-                    </div>
-
-                    <div id="work-jobs-feed-list" class="space-y-4 min-h-[220px]">
-                        <!-- VIP 0 FREE MEMBER CARD -->
-                        <div class="work-card-pro p-5 border border-slate-200 bg-white space-y-4">
-                            <div class="flex items-start justify-between">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-black border border-emerald-100">
-                                        <i data-lucide="user-check" class="w-6 h-6"></i>
+                <div id="work-jobs-feed-list" class="space-y-4 min-h-[220px]">
+                    <!-- VIP 0 FREE MEMBER CARD -->
+                    <div class="work-card-pro p-5 border border-slate-200 bg-white space-y-4">
+                        <div class="flex items-start justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-black border border-emerald-100">
+                                    <i data-lucide="user-check" class="w-6 h-6"></i>
+                                </div>
+                                <div>
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="px-2.5 py-0.5 text-[9.5px] font-black rounded-md bg-emerald-100 text-emerald-800">
+                                            VIP 0 FREE
+                                        </span>
+                                        <span class="text-[9.5px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md">Account Sell</span>
                                     </div>
-                                    <div>
-                                        <div class="flex items-center gap-1.5">
-                                            <span class="px-2.5 py-0.5 text-[9.5px] font-black rounded-md bg-emerald-100 text-emerald-800">
-                                                VIP 0 FREE
-                                            </span>
-                                            <span class="text-[9.5px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md">Account Sell</span>
-                                        </div>
-                                        <h3 class="font-black text-base text-slate-900 mt-1">ফ্রি অ্যাকাউন্ট সেল পোর্টাল</h3>
-                                    </div>
-                                </div>
-                                <span id="vip0-fee-badge" class="text-xs font-black text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200 font-mono">0৳ Fee</span>
-                            </div>
-
-                            <p class="text-xs text-slate-600 leading-relaxed">
-                                যেকোনো ফ্রেশ অথবা রিকভারি মেইল যুক্ত <b>Gmail, Facebook, Telegram</b> অথবা অন্যান্য অ্যাকাউন্ট জমা দিয়ে সরাসরি ইনকাম করুন।
-                            </p>
-
-                            <div class="grid grid-cols-2 gap-2 text-xs">
-                                <div class="bg-emerald-50/60 p-2.5 rounded-xl border border-emerald-100">
-                                    <span class="text-[9.5px] font-bold text-emerald-700 uppercase block">প্রতি কাজে রিওয়ার্ড</span>
-                                    <span class="text-sm font-black text-emerald-800 font-mono">৳৬.০০ - ৳১২.০০</span>
-                                </div>
-                                <div class="bg-blue-50/60 p-2.5 rounded-xl border border-blue-100">
-                                    <span class="text-[9.5px] font-bold text-blue-700 uppercase block">দৈনিক লিমিট</span>
-                                    <span class="text-sm font-black text-blue-800 font-mono">আনলিমিটেড</span>
+                                    <h3 class="font-black text-base text-slate-900 mt-1">ফ্রি অ্যাকাউন্ট সেল পোর্টাল</h3>
                                 </div>
                             </div>
-
-                            <div class="pt-1" id="vip0-action-container"></div>
+                            <span class="text-xs font-black text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200 font-mono">Free</span>
                         </div>
 
-                        <!-- MASTER WORK PREMIUM CARD -->
-                        <div class="work-card-pro p-5 border-2 border-amber-300 bg-gradient-to-b from-amber-50/40 via-white to-amber-50/20 space-y-4 shadow-md">
-                            <div class="flex items-start justify-between">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-600 text-white flex items-center justify-center font-black shadow-md">
-                                        <i data-lucide="crown" class="w-6 h-6"></i>
-                                    </div>
-                                    <div>
-                                        <div class="flex items-center gap-1.5">
-                                            <span class="px-2.5 py-0.5 text-[9.5px] font-black rounded-md bg-amber-500 text-slate-950">
-                                                MASTER WORK
-                                            </span>
-                                            <span class="text-[9.5px] font-bold text-amber-800 bg-amber-100 px-2 py-0.5 rounded-md">Live Training</span>
-                                        </div>
-                                        <h3 class="font-black text-base text-slate-900 mt-1">মাস্টার ওয়ার্ক (লাইভ ট্রেনিং)</h3>
-                                    </div>
-                                </div>
-                                <span id="master-fee-badge" class="text-xs font-black text-amber-800 bg-amber-100 px-3 py-1 rounded-full border border-amber-300 font-mono">৫০৳ ফি</span>
-                            </div>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            যেকোনো ফ্রেশ অথবা রিকভারি মেইল যুক্ত অ্যাকাউন্ট বিক্রি করে সরাসরি ইনকাম করতে পারবেন।
+                        </p>
 
-                            <div class="bg-amber-50 border border-amber-200/80 p-3.5 rounded-2xl text-xs space-y-1.5">
-                                <div class="flex items-center gap-1.5 text-amber-900 font-extrabold">
-                                    <i data-lucide="help-circle" class="w-4 h-4 text-amber-600"></i>
-                                    <span>টাকাটা কেন নেওয়া হচ্ছে?</span>
-                                </div>
-                                <p class="text-[11.5px] text-amber-950/80 leading-relaxed">
-                                    এই <b>৳৫০ টাকা ফি</b> মূলত লাইভ কাজ পুরোপুরি হাতে-কলমে <b>শেখানোর</b> জন্য নেওয়া হচ্ছে। একবার কাজ শিখে একটি কাজ সফলভাবে জমা দিলেই পাচ্ছেন <b>১৫০ টাকা</b>!
-                                </p>
+                        <div class="grid grid-cols-2 gap-2 text-xs" id="vip0-stats-box">
+                            <div class="bg-emerald-50/60 p-2.5 rounded-xl border border-emerald-100">
+                                <span class="text-[9.5px] font-bold text-emerald-700 uppercase block" id="vip0-box1-title">প্রতি কাজে পাবেন</span>
+                                <span class="text-sm font-black text-emerald-800 font-mono" id="vip0-box1-val">৳২০ - ৳৫০</span>
                             </div>
-
-                            <div class="grid grid-cols-2 gap-2 text-xs">
-                                <div class="bg-gradient-to-br from-emerald-50 to-emerald-100/70 p-2.5 rounded-xl border border-emerald-200">
-                                    <span class="text-[9.5px] font-bold text-emerald-700 uppercase block">১টি কাজ করলেই পাবেন</span>
-                                    <span class="text-base font-black text-emerald-800 font-mono">৳১৫০.০০</span>
-                                </div>
-                                <div class="bg-amber-100/50 p-2.5 rounded-xl border border-amber-200">
-                                    <span class="text-[9.5px] font-bold text-amber-800 uppercase block">প্রয়োজনীয় ফি</span>
-                                    <span class="text-base font-black text-amber-900 font-mono">৳৫০.০০ (এককালীন)</span>
-                                </div>
+                            <div class="bg-blue-50/60 p-2.5 rounded-xl border border-blue-100">
+                                <span class="text-[9.5px] font-bold text-blue-700 uppercase block" id="vip0-box2-title">লিমিট</span>
+                                <span class="text-sm font-black text-blue-800 font-mono" id="vip0-box2-val">Unlimited</span>
                             </div>
-
-                            <div class="pt-1" id="master-work-action-container"></div>
                         </div>
+
+                        <div class="pt-1" id="vip0-action-container"></div>
                     </div>
 
-                    <div id="work-user-submissions-list" class="space-y-3 hidden min-h-[220px]"></div>
+                    <!-- MASTER WORK PREMIUM CARD -->
+                    <div class="work-card-pro p-5 border-2 border-amber-300 bg-gradient-to-b from-amber-50/40 via-white to-amber-50/20 space-y-4 shadow-md">
+                        <div class="flex items-start justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-600 text-white flex items-center justify-center font-black shadow-md">
+                                    <i data-lucide="crown" class="w-6 h-6"></i>
+                                </div>
+                                <div>
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="px-2.5 py-0.5 text-[9.5px] font-black rounded-md bg-amber-500 text-slate-950">
+                                            MASTER WORK
+                                        </span>
+                                        <span class="text-[9.5px] font-bold text-amber-800 bg-amber-100 px-2 py-0.5 rounded-md">Live Training</span>
+                                    </div>
+                                    <h3 class="font-black text-base text-slate-900 mt-1">মাস্টার ওয়ার্ক (লাইভ ট্রেনিং)</h3>
+                                </div>
+                            </div>
+                            <span class="text-xs font-black text-amber-800 bg-amber-100 px-3 py-1 rounded-full border border-amber-300 font-mono">৫০৳</span>
+                        </div>
+
+                        <p class="text-xs text-slate-700 leading-relaxed bg-amber-50/70 p-3.5 rounded-2xl border border-amber-200/70">
+                            ফ্রিতে কাজ শেখালে কেউ গুরুত্ব দেয় না। মাত্র <b>৫০ টাকা দিয়ে কাজ শিখে ১০ মিনিট কাজ করেই</b> প্রতিটি অ্যাকাউন্ট থেকে আয় করতে পারবেন <b>১২০-১৫০ টাকা</b> এবং প্রতিদিন একাধিক কাজ করার সুযোগ রয়েছে।
+                        </p>
+
+                        <div class="grid grid-cols-2 gap-2 text-xs" id="master-stats-box">
+                            <div class="bg-gradient-to-br from-emerald-50 to-emerald-100/70 p-2.5 rounded-xl border border-emerald-200">
+                                <span class="text-[9.5px] font-bold text-emerald-700 uppercase block" id="master-box1-title">প্রতি অ্যাকাউন্টে পাবেন</span>
+                                <span class="text-sm font-black text-emerald-800 font-mono" id="master-box1-val">৳১২০ - ৳১৫০</span>
+                            </div>
+                            <div class="bg-amber-100/50 p-2.5 rounded-xl border border-amber-200">
+                                <span class="text-[9.5px] font-bold text-amber-800 uppercase block" id="master-box2-title">কাজের সুযোগ</span>
+                                <span class="text-sm font-black text-amber-900 font-mono" id="master-box2-val">প্রতিদিন একাধিক</span>
+                            </div>
+                        </div>
+
+                        <div class="pt-1" id="master-work-action-container"></div>
+                    </div>
                 </div>
+
+                <div id="work-user-submissions-list" class="space-y-3 hidden min-h-[220px]"></div>
             </div>
 
             <!-- 2.1 VIP 0 ACCOUNT SELL SUBMISSION PAGE -->
@@ -695,21 +672,21 @@
                         <div class="flex items-center justify-center gap-1.5 font-black text-xs">
                             <i data-lucide="mail" class="w-4 h-4 text-blue-600"></i> Gmail Sell
                         </div>
-                        <span class="text-[10px] text-emerald-600 font-bold block mt-0.5">৳৬.০০ - ৳১০.০০</span>
+                        <span class="text-[10px] text-emerald-600 font-bold block mt-0.5">৳২০.০০ - ৳৫০.০০</span>
                     </div>
 
                     <div class="account-type-pill" onclick="selectVip0AccountType('Facebook', this)">
                         <div class="flex items-center justify-center gap-1.5 font-black text-xs">
                             <i data-lucide="facebook" class="w-4 h-4 text-blue-600"></i> Facebook Sell
                         </div>
-                        <span class="text-[10px] text-emerald-600 font-bold block mt-0.5">৳৯.০০ / আইডি</span>
+                        <span class="text-[10px] text-emerald-600 font-bold block mt-0.5">৳২৫.০০ / আইডি</span>
                     </div>
 
                     <div class="account-type-pill" onclick="selectVip0AccountType('Telegram', this)">
                         <div class="flex items-center justify-center gap-1.5 font-black text-xs">
                             <i data-lucide="send" class="w-4 h-4 text-sky-500"></i> Telegram Sell
                         </div>
-                        <span class="text-[10px] text-emerald-600 font-bold block mt-0.5">৳১২.০০ / সেশন</span>
+                        <span class="text-[10px] text-emerald-600 font-bold block mt-0.5">৳৩০.০০ / সেশন</span>
                     </div>
 
                     <div class="account-type-pill" onclick="selectVip0AccountType('Other', this)">
@@ -755,49 +732,93 @@
                     </div>
                 </div>
 
-                <div class="bg-gradient-to-br from-amber-50 to-orange-50 p-4 rounded-2xl border border-amber-200 text-xs text-amber-950 space-y-1">
-                    <p class="font-extrabold flex items-center gap-1.5 text-amber-900">
-                        <i data-lucide="award" class="w-4 h-4 text-amber-600"></i>
-                        <span>লাইভ কাজ শেখানোর প্রক্রিয়া</span>
-                    </p>
-                    <p class="text-[11.5px] text-slate-600 leading-relaxed">
-                        আবেদন জমা দেওয়ার পর আমাদের ট্রেইনার টিম আপনার সাথে টেলিগ্রাম/হোয়াটসঅ্যাপে যোগাযোগ করে সুবিধাজনক সময়ে কাজটি শিখিয়ে দিবে।
-                    </p>
-                </div>
-
                 <div class="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm space-y-3.5">
                     <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1">আপনার পুরো নাম (Full Name):</label>
-                        <input id="master-app-name" type="text" placeholder="যেমন: মোঃ সাকিব হাসান" class="w-full p-2.5 rounded-xl input-field text-xs">
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1">আপনি কতদিন ধরে আমাদের সাথে / অনলাইন কাজে যুক্ত আছেন?</label>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">আপনি কত দিন ধরে অনলাইন earning সেক্টরে যুক্ত আছেন?</label>
                         <select id="master-app-experience" class="w-full p-2.5 rounded-xl input-field text-xs bg-white font-semibold">
-                            <option value="আমি একদম নতুন">আমি একদম নতুন (New)</option>
-                            <option value="১ থেকে ৩ মাস">১ থেকে ৩ মাস ধরে যুক্ত আছি</option>
-                            <option value="৬ মাসের বেশি">৬ মাসের বেশি সময় ধরে অভিজ্ঞ</option>
+                            <option value="আমি একদম নতুন">আমি একদম নতুন</option>
+                            <option value="১ থেকে ৩ মাস">১ থেকে ৩ মাস</option>
+                            <option value="৩ থেকে ৬ মাস">৩ থেকে ৬ মাস</option>
+                            <option value="৬ মাসের বেশি বা অভিজ্ঞ">৬ মাসের বেশি বা অভিজ্ঞ</option>
                         </select>
                     </div>
 
                     <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1">আপনি কখন ফ্রি থাকবেন / লাইভ ট্রেনিং নিতে পারবেন?</label>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">আপনার সাথে আমরা কখন যোগাযোগ করবো বা আপনি কখন ফ্রি থাকবেন?</label>
                         <select id="master-app-time" class="w-full p-2.5 rounded-xl input-field text-xs bg-white font-semibold">
-                            <option value="সকাল ১০টা - দুপুর ১টা">সকাল ১০:০০ টা - দুপুর ০১:০০ টা</option>
-                            <option value="দুপুর ৩টা - সন্ধ্যা ৬টা">দুপুর ০৩:০০ টা - সন্ধ্যা ০৬:০০ টা</option>
-                            <option value="রাত ৮টা - রাত ১১টা">রাত ০৮:০০ টা - রাত ১১:০০ টা</option>
+                            <option value="সকাল ১০:০০ টা - সকাল ১১:০০ টা">সকাল ১০:০০ টা - সকাল ১১:০০ টা</option>
+                            <option value="সকাল ১১:০০ টা - দুপুর ১২:০০ টা">সকাল ১১:০০ টা - দুপুর ১২:০০ টা</option>
+                            <option value="দুপুর ১২:০০ টা - দুপুর ০১:০০ টা">দুপুর ১২:০০ টা - দুপুর ০১:০০ টা</option>
+                            <option value="দুপুর ০৩:০০ টা - বিকাল ০৪:০০ টা">দুপুর ০৩:০০ টা - বিকাল ০৪:০০ টা</option>
+                            <option value="বিকাল ০৪:০০ টা - বিকাল ০৫:০০ টা">বিকাল ০৪:০০ টা - বিকাল ০৫:০০ টা</option>
+                            <option value="রাত ০৮:০০ টা - রাত ০৯:০০ টা">রাত ০৮:০০ টা - রাত ০৯:০০ টা</option>
+                            <option value="রাত ০৯:০০ টা - রাত ১০:০০ টা">রাত ০৯:০০ টা - রাত ১০:০০ টা</option>
                             <option value="যেকোনো সময়">যেকোনো সময় (Anytime)</option>
                         </select>
                     </div>
 
                     <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1">টেলিগ্রাম ইউজারনেম অথবা হোয়াটসঅ্যাপ নম্বর:</label>
-                        <input id="master-app-contact" type="text" placeholder="@username অথবা 018..." class="w-full p-2.5 rounded-xl input-field text-xs">
+                        <label class="block text-xs font-bold text-slate-700 mb-1">আপনার সাথে কোথায় যোগাযোগ করবো?</label>
+                        <select id="master-app-platform" class="w-full p-2.5 rounded-xl input-field text-xs bg-white font-semibold">
+                            <option value="WhatsApp">WhatsApp</option>
+                            <option value="Telegram">Telegram</option>
+                            <option value="IMO">IMO</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">যোগাযোগের নম্বর (বা ইউজারনেম):</label>
+                        <input id="master-app-contact" type="text" placeholder="018... অথবা ইউজারনেম" class="w-full p-2.5 rounded-xl input-field text-xs">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">আপনার যদি কোনো প্রত্যাশা থাকে (Optional):</label>
+                        <textarea id="master-app-expectations" rows="2" placeholder="আপনার কোনো মন্তব্য বা প্রত্যাশা থাকলে লিখুন..." class="w-full p-2.5 rounded-xl input-field text-xs"></textarea>
                     </div>
 
                     <button id="btn-submit-master-app" onclick="submitMasterApplication()" class="w-full py-3.5 rounded-2xl btn-master-pay text-white font-black text-sm flex items-center justify-center gap-2 shadow-lg">
                         <i data-lucide="send" class="w-4 h-4"></i>
                         <span>আবেদন জমা দিন (Submit)</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 2.3 MASTER WORK APPROVED TASK SUBMIT PAGE -->
+            <div id="master-task-submit-page" class="p-4 space-y-4 sub-page">
+                <div class="flex items-center gap-2 mb-1">
+                    <button onclick="navigateTo('work-page')" class="p-2 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 transition">
+                        <i data-lucide="arrow-left" class="w-4 h-4 text-slate-700"></i>
+                    </button>
+                    <div>
+                        <h2 class="text-base font-extrabold text-slate-800">Master Work টাস্ক সাবমিশন</h2>
+                        <p class="text-[10.5px] text-slate-400">লাইভ ট্রেনিং শেষে আপনার কাজের ডাটা সাবমিট করুন</p>
+                    </div>
+                </div>
+
+                <div class="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm space-y-3.5">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">GMAIL (ইমেইল):</label>
+                        <input id="mtask-gmail" type="email" placeholder="example@gmail.com" class="w-full p-2.5 rounded-xl input-field text-xs font-mono">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">PASSWORD (পাসওয়ার্ড):</label>
+                        <input id="mtask-password" type="text" placeholder="Password" class="w-full p-2.5 rounded-xl input-field text-xs font-mono">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">2FA (2-Factor Authentication Key / Code):</label>
+                        <input id="mtask-2fa" type="text" placeholder="2FA Secret Key / Backup Code" class="w-full p-2.5 rounded-xl input-field text-xs font-mono">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">NUMBER (ফোন নম্বর - যদি থাকে):</label>
+                        <input id="mtask-number" type="text" placeholder="+8801..." class="w-full p-2.5 rounded-xl input-field text-xs font-mono">
+                    </div>
+
+                    <button id="btn-submit-mtask" onclick="submitMasterApprovedTask()" class="w-full py-3.5 rounded-2xl btn-master-pay text-white font-black text-sm flex items-center justify-center gap-2 shadow-lg">
+                        <i data-lucide="check-circle" class="w-4 h-4"></i>
+                        <span>টাস্ক সাবমিট করুন (Submit Task)</span>
                     </button>
                 </div>
             </div>
@@ -876,63 +897,46 @@
 
             <!-- 4. TASK & REWARDS PAGE -->
             <div id="task-page" class="p-4 space-y-4 sub-page">
-                <!-- Lock overlay if account is not active -->
-                <div id="task-locked-screen" class="hidden bg-white p-6 rounded-3xl border border-slate-200 text-center space-y-4 shadow-sm">
-                    <div class="w-16 h-16 rounded-3xl bg-amber-100 text-amber-600 flex items-center justify-center mx-auto">
-                        <i data-lucide="lock" class="w-8 h-8"></i>
+                <div class="bg-gradient-to-br from-amber-500 via-orange-500 to-red-500 p-5 rounded-3xl text-white shadow-lg space-y-2 relative overflow-hidden">
+                    <div class="absolute -right-4 -bottom-4 w-32 h-32 bg-white/10 rounded-full blur-xl pointer-events-none"></div>
+                    <div class="flex items-center gap-2">
+                        <span class="px-2.5 py-0.5 rounded-full bg-white/20 text-white text-[10px] font-black uppercase tracking-wider border border-white/30">Free Rewards</span>
                     </div>
-                    <div>
-                        <h3 class="text-base font-black text-slate-800">টাস্ক সেকশন লক রয়েছে</h3>
-                        <p class="text-xs text-slate-500 mt-1 leading-relaxed">টাস্ক পূরণ করে ফ্রি বোনাস পেতে প্রথমে ১০ টাকা দিয়ে একাউন্ট সক্রিয় করুন।</p>
+                    <h2 class="text-xl font-black">Tasks & Free Cash</h2>
+                    <p class="text-xs text-orange-100 leading-relaxed">সহজ টাস্ক পূরণ করে সরাসরি আপনার অ্যাকাউন্টে ফ্রি ব্যালেন্স আয় করুন!</p>
+                </div>
+
+                <!-- Task 1: Daily Check-in -->
+                <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center font-bold">
+                            <i data-lucide="calendar-check" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-extrabold text-xs text-slate-800">দৈনিক চেক-ইন বোনাস</h4>
+                            <p class="text-[11px] text-slate-500" id="daily-checkin-subtitle">প্রতিদিন রাত ০১:০০ টায় রিসেট হবে</p>
+                        </div>
                     </div>
-                    <button onclick="activateAccountViaGateway()" class="w-full py-3.5 btn-gateway-pay text-white font-extrabold rounded-2xl text-xs flex items-center justify-center gap-2">
-                        <i data-lucide="zap" class="w-4 h-4"></i>
-                        <span>১০ টাকায় একাউন্ট একটিভ করুন</span>
+                    <button id="btn-daily-checkin" onclick="handleDailyCheckin()" class="px-3.5 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-xl font-extrabold text-xs shadow-sm transition active:scale-95 flex items-center gap-1">
+                        <span>+৳০.২০ Claim</span>
                     </button>
                 </div>
 
-                <div id="task-content-section" class="space-y-4">
-                    <div class="bg-gradient-to-br from-amber-500 via-orange-500 to-red-500 p-5 rounded-3xl text-white shadow-lg space-y-2 relative overflow-hidden">
-                        <div class="absolute -right-4 -bottom-4 w-32 h-32 bg-white/10 rounded-full blur-xl pointer-events-none"></div>
-                        <div class="flex items-center gap-2">
-                            <span class="px-2.5 py-0.5 rounded-full bg-white/20 text-white text-[10px] font-black uppercase tracking-wider border border-white/30">Free Rewards</span>
-                        </div>
-                        <h2 class="text-xl font-black">Tasks & Free Cash</h2>
-                        <p class="text-xs text-orange-100 leading-relaxed">সহজ টাস্ক পূরণ করে সরাসরি আপনার অ্যাকাউন্টে ফ্রি ব্যালেন্স আয় করুন!</p>
-                    </div>
-
-                    <!-- Task 1: Daily Check-in -->
-                    <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
+                <!-- Task 2: Official Telegram Channel Join -->
+                <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+                    <div class="flex items-center justify-between">
                         <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center font-bold">
-                                <i data-lucide="calendar-check" class="w-5 h-5"></i>
+                            <div class="w-10 h-10 rounded-2xl bg-[#0088cc]/10 text-[#0088cc] flex items-center justify-center">
+                                <i data-lucide="send" class="w-5 h-5"></i>
                             </div>
                             <div>
-                                <h4 class="font-extrabold text-xs text-slate-800">দৈনিক চেক-ইন বোনাস</h4>
-                                <p class="text-[11px] text-slate-500" id="daily-checkin-subtitle">প্রতিদিন ফ্রি ব্যালেন্স নিন</p>
+                                <h4 class="font-extrabold text-xs text-slate-800">অফিশিয়াল টেলিগ্রাম চ্যানেল</h4>
+                                <p class="text-[11px] text-slate-500">চ্যানেলে জয়েন করে বোনাস নিন</p>
                             </div>
                         </div>
-                        <button id="btn-daily-checkin" onclick="handleDailyCheckin()" class="px-3.5 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-xl font-extrabold text-xs shadow-sm transition active:scale-95 flex items-center gap-1">
-                            <span>+৳০.২০ Claim</span>
-                        </button>
+                        <span class="text-xs font-black text-emerald-600 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-full">+৳১.০০</span>
                     </div>
-
-                    <!-- Task 2: Official Telegram Channel Join -->
-                    <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm space-y-3">
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-2xl bg-[#0088cc]/10 text-[#0088cc] flex items-center justify-center">
-                                    <i data-lucide="send" class="w-5 h-5"></i>
-                                </div>
-                                <div>
-                                    <h4 class="font-extrabold text-xs text-slate-800">অফিশিয়াল টেলিগ্রাম চ্যানেল</h4>
-                                    <p class="text-[11px] text-slate-500">চ্যানেলে জয়েন করে বোনাস নিন</p>
-                                </div>
-                            </div>
-                            <span class="text-xs font-black text-emerald-600 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-full">+৳১.০০</span>
-                        </div>
-                        <div id="tg-task-action-container"></div>
-                    </div>
+                    <div id="tg-task-action-container"></div>
                 </div>
             </div>
 
@@ -1241,6 +1245,38 @@
 
     </div>
 
+    <!-- ACCOUNT ACTIVATION MODAL (10 BDT) -->
+    <div id="account-activation-modal" class="hidden fixed inset-0 bg-black/75 flex items-center justify-center z-[95] p-4 backdrop-blur-md">
+        <div class="bg-white rounded-3xl p-6 w-full max-w-sm space-y-4 text-center shadow-2xl border border-slate-100">
+            <div class="w-14 h-14 rounded-3xl bg-amber-100 text-amber-600 flex items-center justify-center mx-auto shadow-inner">
+                <i data-lucide="zap" class="w-7 h-7"></i>
+            </div>
+            <div>
+                <h3 class="font-black text-lg text-slate-900 leading-tight">একাউন্ট একটিভ করুন</h3>
+                <p class="text-xs text-slate-500 mt-1">রেফার ইনকাম পেতে মাত্র <b>১০ টাকা</b> দিয়ে একাউন্ট সক্রিয় করুন।</p>
+            </div>
+
+            <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200 text-xs text-slate-700 flex justify-between items-center">
+                <span>এক্টিভেশন ফি:</span>
+                <span class="font-black text-sm text-slate-900">৳১০.০০ BDT</span>
+            </div>
+
+            <div class="space-y-2 pt-1">
+                <button onclick="activateAccountViaBalance()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-black rounded-xl text-xs flex items-center justify-center gap-1.5 shadow transition">
+                    <i data-lucide="wallet" class="w-4 h-4"></i>
+                    <span>ওয়ালেট ব্যালেন্স দিয়ে এক্টিভ করুন (৳১০)</span>
+                </button>
+                <button onclick="activateAccountViaGateway()" class="w-full py-3 btn-gateway-pay text-white font-black rounded-xl text-xs flex items-center justify-center gap-1.5 shadow transition">
+                    <i data-lucide="credit-card" class="w-4 h-4"></i>
+                    <span>bKash/Nagad গেটওয়ে দিয়ে এক্টিভ করুন</span>
+                </button>
+                <button onclick="document.getElementById('account-activation-modal').classList.add('hidden')" class="w-full py-2 text-xs text-slate-400 font-bold hover:text-slate-600">
+                    পরে করব (Cancel)
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- MASTER WORK SUCCESS MODAL -->
     <div id="master-success-contact-modal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center z-[90] p-4 backdrop-blur-sm">
         <div class="bg-white rounded-3xl p-6 w-full max-w-sm space-y-4 text-center shadow-2xl">
@@ -1249,8 +1285,8 @@
             </div>
             <div>
                 <h3 class="text-base font-black text-slate-900">আবেদন সফল হয়েছে!</h3>
-                <p class="text-xs text-slate-600 mt-2 leading-relaxed bg-slate-50 p-3 rounded-2xl border border-slate-100">
-                    খুব শীঘ্রই আমাদের ট্রেইনার টিম আপনার সাথে সরাসরি যোগাযোগ করবে এবং কাজটি বুঝিয়ে দিবে।
+                <p class="text-xs text-slate-700 mt-2 leading-relaxed bg-slate-50 p-3 rounded-2xl border border-slate-100 font-bold">
+                    আমরা আপনার সাথে খুব শীঘ্রই যোগাযোগ করছি
                 </p>
             </div>
             <button onclick="document.getElementById('master-success-contact-modal').classList.add('hidden'); navigateTo('work-page');" class="w-full py-3 bg-blue-600 text-white font-bold rounded-xl text-xs">
@@ -1275,7 +1311,7 @@
             </div>
             <div class="flex gap-2">
                 <button onclick="document.getElementById('master-confirm-modal').classList.add('hidden')" class="w-1/2 py-2.5 bg-slate-100 font-bold rounded-xl text-xs">বাতিল</button>
-                <button id="btn-confirm-master-wallet" onclick="confirmUnlockMasterWithWallet()" class="w-1/2 py-2.5 btn-master-pay font-bold rounded-xl text-xs">Unlock Now</button>
+                <button id="btn-confirm-master-wallet" onclick="confirmUnlockMasterWithWallet()" class="w-1/2 py-2.5 btn-master-pay font-bold rounded-xl text-xs">PAY 50৳</button>
             </div>
         </div>
     </div>
@@ -1494,6 +1530,7 @@
         let allUserNotifications = [];
         let lastPurchasedItemsBatch = [];
         let selectedVip0Type = 'Gmail';
+        let masterApplicationStatus = null; // 'pending', 'approved', 'rejected'
 
         let tgTaskState = 0;
         let tgCountdownInterval = null;
@@ -1665,6 +1702,7 @@
 
             await fetchAppConfig();
             await loadUserNotifications();
+            await checkMasterApplicationStatus();
 
             updateUI();
             showMainPage('app-container');
@@ -1692,6 +1730,17 @@
                 renderTelegramTaskUI();
                 renderDailyCheckinState();
             }
+        }
+
+        async function checkMasterApplicationStatus() {
+            if (!userData) return;
+            try {
+                const q = query(collection(dbWork, "master_training_applications"), where("userId", "==", String(userData.tgChatId)), orderBy("submittedAt", "desc"), limit(1));
+                const snap = await getDocs(q);
+                if (!snap.empty) {
+                    masterApplicationStatus = snap.docs[0].data().status || 'pending';
+                }
+            } catch(e) {}
         }
 
         // ==========================================
@@ -1745,12 +1794,12 @@
                         </div>
                         <div>
                             ${isActive ? `
-                                <span class="px-3 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-lg text-xs font-black">
-                                    Active
+                                <span class="px-2.5 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-lg text-[10.5px] font-black flex items-center gap-1">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Active (+৳১০)
                                 </span>
                             ` : `
-                                <span class="px-3 py-1 bg-slate-100 text-slate-600 border border-slate-200 rounded-lg text-xs font-bold">
-                                    Inactive
+                                <span class="px-2.5 py-1 bg-amber-50 text-amber-700 border border-amber-200 rounded-lg text-[10.5px] font-bold">
+                                    Inactive (Pending)
                                 </span>
                             `}
                         </div>
@@ -1766,14 +1815,14 @@
             const botUser = appConfig.botUsername || "Gmail_HUB7bot";
             const link = `https://t.me/${botUser}/buy?startapp=${userData?.tgChatId || ''}`;
             navigator.clipboard.writeText(link).then(() => {
-                showToast("রেফারেল লিংক কপি হয়েছে!", "success");
+                showToast("রেফারেল লিংক কপি হয়েছে! (প্রতি এক্টিভ রেফারে ১০ টাকা)", "success");
             });
         };
 
         window.shareReferralLinkTelegram = function() {
             const botUser = appConfig.botUsername || "Gmail_HUB7bot";
             const link = `https://t.me/${botUser}/buy?startapp=${userData?.tgChatId || ''}`;
-            const text = "🔥 এখনই জয়েন করুন এবং অ্যাকাউন্ট একটিভ করে প্রতিদিন ইনকাম শুরু করুন!";
+            const text = "🔥 জয়েন করুন এবং প্রতি এক্টিভ রেফারে সরাসরি ১০ টাকা আয় করুন!";
             const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent(text)}`;
             try {
                 if (window.Telegram?.WebApp?.openTelegramLink) {
@@ -1787,15 +1836,60 @@
         };
 
         // ==========================================
-        // DIRECT ACCOUNT ACTIVATION VIA GATEWAY
+        // ACCOUNT ACTIVATION (WALLET & GATEWAY)
         // ==========================================
-        window.activateAccountViaGateway = function() {
-            if (userData && userData.isAccountActive) {
-                return showToast("আপনার অ্যাকাউন্ট ইতিমধ্যে একটিভ রয়েছে!", "info");
+        window.openAccountActivationModal = function() {
+            document.getElementById('account-activation-modal').classList.remove('hidden');
+        };
+
+        window.activateAccountViaBalance = async function() {
+            if (userData.isAccountActive) return showToast("আপনার অ্যাকাউন্ট ইতিমধ্যে একটিভ!", "info");
+            if ((userData.balance || 0) < 10) return showToast("পর্যাপ্ত ব্যালেন্স নেই! আগে ডিপোজিট করুন।", "error");
+
+            try {
+                await runTransaction(dbUser, async (transaction) => {
+                    const userRef = doc(dbUser, "users", String(userData.tgChatId));
+                    const inviterRef = userData.referredBy ? doc(dbUser, "users", String(userData.referredBy)) : null;
+
+                    const userSnap = await transaction.get(userRef);
+                    if (!userSnap.exists() || (userSnap.data().balance || 0) < 10) {
+                        throw new Error("আপনার পর্যাপ্ত ব্যালেন্স নেই।");
+                    }
+                    if (userSnap.data().isAccountActive) {
+                        throw new Error("আপনার অ্যাকাউন্ট ইতিমধ্যে একটিভ রয়েছে।");
+                    }
+
+                    let inviterSnap = null;
+                    if (inviterRef) {
+                        inviterSnap = await transaction.get(inviterRef);
+                    }
+
+                    transaction.update(userRef, {
+                        balance: increment(-10),
+                        isAccountActive: true,
+                        activatedAt: serverTimestamp()
+                    });
+
+                    if (inviterRef && inviterSnap && inviterSnap.exists()) {
+                        transaction.update(inviterRef, {
+                            balance: increment(10)
+                        });
+                    }
+                });
+
+                userData.balance -= 10;
+                userData.isAccountActive = true;
+                updateUI();
+                document.getElementById('account-activation-modal').classList.add('hidden');
+                showToast("🎉 আপনার অ্যাকাউন্ট সফলভাবে ১০ টাকায় সক্রিয় হয়েছে!", "success");
+            } catch(e) {
+                showToast(e.message || "অ্যাক্টিভেশন ব্যর্থ হয়েছে", "error");
             }
+        };
+
+        window.activateAccountViaGateway = function() {
             const returnUrl = window.location.href.split('?')[0];
-            showToast("গেটওয়েতে নিয়ে যাওয়া হচ্ছে...", "info");
-            initiateCustomGatewayPayment(10, `${returnUrl}?status=success&activate_account=true&amount=10`);
+            initiateCustomGatewayPayment(10, `${returnUrl}?status=success&activate_account=true`);
         };
 
         async function initiateCustomGatewayPayment(amount, successUrl) {
@@ -1808,19 +1902,13 @@
                         amount: String(amount),
                         success_url: successUrl,
                         cancel_url: returnUrl + "?status=cancel",
-                        metadata: { 
-                            userId: String(userData.tgChatId),
-                            type: "account_activation"
-                        }
+                        metadata: { userId: String(userData.tgChatId) }
                     })
                 });
                 const data = await res.json();
                 const payUrl = data.payment_url || data.url || (data.data && data.data.payment_url);
-                if (payUrl) {
-                    window.location.href = payUrl;
-                } else {
-                    showToast(data.message || "গেটওয়ে ওপেন করতে সমস্যা হয়েছে", "error");
-                }
+                if (payUrl) window.location.href = payUrl;
+                else showToast("গেটওয়ে ওপেন করতে সমস্যা হয়েছে", "error");
             } catch(e) {
                 showToast("কানেকশন সমস্যা", "error");
             }
@@ -1829,62 +1917,121 @@
         // ==========================================
         // WORK MARKETPLACE (VIP 0 & MASTER WORK)
         // ==========================================
-        function renderWorkCards() {
+        async function fetchWorkStats() {
+            if (!userData) return { vipPending: 0, vipEarned: 0, masterPending: 0, masterEarned: 0 };
+            try {
+                const q = query(collection(dbWork, "work_submissions"), where("userId", "==", String(userData.tgChatId)));
+                const snap = await getDocs(q);
+                let vipPending = 0, vipEarned = 0, masterPending = 0, masterEarned = 0;
+                
+                snap.forEach(d => {
+                    const data = d.data();
+                    const rew = parseFloat(data.reward || 0);
+                    if (data.isMasterTask) {
+                        if (data.status === 'pending') masterPending++;
+                        if (data.status === 'approved') masterEarned += rew;
+                    } else {
+                        if (data.status === 'pending') vipPending++;
+                        if (data.status === 'approved') vipEarned += rew;
+                    }
+                });
+                return { vipPending, vipEarned, masterPending, masterEarned };
+            } catch(e) {
+                return { vipPending: 0, vipEarned: 0, masterPending: 0, masterEarned: 0 };
+            }
+        }
+
+        async function renderWorkCards() {
             if (!userData) return;
             const vip0Unlocked = !!userData.unlockedVip0;
             const masterUnlocked = !!userData.unlockedMasterWork;
+            const stats = await fetchWorkStats();
 
-            const vip0FeeBadge = document.getElementById('vip0-fee-badge');
-            if (vip0FeeBadge) {
-                if (vip0Unlocked) {
-                    vip0FeeBadge.classList.add('hidden');
-                } else {
-                    vip0FeeBadge.classList.remove('hidden');
-                }
-            }
-
-            const masterFeeBadge = document.getElementById('master-fee-badge');
-            if (masterFeeBadge) {
-                if (masterUnlocked) {
-                    masterFeeBadge.classList.add('hidden');
-                } else {
-                    masterFeeBadge.classList.remove('hidden');
-                }
-            }
-
+            // VIP 0 Stats & Action
+            const vBox1Title = document.getElementById('vip0-box1-title');
+            const vBox1Val = document.getElementById('vip0-box1-val');
+            const vBox2Title = document.getElementById('vip0-box2-title');
+            const vBox2Val = document.getElementById('vip0-box2-val');
             const vip0Container = document.getElementById('vip0-action-container');
-            if (vip0Container) {
-                if (vip0Unlocked) {
+
+            if (vip0Unlocked) {
+                if (vBox1Title) vBox1Title.textContent = "Pending tasks";
+                if (vBox1Val) vBox1Val.textContent = `${stats.vipPending} টি`;
+                if (vBox2Title) vBox2Title.textContent = "টোটাল ইনকাম";
+                if (vBox2Val) vBox2Val.textContent = `৳${stats.vipEarned.toFixed(2)}`;
+
+                if (vip0Container) {
                     vip0Container.innerHTML = `
                         <button onclick="navigateTo('vip0-sell-page')" class="w-full py-3 rounded-xl btn-buy font-extrabold text-xs flex items-center justify-center gap-2 shadow-md">
                             <i data-lucide="arrow-right-circle" class="w-4 h-4"></i>
-                            <span>Apply / একাউন্ট সেল করুন</span>
+                            <span>অ্যাকাউন্ট জমা দিন (Submit Account)</span>
                         </button>
                     `;
-                } else {
+                }
+            } else {
+                if (vBox1Title) vBox1Title.textContent = "প্রতি কাজে পাবেন";
+                if (vBox1Val) vBox1Val.textContent = "৳২০ - ৳৫০";
+                if (vBox2Title) vBox2Title.textContent = "লিমিট";
+                if (vBox2Val) vBox2Val.textContent = "Unlimited";
+
+                if (vip0Container) {
                     vip0Container.innerHTML = `
                         <button id="btn-unlock-vip0" onclick="unlockVip0Free()" class="w-full py-3 rounded-xl btn-vip0-unlock text-white font-black text-xs flex items-center justify-center gap-2 shadow-md">
-                            <i data-lucide="lock-open" class="w-4 h-4"></i>
-                            <span>PAY 0৳ UNLOCK</span>
+                            <i data-lucide="check" class="w-4 h-4"></i>
+                            <span>PAY 0৳</span>
                         </button>
                     `;
                 }
             }
 
+            // Master Work Stats & Action
+            const mBox1Title = document.getElementById('master-box1-title');
+            const mBox1Val = document.getElementById('master-box1-val');
+            const mBox2Title = document.getElementById('master-box2-title');
+            const mBox2Val = document.getElementById('master-box2-val');
             const masterContainer = document.getElementById('master-work-action-container');
-            if (masterContainer) {
-                if (masterUnlocked) {
-                    masterContainer.innerHTML = `
-                        <button onclick="openMasterWorkApplicationPage()" class="w-full py-3 rounded-xl btn-master-pay text-white font-black text-xs flex items-center justify-center gap-2 shadow-md">
-                            <i data-lucide="check-circle" class="w-4 h-4"></i>
-                            <span>Apply / লাইভ ট্রেনিং আবেদন</span>
-                        </button>
-                    `;
-                } else {
+
+            if (masterUnlocked) {
+                if (mBox1Title) mBox1Title.textContent = "Pending tasks";
+                if (mBox1Val) mBox1Val.textContent = `${stats.masterPending} টি`;
+                if (mBox2Title) mBox2Title.textContent = "টোটাল ইনকাম";
+                if (mBox2Val) mBox2Val.textContent = `৳${stats.masterEarned.toFixed(2)}`;
+
+                if (masterContainer) {
+                    if (masterApplicationStatus === 'approved') {
+                        masterContainer.innerHTML = `
+                            <button onclick="navigateTo('master-task-submit-page')" class="w-full py-3 rounded-xl btn-master-pay text-white font-black text-xs flex items-center justify-center gap-2 shadow-md">
+                                <i data-lucide="check-circle" class="w-4 h-4"></i>
+                                <span>টাস্ক সাবমিট করুন (Submit Work Task)</span>
+                            </button>
+                        `;
+                    } else if (masterApplicationStatus === 'pending') {
+                        masterContainer.innerHTML = `
+                            <button onclick="showToast('আপনার আবেদনটি পর্যালোচনায় আছে। খুব শীঘ্রই টিম যোগাযোগ করবে।', 'info')" class="w-full py-3 rounded-xl bg-amber-100 text-amber-900 border border-amber-300 font-black text-xs flex items-center justify-center gap-2 shadow-sm">
+                                <i data-lucide="clock" class="w-4 h-4"></i>
+                                <span>ট্রেনিং আবেদন প্রক্রিয়াধীন (Under Review)</span>
+                            </button>
+                        `;
+                    } else {
+                        masterContainer.innerHTML = `
+                            <button onclick="openMasterWorkApplicationPage()" class="w-full py-3 rounded-xl btn-master-pay text-white font-black text-xs flex items-center justify-center gap-2 shadow-md">
+                                <i data-lucide="file-text" class="w-4 h-4"></i>
+                                <span>লাইভ ট্রেনিং আবেদন করুন (Apply Now)</span>
+                            </button>
+                        `;
+                    }
+                }
+            } else {
+                if (mBox1Title) mBox1Title.textContent = "প্রতি অ্যাকাউন্টে পাবেন";
+                if (mBox1Val) mBox1Val.textContent = "৳১২০ - ৳১৫০";
+                if (mBox2Title) mBox2Title.textContent = "কাজের সুযোগ";
+                if (mBox2Val) mBox2Val.textContent = "প্রতিদিন একাধিক";
+
+                if (masterContainer) {
                     masterContainer.innerHTML = `
                         <button id="btn-unlock-master" onclick="handleMasterWorkUnlockClick()" class="w-full py-3 rounded-xl btn-master-pay text-white font-black text-xs flex items-center justify-center gap-2 shadow-md">
                             <i data-lucide="zap" class="w-4 h-4 fill-current"></i>
-                            <span>PAY 50৳ UNLOCK</span>
+                            <span>PAY 50৳</span>
                         </button>
                     `;
                 }
@@ -1897,7 +2044,7 @@
             const btn = document.getElementById('btn-unlock-vip0');
             if (btn) {
                 btn.disabled = true;
-                btn.innerHTML = `<span class="animate-spin inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full mr-2"></span> Unlocking...`;
+                btn.innerHTML = `<span class="animate-spin inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full mr-2"></span> Processing...`;
             }
 
             try {
@@ -1907,11 +2054,11 @@
                     vip0UnlockedAt: serverTimestamp()
                 });
                 userData.unlockedVip0 = true;
-                showToast("অভিনন্দন! VIP 0 সফলভাবে আনলক হয়েছে!", "success");
+                showToast("🎉 VIP 0 সফলভাবে অ্যাক্টিভ হয়েছে!", "success");
                 renderWorkCards();
                 updateUI();
             } catch(e) {
-                showToast("আনলক ব্যর্থ হয়েছে!", "error");
+                showToast("ব্যর্থ হয়েছে!", "error");
             } finally {
                 if (btn) btn.disabled = false;
             }
@@ -1965,14 +2112,14 @@
                 userData.balance -= 50;
                 userData.unlockedMasterWork = true;
                 document.getElementById('master-confirm-modal').classList.add('hidden');
-                showToast("🎉 অভিনন্দন! Master Work সফলভাবে আনলক হয়েছে!", "success");
+                showToast("🎉 মাস্টার ওয়ার্ক সফলভাবে আনলক হয়েছে!", "success");
                 updateUI();
                 renderWorkCards();
             } catch(e) {
                 showToast(e.message || "আনলক করা সম্ভব হয়নি", "error");
             } finally {
                 btn.disabled = false;
-                btn.textContent = "Unlock Now";
+                btn.textContent = "PAY 50৳";
             }
         };
 
@@ -2044,15 +2191,15 @@
             const textarea = document.getElementById('vip0-proof-text');
 
             if (type === 'Gmail') {
-                labelEl.textContent = 'Gmail Account Sell (৳৬ - ৳১০)';
+                labelEl.textContent = 'Gmail Account Sell (৳২০ - ৳৫০)';
                 proofLabel.textContent = 'ইমেইল ও পাসওয়ার্ড ফরম্যাট:';
                 textarea.placeholder = 'Email | Password | Recovery Mail (যদি থাকে)';
             } else if (type === 'Facebook') {
-                labelEl.textContent = 'Facebook Active Account (৳৯.০০)';
+                labelEl.textContent = 'Facebook Active Account (৳২৫.০০)';
                 proofLabel.textContent = 'ফেসবুক আইডি ও পাসওয়ার্ড:';
                 textarea.placeholder = 'UID/Email/Phone | Password | 2FA Secret Key (যদি থাকে)';
             } else if (type === 'Telegram') {
-                labelEl.textContent = 'Telegram Account / Session (৳১২.০০)';
+                labelEl.textContent = 'Telegram Account / Session (৳৩০.০০)';
                 proofLabel.textContent = 'টেলিগ্রাম নম্বর / সেশন ডাটা:';
                 textarea.placeholder = 'Phone Number | Session File Code / OTP বিবরণ';
             } else {
@@ -2068,11 +2215,11 @@
             const link = document.getElementById('vip0-link-text').value.trim();
 
             if (!proof) return showToast("অনুগ্রহ করে অ্যাকাউন্টের ডাটা বা বিবরণ লিখুন!", "error");
-            if (!userData.unlockedVip0) return showToast("প্রথমে VIP 0 আনলক করুন!", "error");
+            if (!userData.unlockedVip0) return showToast("প্রথমে VIP 0 একটিভ করুন!", "error");
 
-            let rewardAmt = 6.00;
-            if (selectedVip0Type === 'Facebook') rewardAmt = 9.00;
-            else if (selectedVip0Type === 'Telegram') rewardAmt = 12.00;
+            let rewardAmt = 20.00;
+            if (selectedVip0Type === 'Facebook') rewardAmt = 25.00;
+            else if (selectedVip0Type === 'Telegram') rewardAmt = 30.00;
 
             const btn = document.getElementById('btn-submit-vip0-work');
             btn.disabled = true;
@@ -2082,12 +2229,14 @@
                 await addDoc(collection(dbWork, "work_submissions"), {
                     userId: String(userData.tgChatId),
                     userName: userData.name || 'User',
+                    userTgUsername: userData.username || null,
                     jobTitle: `${selectedVip0Type} Account Sell`,
                     category: selectedVip0Type,
                     reward: rewardAmt,
                     proof: proof,
                     link: link || null,
                     status: "pending",
+                    isMasterTask: false,
                     submittedAt: serverTimestamp()
                 });
 
@@ -2109,20 +2258,19 @@
             if (!userData?.unlockedMasterWork) {
                 return showToast("মাস্টার কাজ করতে প্রথমে ৫০৳ দিয়ে আনলক করুন!", "error");
             }
-            document.getElementById('master-app-name').value = userData.name || '';
-            document.getElementById('master-app-contact').value = userData.username ? `@${userData.username}` : '';
             navigateTo('master-apply-page');
         };
 
         window.submitMasterApplication = async function() {
             if (!userData) return;
-            const name = document.getElementById('master-app-name').value.trim();
             const exp = document.getElementById('master-app-experience').value;
             const time = document.getElementById('master-app-time').value;
+            const platform = document.getElementById('master-app-platform').value;
             const contact = document.getElementById('master-app-contact').value.trim();
+            const expectations = document.getElementById('master-app-expectations').value.trim();
 
-            if (!name || !contact) {
-                return showToast("আপনার নাম ও কন্টাক্ট নম্বর সঠিকভাবে লিখুন!", "error");
+            if (!contact) {
+                return showToast("অনুগ্রহ করে আপনার যোগাযোগের নম্বর দিন!", "error");
             }
 
             const btn = document.getElementById('btn-submit-master-app');
@@ -2132,14 +2280,19 @@
             try {
                 await addDoc(collection(dbWork, "master_training_applications"), {
                     userId: String(userData.tgChatId),
-                    userName: name,
+                    telegramName: userData.name || 'User',
+                    telegramUsername: userData.username || null,
+                    chatId: String(userData.tgChatId),
                     experience: exp,
-                    availableTime: time,
-                    contact: contact,
+                    preferredTime: time,
+                    contactPlatform: platform,
+                    contactNumber: contact,
+                    expectations: expectations || null,
                     status: "pending",
                     submittedAt: serverTimestamp()
                 });
 
+                masterApplicationStatus = "pending";
                 document.getElementById('master-success-contact-modal').classList.remove('hidden');
                 lucide.createIcons();
             } catch(e) {
@@ -2147,6 +2300,56 @@
             } finally {
                 btn.disabled = false;
                 btn.innerHTML = `<i data-lucide="send" class="w-4 h-4"></i> <span>আবেদন জমা দিন (Submit)</span>`;
+                lucide.createIcons();
+            }
+        };
+
+        window.submitMasterApprovedTask = async function() {
+            if (!userData) return;
+            const gmail = document.getElementById('mtask-gmail').value.trim();
+            const pass = document.getElementById('mtask-password').value.trim();
+            const twoFa = document.getElementById('mtask-2fa').value.trim();
+            const num = document.getElementById('mtask-number').value.trim();
+
+            if (!gmail || !pass || !twoFa) {
+                return showToast("GMAIL, PASSWORD এবং 2FA পূরণ করা বাধ্যতামূলক!", "error");
+            }
+
+            const btn = document.getElementById('btn-submit-mtask');
+            btn.disabled = true;
+            btn.innerHTML = `<span class="animate-spin inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full mr-2"></span> Submitting...`;
+
+            try {
+                const combinedProof = `GMAIL: ${gmail} | PASS: ${pass} | 2FA: ${twoFa} | NUM: ${num || 'N/A'}`;
+                await addDoc(collection(dbWork, "work_submissions"), {
+                    userId: String(userData.tgChatId),
+                    userName: userData.name || 'User',
+                    userTgUsername: userData.username || null,
+                    jobTitle: `Master Work Submission`,
+                    category: "Master Work",
+                    reward: 120.00,
+                    proof: combinedProof,
+                    gmail: gmail,
+                    password: pass,
+                    twoFactor: twoFa,
+                    phone: num || null,
+                    status: "pending",
+                    isMasterTask: true,
+                    submittedAt: serverTimestamp()
+                });
+
+                showToast("টাস্ক সফলভাবে জমা হয়েছে! ভেরিফিকেশন শেষে ৳১২০-১৫০ ব্যালেন্স যুক্ত হবে।", "success");
+                document.getElementById('mtask-gmail').value = '';
+                document.getElementById('mtask-password').value = '';
+                document.getElementById('mtask-2fa').value = '';
+                document.getElementById('mtask-number').value = '';
+                navigateTo('work-page');
+                switchWorkView('my_subs');
+            } catch(e) {
+                showToast(e.message || "টাস্ক সাবমিট ব্যর্থ হয়েছে!", "error");
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `<i data-lucide="check-circle" class="w-4 h-4"></i> <span>টাস্ক সাবমিট করুন (Submit Task)</span>`;
                 lucide.createIcons();
             }
         };
@@ -2216,28 +2419,25 @@
             if (lastCheckMillis >= cycleStart) {
                 btn.disabled = true;
                 btn.className = "px-3.5 py-2 bg-slate-200 text-slate-500 rounded-xl font-extrabold text-xs cursor-not-allowed flex items-center gap-1 border border-slate-300";
-                btn.innerHTML = `<i data-lucide="check" class="w-3.5 h-3.5"></i> <span>Claimed</span>`;
+                btn.innerHTML = `<i data-lucide="check" class="w-3.5 h-3.5"></i> <span>Next Day (রাত ০১:০০ টায়)</span>`;
                 if (subTitle) subTitle.textContent = "আজকের বোনাস ক্লেইম করা হয়েছে";
             } else {
                 btn.disabled = false;
                 btn.className = "px-3.5 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-xl font-extrabold text-xs shadow-sm transition active:scale-95 flex items-center gap-1";
                 btn.innerHTML = `<span>+৳০.২০ Claim</span>`;
-                if (subTitle) subTitle.textContent = "প্রতিদিন ফ্রি ব্যালেন্স নিন";
+                if (subTitle) subTitle.textContent = "প্রতিদিন রাত ০১:০০ টায় রিসেট হবে";
             }
             lucide.createIcons();
         }
 
         window.handleDailyCheckin = async function() {
             if (!userData) return showToast("প্রথমে লগইন করুন", "error");
-            if (!userData.isAccountActive) {
-                return showToast("টাস্ক থেকে আয় করতে আগে ১০ টাকায় একাউন্ট একটিভ করুন!", "error");
-            }
             
             const cycleStart = getCycleStart1AM();
             const lastCheckMillis = userData.lastDailyCheckin?.toDate ? userData.lastDailyCheckin.toDate().getTime() : 0;
 
             if (lastCheckMillis >= cycleStart) {
-                return showToast("আজকের বোনাস ইতিমধ্যে গ্রহণ করা হয়েছে!", "info");
+                return showToast("আজকের বোনাস নেওয়া হয়েছে! পরবর্তী ক্লেইম রাত ০১:০০ টায়", "info");
             }
 
             const btn = document.getElementById('btn-daily-checkin');
@@ -2302,10 +2502,6 @@
         }
 
         window.startTelegramJoinFlow = function() {
-            if (!userData.isAccountActive) {
-                return showToast("টাস্ক পূরণ করতে আগে ১০ টাকায় একাউন্ট একটিভ করুন!", "error");
-            }
-
             const channelUrl = appConfig.telegramChannelUrl || appConfig.telegramSupportUrl || "https://t.me/EXPERTearn_team";
             try {
                 if (window.Telegram?.WebApp?.openTelegramLink) {
@@ -2338,9 +2534,6 @@
 
         window.verifyTelegramChannelMembership = async function() {
             if (!userData) return showToast("প্রথমে লগইন করুন", "error");
-            if (!userData.isAccountActive) {
-                return showToast("আগে ১০ টাকায় একাউন্ট একটিভ করুন!", "error");
-            }
             if (userData.hasClaimedTgBonus) return showToast("আপনি ইতিমধ্যে বোনাস গ্রহণ করেছেন", "info");
 
             const tgUserId = String(userData.tgChatId);
@@ -2480,7 +2673,7 @@
                                 }
                             });
                             userData.isAccountActive = true;
-                            showToast("🎉 অভিনন্দন! আপনার অ্যাকাউন্ট সফলভাবে সক্রিয় হয়েছে!", "success");
+                            showToast("🎉 অ্যাকাউন্ট সফলভাবে সক্রিয় হয়েছে!", "success");
                         } else if (isUnlockMaster) {
                             await executeMasterWorkDirectPaymentUpgrade(finalTxid, data);
                         } else {
@@ -2700,7 +2893,6 @@
             if (!userData) return;
             const balanceFormatted = (userData.balance || 0).toFixed(2);
             const isMaster = !!userData.unlockedMasterWork;
-            const isActiveUser = !!userData.isAccountActive;
 
             document.getElementById('header-coin-balance').textContent = `৳${balanceFormatted}`;
             
@@ -2713,34 +2905,18 @@
             const banner = document.getElementById('account-activation-banner');
             const profileActiveStatus = document.getElementById('profile-active-status');
 
-            // Work & Task lock state
-            const workLocked = document.getElementById('work-locked-screen');
-            const workContent = document.getElementById('work-content-section');
-            const taskLocked = document.getElementById('task-locked-screen');
-            const taskContent = document.getElementById('task-content-section');
-
-            if (!isActiveUser) {
+            if (!userData.isAccountActive) {
                 if (banner) banner.classList.remove('hidden');
                 if (profileActiveStatus) {
                     profileActiveStatus.textContent = "Inactive Account";
                     profileActiveStatus.className = "inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-red-500/20 text-red-400 text-[10px] font-black uppercase tracking-wider border border-red-400/30";
                 }
-
-                if (workLocked) workLocked.classList.remove('hidden');
-                if (workContent) workContent.classList.add('hidden');
-                if (taskLocked) taskLocked.classList.remove('hidden');
-                if (taskContent) taskContent.classList.add('hidden');
             } else {
                 if (banner) banner.classList.add('hidden');
                 if (profileActiveStatus) {
                     profileActiveStatus.textContent = "Active Account";
                     profileActiveStatus.className = "inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-black uppercase tracking-wider border border-emerald-400/30";
                 }
-
-                if (workLocked) workLocked.classList.add('hidden');
-                if (workContent) workContent.classList.remove('hidden');
-                if (taskLocked) taskLocked.classList.add('hidden');
-                if (taskContent) taskContent.classList.remove('hidden');
             }
 
             const profileMasterPill = document.getElementById('profile-master-pill');
@@ -2777,7 +2953,7 @@
                 'work-page': () => { updateUI(); renderWorkCards(); },
                 'refer-page': loadReferralPageData,
                 'pay-page': updateUI,
-                'task-page': () => { updateUI(); renderTelegramTaskUI(); renderDailyCheckinState(); },
+                'task-page': () => { renderTelegramTaskUI(); renderDailyCheckinState(); },
                 'orders-page': loadOrdersHistory,
                 'features-page': loadFeaturesPage,
                 'history-page': () => { loadManualOrdersHistory(); loadReplaceHistory(); },
