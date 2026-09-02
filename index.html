@@ -506,7 +506,7 @@
             <div class="flex items-center gap-2">
                 <i data-lucide="alert-triangle" class="w-4 h-4 text-amber-200 flex-shrink-0"></i>
                 <div class="text-xs font-bold leading-tight">
-                    <span>ইনকাম করতে একাউন্ট এক্টিভ করুন</span>
+                    <span>রেফার ইনকাম পেতে একাউন্ট একটিভ করুন</span>
                     <span class="text-[10px] text-amber-100 block">মাত্র ১০ টাকা দিয়ে একাউন্ট সক্রিয় করুন</span>
                 </div>
             </div>
@@ -1795,11 +1795,11 @@
                         <div>
                             ${isActive ? `
                                 <span class="px-2.5 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-lg text-[10.5px] font-black flex items-center gap-1">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Active
+                                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Active (+৳১০)
                                 </span>
                             ` : `
                                 <span class="px-2.5 py-1 bg-amber-50 text-amber-700 border border-amber-200 rounded-lg text-[10.5px] font-bold">
-                                    Inactive
+                                    Inactive (Pending)
                                 </span>
                             `}
                         </div>
@@ -1964,7 +1964,7 @@
                     vip0Container.innerHTML = `
                         <button onclick="navigateTo('vip0-sell-page')" class="w-full py-3 rounded-xl btn-buy font-extrabold text-xs flex items-center justify-center gap-2 shadow-md">
                             <i data-lucide="arrow-right-circle" class="w-4 h-4"></i>
-                            <span>একাউন্ট বিক্রি করুন</span>
+                            <span>অ্যাকাউন্ট জমা দিন (Submit Account)</span>
                         </button>
                     `;
                 }
@@ -1993,7 +1993,7 @@
 
             if (masterUnlocked) {
                 if (mBox1Title) mBox1Title.textContent = "Pending tasks";
-                if (mBox1Val) mBox1Val.textContent = `${stats.masterPending} `;
+                if (mBox1Val) mBox1Val.textContent = `${stats.masterPending} টি`;
                 if (mBox2Title) mBox2Title.textContent = "টোটাল ইনকাম";
                 if (mBox2Val) mBox2Val.textContent = `৳${stats.masterEarned.toFixed(2)}`;
 
@@ -2009,14 +2009,14 @@
                         masterContainer.innerHTML = `
                             <button onclick="showToast('আপনার আবেদনটি পর্যালোচনায় আছে। খুব শীঘ্রই টিম যোগাযোগ করবে।', 'info')" class="w-full py-3 rounded-xl bg-amber-100 text-amber-900 border border-amber-300 font-black text-xs flex items-center justify-center gap-2 shadow-sm">
                                 <i data-lucide="clock" class="w-4 h-4"></i>
-                                <span>আমারা খুব শীঘ্রই আপনার সাথে যোগাযোগ করছি</span>
+                                <span>ট্রেনিং আবেদন প্রক্রিয়াধীন (Under Review)</span>
                             </button>
                         `;
                     } else {
                         masterContainer.innerHTML = `
                             <button onclick="openMasterWorkApplicationPage()" class="w-full py-3 rounded-xl btn-master-pay text-white font-black text-xs flex items-center justify-center gap-2 shadow-md">
                                 <i data-lucide="file-text" class="w-4 h-4"></i>
-                                <span>Apply Now</span>
+                                <span>লাইভ ট্রেনিং আবেদন করুন (Apply Now)</span>
                             </button>
                         `;
                     }
@@ -2025,7 +2025,7 @@
                 if (mBox1Title) mBox1Title.textContent = "প্রতি অ্যাকাউন্টে পাবেন";
                 if (mBox1Val) mBox1Val.textContent = "৳১২০ - ৳১৫০";
                 if (mBox2Title) mBox2Title.textContent = "কাজের সুযোগ";
-                if (mBox2Val) mBox2Val.textContent = "একাধিক";
+                if (mBox2Val) mBox2Val.textContent = "প্রতিদিন একাধিক";
 
                 if (masterContainer) {
                     masterContainer.innerHTML = `
@@ -2419,13 +2419,13 @@
             if (lastCheckMillis >= cycleStart) {
                 btn.disabled = true;
                 btn.className = "px-3.5 py-2 bg-slate-200 text-slate-500 rounded-xl font-extrabold text-xs cursor-not-allowed flex items-center gap-1 border border-slate-300";
-                btn.innerHTML = `<i data-lucide="check" class="w-3.5 h-3.5"></i> <span>Next Day</span>`;
+                btn.innerHTML = `<i data-lucide="check" class="w-3.5 h-3.5"></i> <span>Next Day (রাত ০১:০০ টায়)</span>`;
                 if (subTitle) subTitle.textContent = "আজকের বোনাস ক্লেইম করা হয়েছে";
             } else {
                 btn.disabled = false;
                 btn.className = "px-3.5 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-xl font-extrabold text-xs shadow-sm transition active:scale-95 flex items-center gap-1";
                 btn.innerHTML = `<span>+৳০.২০ Claim</span>`;
-                if (subTitle) subTitle.textContent = "";
+                if (subTitle) subTitle.textContent = "প্রতিদিন রাত ০১:০০ টায় রিসেট হবে";
             }
             lucide.createIcons();
         }
@@ -2922,8 +2922,8 @@
             const profileMasterPill = document.getElementById('profile-master-pill');
             if (profileMasterPill) {
                 profileMasterPill.innerHTML = isMaster 
-                    ? `<i data-lucide="crown" class="w-3 h-3 text-white"></i> MASTER`
-                    : `<i data-lucide="award" class="w-3 h-3"></i> FREE;
+                    ? `<i data-lucide="crown" class="w-3 h-3 text-white"></i> MASTER MEMBER`
+                    : `<i data-lucide="award" class="w-3 h-3"></i> FREE MEMBER`;
                 profileMasterPill.className = isMaster
                     ? `inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-500 text-white text-[10px] font-black uppercase tracking-wider shadow-sm`
                     : `inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-500 text-white text-[10px] font-black uppercase tracking-wider shadow-sm`;
