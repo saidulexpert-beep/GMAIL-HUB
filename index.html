@@ -1235,7 +1235,7 @@
                     <h2 class="text-lg font-bold">Send Balance</h2>
                 </div>
                 <div class="bg-white p-5 rounded-2xl border border-slate-200 space-y-4">
-                    <p class="text-xs text-blue-700 bg-blue-50 p-2.5 rounded-xl font-semibold border border-blue-100">প্রতিটি ট্রান্সফারে ২% সার্ভিস চার্জ প্রযোজ্য। সর্বনিম্ন ৳১০ পাঠাতে পারবেন। ইন-একটিভ (Inactive) ব্যবহারকারীকে ব্যালেন্স পাঠানো যাবে না।</p>
+                    <p class="text-xs text-blue-700 bg-blue-50 p-2.5 rounded-xl font-semibold border border-blue-100">প্রতিটি ট্রান্সফারে ২% সার্ভিস চার্জ প্রযোজ্য। সর্বনিম্ন ৳১০ পাঠাতে পারবেন।</p>
                     
                     <div>
                         <label class="block text-xs font-bold text-slate-600 mb-1">প্রাপকের Telegram ID</label>
@@ -1730,7 +1730,6 @@
         // WITHDRAWAL STATE
         let selectedBindMethod = 'Nagad';
         let selectedWithdrawCardId = null;
-        let visibleWalletNumbers = {};
 
         let tgTaskState = 0; 
         let tgCountdownInterval = null;
@@ -1983,12 +1982,6 @@
             }
         };
 
-        window.toggleWalletNumberVisibility = function(e, cardId) {
-            e.stopPropagation();
-            visibleWalletNumbers[cardId] = !visibleWalletNumbers[cardId];
-            renderBoundWallets();
-        };
-
         function renderBoundWallets() {
             const container = document.getElementById('bound-wallets-container');
             const countEl = document.getElementById('bound-wallet-count');
@@ -2015,13 +2008,9 @@
 
             container.innerHTML = wallets.map(wallet => {
                 const isSelected = selectedWithdrawCardId === wallet.id;
-                const isVisible = !!visibleWalletNumbers[wallet.id];
-                
                 const masked = wallet.number.length > 4 
                     ? '*******' + wallet.number.slice(-4) 
                     : wallet.number;
-
-                const displayNum = isVisible ? wallet.number : masked;
 
                 return `
                     <div onclick="selectWithdrawCard('${wallet.id}')" class="withdraw-card-gradient p-5 text-white cursor-pointer transition ${isSelected ? 'ring-4 ring-rose-400/80 scale-[1.01]' : 'opacity-90'}">
@@ -2032,21 +2021,14 @@
                                 </div>
                                 <span class="font-extrabold text-base tracking-wide">${wallet.method}</span>
                             </div>
-                            <span class="text-[11px] font-bold bg-white/20 px-2.5 py-1 rounded-md backdrop-blur-md border border-white/10">${wallet.name || 'Account'}</span>
+                            <span class="text-[11px] font-bold bg-white/20 px-2 py-0.5 rounded-md">${wallet.name || 'Account'}</span>
                         </div>
-
-                        <div class="mt-4 flex items-center justify-between">
-                            <div class="font-mono font-black text-2xl tracking-wider select-none">
-                                ${displayNum}
-                            </div>
-                            <button onclick="toggleWalletNumberVisibility(event, '${wallet.id}')" class="p-2 rounded-xl bg-white/15 hover:bg-white/25 active:scale-95 transition text-white" title="${isVisible ? 'Hide' : 'Show'}">
-                                <i data-lucide="${isVisible ? 'eye-off' : 'eye'}" class="w-4 h-4"></i>
-                            </button>
+                        <div class="mt-4 font-mono font-black text-2xl tracking-wider select-none">
+                            ${masked}
                         </div>
-
-                        <div class="mt-3 flex items-center justify-between text-[11px] text-blue-100 font-mono">
+                        <div class="mt-2 flex items-center justify-between text-[11px] text-blue-100 font-mono">
                             <span>${wallet.addedAt || new Date().toLocaleString('en-GB')}</span>
-                            ${isSelected ? '<span class="px-2.5 py-0.5 rounded-full bg-white text-slate-900 text-[10px] font-black shadow-sm">SELECTED</span>' : ''}
+                            ${isSelected ? '<span class="px-2 py-0.5 rounded-full bg-white text-slate-900 text-[10px] font-black">SELECTED</span>' : ''}
                         </div>
                     </div>
                 `;
@@ -4028,9 +4010,6 @@
                     }
                     if (!recipientSnap.exists()) {
                         throw new Error("প্রাপকের Telegram ID খুঁজে পাওয়া যায়নি।");
-                    }
-                    if (!recipientSnap.data().isAccountActive) {
-                        throw new Error("প্রাপকের একাউন্ট সক্রিয় (Active) নয়! ইন-একটিভ একাউন্টে ব্যালেন্স পাঠানো যাবে না।");
                     }
 
                     t.update(senderRef, { balance: senderSnap.data().balance - totalCost });
