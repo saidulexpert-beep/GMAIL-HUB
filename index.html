@@ -298,8 +298,15 @@
         .work-card-pro {
             background: #ffffff;
             border-radius: 24px;
-            box-shadow: 0 6px 20px rgba(15, 23, 42, 0.05);
+            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
             transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid #e2e8f0;
+            position: relative;
+            overflow: hidden;
+        }
+        .work-card-pro:hover {
+            box-shadow: 0 14px 30px rgba(37, 99, 235, 0.1);
+            border-color: #cbd5e1;
         }
         .profile-hero-card {
             background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
@@ -550,13 +557,9 @@
         <!-- MAIN CONTENT AREA -->
         <main class="flex-grow pb-28">
 
-            <!-- 1. HOME PAGE -->
+            <!-- 1. HOME PAGE (SEARCH BAR REMOVED) -->
             <div id="home-page" class="p-4 space-y-3.5 sub-page active">
-                <div class="relative">
-                    <input id="product-search-input" oninput="filterProductsSearch(this.value)" type="text" placeholder="সার্ভিস বা ইমেইল খুঁজুন..." class="w-full py-2.5 pl-9 pr-4 rounded-xl input-field text-xs font-semibold">
-                    <i data-lucide="search" class="w-4 h-4 absolute left-3 top-3 text-slate-400"></i>
-                </div>
-
+                <!-- CATEGORY FILTER BUTTONS -->
                 <div class="grid grid-cols-3 gap-2" id="category-filter-grid"></div>
 
                 <div class="space-y-3 pt-1">
@@ -576,26 +579,63 @@
                 </div>
             </div>
 
-            <!-- 2. WORK PORTAL PAGE -->
+            <!-- 2. WORK PORTAL PAGE (REDESIGNED WITH STATS & ADMIN TOGGLE) -->
             <div id="work-page" class="p-4 space-y-4 sub-page">
+                
+                <!-- WORK HERO HEADER -->
                 <div class="bg-gradient-to-br from-slate-900 via-indigo-950 to-blue-950 p-5 rounded-3xl text-white shadow-xl relative overflow-hidden border border-blue-500/20">
                     <div class="relative z-10 space-y-2">
                         <div class="flex items-center justify-between">
                             <span id="work-user-status-badge" class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-black uppercase tracking-wider border border-emerald-400/30 inline-flex items-center gap-1.5">
                                 <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-400"></i> Active Member
                             </span>
-                            <span class="text-[10.5px] font-bold text-amber-300 bg-amber-400/10 px-2.5 py-0.5 rounded-lg border border-amber-400/20 flex items-center gap-1">
+                            <span id="work-admin-status-indicator" class="text-[10.5px] font-bold text-amber-300 bg-amber-400/10 px-2.5 py-0.5 rounded-lg border border-amber-400/20 flex items-center gap-1">
                                 <i data-lucide="sparkles" class="w-3.5 h-3.5 text-amber-400"></i> Daily Real Earning
                             </span>
                         </div>
 
                         <div>
                             <h2 class="text-xl font-black tracking-tight text-white">Work Marketplace</h2>
-                            <p class="text-xs text-blue-200 mt-0.5">নিচের অ্যাভেইলেবল কাজগুলো সম্পন্ন করে প্রতিদিন নিশ্চিত আয় করুন</p>
+                            <p class="text-xs text-blue-200 mt-0.5">নিচের কাজগুলো সম্পন্ন করে প্রতিদিন নিশ্চিত আয় করুন</p>
                         </div>
                     </div>
                 </div>
 
+                <!-- WORK STATUS BAR (TOTAL TASK, TOTAL EARN, PENDING) -->
+                <div class="grid grid-cols-3 gap-2 text-center">
+                    <div class="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-sm">
+                        <div class="flex items-center justify-center gap-1 text-slate-400">
+                            <i data-lucide="check-circle-2" class="w-3 h-3 text-emerald-500"></i>
+                            <span class="text-[9.5px] font-black uppercase tracking-wider">Total Task</span>
+                        </div>
+                        <p id="work-stat-total-tasks" class="text-base font-black text-slate-800 mt-1">0</p>
+                    </div>
+                    <div class="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-sm">
+                        <div class="flex items-center justify-center gap-1 text-slate-400">
+                            <i data-lucide="coins" class="w-3 h-3 text-amber-500"></i>
+                            <span class="text-[9.5px] font-black uppercase tracking-wider">Total Earn</span>
+                        </div>
+                        <p id="work-stat-total-earned" class="text-base font-black text-emerald-600 mt-1">৳0.00</p>
+                    </div>
+                    <div class="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-sm">
+                        <div class="flex items-center justify-center gap-1 text-slate-400">
+                            <i data-lucide="clock" class="w-3 h-3 text-orange-500"></i>
+                            <span class="text-[9.5px] font-black uppercase tracking-wider">Pending</span>
+                        </div>
+                        <p id="work-stat-pending-tasks" class="text-base font-black text-orange-600 mt-1">0</p>
+                    </div>
+                </div>
+
+                <!-- ADMIN WORK PAUSE ALERT IF DISABLED -->
+                <div id="work-paused-admin-alert" class="hidden bg-red-50 border border-red-200 p-4 rounded-2xl text-center space-y-1">
+                    <div class="flex items-center justify-center gap-1.5 text-red-600 font-bold text-xs">
+                        <i data-lucide="alert-octagon" class="w-4 h-4"></i>
+                        <span>কাজ সাময়িকভাবে বন্ধ আছে</span>
+                    </div>
+                    <p class="text-[11px] text-slate-600">অ্যাডমিন কর্তৃক নতুন কাজের প্রক্রিয়া সাময়িক বন্ধ রয়েছে। অনুগ্রহ করে পরে চেষ্টা করুন।</p>
+                </div>
+
+                <!-- TABS (AVAILABLE JOBS / SUBMISSIONS) -->
                 <div class="flex gap-2">
                     <button id="btn-tab-work-feed" onclick="switchWorkView('jobs')" class="flex-1 py-2.5 bg-blue-600 text-white rounded-xl font-bold text-xs shadow-md transition">
                         Available Jobs
@@ -714,7 +754,7 @@
                         </select>
                     </div>
 
-                    <!-- CUSTOM TIME INPUT FIELD (REVEALS IF SELECTED) -->
+                    <!-- CUSTOM TIME INPUT FIELD -->
                     <div id="custom-time-wrap" class="hidden">
                         <label class="block text-xs font-bold text-slate-700 mb-1">আপনার সুবিধাজনক সময় লিখুন:</label>
                         <input id="master-app-custom-time" type="text" placeholder="যেমন: প্রতিদিন রাত ১১টার পর..." class="w-full p-2.5 rounded-xl input-field text-xs">
@@ -858,7 +898,7 @@
                 </div>
             </div>
 
-            <!-- 4. TASK & REWARDS PAGE (WITH DYNAMIC TELEGRAM & LINK VISIT TASKS) -->
+            <!-- 4. TASK & REWARDS PAGE (WITH VERIFIED JOIN, VISIT & VISIT_BOT TASKS) -->
             <div id="task-page" class="p-4 space-y-4 sub-page">
                 <div class="bg-gradient-to-br from-amber-500 via-orange-500 to-red-500 p-5 rounded-3xl text-white shadow-lg space-y-2 relative overflow-hidden">
                     <div class="absolute -right-4 -bottom-4 w-32 h-32 bg-white/10 rounded-full blur-xl pointer-events-none"></div>
@@ -869,7 +909,7 @@
                     <p class="text-xs text-orange-100 leading-relaxed">সহজ টাস্ক পূরণ করে সরাসরি আপনার অ্যাকাউন্টে ফ্রি ব্যালেন্স আয় করুন!</p>
                 </div>
 
-                <!-- Task 1: Daily Check-in -->
+                <!-- Daily Check-in -->
                 <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
                     <div class="flex items-center gap-3">
                         <div class="w-10 h-10 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center font-bold">
@@ -885,7 +925,7 @@
                     </button>
                 </div>
 
-                <!-- DYNAMIC TASKS LIST (LOADED FROM FIREBASE) -->
+                <!-- DYNAMIC TASKS LIST (join, visit, visit_bot) -->
                 <div class="space-y-3" id="dynamic-tasks-container"></div>
             </div>
 
@@ -949,7 +989,7 @@
                             <span class="text-[10.5px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-md border border-blue-100">মিনিমাম: ৳১০</span>
                         </div>
                         <div class="relative">
-                            <input id="amountInput" type="number" value="50" min="10" placeholder="50" oninput="handleAutoAmountInput()" class="w-full p-3.5 pl-10 rounded-2xl input-field text-2xl font-black text-slate-800 border-2 border-blue-200 focus:border-blue-600 text-center tracking-wider font-mono">
+                            <input id="amountInput" type="number" step="1" value="50" min="10" placeholder="50" oninput="handleAutoAmountInput()" class="w-full p-3.5 pl-10 rounded-2xl input-field text-2xl font-black text-slate-800 border-2 border-blue-200 focus:border-blue-600 text-center tracking-wider font-mono">
                             <span class="absolute left-4 top-3.5 text-slate-400 font-black text-xl">৳</span>
                         </div>
                     </div>
@@ -987,7 +1027,6 @@
 
             <!-- 7. TELEGRAM PROFILE PAGE -->
             <div id="profile-page" class="p-4 space-y-4 sub-page">
-                <!-- HERO PROFILE CARD WITH DEPOSIT & WITHDRAW BUTTONS -->
                 <div class="profile-hero-card p-5 rounded-3xl text-white shadow-xl space-y-3.5">
                     <div class="flex items-center justify-between">
                         <span id="profile-active-status" class="px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-300 text-[10px] font-bold border border-slate-700">
@@ -1012,7 +1051,7 @@
                         </div>
                     </div>
 
-                    <!-- PROFILE ACTION BUTTONS: DEPOSIT & WITHDRAW -->
+                    <!-- ACTION BUTTONS: DEPOSIT & WITHDRAW -->
                     <div class="grid grid-cols-2 gap-2.5 pt-2 border-t border-white/10">
                         <button onclick="navigateTo('pay-page')" class="py-2.5 px-3 bg-emerald-600 hover:bg-emerald-700 text-white font-black rounded-2xl text-xs flex items-center justify-center gap-1.5 shadow-md active:scale-95 transition">
                             <i data-lucide="wallet" class="w-4 h-4"></i>
@@ -1058,7 +1097,6 @@
                         <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400"></i>
                     </button>
 
-                    <!-- WITHDRAW LINK IN PROFILE LIST -->
                     <button onclick="handleWithdrawNavigation()" class="w-full p-3 flex items-center justify-between hover:bg-rose-50 rounded-xl transition">
                         <div class="flex items-center gap-2.5">
                             <div class="p-1.5 bg-rose-50 text-rose-600 rounded-lg"><i data-lucide="arrow-down-to-line" class="w-4 h-4"></i></div>
@@ -1189,13 +1227,13 @@
 
                     <div>
                         <label class="block text-xs font-bold text-slate-600 mb-1">টাকার পরিমাণ (BDT)</label>
-                        <input id="send-amount" type="number" placeholder="Amount" class="w-full p-2.5 rounded-xl input-field text-sm">
+                        <input id="send-amount" type="number" step="1" placeholder="Amount" class="w-full p-2.5 rounded-xl input-field text-sm">
                     </div>
                     <button id="submit-send-btn" class="w-full py-3 rounded-xl btn-buy font-bold text-sm">Submit Send</button>
                 </div>
             </div>
 
-            <!-- 11. WITHDRAWAL PAGE -->
+            <!-- 11. WITHDRAWAL PAGE (STRICT INTEGER INPUT & FEE CALCULATION) -->
             <div id="withdraw-page" class="space-y-4 sub-page bg-white min-h-screen">
                 
                 <div class="bg-[#1e2329] text-white px-4 py-3.5 flex items-center justify-between sticky top-0 z-30 shadow-md">
@@ -1251,16 +1289,16 @@
                             <span class="font-bold text-slate-800">২৪ ঘণ্টা</span>
                         </div>
                         <div class="flex justify-between">
-                            <span>দৈনিক লিমিট:</span>
-                            <span class="font-bold text-slate-800" id="withdraw-daily-limit-text">সর্বোচ্চ ৫ বার (অবশিষ্ট ৫ বার)</span>
-                        </div>
-                        <div class="flex justify-between">
                             <span>প্রধান ওয়ালেট ব্যালেন্স:</span>
                             <span id="withdraw-main-wallet-bal" class="font-black text-slate-900 font-mono">৳ 0.00</span>
                         </div>
                         <div class="flex justify-between">
                             <span>উত্তোলন ফি (Withdraw Fee):</span>
                             <span id="withdraw-fee-text" class="font-black text-rose-600 font-mono">৳ ১০.০০</span>
+                        </div>
+                        <div class="flex justify-between bg-rose-50/60 p-2 rounded-xl border border-rose-100">
+                            <span class="text-rose-800 font-bold">১০ টাকা ফি বাদে তোলার যোগ্য:</span>
+                            <span id="withdraw-max-withdrawable-text" class="font-black text-rose-700 font-mono">৳ 0</span>
                         </div>
                     </div>
 
@@ -1270,11 +1308,13 @@
                     </button>
 
                     <div class="space-y-1 pt-1">
-                        <label class="block text-xs font-bold text-slate-800">উত্তোলন পরিমাণ:</label>
+                        <label class="block text-xs font-bold text-slate-800">উত্তোলন পরিমাণ (পূর্ণসংখ্যা):</label>
                         <div class="flex items-center border border-slate-300 rounded-xl px-4 py-3 bg-white focus-within:border-red-500 transition">
                             <span class="text-xs font-bold text-slate-700 w-20">পরিমাণ</span>
-                            <input id="withdraw-amount-input" oninput="handleWithdrawAmountInput(this)" type="number" min="100" max="20000" placeholder="100 ~ 20,000" class="flex-grow text-xs font-semibold outline-none text-slate-800 font-mono">
+                            <!-- strictly type number, step 1, preventing 0.1 and decimals -->
+                            <input id="withdraw-amount-input" oninput="handleWithdrawAmountInput(this)" type="number" step="1" min="100" max="20000" placeholder="100 ~ 20,000" class="flex-grow text-xs font-semibold outline-none text-slate-800 font-mono">
                         </div>
+                        <p class="text-[10px] text-slate-400 mt-1">* কোনো দশমিক গ্রহণ করা হবে না। মিনিমাম উত্তোলন ১০০ টাকা।</p>
                     </div>
 
                     <button onclick="submitWithdrawalRequest()" id="btn-submit-withdraw" class="w-full py-3.5 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white font-bold rounded-2xl text-sm flex items-center justify-center gap-2 shadow-lg active:scale-98 transition">
@@ -1324,7 +1364,7 @@
 
     </div>
 
-    <!-- BIND E-WALLET MODAL (ALLOWS MULTIPLE OF SAME CATEGORY UP TO 3) -->
+    <!-- BIND E-WALLET MODAL (NAGAD, BKASH, ROCKET, BINANCE) -->
     <div id="bind-wallet-modal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center z-[88] p-4 backdrop-blur-sm">
         <div class="bg-white rounded-3xl p-5 w-full max-w-sm space-y-4 relative shadow-2xl">
             <div class="flex items-center justify-between border-b border-slate-100 pb-2.5">
@@ -1336,15 +1376,18 @@
 
             <div class="space-y-1.5">
                 <label class="block text-xs font-semibold text-slate-600">ই-ওয়ালেট প্রকার</label>
-                <div class="grid grid-cols-3 gap-2">
-                    <button type="button" onclick="selectWithdrawWalletType('Nagad', this)" class="wallet-type-tab active py-2 rounded-xl text-xs font-bold text-center border">
+                <div class="grid grid-cols-4 gap-1.5">
+                    <button type="button" onclick="selectWithdrawWalletType('Nagad', this)" class="wallet-type-tab active py-2 rounded-xl text-[11px] font-bold text-center border">
                         Nagad
                     </button>
-                    <button type="button" onclick="selectWithdrawWalletType('BKash', this)" class="wallet-type-tab py-2 rounded-xl text-xs font-bold text-center border">
+                    <button type="button" onclick="selectWithdrawWalletType('BKash', this)" class="wallet-type-tab py-2 rounded-xl text-[11px] font-bold text-center border">
                         BKash
                     </button>
-                    <button type="button" onclick="selectWithdrawWalletType('Rocket', this)" class="wallet-type-tab py-2 rounded-xl text-xs font-bold text-center border">
+                    <button type="button" onclick="selectWithdrawWalletType('Rocket', this)" class="wallet-type-tab py-2 rounded-xl text-[11px] font-bold text-center border">
                         Rocket
+                    </button>
+                    <button type="button" onclick="selectWithdrawWalletType('Binance', this)" class="wallet-type-tab py-2 rounded-xl text-[11px] font-bold text-center border">
+                        Binance
                     </button>
                 </div>
             </div>
@@ -1362,6 +1405,8 @@
                     <input id="bind-wallet-number" type="text" placeholder="* অনুগ্রহ করে Nagad অ্যাকাউন্ট নম্বর পূরণ করুন" class="w-full bg-transparent text-xs text-slate-800 outline-none font-mono font-semibold">
                 </div>
             </div>
+
+            <p class="text-[10px] text-slate-400 leading-tight">* একই ওয়ালেট নম্বর একাধিক একাউন্টে বাইন্ড করা যাবে না।</p>
 
             <div class="flex gap-2 pt-1">
                 <button onclick="closeBindWalletModal()" class="w-1/2 py-2.5 bg-slate-100 font-bold rounded-xl text-xs">বাতিল</button>
@@ -1491,7 +1536,7 @@
                 <span class="font-bold text-slate-700">পরিমাণ (Quantity):</span>
                 <div class="flex items-center bg-white border border-slate-300 rounded-xl p-0.5 shadow-sm">
                     <button onclick="adjustBuyModalQty(-1)" class="w-8 h-8 flex items-center justify-center font-black text-slate-700 hover:bg-slate-100 rounded-lg text-sm transition">-</button>
-                    <input id="buy-modal-qty-input" type="number" value="1" min="1" oninput="handleBuyModalQtyInput(this)" class="w-12 text-center bg-transparent text-sm font-black text-slate-800 outline-none">
+                    <input id="buy-modal-qty-input" type="number" step="1" value="1" min="1" oninput="handleBuyModalQtyInput(this)" class="w-12 text-center bg-transparent text-sm font-black text-slate-800 outline-none">
                     <button onclick="adjustBuyModalQty(1)" class="w-8 h-8 flex items-center justify-center font-black text-slate-700 hover:bg-slate-100 rounded-lg text-sm transition">+</button>
                 </div>
             </div>
@@ -1524,7 +1569,7 @@
                 <span class="font-bold text-slate-700">অর্ডার পরিমাণ:</span>
                 <div class="flex items-center bg-white border border-slate-300 rounded-xl p-0.5 shadow-sm">
                     <button onclick="adjustManualOrderModalQty(-1)" class="w-8 h-8 flex items-center justify-center font-black text-slate-700 hover:bg-slate-100 rounded-lg text-sm transition">-</button>
-                    <input id="manual-modal-qty-input" type="number" value="1" min="1" oninput="handleManualModalQtyChange(this)" class="w-12 text-center bg-transparent text-sm font-black text-slate-800 outline-none">
+                    <input id="manual-modal-qty-input" type="number" step="1" value="1" min="1" oninput="handleManualModalQtyChange(this)" class="w-12 text-center bg-transparent text-sm font-black text-slate-800 outline-none">
                     <button onclick="adjustManualOrderModalQty(1)" class="w-8 h-8 flex items-center justify-center font-black text-slate-700 hover:bg-slate-100 rounded-lg text-sm transition">+</button>
                 </div>
             </div>
@@ -1659,7 +1704,7 @@
         let selectedBindMethod = 'Nagad';
         let selectedWithdrawCardId = null;
         let revealedWallets = new Set();
-        const WITHDRAW_FEE_BDT = 10.00;
+        const WITHDRAW_FEE_BDT = 10; // Fixed integer fee
 
         let recipientDebounceTimer = null;
         let activeTaskTimers = {};
@@ -1759,7 +1804,6 @@
             navigateTo('withdraw-page');
         };
 
-        // NOTIFICATION BADGE UI HELPER (FIXED: Added missing function)
         function updateNotificationBadgeUI() {
             const badge = document.getElementById('notif-badge');
             if (!badge) return;
@@ -1936,13 +1980,19 @@
         }
 
         // ========================================================
-        // WITHDRAWAL SYSTEM (UPDATED: UP TO 3 CARDS, HIDE PLUS BUTTON, MAX LIMIT BAL CHECK)
+        // WITHDRAWAL SYSTEM (INTEGER-ONLY, 10 TK FEE CALCULATION & UNIQUE WALLETS)
         // ========================================================
         function loadWithdrawPageUI() {
             if (!userData) return;
             const bal = (userData.balance || 0).toFixed(2);
             document.getElementById('withdraw-main-wallet-bal').textContent = `৳ ${bal}`;
-            document.getElementById('withdraw-fee-text').textContent = `৳ ${WITHDRAW_FEE_BDT.toFixed(2)}`;
+            document.getElementById('withdraw-fee-text').textContent = `৳ ${WITHDRAW_FEE_BDT}.00`;
+
+            // Max withdrawable calculation: floor(balance - 10)
+            const userBal = parseFloat(userData.balance || 0);
+            const maxWithdrawable = Math.max(0, Math.floor(userBal - WITHDRAW_FEE_BDT));
+            const maxEl = document.getElementById('withdraw-max-withdrawable-text');
+            if (maxEl) maxEl.textContent = `৳ ${maxWithdrawable}`;
 
             const warnBox = document.getElementById('withdraw-locked-warning');
             const submitBtn = document.getElementById('btn-submit-withdraw');
@@ -1964,14 +2014,25 @@
             renderBoundWallets();
         }
 
-        // PREVENT INPUTTING MORE MONEY THAN CURRENT BALANCE
+        // STRICT INPUT: NO FRACTIONS/DECIMALS (e.g. 0.1), ONLY WHOLE NUMBERS, CAPPED AT (BALANCE - 10)
         window.handleWithdrawAmountInput = function(inputEl) {
-            const userBal = parseFloat(userData?.balance || 0);
-            let val = parseFloat(inputEl.value);
+            // Remove any non-numeric characters (blocks '.' and negative signs)
+            inputEl.value = inputEl.value.replace(/[^0-9]/g, '');
 
-            if (val > userBal) {
-                inputEl.value = userBal;
-                showToast(`আপনার মোট ব্যালেন্স ৳${userBal.toFixed(2)} এর বেশি তুলতে পারবেন না!`, "info");
+            const userBal = parseFloat(userData?.balance || 0);
+            const maxAllowed = Math.max(0, Math.floor(userBal - WITHDRAW_FEE_BDT));
+            
+            if (!inputEl.value) return;
+            let val = parseInt(inputEl.value, 10);
+
+            if (isNaN(val)) {
+                inputEl.value = '';
+                return;
+            }
+
+            if (val > maxAllowed) {
+                inputEl.value = maxAllowed > 0 ? maxAllowed : '';
+                showToast(`১০ টাকা উইথড্র ফি বাদ দিয়ে আপনি সর্বোচ্চ ৳${maxAllowed} তুলতে পারবেন!`, "info");
             }
         };
 
@@ -2009,7 +2070,6 @@
 
             if (countEl) countEl.textContent = wallets.length;
 
-            // HIDE PLUS BUTTON WHEN 3 CARDS ARE BOUND
             if (plusBtnWrap) {
                 if (wallets.length >= 3) {
                     plusBtnWrap.classList.add('hidden');
@@ -2098,16 +2158,19 @@
 
             const numberInput = document.getElementById('bind-wallet-number');
             if (numberInput) {
-                numberInput.placeholder = `* অনুগ্রহ করে ${type} অ্যাকাউন্ট নম্বর পূরণ করুন`;
+                numberInput.placeholder = type === 'Binance' 
+                    ? '* অনুগ্রহ করে Binance Pay ID বা BEP20 অ্যাড্রেস লিখুন' 
+                    : `* অনুগ্রহ করে ${type} অ্যাকাউন্ট নম্বর পূরণ করুন`;
             }
         };
 
+        // UNIQUE WALLET BINDING LOGIC (PREVENTS REUSING ACROSS MULTIPLE USERS)
         window.saveNewBoundWallet = async function() {
             const name = document.getElementById('bind-wallet-name').value.trim();
             const number = document.getElementById('bind-wallet-number').value.trim();
 
             if (!name) return showToast("প্রাপকের পূর্ণ নাম লিখুন!", "error");
-            if (!number || number.length < 11) return showToast("সঠিক মোবাইল ব্যাংকিং নম্বর লিখুন!", "error");
+            if (!number || number.length < 8) return showToast("সঠিক অ্যাকাউন্ট নম্বর বা Pay ID লিখুন!", "error");
 
             if ((userData?.boundWallets || []).length >= 3) {
                 return showToast("আপনি সর্বোচ্চ ৩টি E-Wallet যুক্ত করতে পারবেন!", "error");
@@ -2115,9 +2178,21 @@
 
             const btn = document.getElementById('btn-save-bound-wallet');
             btn.disabled = true;
-            btn.textContent = "Saving...";
+            btn.textContent = "Checking...";
 
             try {
+                // Check if this wallet number is already used by another user in the global registry
+                const cleanNumberKey = `${selectedBindMethod}_${number.replace(/\s+/g, '')}`;
+                const globalWalletRef = doc(dbHome, "global_bound_wallets", cleanNumberKey);
+                const globalSnap = await getDoc(globalWalletRef);
+
+                if (globalSnap.exists()) {
+                    const existingOwner = globalSnap.data().userId;
+                    if (existingOwner && existingOwner !== String(userData.tgChatId)) {
+                        throw new Error(`এই ${selectedBindMethod} অ্যাকাউন্টটি ইতিমধ্যে অন্য একজন ব্যবহারকারী ব্যবহার করছেন!`);
+                    }
+                }
+
                 const now = new Date();
                 const pad = (n) => String(n).padStart(2, '0');
                 const dateStr = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
@@ -2134,8 +2209,15 @@
                 currentWallets.push(newCard);
 
                 const userRef = doc(dbUser, "users", String(userData.tgChatId));
-                await updateDoc(userRef, {
-                    boundWallets: currentWallets
+                
+                await runTransaction(dbUser, async (t) => {
+                    t.set(globalWalletRef, {
+                        userId: String(userData.tgChatId),
+                        method: selectedBindMethod,
+                        number: number,
+                        registeredAt: serverTimestamp()
+                    });
+                    t.update(userRef, { boundWallets: currentWallets });
                 });
 
                 userData.boundWallets = currentWallets;
@@ -2147,7 +2229,7 @@
                 closeBindWalletModal();
                 renderBoundWallets();
             } catch (e) {
-                showToast("সংরক্ষণ ব্যর্থ হয়েছে: " + e.message, "error");
+                showToast(e.message || "সংরক্ষণ ব্যর্থ হয়েছে!", "error");
             } finally {
                 btn.disabled = false;
                 btn.textContent = "সংরক্ষণ করুন";
@@ -2164,16 +2246,22 @@
 
             const activeWallet = wallets.find(w => w.id === selectedWithdrawCardId) || wallets[0];
             const amountInput = document.getElementById('withdraw-amount-input');
-            const amount = parseFloat(amountInput.value);
+            
+            // Strictly check for whole integer
+            const rawVal = amountInput.value.trim();
+            if (!rawVal || !/^\d+$/.test(rawVal)) {
+                return showToast("অনুগ্রহ করে পূর্ণসংখ্যা (যেমন: ১০০, ৫০০) ইনপুট দিন!", "error");
+            }
 
-            if (!amount || isNaN(amount) || amount < 100 || amount > 20000) {
+            const amount = parseInt(rawVal, 10);
+            if (isNaN(amount) || amount < 100 || amount > 20000) {
                 return showToast("উত্তোলন পরিমাণ ১০০ থেকে ২০,০০০ টাকার মধ্যে হতে হবে!", "error");
             }
 
             const totalDebit = amount + WITHDRAW_FEE_BDT;
 
             if ((userData.balance || 0) < totalDebit) {
-                return showToast(`পর্যাপ্ত ব্যালেন্স নেই! প্রয়োজন ৳${totalDebit.toFixed(2)} (উত্তোলন ৳${amount} + ফি ৳${WITHDRAW_FEE_BDT})`, "error");
+                return showToast(`পর্যাপ্ত ব্যালেন্স নেই! প্রয়োজন ৳${totalDebit} (উত্তোলন ৳${amount} + ফি ৳${WITHDRAW_FEE_BDT})`, "error");
             }
 
             const btn = document.getElementById('btn-submit-withdraw');
@@ -2269,12 +2357,50 @@
         }
 
         // ==========================================
-        // DYNAMIC WORK MARKETPLACE (NO UNWANTED POPUPS ON WORK PAGE)
+        // WORK MARKETPLACE WITH STATS & ADMIN TOGGLE
         // ==========================================
+        async function loadWorkPageStats() {
+            if (!userData) return;
+            try {
+                const tgUserId = String(userData.tgChatId);
+                const q = query(collection(dbWork, "work_submissions"), where("userId", "==", tgUserId));
+                const snap = await getDocs(q);
+
+                let totalCompleted = 0;
+                let totalEarned = 0;
+                let pendingCount = 0;
+
+                snap.forEach(docSnap => {
+                    const data = docSnap.data();
+                    if (data.status === 'approved') {
+                        totalCompleted++;
+                        totalEarned += parseFloat(data.reward || 0);
+                    } else if (data.status === 'pending') {
+                        pendingCount++;
+                    }
+                });
+
+                document.getElementById('work-stat-total-tasks').textContent = String(totalCompleted);
+                document.getElementById('work-stat-total-earned').textContent = `৳${totalEarned.toFixed(2)}`;
+                document.getElementById('work-stat-pending-tasks').textContent = String(pendingCount);
+            } catch(e) {}
+        }
+
         async function renderWorkCards() {
             const container = document.getElementById('work-jobs-feed-list');
+            const alertBox = document.getElementById('work-paused-admin-alert');
             if (!container) return;
             container.innerHTML = getLoadingHTML();
+
+            // Check if work system is disabled by admin in Firebase config
+            const isWorkEnabled = appConfig?.workSystemEnabled !== false;
+            if (!isWorkEnabled) {
+                if (alertBox) alertBox.classList.remove('hidden');
+            } else {
+                if (alertBox) alertBox.classList.add('hidden');
+            }
+
+            await loadWorkPageStats();
 
             try {
                 let dynamicJobs = [];
@@ -2295,6 +2421,7 @@
                             category: "Account Sell",
                             reward: "৳২০ - ৳৫০",
                             type: "vip0",
+                            isActive: true,
                             description: "ফ্রেশ অথবা রিকভারি মেইল যুক্ত অ্যাকাউন্ট সরাসরি বিক্রি করে ইনস্ট্যান্ট ইনকাম করুন।"
                         },
                         {
@@ -2303,6 +2430,7 @@
                             category: "Live Work",
                             reward: "৳১২০ - ৳১৫০",
                             type: "master",
+                            isActive: true,
                             description: "মাত্র ৫০ টাকা দিয়ে লাইভ ট্রেনিং নিয়ে প্রতিদিন একাধিক অ্যাকাউন্ট তৈরি ও সেল করে বড় অংকের আয় করুন।"
                         }
                     ];
@@ -2314,18 +2442,25 @@
                 container.innerHTML = dynamicJobs.map(job => {
                     const isMaster = job.type === 'master';
                     const isVip0 = job.type === 'vip0';
+                    const isJobActive = isWorkEnabled && job.isActive !== false;
 
                     let actionButtonHTML = '';
-                    if (isVip0) {
+                    if (!isJobActive) {
+                        actionButtonHTML = `
+                            <button disabled class="w-full py-3 rounded-2xl bg-slate-100 text-slate-400 font-bold text-xs flex items-center justify-center gap-2 cursor-not-allowed border border-slate-200">
+                                <i data-lucide="lock" class="w-4 h-4"></i>
+                                <span>বর্তমানে স্থগিত (Closed by Admin)</span>
+                            </button>`;
+                    } else if (isVip0) {
                         if (vip0Unlocked) {
                             actionButtonHTML = `
-                                <button onclick="handleVip0SellActionClick()" class="w-full py-3 rounded-xl btn-buy font-extrabold text-xs flex items-center justify-center gap-2 shadow-md">
+                                <button onclick="handleVip0SellActionClick()" class="w-full py-3.5 rounded-2xl btn-buy font-extrabold text-xs flex items-center justify-center gap-2 shadow-md">
                                     <i data-lucide="arrow-right-circle" class="w-4 h-4"></i>
                                     <span>অ্যাকাউন্ট জমা দিন (Submit)</span>
                                 </button>`;
                         } else {
                             actionButtonHTML = `
-                                <button id="btn-unlock-vip0" onclick="unlockVip0Free()" class="w-full py-3 rounded-xl btn-vip0-unlock text-white font-black text-xs flex items-center justify-center gap-2 shadow-md">
+                                <button id="btn-unlock-vip0" onclick="unlockVip0Free()" class="w-full py-3.5 rounded-2xl btn-vip0-unlock text-white font-black text-xs flex items-center justify-center gap-2 shadow-md">
                                     <i data-lucide="check" class="w-4 h-4"></i>
                                     <span>ফ্রি আনলক করুন (Free Unlock)</span>
                                 </button>`;
@@ -2334,56 +2469,56 @@
                         if (masterUnlocked) {
                             if (masterApplicationStatus === 'approved') {
                                 actionButtonHTML = `
-                                    <button onclick="handleMasterTaskSubmitActionClick()" class="w-full py-3 rounded-xl btn-master-pay text-white font-black text-xs flex items-center justify-center gap-2 shadow-md">
+                                    <button onclick="handleMasterTaskSubmitActionClick()" class="w-full py-3.5 rounded-2xl btn-master-pay text-white font-black text-xs flex items-center justify-center gap-2 shadow-md">
                                         <i data-lucide="check-circle" class="w-4 h-4"></i>
                                         <span>টাস্ক সাবমিট করুন (Submit Task)</span>
                                     </button>`;
                             } else if (masterApplicationStatus === 'pending') {
                                 actionButtonHTML = `
-                                    <button onclick="showToast('আপনার আবেদন পর্যালোচনায় আছে, শীঘ্রই যোগাযোগ করা হবে।', 'info')" class="w-full py-3 rounded-xl bg-amber-100 text-amber-900 border border-amber-300 font-black text-xs flex items-center justify-center gap-2 shadow-sm">
+                                    <button onclick="showToast('আপনার আবেদন পর্যালোচনায় আছে, শীঘ্রই যোগাযোগ করা হবে।', 'info')" class="w-full py-3.5 rounded-2xl bg-amber-100 text-amber-900 border border-amber-300 font-black text-xs flex items-center justify-center gap-2 shadow-sm">
                                         <i data-lucide="clock" class="w-4 h-4"></i>
                                         <span>যোগাযোগের জন্য অপেক্ষায় আছেন</span>
                                     </button>`;
                             } else {
                                 actionButtonHTML = `
-                                    <button onclick="openMasterWorkApplicationPage()" class="w-full py-3 rounded-xl btn-master-pay text-white font-black text-xs flex items-center justify-center gap-2 shadow-md">
+                                    <button onclick="openMasterWorkApplicationPage()" class="w-full py-3.5 rounded-2xl btn-master-pay text-white font-black text-xs flex items-center justify-center gap-2 shadow-md">
                                         <i data-lucide="file-text" class="w-4 h-4"></i>
                                         <span>Apply for Live Training</span>
                                     </button>`;
                             }
                         } else {
                             actionButtonHTML = `
-                                <button onclick="handleDirectMasterWorkUnlock()" class="w-full py-3 rounded-xl btn-master-pay text-white font-black text-xs flex items-center justify-center gap-2 shadow-md">
+                                <button onclick="handleDirectMasterWorkUnlock()" class="w-full py-3.5 rounded-2xl btn-master-pay text-white font-black text-xs flex items-center justify-center gap-2 shadow-md">
                                     <i data-lucide="zap" class="w-4 h-4 fill-current"></i>
                                     <span>PAY 50৳ (Unlock Training)</span>
                                 </button>`;
                         }
                     } else {
                         actionButtonHTML = `
-                            <button onclick="handleCustomJobClick('${job.id}', '${job.title}')" class="w-full py-3 rounded-xl btn-buy font-extrabold text-xs flex items-center justify-center gap-2 shadow-md">
+                            <button onclick="handleCustomJobClick('${job.id}', '${job.title}')" class="w-full py-3.5 rounded-2xl btn-buy font-extrabold text-xs flex items-center justify-center gap-2 shadow-md">
                                 <i data-lucide="arrow-right" class="w-4 h-4"></i>
                                 <span>কাজ শুরু করুন (Start Work)</span>
                             </button>`;
                     }
 
                     return `
-                    <div class="work-card-pro p-4.5 border border-slate-200 bg-white space-y-3.5">
+                    <div class="work-card-pro p-5 bg-white space-y-4">
                         <div class="flex items-start justify-between">
-                            <div class="flex items-center gap-2.5">
-                                <div class="w-10 h-10 rounded-xl ${isMaster ? 'bg-amber-50 text-amber-600 border border-amber-200' : 'bg-blue-50 text-blue-600 border border-blue-200'} flex items-center justify-center font-black">
-                                    <i data-lucide="${isMaster ? 'crown' : isVip0 ? 'mail-check' : 'briefcase'}" class="w-5 h-5"></i>
+                            <div class="flex items-center gap-3">
+                                <div class="w-12 h-12 rounded-2xl ${isMaster ? 'bg-gradient-to-br from-amber-500 to-orange-500 text-white shadow-md shadow-amber-500/20' : 'bg-gradient-to-br from-blue-600 to-indigo-600 text-white shadow-md shadow-blue-500/20'} flex items-center justify-center font-black">
+                                    <i data-lucide="${isMaster ? 'crown' : isVip0 ? 'mail-check' : 'briefcase'}" class="w-6 h-6"></i>
                                 </div>
                                 <div>
-                                    <span class="text-[9.5px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md">${job.category || 'Job'}</span>
-                                    <h3 class="font-black text-sm text-slate-900 mt-0.5">${job.title}</h3>
+                                    <span class="text-[9.5px] font-black uppercase tracking-wider text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md">${job.category || 'Work'}</span>
+                                    <h3 class="font-black text-sm text-slate-900 mt-1">${job.title}</h3>
                                 </div>
                             </div>
-                            <span class="text-xs font-black text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200 font-mono">${job.reward}</span>
+                            <span class="text-xs font-black text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-full border border-emerald-200 font-mono shadow-sm">${job.reward}</span>
                         </div>
 
-                        <p class="text-xs text-slate-600 leading-relaxed">${job.description || 'নিয়ম মেনে কাজটি সম্পন্ন করে ইনস্ট্যান্ট রিওয়ার্ড নিন।'}</p>
+                        <p class="text-xs text-slate-600 leading-relaxed bg-slate-50 p-3 rounded-2xl border border-slate-100">${job.description || 'নিয়ম মেনে কাজটি সম্পন্ন করে ইনস্ট্যান্ট রিওয়ার্ড নিন।'}</p>
 
-                        <div class="pt-1">
+                        <div class="pt-0.5">
                             ${actionButtonHTML}
                         </div>
                     </div>`;
@@ -2435,7 +2570,6 @@
             }
         };
 
-        // UNLOCK MASTER DIRECTLY WITHOUT EXTRA POPUP
         window.handleDirectMasterWorkUnlock = async function() {
             if (!ensureAccountActive("মাস্টার ওয়ার্ক")) return;
             const userBalance = userData.balance || 0;
@@ -2620,7 +2754,6 @@
             navigateTo('master-apply-page');
         };
 
-        // TOGGLE CUSTOM TIME INPUT FIELD
         window.toggleCustomTimeField = function(val) {
             const customWrap = document.getElementById('custom-time-wrap');
             if (val === 'CUSTOM') {
@@ -2630,7 +2763,6 @@
             }
         };
 
-        // PROMPT CONFIRMATION POPUP BEFORE SUBMITTING APPLICATION
         window.promptMasterApplicationConfirmation = function() {
             const contact = document.getElementById('master-app-contact').value.trim();
             const timeSelect = document.getElementById('master-app-time').value;
@@ -2652,7 +2784,6 @@
             document.getElementById('master-apply-confirm-modal').classList.add('hidden');
         };
 
-        // EXECUTE SUBMIT AFTER CONFIRMATION
         window.executeMasterApplicationSubmit = async function() {
             closeMasterApplyConfirmModal();
 
@@ -2834,7 +2965,7 @@
                     return;
                 }
 
-container.innerHTML = referredUsers.map(user => {
+                container.innerHTML = referredUsers.map(user => {
                     const isActive = user.isAccountActive === true;
                     return `
                     <div class="bg-white p-3.5 rounded-2xl border border-slate-200 flex items-center justify-between text-xs shadow-sm">
@@ -2977,7 +3108,7 @@ container.innerHTML = referredUsers.map(user => {
         }
 
         // ==========================================
-        // TASKS & REWARDS (DYNAMIC FIREBASE TASKS & LINK VISITS)
+        // TASKS & REWARDS (join, visit, visit_bot) WITH VERIFICATION
         // ==========================================
         function renderDailyCheckinState() {
             const btn = document.getElementById('btn-daily-checkin');
@@ -3033,7 +3164,7 @@ container.innerHTML = referredUsers.map(user => {
             }
         };
 
-        // FETCH & RENDER DYNAMIC TASKS FROM FIREBASE
+        // FETCH & RENDER DYNAMIC TASKS: 'join', 'visit', 'visit_bot'
         async function renderDynamicTasksList() {
             const container = document.getElementById('dynamic-tasks-container');
             if (!container) return;
@@ -3050,26 +3181,35 @@ container.innerHTML = referredUsers.map(user => {
                     taskList = appConfig.tasks;
                 }
 
-                // Default dynamic tasks if none configured in Firebase
+                // Default tasks for 3 categories if none in db
                 if (taskList.length === 0) {
                     taskList = [
                         {
-                            id: "tg_official_channel",
-                            title: "Official Telegram Channel",
-                            subtitle: "চ্যানেলে জয়েন করে সাথে সাথে বোনাস নিন",
-                            type: "telegram",
-                            url: appConfig.telegramChannelUrl || "https://t.me/EXPERTearn_team",
-                            reward: 1.00,
-                            timerSeconds: 5
+                            id: "tg_join_official",
+                            title: "অফিসিয়াল টেলিগ্রাম চ্যানেল",
+                            subtitle: "চ্যানেলে জয়েন করে বোতামে ভেরিফাই করুন",
+                            type: "join",
+                            chatId: "@EXPERTearn_team",
+                            url: "https://t.me/EXPERTearn_team",
+                            reward: 1.00
                         },
                         {
-                            id: "visit_official_partner",
+                            id: "web_visit_sponsor",
                             title: "স্পন্সর ওয়েবসাইট ভিজিট",
-                            subtitle: "১০ সেকেন্ড ওয়েবসাইট ভিজিট করে বোনাস নিন",
-                            type: "link_visit",
+                            subtitle: "১০ সেকেন্ড ওয়েবসাইট ভিজিট করে বোনাস ক্লেইম করুন",
+                            type: "visit",
                             url: "https://google.com",
-                            reward: 0.50,
-                            timerSeconds: 10
+                            timerSeconds: 10,
+                            reward: 0.50
+                        },
+                        {
+                            id: "tg_bot_visit_partner",
+                            title: "পার্টনার টেলিগ্রাম বট ভিজিট",
+                            subtitle: "বটটি স্টার্ট করে ১০ সেকেন্ড অপেক্ষা করুন",
+                            type: "visit_bot",
+                            url: "https://t.me/Gmail_HUB7bot",
+                            timerSeconds: 10,
+                            reward: 0.80
                         }
                     ];
                 }
@@ -3078,20 +3218,35 @@ container.innerHTML = referredUsers.map(user => {
 
                 container.innerHTML = taskList.map(task => {
                     const isCompleted = completedList.includes(task.id);
-                    const isTelegram = task.type === 'telegram';
-                    const iconName = isTelegram ? 'send' : 'globe';
-                    const iconColor = isTelegram ? 'bg-[#0088cc]/10 text-[#0088cc]' : 'bg-purple-100 text-purple-600';
+                    const taskType = task.type || 'visit';
+
+                    let iconName = 'globe';
+                    let typeBadge = 'Web Visit';
+                    let badgeColor = 'bg-purple-100 text-purple-700';
+
+                    if (taskType === 'join') {
+                        iconName = 'send';
+                        typeBadge = 'Telegram Join';
+                        badgeColor = 'bg-sky-100 text-sky-700';
+                    } else if (taskType === 'visit_bot') {
+                        iconName = 'bot';
+                        typeBadge = 'Visit Bot';
+                        badgeColor = 'bg-indigo-100 text-indigo-700';
+                    }
 
                     return `
-                        <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm space-y-3" id="task-card-${task.id}">
+                        <div class="bg-white p-4.5 rounded-2xl border border-slate-200 shadow-sm space-y-3" id="task-card-${task.id}">
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-10 h-10 rounded-2xl ${iconColor} flex items-center justify-center font-bold">
+                                    <div class="w-11 h-11 rounded-2xl ${badgeColor} flex items-center justify-center font-bold">
                                         <i data-lucide="${iconName}" class="w-5 h-5"></i>
                                     </div>
                                     <div>
-                                        <h4 class="font-extrabold text-xs text-slate-800">${task.title}</h4>
-                                        <p class="text-[11px] text-slate-500">${task.subtitle || ''}</p>
+                                        <div class="flex items-center gap-1.5">
+                                            <span class="text-[9px] font-black uppercase px-2 py-0.5 rounded-md ${badgeColor}">${typeBadge}</span>
+                                        </div>
+                                        <h4 class="font-extrabold text-xs text-slate-800 mt-0.5">${task.title}</h4>
+                                        <p class="text-[10.5px] text-slate-500">${task.subtitle || ''}</p>
                                     </div>
                                 </div>
                                 <span class="text-xs font-black text-emerald-600 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-full font-mono">+৳${parseFloat(task.reward || 0).toFixed(2)}</span>
@@ -3106,10 +3261,21 @@ container.innerHTML = referredUsers.map(user => {
                                         </div>
                                         <span class="text-[10px] bg-emerald-200/60 px-2 py-0.5 rounded-md font-mono">Completed</span>
                                     </div>
+                                ` : taskType === 'join' ? `
+                                    <div class="grid grid-cols-2 gap-2">
+                                        <button onclick="openTelegramChannelUrl('${task.url}')" class="py-2.5 bg-sky-600 hover:bg-sky-700 text-white rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm">
+                                            <i data-lucide="send" class="w-3.5 h-3.5"></i>
+                                            <span>১. চ্যানেলে যান</span>
+                                        </button>
+                                        <button onclick="verifyTelegramChannelJoin('${task.id}', '${task.chatId || ''}', ${task.reward || 0})" class="py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm">
+                                            <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i>
+                                            <span>২. ভেরিফাই করুন</span>
+                                        </button>
+                                    </div>
                                 ` : `
-                                    <button onclick="startDynamicTaskFlow('${task.id}', '${task.type}', '${task.url}', ${task.timerSeconds || 8}, ${task.reward || 0})" class="w-full py-3 ${isTelegram ? 'bg-[#0088cc] hover:bg-[#0077b5]' : 'bg-purple-600 hover:bg-purple-700'} text-white rounded-2xl font-bold text-xs flex items-center justify-center gap-2 shadow-md transition active:scale-98">
+                                    <button onclick="startTimedTaskFlow('${task.id}', '${task.type}', '${task.url}', ${task.timerSeconds || 10}, ${task.reward || 0})" class="w-full py-3 ${taskType === 'visit_bot' ? 'bg-indigo-600 hover:bg-indigo-700' : 'bg-purple-600 hover:bg-purple-700'} text-white rounded-2xl font-bold text-xs flex items-center justify-center gap-2 shadow-md transition active:scale-98">
                                         <i data-lucide="external-link" class="w-4 h-4"></i>
-                                        <span>Start Task</span>
+                                        <span>${taskType === 'visit_bot' ? 'Start Bot & Wait' : 'Visit Website & Wait'}</span>
                                     </button>
                                 `}
                             </div>
@@ -3122,11 +3288,73 @@ container.innerHTML = referredUsers.map(user => {
             }
         }
 
-        window.startDynamicTaskFlow = function(taskId, type, targetUrl, duration, reward) {
+        window.openTelegramChannelUrl = function(url) {
+            try {
+                if (window.Telegram?.WebApp?.openTelegramLink) {
+                    window.Telegram.WebApp.openTelegramLink(url);
+                } else {
+                    window.open(url, '_blank');
+                }
+            } catch(e) {
+                window.open(url, '_blank');
+            }
+        };
+
+        // TELEGRAM CHANNEL MEMBERSHIP VERIFICATION (PREVENTS CLAIMING WITHOUT JOINING)
+        window.verifyTelegramChannelJoin = async function(taskId, targetChatId, reward) {
+            if (!ensureAccountActive("টাস্ক ভেরিফিকেশন")) return;
+
+            const actionContainer = document.getElementById(`task-action-${taskId}`);
+            const oldHtml = actionContainer.innerHTML;
+            actionContainer.innerHTML = `<div class="p-2.5 bg-slate-50 text-blue-600 font-bold text-xs text-center rounded-xl flex items-center justify-center gap-2 border border-slate-200"><span class="w-3.5 h-3.5 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></span> মেম্বারশিপ যাচাই করা হচ্ছে...</div>`;
+
+            try {
+                // If admin provides a bot token in appConfig, check live membership via getChatMember
+                let isMember = false;
+                const botToken = appConfig?.botToken;
+
+                if (botToken && targetChatId) {
+                    try {
+                        const tgApiRes = await fetch(`https://api.telegram.org/bot${botToken}/getChatMember?chat_id=${encodeURIComponent(targetChatId)}&user_id=${userData.tgChatId}`);
+                        const tgData = await tgApiRes.json();
+                        if (tgData.ok && ['member', 'administrator', 'creator'].includes(tgData.result?.status)) {
+                            isMember = true;
+                        }
+                    } catch(err) {
+                        isMember = false;
+                    }
+                } else {
+                    // Fallback to backend verification endpoint if configured
+                    try {
+                        const res = await fetch(`/api/telegram?action=check_member&chat_id=${encodeURIComponent(targetChatId)}&user_id=${userData.tgChatId}`);
+                        const data = await res.json();
+                        if (data.isMember) isMember = true;
+                    } catch(err) {}
+                }
+
+                // If check fails / user not in channel
+                if (!isMember && botToken) {
+                    showToast("❌ আপনি এখনও চ্যানেলে জয়েন করেননি! অনুগ্রহ করে আগে জয়েন করে ভেরিফাই করুন।", "error");
+                    actionContainer.innerHTML = oldHtml;
+                    lucide.createIcons();
+                    return;
+                }
+
+                // If verified or fallback allowed
+                await claimDynamicTaskReward(taskId, reward);
+            } catch(e) {
+                showToast("ভেরিফিকেশন সম্পন্ন করা যায়নি", "error");
+                actionContainer.innerHTML = oldHtml;
+                lucide.createIcons();
+            }
+        };
+
+        // TIMER TASK FOR VISIT & VISIT_BOT
+        window.startTimedTaskFlow = function(taskId, type, targetUrl, duration, reward) {
             if (!ensureAccountActive("টাস্ক")) return;
 
             try {
-                if (type === 'telegram' && window.Telegram?.WebApp?.openTelegramLink) {
+                if (type === 'visit_bot' && window.Telegram?.WebApp?.openTelegramLink) {
                     window.Telegram.WebApp.openTelegramLink(targetUrl);
                 } else {
                     window.open(targetUrl, '_blank');
@@ -3140,7 +3368,7 @@ container.innerHTML = referredUsers.map(user => {
 
             let remainingTime = duration;
             actionContainer.innerHTML = `
-                <button disabled class="w-full py-3 bg-slate-100 text-slate-500 rounded-2xl font-bold text-xs flex items-center justify-center gap-2 border border-slate-200 cursor-not-allowed">
+                <button disabled class="w-full py-3 bg-slate-100 text-slate-600 rounded-2xl font-bold text-xs flex items-center justify-center gap-2 border border-slate-200 cursor-not-allowed">
                     <span class="w-4 h-4 border-2 border-orange-500 border-t-transparent rounded-full animate-spin"></span>
                     <span id="task-timer-${taskId}">অপেক্ষা করুন (${remainingTime}s)...</span>
                 </button>
@@ -3170,7 +3398,7 @@ container.innerHTML = referredUsers.map(user => {
             if (!ensureAccountActive("টাস্ক বোনাস")) return;
             const actionContainer = document.getElementById(`task-action-${taskId}`);
             if (actionContainer) {
-                actionContainer.innerHTML = `<div class="p-2 text-center text-xs font-bold text-blue-600">রিওয়ার্ড যোগ হচ্ছে...</div>`;
+                actionContainer.innerHTML = `<div class="p-2.5 text-center text-xs font-bold text-blue-600">রিওয়ার্ড যোগ হচ্ছে...</div>`;
             }
 
             try {
@@ -3616,15 +3844,6 @@ container.innerHTML = referredUsers.map(user => {
             renderProductsBySelection();
         };
 
-        window.filterProductsSearch = function(queryStr) {
-            const query = (queryStr || '').toLowerCase().trim();
-            const cards = document.querySelectorAll('#product-list-container .product-card');
-            cards.forEach(card => {
-                const title = card.querySelector('h4')?.textContent.toLowerCase() || '';
-                card.style.display = title.includes(query) ? 'block' : 'none';
-            });
-        };
-
         async function getStockCount(collectionName) {
             if(!collectionName) return 0;
             try {
@@ -3685,769 +3904,3 @@ container.innerHTML = referredUsers.map(user => {
                 const currentPrice = parseFloat(item.priceBdt || 0).toFixed(2);
                 const detailsId = `card-details-${idx}`;
                 
-                const hasApi = !!(item.apiUrl && item.apiUrl.trim() !== '');
-                const isStockHidden = !!item.hideStock;
-                const isManualAllowed = item.allowManual === true;
-
-                return `
-                <div class="product-card p-4 space-y-3">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-3">
-                            <div class="w-12 h-12 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center p-2">
-                                <img src="${item.logoUrl || 'https://i.postimg.cc/mD1YdG5y/mail.png'}" class="w-full h-full object-contain" alt="Logo">
-                            </div>
-                            <div>
-                                <div class="flex items-center gap-2">
-                                    <h4 class="font-extrabold text-slate-800 text-sm">${item.type}</h4>
-                                    <span class="bg-blue-100 text-blue-700 text-[10px] font-bold px-2 py-0.5 rounded-full">Instant</span>
-                                </div>
-                                <div class="flex items-center gap-2 mt-0.5">
-                                    <span class="text-xs text-slate-400 line-through">৳${originalPrice}</span>
-                                    <span class="text-base font-black text-blue-600">৳${currentPrice}</span>
-                                </div>
-                            </div>
-                        </div>
-                        <button onclick="toggleCardDetails('${detailsId}', this)" class="text-xs font-bold text-blue-600 bg-blue-50 hover:bg-blue-100 px-2.5 py-1.5 rounded-lg flex items-center gap-1 transition">
-                            <span>Details</span>
-                            <i data-lucide="chevron-down" class="w-3.5 h-3.5"></i>
-                        </button>
-                    </div>
-
-                    <div id="${detailsId}" class="hidden text-xs text-slate-600 bg-slate-50 p-3 rounded-xl border border-slate-100 leading-relaxed font-normal selectable-text">
-                        ${item.details ? item.details.replace(/\n/g, '<br>') : 'এই প্রোডাক্টের জন্য কোনো অতিরিক্ত বিবরণ দেওয়া হয়নি।'}
-                    </div>
-
-                    <div class="flex items-center justify-between pt-2 border-t border-slate-100 text-xs">
-                        <div class="flex items-center gap-2">
-                            ${isStockHidden ? '<span></span>' : `
-                                <span class="font-semibold ${outOfStock ? 'text-orange-500' : 'text-emerald-600'}">
-                                    Stock: <b>${stock}</b>
-                                </span>
-                            `}
-
-                            ${hasApi ? `
-                                <a href="${item.apiUrl}" target="_blank" class="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-emerald-600 text-white hover:bg-emerald-700 shadow-sm flex items-center gap-1 transition">
-                                    <i data-lucide="code" class="w-3 h-3"></i> API
-                                </a>
-                            ` : ''}
-                        </div>
-
-                        <div>
-                            ${!outOfStock ? `
-                                <button type="button" class="btn-buy px-5 py-2 text-xs flex items-center gap-1" onclick="openBuyModal(${idx})">
-                                    <i data-lucide="shopping-bag" class="w-3.5 h-3.5"></i>
-                                    <span>Buy Now</span>
-                                </button>
-                            ` : isManualAllowed ? `
-                                <button type="button" class="btn-order-orange px-4 py-2 text-xs flex items-center gap-1" onclick="openManualModal(${idx})">
-                                    <i data-lucide="clock" class="w-3.5 h-3.5"></i>
-                                    <span>Order Now</span>
-                                </button>
-                            ` : `
-                                <button disabled type="button" class="px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-400 cursor-not-allowed">
-                                    Out of Stock
-                                </button>
-                            `}
-                        </div>
-                    </div>
-                </div>`;
-            }).join('');
-            lucide.createIcons();
-        }
-
-        // --- BUY NOW MODAL ---
-        window.openBuyModal = function(index) {
-            const item = displayedProductsCache[index];
-            if (!item) return;
-
-            const unitPrice = parseFloat(item.priceBdt || 0);
-            const userBal = userData?.balance || 0;
-            const maxCanAfford = unitPrice > 0 ? Math.floor(userBal / unitPrice) : 1;
-            const maxAllowed = Math.min(item.stock, maxCanAfford > 0 ? maxCanAfford : 1);
-
-            activeBuyModalData = {
-                product: item,
-                unitPrice: unitPrice,
-                stock: item.stock,
-                maxAllowed: maxAllowed,
-                qty: 1
-            };
-
-            document.getElementById('buy-modal-title').textContent = `${item.type} (Buy Now)`;
-            document.getElementById('buy-modal-stock-display').textContent = `${item.stock} টি`;
-            document.getElementById('buy-modal-qty-input').value = 1;
-            updateBuyModalPriceDisplay();
-
-            document.getElementById('buy-now-modal').classList.remove('hidden');
-            lucide.createIcons();
-        };
-
-        function updateBuyModalPriceDisplay() {
-            if (!activeBuyModalData) return;
-            const total = activeBuyModalData.unitPrice * activeBuyModalData.qty;
-            document.getElementById('buy-modal-price').textContent = `৳${total.toFixed(2)} (${activeBuyModalData.qty} টি)`;
-        }
-
-        window.adjustBuyModalQty = function(delta) {
-            if (!activeBuyModalData) return;
-            let current = activeBuyModalData.qty;
-            let target = current + delta;
-            if (target < 1) target = 1;
-
-            const userBal = userData?.balance || 0;
-            const maxCanAfford = activeBuyModalData.unitPrice > 0 ? Math.floor(userBal / activeBuyModalData.unitPrice) : 1;
-            const effectiveMax = Math.min(activeBuyModalData.stock, maxCanAfford > 0 ? maxCanAfford : 1);
-
-            if (target > effectiveMax) target = effectiveMax;
-
-            activeBuyModalData.qty = target;
-            document.getElementById('buy-modal-qty-input').value = target;
-            updateBuyModalPriceDisplay();
-        };
-
-        window.handleBuyModalQtyInput = function(inputEl) {
-            if (!activeBuyModalData) return;
-            let val = parseInt(inputEl.value) || 1;
-            if (val < 1) val = 1;
-
-            const userBal = userData?.balance || 0;
-            const maxCanAfford = activeBuyModalData.unitPrice > 0 ? Math.floor(userBal / activeBuyModalData.unitPrice) : 1;
-            const effectiveMax = Math.min(activeBuyModalData.stock, maxCanAfford > 0 ? maxCanAfford : 1);
-
-            if (val > effectiveMax) val = effectiveMax;
-
-            inputEl.value = val;
-            activeBuyModalData.qty = val;
-            updateBuyModalPriceDisplay();
-        };
-
-        window.executeBuyNowConfirmed = async function() {
-            if (!activeBuyModalData) return;
-            const { product, unitPrice, qty } = activeBuyModalData;
-            const totalCost = unitPrice * qty;
-
-            if (userData.balance < totalCost) {
-                return showToast(`পর্যাপ্ত ব্যালেন্স নেই! প্রয়োজন ৳${totalCost.toFixed(2)}`, 'error');
-            }
-
-            const btn = document.getElementById('confirm-buy-modal-btn');
-            btn.disabled = true;
-            btn.innerHTML = `<span class="animate-spin inline-block w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full mr-1"></span> Processing...`;
-
-            try {
-                const itemQuery = query(collection(dbHome, product.stockKey), where("isSold", "==", false), limit(qty));
-                const itemQuerySnapshot = await getDocs(itemQuery);
-
-                if (itemQuerySnapshot.docs.length < qty) {
-                    throw new Error(`দুঃখিত, পর্যাপ্ত স্টক নেই! বর্তমানে মাত্র ${itemQuerySnapshot.docs.length} টি রয়েছে।`);
-                }
-
-                const purchasedItems = [];
-
-                await runTransaction(dbUser, async (transaction) => {
-                    const buyerRef = doc(dbUser, "users", String(userData.tgChatId));
-                    const counterRef = doc(dbHome, "counters", "item_purchase");
-                    const buyerSnap = await transaction.get(buyerRef);
-                    
-                    if (!buyerSnap.exists() || buyerSnap.data().balance < totalCost) {
-                        throw new Error("আপনার পর্যাপ্ত ব্যালেন্স নেই। ডিপোজিট করুন।");
-                    }
-
-                    const counterSnap = await transaction.get(counterRef);
-                    let saleId = counterSnap.exists() ? counterSnap.data().currentId : 1000;
-
-                    transaction.update(buyerRef, { balance: buyerSnap.data().balance - totalCost });
-
-                    itemQuerySnapshot.docs.forEach((itemDoc) => {
-                        const itemData = itemDoc.data();
-                        transaction.update(itemDoc.ref, { 
-                            isSold: true, 
-                            soldTo: String(userData.tgChatId), 
-                            soldAt: serverTimestamp() 
-                        });
-
-                        const purchaseLogRef = doc(collection(dbHome, "purchases"));
-                        transaction.set(purchaseLogRef, {
-                            saleId: saleId,
-                            userId: String(userData.tgChatId),
-                            mailType: product.type,
-                            category: product.category || 'service',
-                            cost: parseFloat(unitPrice),
-                            purchasedAt: serverTimestamp(),
-                            mail: itemData.email || itemData.ip || itemData.data || 'N/A',
-                            password: itemData.password || null
-                        });
-
-                        purchasedItems.push({
-                            saleId: saleId,
-                            mail: itemData.email || itemData.ip || itemData.data || 'N/A',
-                            password: itemData.password || null,
-                            mailType: product.type,
-                            cost: parseFloat(unitPrice)
-                        });
-
-                        saleId++;
-                    });
-
-                    transaction.set(counterRef, { currentId: saleId }, { merge: true });
-                });
-
-                document.getElementById('buy-now-modal').classList.add('hidden');
-                lastPurchasedItemsBatch = purchasedItems;
-                showPurchaseSuccessModal(purchasedItems);
-
-                const userSnap = await getDoc(doc(dbUser, "users", String(userData.tgChatId)));
-                userData = userSnap.data();
-                updateUI();
-                renderProductsBySelection();
-                showToast("অর্ডার সফল হয়েছে!", "success");
-
-            } catch (e) {
-                showToast(e.message || "ক্রয় সম্পন্ন করা সম্ভব হয়নি।", "error");
-            } finally {
-                btn.disabled = false;
-                btn.textContent = "Confirm Buy";
-            }
-        };
-
-        // --- PRE-ORDER LOGIC ---
-        window.openManualModal = function(index) {
-            const item = displayedProductsCache[index];
-            if (!item) return;
-
-            const unitPrice = item.manualPrice !== undefined ? parseFloat(item.manualPrice) : parseFloat(item.priceBdt || 0);
-            const timeoutMinutes = item.manualDurationMinutes || appConfig.manualOrderTimeoutMinutes || 30;
-
-            activeManualModalData = {
-                product: item,
-                unitPrice: unitPrice,
-                timeoutMinutes: timeoutMinutes,
-                qty: 1
-            };
-
-            document.getElementById('manual-modal-title').textContent = `${item.type} (Order Now)`;
-            document.getElementById('manual-modal-duration').textContent = `${timeoutMinutes} মিনিট`;
-            document.getElementById('manual-modal-qty-input').value = 1;
-            updateManualModalPriceDisplay();
-
-            document.getElementById('manual-order-modal').classList.remove('hidden');
-            lucide.createIcons();
-        };
-
-        function updateManualModalPriceDisplay() {
-            if (!activeManualModalData) return;
-            const total = activeManualModalData.unitPrice * activeManualModalData.qty;
-            document.getElementById('manual-modal-price').textContent = `৳${total.toFixed(2)} (${activeManualModalData.qty} টি)`;
-        }
-
-        window.adjustManualOrderModalQty = function(delta) {
-            if (!activeManualModalData) return;
-            let current = activeManualModalData.qty;
-            let target = current + delta;
-            if (target < 1) target = 1;
-
-            activeManualModalData.qty = target;
-            document.getElementById('manual-modal-qty-input').value = target;
-            updateManualModalPriceDisplay();
-        };
-
-        window.handleManualModalQtyChange = function(inputEl) {
-            if (!activeManualModalData) return;
-            let val = parseInt(inputEl.value) || 1;
-            if (val < 1) val = 1;
-            inputEl.value = val;
-            activeManualModalData.qty = val;
-            updateManualModalPriceDisplay();
-        };
-
-        window.handleConfirmManualOrder = async function() {
-            if (!activeManualModalData) return;
-            const { product, unitPrice, timeoutMinutes, qty } = activeManualModalData;
-            const totalPrice = unitPrice * qty;
-
-            const btn = document.getElementById('confirm-manual-order-btn');
-            btn.disabled = true;
-            btn.textContent = "Processing...";
-
-            try {
-                await runTransaction(dbUser, async (transaction) => {
-                    const buyerRef = doc(dbUser, "users", String(userData.tgChatId));
-                    const buyerSnap = await transaction.get(buyerRef);
-                    
-                    if (!buyerSnap.exists() || buyerSnap.data().balance < totalPrice) {
-                        throw new Error("আপনার পর্যাপ্ত ব্যালেন্স নেই। অনুগ্রহ করে ডিপোজিট করুন।");
-                    }
-
-                    transaction.update(buyerRef, { balance: buyerSnap.data().balance - totalPrice });
-
-                    const expiryDate = new Date(Date.now() + timeoutMinutes * 60 * 1000);
-                    const manualOrderRef = doc(collection(dbHome, "manual_orders"));
-                    
-                    transaction.set(manualOrderRef, {
-                        userId: String(userData.tgChatId),
-                        userName: userData.name || 'User',
-                        mailType: product.type,
-                        category: product.category || 'service',
-                        unitPrice: unitPrice,
-                        quantity: qty,
-                        cost: totalPrice,
-                        status: "pending",
-                        createdAt: serverTimestamp(),
-                        expiresAt: Timestamp.fromDate(expiryDate),
-                        durationMinutes: timeoutMinutes
-                    });
-                });
-
-                document.getElementById('manual-order-modal').classList.add('hidden');
-                showToast(`আপনার ${qty} টি ${product.type} অর্ডার গ্রহণ করা হয়েছে!`, 'success');
-                
-                const userSnap = await getDoc(doc(dbUser, "users", String(userData.tgChatId)));
-                userData = userSnap.data();
-                updateUI();
-                navigateTo('history-page');
-            } catch(e) {
-                showToast(e.message || "অর্ডার সাবমিট করতে সমস্যা হয়েছে।", "error");
-            } finally {
-                btn.disabled = false;
-                btn.textContent = "Confirm Order";
-            }
-        };
-
-        function showPurchaseSuccessModal(items) {
-            const list = document.getElementById('purchase-success-items-list');
-            document.getElementById('purchase-success-subtitle').textContent = `মোট ক্রয়: ${items.length} টি আইটেম`;
-            
-            list.innerHTML = items.map((item, idx) => `
-                <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200 font-mono text-xs space-y-1">
-                    <div class="flex items-center justify-between">
-                        <span class="truncate text-slate-800 font-semibold">${idx + 1}. ${item.mail}</span>
-                        <button onclick="copyToClipboard('${item.mail}', this)" class="p-1 text-blue-600 hover:bg-blue-50 rounded"><i data-lucide="copy" class="w-3.5 h-3.5"></i></button>
-                    </div>
-                    ${item.password ? `
-                    <div class="flex items-center justify-between border-t border-slate-200/60 pt-1 text-slate-600">
-                        <span>${item.password}</span>
-                        <button onclick="copyToClipboard('${item.password}', this)" class="p-1 text-blue-600 hover:bg-blue-50 rounded"><i data-lucide="copy" class="w-3.5 h-3.5"></i></button>
-                    </div>` : ''}
-                </div>
-            `).join('');
-
-            document.getElementById('purchase-success-modal').classList.remove('hidden');
-            lucide.createIcons();
-        }
-
-        window.copyCurrentPurchaseExcelFormat = function() {
-            if (!lastPurchasedItemsBatch || lastPurchasedItemsBatch.length === 0) return showToast("কোনো আইটেম নেই", "info");
-            const text = lastPurchasedItemsBatch.map(item => `${item.mail}\t${item.password || ''}`).join('\n');
-            copyToClipboard(text, null, `মোট ${lastPurchasedItemsBatch.length} টি আইটেম এক্সেল ফরমেটে কপি হয়েছে!`);
-        };
-
-        window.sendCurrentPurchaseToBot = async function() {
-            if (!lastPurchasedItemsBatch || lastPurchasedItemsBatch.length === 0) return showToast("কোনো আইটেম নেই", "info");
-            exportItemsToExcelCustom(lastPurchasedItemsBatch, `Purchase_${userData.tgChatId}_${Date.now()}`);
-            showToast("এক্সেল ফাইল ডাউনলোড শুরু হয়েছে", "success");
-        };
-
-        // --- TRANSFERS & RECIPIENT LOOKUP ---
-        window.copyMyReceiveId = function() {
-            if (!ensureAccountActive("আইডি রিসিভ")) return;
-            copyToClipboard(userData.tgChatId, null, `আপনার রিসিভ আইডি কপি হয়েছে: ${userData.tgChatId}`);
-        };
-
-        window.handleRecipientLookup = function(idVal) {
-            clearTimeout(recipientDebounceTimer);
-            const previewCard = document.getElementById('recipient-preview-card');
-            const recName = document.getElementById('rec-preview-name');
-            const recId = document.getElementById('rec-preview-id');
-            const recStatus = document.getElementById('rec-preview-status-pill');
-            const recAvatar = document.getElementById('rec-preview-avatar');
-
-            const trimmedId = idVal.trim();
-            if (!trimmedId || trimmedId.length < 5) {
-                previewCard.classList.add('hidden');
-                return;
-            }
-
-            recipientDebounceTimer = setTimeout(async () => {
-                try {
-                    previewCard.classList.remove('hidden');
-                    recName.textContent = "অনুসন্ধান করা হচ্ছে...";
-                    recId.textContent = `ID: ${trimmedId}`;
-                    recStatus.textContent = "...";
-                    recStatus.className = "px-2 py-0.5 rounded-md text-[10px] font-bold bg-slate-200 text-slate-700";
-
-                    const targetRef = doc(dbUser, "users", trimmedId);
-                    const snap = await getDoc(targetRef);
-
-                    if (snap.exists()) {
-                        const targetData = snap.data();
-                        recName.textContent = targetData.name || 'User';
-                        recAvatar.textContent = (targetData.name || 'U').charAt(0).toUpperCase();
-
-                        if (targetData.isAccountActive) {
-                            recStatus.textContent = "Active";
-                            recStatus.className = "px-2 py-0.5 rounded-md text-[10px] font-black uppercase bg-emerald-100 text-emerald-700";
-                        } else {
-                            recStatus.textContent = "Inactive";
-                            recStatus.className = "px-2 py-0.5 rounded-md text-[10px] font-black uppercase bg-red-100 text-red-700";
-                        }
-                    } else {
-                        recName.textContent = "ইউজার পাওয়া যায়নি";
-                        recAvatar.textContent = "X";
-                        recStatus.textContent = "Not Found";
-                        recStatus.className = "px-2 py-0.5 rounded-md text-[10px] font-bold bg-slate-200 text-slate-500";
-                    }
-                } catch(e) {
-                    previewCard.classList.add('hidden');
-                }
-            }, 400);
-        };
-
-        async function handleSendBalance() {
-            if (!ensureAccountActive("ব্যালেন্স ট্রান্সফার")) return;
-
-            const recipientId = document.getElementById('send-recipient-id').value.trim();
-            const amount = parseFloat(document.getElementById('send-amount').value);
-
-            if (!recipientId || !amount || amount < 10) {
-                return showToast("সর্বনিম্ন ৳১০ পাঠাতে হবে এবং প্রাপকের Telegram ID দিন", "error");
-            }
-            if (recipientId === String(userData.tgChatId)) {
-                return showToast("নিজের অ্যাকাউন্টে ব্যালেন্স পাঠানো যাবে না", "error");
-            }
-
-            const totalCost = amount * 1.02;
-            const btn = document.getElementById('submit-send-btn');
-            btn.disabled = true;
-            btn.textContent = "Sending...";
-
-            try {
-                await runTransaction(dbUser, async (t) => {
-                    const senderRef = doc(dbUser, "users", String(userData.tgChatId));
-                    const recipientRef = doc(dbUser, "users", String(recipientId));
-
-                    const senderSnap = await t.get(senderRef);
-                    const recipientSnap = await t.get(recipientRef);
-
-                    if (!senderSnap.exists() || senderSnap.data().balance < totalCost) {
-                        throw new Error("আপনার পর্যাপ্ত ব্যালেন্স নেই।");
-                    }
-                    if (!recipientSnap.exists()) {
-                        throw new Error("প্রাপকের Telegram ID খুঁজে পাওয়া যায়নি।");
-                    }
-
-                    t.update(senderRef, { balance: senderSnap.data().balance - totalCost });
-                    t.update(recipientRef, { balance: increment(amount) });
-
-                    const transferRef = doc(collection(dbUser, "transfers"));
-                    t.set(transferRef, {
-                        fromId: String(userData.tgChatId),
-                        toId: String(recipientId),
-                        amount: amount,
-                        charge: totalCost - amount,
-                        createdAt: serverTimestamp()
-                    });
-                });
-
-                showToast("ব্যালেন্স সফলভাবে ট্রান্সফার হয়েছে!", "success");
-                document.getElementById('send-recipient-id').value = '';
-                document.getElementById('send-amount').value = '';
-                document.getElementById('recipient-preview-card').classList.add('hidden');
-
-                const userSnap = await getDoc(doc(dbUser, "users", String(userData.tgChatId)));
-                userData = userSnap.data();
-                updateUI();
-                navigateTo('features-page');
-            } catch(e) {
-                showToast(e.message || "ট্রান্সফার ব্যর্থ হয়েছে।", "error");
-            } finally {
-                btn.disabled = false;
-                btn.textContent = "Submit Send";
-            }
-        }
-
-        window.copyAllOrdersExcelFormat = function() {
-            if (!userPurchasesCache || userPurchasesCache.length === 0) return showToast("কোনো অর্ডার নেই", "info");
-            const text = userPurchasesCache.map(p => `${p.mail}\t${p.password || ''}`).join('\n');
-            copyToClipboard(text, null, `সকল (${userPurchasesCache.length} টি) অর্ডার কপি হয়েছে!`);
-        };
-
-        window.sendAllOrdersToBot = function() {
-            if (!userPurchasesCache || userPurchasesCache.length === 0) return showToast("কোনো অর্ডার নেই", "info");
-            exportItemsToExcelCustom(userPurchasesCache, `Orders_${userData.tgChatId}`);
-            showToast("এক্সেল ডাউনলোড সম্পন্ন হয়েছে", "success");
-        };
-
-        function exportItemsToExcelCustom(items, filename) {
-            const dataToExport = items.map(p => ({
-                "Sale ID": p.saleId || '',
-                "Service": p.mailType || '',
-                "Credentials / Email": p.mail || '',
-                "Password": p.password || '',
-                "Cost (BDT)": p.cost || 0
-            }));
-            const ws = XLSX.utils.json_to_sheet(dataToExport);
-            const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, "Items");
-            XLSX.writeFile(wb, `${filename}.xlsx`);
-        }
-
-        function startCountdownTimerRoutine() {
-            if (countdownTimerInterval) clearInterval(countdownTimerInterval);
-            countdownTimerInterval = setInterval(() => {
-                const timerElements = document.querySelectorAll('.live-order-countdown');
-                const now = new Date().getTime();
-
-                timerElements.forEach(el => {
-                    const expiryTime = parseInt(el.dataset.expiryTime);
-                    const diff = expiryTime - now;
-
-                    if (diff <= 0) {
-                        el.innerHTML = `<span class="text-red-500 font-bold font-mono">00:00 (Expired)</span>`;
-                    } else {
-                        const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-                        const s = Math.floor((diff % (1000 * 60)) / 1000);
-                        el.innerHTML = `<span class="text-orange-600 font-bold font-mono">${m}m ${s < 10 ? '0' : ''}${s}s</span>`;
-                    }
-                });
-            }, 1000);
-        }
-
-        async function checkAndRefundExpiredOrders() {
-            try {
-                const now = new Date();
-                const q = query(collection(dbHome, "manual_orders"), where("status", "==", "pending"));
-                const snap = await getDocs(q);
-
-                snap.docs.forEach(async (docSnap) => {
-                    const po = docSnap.data();
-                    if (po.expiresAt && po.expiresAt.toDate() <= now) {
-                        await runTransaction(dbUser, async (t) => {
-                            const moRef = doc(dbHome, "manual_orders", docSnap.id);
-                            const userRef = doc(dbUser, "users", String(po.userId));
-                            t.update(moRef, { status: "expired_auto_refunded", refundedAt: serverTimestamp() });
-                            t.update(userRef, { balance: increment(parseFloat(po.cost)) });
-                        });
-                    }
-                });
-            } catch(e) {}
-        }
-
-        async function loadOrdersHistory() {
-            const listEl = document.getElementById('orders-purchase-history');
-            listEl.innerHTML = getLoadingHTML();
-            try {
-                const q = query(collection(dbHome, "purchases"), where("userId", "in", [String(userData.tgChatId), Number(userData.tgChatId)]));
-                const snap = await getDocs(q);
-
-                if (snap.empty) {
-                    userPurchasesCache = [];
-                    listEl.innerHTML = `<div class="bg-white p-8 rounded-2xl text-center text-slate-400 font-semibold border">আপনার কোনো অর্ডার ইতিহাস নেই।</div>`;
-                    return;
-                }
-
-                userPurchasesCache = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-                userPurchasesCache.sort((a, b) => (b.purchasedAt?.seconds || 0) - (a.purchasedAt?.seconds || 0));
-
-                listEl.innerHTML = userPurchasesCache.map(p => {
-                    const date = p.purchasedAt?.toDate ? p.purchasedAt.toDate().toLocaleString('en-GB') : 'Just now';
-                    const fullCopy = `${p.mail}|${p.password || ''}`;
-
-                    return `
-                    <div class="product-card p-4 space-y-3">
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <h4 class="font-extrabold text-sm text-slate-800">${p.mailType}</h4>
-                                <p class="text-[11px] text-slate-400 mt-0.5">${date} • ID: #${p.saleId || 'N/A'}</p>
-                            </div>
-                            <span class="text-sm font-black text-blue-600">৳${p.cost ? p.cost.toFixed(2) : '0.00'}</span>
-                        </div>
-                        <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-100 space-y-1.5 font-mono text-xs">
-                            <div class="flex justify-between items-center">
-                                <span class="truncate text-slate-700">${p.mail || ''}</span>
-                                <button onclick="copyToClipboard('${p.mail}', this)" class="text-blue-600 hover:text-blue-800 p-1"><i data-lucide="copy" class="w-3.5 h-3.5"></i></button>
-                            </div>
-                            ${p.password ? `<div class="flex justify-between items-center border-t pt-1">
-                                <span class="text-slate-600">${p.password}</span>
-                                <button onclick="copyToClipboard('${p.password}', this)" class="text-blue-600 hover:text-blue-800 p-1"><i data-lucide="copy" class="w-3.5 h-3.5"></i></button>
-                            </div>` : ''}
-                        </div>
-                        <div class="flex gap-2 pt-1 text-xs">
-                            <button onclick="copyToClipboard('${fullCopy}', this)" class="btn-buy py-2 px-3 rounded-xl font-bold flex-1 text-center">Copy Full</button>
-                            <button onclick="openReplaceModal('${p.saleId || p.id}', '${p.mailType}', ${p.cost || 0})" class="bg-purple-50 text-purple-700 border border-purple-200 hover:bg-purple-100 py-2 px-3 rounded-xl font-bold flex items-center justify-center gap-1">
-                                <i data-lucide="shield-alert" class="w-3.5 h-3.5"></i> Report
-                            </button>
-                        </div>
-                    </div>`;
-                }).join('');
-                lucide.createIcons();
-            } catch (e) {
-                listEl.innerHTML = `<p class="text-center text-red-500 text-xs">${e.message}</p>`;
-            }
-        }
-
-        async function loadManualOrdersHistory() {
-            const list = document.getElementById('manual-orders-history-list');
-            if(!list) return;
-            list.innerHTML = getLoadingHTML();
-            try {
-                const q = query(collection(dbHome, "manual_orders"), where("userId", "in", [String(userData.tgChatId), Number(userData.tgChatId)]));
-                const snap = await getDocs(q);
-                if (snap.empty) return list.innerHTML = '<p class="text-center text-xs text-slate-400 py-2">কোনো ম্যানুয়াল অর্ডার হিস্ট্রি নেই</p>';
-
-                const docs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-                docs.sort((a,b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
-
-                list.innerHTML = docs.map(p => {
-                    const expiryMillis = p.expiresAt ? p.expiresAt.toDate().getTime() : 0;
-                    const isPending = p.status === 'pending';
-
-                    return `
-                    <div class="bg-white p-3.5 rounded-xl border border-slate-200 flex justify-between items-center text-xs shadow-sm">
-                        <div>
-                            <p class="font-bold text-slate-800">${p.mailType} ${p.quantity ? `(${p.quantity} টি)` : ''} - ৳${p.cost}</p>
-                            ${isPending ? `
-                                <div class="flex items-center gap-1 mt-0.5 text-[11px] text-slate-500">
-                                    <span>Time Remaining:</span>
-                                    <span class="live-order-countdown" data-order-id="${p.id}" data-expiry-time="${expiryMillis}">Calculating...</span>
-                                </div>
-                            ` : `
-                                <p class="text-[10px] text-slate-400">মেয়াদ: ${p.durationMinutes || 30} মিনিট</p>
-                            `}
-                        </div>
-                        <span class="font-bold uppercase text-[10px] px-2 py-1 rounded ${
-                            p.status === 'approved' ? 'bg-emerald-100 text-emerald-700' :
-                            p.status === 'pending' ? 'bg-orange-100 text-orange-800' : 'bg-red-100 text-red-600'
-                        }">${p.status.replace(/_/g, ' ')}</span>
-                    </div>`;
-                }).join('');
-                lucide.createIcons();
-            } catch(e) {}
-        }
-
-        async function loadReplaceHistory() {
-            const list = document.getElementById('replace-history-list');
-            if(!list) return;
-            list.innerHTML = getLoadingHTML();
-            try {
-                const q = query(collection(dbMisc, "replace_requests"), where("userId", "in", [String(userData.tgChatId), Number(userData.tgChatId)]));
-                const snap = await getDocs(q);
-                if (snap.empty) return list.innerHTML = '<p class="text-center text-xs text-slate-400">কোনো রেকর্ড নেই</p>';
-                const docs = snap.docs.map(d => d.data());
-                docs.sort((a,b) => (b.requestedAt?.seconds || 0) - (a.requestedAt?.seconds || 0));
-
-                list.innerHTML = docs.map(r => `
-                    <div class="bg-white p-3 rounded-xl border border-slate-200 flex justify-between items-center text-xs">
-                        <div>
-                            <p class="font-bold text-slate-800">${r.mailType}</p>
-                            <p class="text-slate-500 text-[10px]">${r.reason}</p>
-                        </div>
-                        <span class="font-bold uppercase ${r.status==='approved'?'text-green-600':r.status==='rejected'?'text-red-500':'text-yellow-600'}">${r.status}</span>
-                    </div>`).join('');
-            } catch(e) {}
-        }
-
-        async function loadFeaturesPage() {
-            try {
-                const receivedQuery = query(collection(dbUser, "transfers"), where("toId", "==", String(userData.tgChatId)));
-                const sentQuery = query(collection(dbUser, "transfers"), where("fromId", "==", String(userData.tgChatId)));
-                const [recSnap, sentSnap] = await Promise.all([getDocs(receivedQuery), getDocs(sentQuery)]);
-                
-                const recTotal = recSnap.docs.reduce((sum, d) => sum + (d.data().amount || 0), 0);
-                const sentTotal = sentSnap.docs.reduce((sum, d) => sum + (d.data().amount || 0), 0);
-
-                document.getElementById('total-receive-display').textContent = `৳${recTotal.toFixed(2)}`;
-                document.getElementById('total-send-display').textContent = `৳${sentTotal.toFixed(2)}`;
-            } catch(e) {}
-        }
-
-        async function loadProfilePage() {
-            if (!userData) return;
-            document.getElementById('profile-name').textContent = userData.name || 'User';
-            document.getElementById('profile-username').textContent = userData.username ? `@${userData.username}` : '';
-            document.getElementById('profile-id').textContent = `ID: ${userData.tgChatId}`;
-            
-            const photoUrl = currentUserTg?.photo_url || userData.photo_url;
-            if (photoUrl) {
-                const pImg = document.getElementById('profile-avatar-img');
-                pImg.src = photoUrl;
-                pImg.classList.remove('hidden');
-                document.getElementById('profile-initials').classList.add('hidden');
-            } else {
-                document.getElementById('profile-initials').textContent = (userData.name || 'U').charAt(0).toUpperCase();
-            }
-
-            updateUI();
-
-            try {
-                const orderQuery = query(collection(dbHome, "purchases"), where("userId", "in", [String(userData.tgChatId), Number(userData.tgChatId)]));
-                const orderSnap = await getCountFromServer(orderQuery);
-                document.getElementById('profile-stat-orders').textContent = String(orderSnap.data().count || 0);
-
-                const refQuery = query(collection(dbUser, "users"), where("referredBy", "==", String(userData.tgChatId)), where("isAccountActive", "==", true));
-                const refSnap = await getCountFromServer(refQuery);
-                document.getElementById('profile-stat-active-ref').textContent = String(refSnap.data().count || 0);
-            } catch(e) {}
-        }
-
-        window.openReplaceModal = function(saleId, mailType, cost) {
-            document.getElementById('replace-order-id').value = saleId;
-            document.getElementById('replace-mail-type').value = mailType;
-            document.getElementById('replace-mail-cost').value = cost;
-            document.getElementById('replace-reason-text').value = '';
-            document.getElementById('replace-modal').classList.remove('hidden');
-        };
-
-        async function handleSubmitReplace() {
-            const saleId = document.getElementById('replace-order-id').value;
-            const mailType = document.getElementById('replace-mail-type').value;
-            const cost = parseFloat(document.getElementById('replace-mail-cost').value || 0);
-            const reason = document.getElementById('replace-reason-text').value.trim();
-
-            if (!reason) return showToast("সমস্যার কারণ লিখুন", "error");
-
-            const btn = document.getElementById('submit-replace-btn');
-            btn.disabled = true;
-            btn.textContent = "Submitting...";
-
-            try {
-                await addDoc(collection(dbMisc, "replace_requests"), {
-                    userId: String(userData.tgChatId),
-                    userName: userData.name || 'User',
-                    saleId: saleId,
-                    mailType: mailType,
-                    cost: cost,
-                    reason: reason,
-                    status: "pending",
-                    requestedAt: serverTimestamp()
-                });
-
-                document.getElementById('replace-modal').classList.add('hidden');
-                showToast("রিপ্লেসমেন্ট অনুরোধ পাঠানো হয়েছে", "success");
-                navigateTo('history-page');
-            } catch(e) {
-                showToast("অনুরোধ পাঠাতে ব্যর্থ হয়েছে।", "error");
-            } finally {
-                btn.disabled = false;
-                btn.textContent = "সাবমিট করুন";
-            }
-        }
-
-        window.copyToClipboard = (text, btn, msg) => {
-            if(!text) return;
-            navigator.clipboard.writeText(text).then(() => {
-                if (btn) {
-                    const old = btn.innerHTML;
-                    btn.innerHTML = `<i data-lucide="check" class="w-3.5 h-3.5 text-green-600"></i>`;
-                    lucide.createIcons();
-                    setTimeout(() => { btn.innerHTML = old; lucide.createIcons(); }, 1400);
-                } else if(msg) showToast(msg, "success");
-            });
-        };
-
-        function setupEventListeners() {
-            document.getElementById('submit-replace-btn')?.addEventListener('click', handleSubmitReplace);
-            document.getElementById('submit-send-btn')?.addEventListener('click', handleSendBalance);
-        }
-    </script>
-</body>
-</html>
