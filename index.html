@@ -4634,3 +4634,183 @@
                             </div>` : ''}
                         </div>
 
+<div class="flex gap-2 pt-1 text-xs">
+                            <button onclick="copyToClipboard('${fullCopy}', this)" class="btn-buy py-2 px-3 rounded-xl font-bold flex-1 text-center">Copy Full</button>
+                            <button onclick="openReplaceModal('${p.saleId || p.id}', '${p.mailType}', ${p.cost || 0})" class="bg-purple-50 text-purple-700 border border-purple-200 hover:bg-purple-100 py-2 px-3 rounded-xl font-bold flex items-center justify-center gap-1">
+                                <i data-lucide="shield-alert" class="w-3.5 h-3.5"></i> Report
+                            </button>
+                        </div>
+                    </div>`;
+                }).join('');
+                lucide.createIcons();
+            } catch (e) {
+                listEl.innerHTML = `<p class="text-center text-red-500 text-xs">${e.message}</p>`;
+            }
+        }
+
+        async function loadManualOrdersHistory() {
+            const list = document.getElementById('manual-orders-history-list');
+            if(!list) return;
+            list.innerHTML = getLoadingHTML();
+            try {
+                const q = query(collection(dbShop, "manual_orders"), where("userId", "in", [String(userData.tgChatId), Number(userData.tgChatId)]));
+                const snap = await getDocs(q);
+                if (snap.empty) return list.innerHTML = '<p class="text-center text-xs text-slate-400 py-2">কোনো ম্যানুয়াল অর্ডার হিস্ট্রি নেই</p>';
+
+                const docs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                docs.sort((a,b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+
+                list.innerHTML = docs.map(p => {
+                    const expiryMillis = p.expiresAt ? p.expiresAt.toDate().getTime() : 0;
+                    const isPending = p.status === 'pending';
+
+                    return `
+                    <div class="bg-white p-3.5 rounded-xl border border-slate-200 flex justify-between items-center text-xs shadow-sm">
+                        <div>
+                            <p class="font-bold text-slate-800">${p.mailType} ${p.quantity ? `(${p.quantity} টি)` : ''} - ৳${p.cost}</p>
+                            ${isPending ? `
+                                <div class="flex items-center gap-1 mt-0.5 text-[11px] text-slate-500">
+                                    <span>Time Remaining:</span>
+                                    <span class="live-order-countdown" data-order-id="${p.id}" data-expiry-time="${expiryMillis}">Calculating...</span>
+                                </div>
+                            ` : `
+                                <p class="text-[10px] text-slate-400">মেয়াদ: ${p.durationMinutes || 30} মিনিট</p>
+                            `}
+                        </div>
+                        <span class="font-bold uppercase text-[10px] px-2 py-1 rounded ${
+                            p.status === 'approved' ? 'bg-emerald-100 text-emerald-700' :
+                            p.status === 'pending' ? 'bg-orange-100 text-orange-800' : 'bg-red-100 text-red-600'
+                        }">${p.status.replace(/_/g, ' ')}</span>
+                    </div>`;
+                }).join('');
+                lucide.createIcons();
+            } catch(e) {}
+        }
+
+        async function loadReplaceHistory() {
+            const list = document.getElementById('replace-history-list');
+            if(!list) return;
+            list.innerHTML = getLoadingHTML();
+            try {
+                const q = query(collection(dbShop, "replace_requests"), where("userId", "in", [String(userData.tgChatId), Number(userData.tgChatId)]));
+                const snap = await getDocs(q);
+                if (snap.empty) return list.innerHTML = '<p class="text-center text-xs text-slate-400">কোনো রেকর্ড নেই</p>';
+                const docs = snap.docs.map(d => d.data());
+                docs.sort((a,b) => (b.requestedAt?.seconds || 0) - (a.requestedAt?.seconds || 0));
+
+                list.innerHTML = docs.map(r => `
+                    <div class="bg-white p-3 rounded-xl border border-slate-200 flex justify-between items-center text-xs">
+                        <div>
+                            <p class="font-bold text-slate-800">${r.mailType}</p>
+                            <p class="text-slate-500 text-[10px]">${r.reason}</p>
+                        </div>
+                        <span class="font-bold uppercase ${r.status==='approved'?'text-green-600':r.status==='rejected'?'text-red-500':'text-yellow-600'}">${r.status}</span>
+                    </div>`).join('');
+            } catch(e) {}
+        }
+
+        async function loadFeaturesPage() {
+            try {
+                const receivedQuery = query(collection(dbUser, "transfers"), where("toId", "==", String(userData.tgChatId)));
+                const sentQuery = query(collection(dbUser, "transfers"), where("fromId", "==", String(userData.tgChatId)));
+                const [recSnap, sentSnap] = await Promise.all([getDocs(receivedQuery), getDocs(sentQuery)]);
+                
+                const recTotal = recSnap.docs.reduce((sum, d) => sum + (d.data().amount || 0), 0);
+                const sentTotal = sentSnap.docs.reduce((sum, d) => sum + (d.data().amount || 0), 0);
+
+                document.getElementById('total-receive-display').textContent = `৳${recTotal.toFixed(2)}`;
+                document.getElementById('total-send-display').textContent = `৳${sentTotal.toFixed(2)}`;
+            } catch(e) {}
+        }
+
+        async function loadProfilePage() {
+            if (!userData) return;
+            document.getElementById('profile-name').textContent = userData.name || 'User';
+            document.getElementById('profile-username').textContent = userData.username ? `@${userData.username}` : '';
+            document.getElementById('profile-id').textContent = `ID: ${userData.tgChatId}`;
+            
+            const photoUrl = currentUserTg?.photo_url || userData.photo_url;
+            if (photoUrl) {
+                const pImg = document.getElementById('profile-avatar-img');
+                pImg.src = photoUrl;
+                pImg.classList.remove('hidden');
+                document.getElementById('profile-initials').classList.add('hidden');
+            } else {
+                document.getElementById('profile-initials').textContent = (userData.name || 'U').charAt(0).toUpperCase();
+            }
+
+            updateUI();
+
+            try {
+                const orderQuery = query(collection(dbShop, "purchases"), where("userId", "in", [String(userData.tgChatId), Number(userData.tgChatId)]));
+                const orderSnap = await getCountFromServer(orderQuery);
+                document.getElementById('profile-stat-orders').textContent = String(orderSnap.data().count || 0);
+
+                const refQuery = query(collection(dbUser, "users"), where("referredBy", "==", String(userData.tgChatId)), where("isAccountActive", "==", true));
+                const refSnap = await getCountFromServer(refQuery);
+                document.getElementById('profile-stat-active-ref').textContent = String(refSnap.data().count || 0);
+            } catch(e) {}
+        }
+
+        window.openReplaceModal = function(saleId, mailType, cost) {
+            document.getElementById('replace-order-id').value = saleId;
+            document.getElementById('replace-mail-type').value = mailType;
+            document.getElementById('replace-mail-cost').value = cost;
+            document.getElementById('replace-reason-text').value = '';
+            document.getElementById('replace-modal').classList.remove('hidden');
+        };
+
+        async function handleSubmitReplace() {
+            const saleId = document.getElementById('replace-order-id').value;
+            const mailType = document.getElementById('replace-mail-type').value;
+            const cost = parseFloat(document.getElementById('replace-mail-cost').value || 0);
+            const reason = document.getElementById('replace-reason-text').value.trim();
+
+            if (!reason) return showToast("সমস্যার কারণ লিখুন", "error");
+
+            const btn = document.getElementById('submit-replace-btn');
+            btn.disabled = true;
+            btn.textContent = "Submitting...";
+
+            try {
+                await addDoc(collection(dbShop, "replace_requests"), {
+                    userId: String(userData.tgChatId),
+                    userName: userData.name || 'User',
+                    saleId: saleId,
+                    mailType: mailType,
+                    cost: cost,
+                    reason: reason,
+                    status: "pending",
+                    requestedAt: serverTimestamp()
+                });
+
+                document.getElementById('replace-modal').classList.add('hidden');
+                showToast("রিপ্লেসমেন্ট অনুরোধ পাঠানো হয়েছে", "success");
+                navigateTo('history-page');
+            } catch(e) {
+                showToast("অনুরোধ পাঠাতে ব্যর্থ হয়েছে।", "error");
+            } finally {
+                btn.disabled = false;
+                btn.textContent = "সাবমিট করুন";
+            }
+        }
+
+        window.copyToClipboard = (text, btn, msg) => {
+            if(!text) return;
+            navigator.clipboard.writeText(text).then(() => {
+                if (btn) {
+                    const old = btn.innerHTML;
+                    btn.innerHTML = `<i data-lucide="check" class="w-3.5 h-3.5 text-green-600"></i>`;
+                    lucide.createIcons();
+                    setTimeout(() => { btn.innerHTML = old; lucide.createIcons(); }, 1400);
+                } else if(msg) showToast(msg, "success");
+            });
+        };
+
+        function setupEventListeners() {
+            document.getElementById('submit-replace-btn')?.addEventListener('click', handleSubmitReplace);
+            document.getElementById('submit-send-btn')?.addEventListener('click', handleSendBalance);
+        }
+    </script>
+</body>
+</html>
