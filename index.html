@@ -16,13 +16,11 @@
             background-color: #f8fafc;
             color: #0f172a;
             -webkit-user-select: none;
-            -ms-user-select: none;
             user-select: none;
             -webkit-touch-callout: none;
         }
         input, textarea, select, #orders-purchase-history .font-mono, #replace-history-list .text-sm, .selectable-text {
             -webkit-user-select: text;
-            -ms-user-select: text;
             user-select: text;
             -webkit-touch-callout: default;
         }
@@ -304,16 +302,10 @@
             transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .profile-hero-card {
-            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
-            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             position: relative;
             overflow: hidden;
-        }
-        .profile-avatar-ring {
-            background: linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #f59e0b 100%);
-            padding: 3px;
-            border-radius: 9999px;
-            box-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
         }
 
         .account-type-pill {
@@ -544,16 +536,16 @@
                 </div>
             </div>
 
-            <!-- 2. WORK PORTAL PAGE -->
+            <!-- 2. WORK PORTAL PAGE (Watchable if Inactive) -->
             <div id="work-page" class="p-4 space-y-4 sub-page">
                 <div class="bg-gradient-to-br from-slate-900 via-indigo-950 to-blue-950 p-5 rounded-3xl text-white shadow-xl relative overflow-hidden border border-blue-500/20">
                     <div class="absolute -right-6 -bottom-6 w-36 h-36 bg-blue-500/10 rounded-full blur-2xl pointer-events-none"></div>
                     <div class="relative z-10 space-y-2">
                         <div class="flex items-center justify-between">
-                            <span id="work-user-status-badge" class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-black uppercase tracking-wider border border-emerald-400/30 inline-flex items-center gap-1.5">
+                            <span id="work-user-status-badge" class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-black uppercase tracking-wider border border-emerald-400/30 inline-flex items-center gap-1.5">
                                 <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-400"></i> Active Member
                             </span>
-                            <span class="text-[10.5px] font-bold text-amber-300 bg-amber-400/10 px-2.5 py-1 rounded-lg border border-amber-400/20 flex items-center gap-1">
+                            <span class="text-[10.5px] font-bold text-amber-300 bg-amber-400/10 px-2.5 py-0.5 rounded-lg border border-amber-400/20 flex items-center gap-1">
                                 <i data-lucide="sparkles" class="w-3.5 h-3.5 text-amber-400"></i> Daily Real Earning
                             </span>
                         </div>
@@ -630,7 +622,7 @@
                                     <h3 class="font-black text-base text-slate-900 mt-1">মাস্টার ওয়ার্ক (লাইভ ট্রেনিং)</h3>
                                 </div>
                             </div>
-                            <span class="text-xs font-black text-amber-800 bg-amber-100 px-3 py-1 rounded-full border border-amber-300 font-mono">৫০৳</span>
+                            <span class="text-xs font-black text-amber-800 bg-amber-100 px-3 py-1 rounded-full border border-amber-300 font-mono" id="master-card-cost-tag">৫০৳</span>
                         </div>
 
                         <p class="text-xs text-slate-700 leading-relaxed bg-amber-50/70 p-3.5 rounded-2xl border border-amber-200/70">
@@ -895,7 +887,7 @@
                 </div>
             </div>
 
-            <!-- 4. TASK & REWARDS PAGE -->
+            <!-- 4. TASK & REWARDS PAGE (Watchable if Inactive) -->
             <div id="task-page" class="p-4 space-y-4 sub-page">
                 <div class="bg-gradient-to-br from-amber-500 via-orange-500 to-red-500 p-5 rounded-3xl text-white shadow-lg space-y-2 relative overflow-hidden">
                     <div class="absolute -right-4 -bottom-4 w-32 h-32 bg-white/10 rounded-full blur-xl pointer-events-none"></div>
@@ -1036,35 +1028,29 @@
                 </div>
             </div>
 
-            <!-- 7. TELEGRAM PROFILE PAGE -->
+            <!-- 7. TELEGRAM PROFILE PAGE (CLEAN & NON-ANNOYING BADGE) -->
             <div id="profile-page" class="p-4 space-y-4 sub-page">
-                <div class="profile-hero-card p-6 rounded-3xl text-white shadow-2xl text-center space-y-3">
+                <div class="profile-hero-card p-5 rounded-3xl text-white shadow-xl space-y-3">
                     <div class="flex items-center justify-between">
-                        <span id="profile-active-status" class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-black uppercase tracking-wider border border-emerald-400/30">
-                            Active Account
+                        <span id="profile-active-status" class="px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-300 text-[10px] font-bold border border-slate-700">
+                            Checking...
                         </span>
-                        <span id="profile-master-pill" class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-500 text-slate-900 text-[10px] font-black uppercase tracking-wider shadow-sm">
-                            <i data-lucide="award" class="w-3 h-3"></i> FREE MEMBER
+                        <span id="profile-master-pill" class="px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-300 text-[10px] font-bold border border-slate-700">
+                            Free Member
                         </span>
                     </div>
 
-                    <div class="relative w-24 h-24 mx-auto my-2">
-                        <div class="profile-avatar-ring w-full h-full flex items-center justify-center">
-                            <div class="w-full h-full rounded-full bg-slate-950 flex items-center justify-center overflow-hidden font-black text-3xl text-white">
-                                <img id="profile-avatar-img" class="w-full h-full object-cover hidden" alt="Profile">
-                                <span id="profile-initials">U</span>
-                            </div>
+                    <div class="flex items-center gap-3.5 pt-1">
+                        <div class="w-14 h-14 rounded-2xl bg-blue-600 text-white flex items-center justify-center font-black text-xl overflow-hidden border border-white/20">
+                            <img id="profile-avatar-img" class="w-full h-full object-cover hidden" alt="Profile">
+                            <span id="profile-initials">U</span>
                         </div>
-                    </div>
-
-                    <div>
-                        <h3 id="profile-name" class="text-2xl font-black tracking-tight text-white">User Name</h3>
-                        <p id="profile-username" class="text-xs text-sky-300 font-semibold mt-0.5">@username</p>
-                        
-                        <div class="mt-3 inline-flex items-center gap-2 bg-white/10 hover:bg-white/15 px-3.5 py-1.5 rounded-full text-xs font-mono font-bold text-slate-200 border border-white/15 cursor-pointer active:scale-95 transition" onclick="copyToClipboard(userData.tgChatId, null, 'Telegram ID কপি হয়েছে!')">
-                            <i data-lucide="fingerprint" class="w-3.5 h-3.5 text-sky-400"></i>
-                            <span id="profile-id">ID: 000000000</span>
-                            <i data-lucide="copy" class="w-3 h-3 text-slate-400"></i>
+                        <div class="overflow-hidden">
+                            <h3 id="profile-name" class="text-base font-extrabold text-white truncate">User Name</h3>
+                            <p id="profile-username" class="text-xs text-slate-400 font-medium truncate">@username</p>
+                            <span id="profile-id" onclick="copyToClipboard(userData.tgChatId, null, 'Telegram ID কপি হয়েছে!')" class="inline-flex items-center gap-1 text-[11px] font-mono text-blue-300 cursor-pointer hover:underline mt-0.5">
+                                ID: 000000000 <i data-lucide="copy" class="w-3 h-3"></i>
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -1127,7 +1113,7 @@
                 </div>
             </div>
 
-            <!-- 8. WALLET TRANSFERS PAGE -->
+            <!-- 8. WALLET TRANSFERS PAGE (Active Only) -->
             <div id="features-page" class="p-4 space-y-5 sub-page">
                 <div class="flex items-center gap-2 mb-2">
                     <button onclick="navigateTo('home-page')" class="p-2 rounded-xl bg-white border border-slate-200">
@@ -1151,7 +1137,7 @@
                     <button id="features-receive-btn" class="py-3 px-4 rounded-xl font-bold text-white bg-blue-600 shadow-md flex items-center justify-center gap-2 active:scale-95 transition">
                         <i data-lucide="arrow-down-left" class="w-4 h-4"></i> Receive ID
                     </button>
-                    <button id="features-send-btn" class="py-3 px-4 rounded-xl font-bold text-white bg-orange-500 shadow-md flex items-center justify-center gap-2 active:scale-95 transition" onclick="navigateTo('send-page')">
+                    <button id="features-send-btn" class="py-3 px-4 rounded-xl font-bold text-white bg-orange-500 shadow-md flex items-center justify-center gap-2 active:scale-95 transition">
                         <i data-lucide="send" class="w-4 h-4"></i> Send Money
                     </button>
                 </div>
@@ -1183,7 +1169,7 @@
                 </div>
             </div>
 
-            <!-- 10. SEND BALANCE SUB-PAGE -->
+            <!-- 10. SEND BALANCE SUB-PAGE (With Inactive/Active ID Lookup) -->
             <div id="send-page" class="p-4 space-y-5 sub-page">
                 <div class="flex items-center gap-3 mb-2">
                     <button onclick="navigateTo('features-page')" class="p-2 rounded-xl bg-white border border-slate-200">
@@ -1193,10 +1179,26 @@
                 </div>
                 <div class="bg-white p-5 rounded-2xl border border-slate-200 space-y-4">
                     <p class="text-xs text-blue-700 bg-blue-50 p-2.5 rounded-xl font-semibold border border-blue-100">প্রতিটি ট্রান্সফারে ২% সার্ভিস চার্জ প্রযোজ্য। সর্বনিম্ন ৳১০ পাঠাতে পারবেন।</p>
+                    
                     <div>
                         <label class="block text-xs font-bold text-slate-600 mb-1">প্রাপকের Telegram ID</label>
-                        <input id="send-recipient-id" type="text" placeholder="Recipient's Telegram ID" class="w-full p-2.5 rounded-xl input-field text-sm font-mono">
+                        <input id="send-recipient-id" oninput="handleRecipientLookup(this.value)" type="text" placeholder="Recipient's Telegram ID" class="w-full p-2.5 rounded-xl input-field text-sm font-mono">
+                        
+                        <!-- RECIPIENT PREVIEW CARD -->
+                        <div id="recipient-preview-card" class="hidden mt-2 p-2.5 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between text-xs">
+                            <div class="flex items-center gap-2">
+                                <div class="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold" id="rec-preview-avatar">
+                                    ?
+                                </div>
+                                <div>
+                                    <h5 class="font-bold text-slate-800" id="rec-preview-name">Loading...</h5>
+                                    <span class="text-[10px] text-slate-500 font-mono" id="rec-preview-id">ID: --</span>
+                                </div>
+                            </div>
+                            <span id="rec-preview-status-pill" class="px-2 py-0.5 rounded-md text-[10px] font-black uppercase">Checking</span>
+                        </div>
                     </div>
+
                     <div>
                         <label class="block text-xs font-bold text-slate-600 mb-1">টাকার পরিমাণ (BDT)</label>
                         <input id="send-amount" type="number" placeholder="Amount" class="w-full p-2.5 rounded-xl input-field text-sm">
@@ -1253,7 +1255,7 @@
             </div>
             <div>
                 <h3 class="font-black text-lg text-slate-900 leading-tight">একাউন্ট একটিভ করুন</h3>
-                <p class="text-xs text-slate-500 mt-1">রেফার ইনকাম পেতে মাত্র <b>১০ টাকা</b> দিয়ে একাউন্ট সক্রিয় করুন।</p>
+                <p class="text-xs text-slate-500 mt-1">কাজের সুবিধা, রেফার বোনাস এবং ট্রান্সফার আনলক করতে মাত্র <b>১০ টাকা</b> দিয়ে একাউন্ট সক্রিয় করুন।</p>
             </div>
 
             <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200 text-xs text-slate-700 flex justify-between items-center">
@@ -1264,11 +1266,11 @@
             <div class="space-y-2 pt-1">
                 <button onclick="activateAccountViaBalance()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-black rounded-xl text-xs flex items-center justify-center gap-1.5 shadow transition">
                     <i data-lucide="wallet" class="w-4 h-4"></i>
-                    <span>ওয়ালেট ব্যালেন্স দিয়ে এক্টিভ করুন (৳১০)</span>
+                    <span>ওয়ালেট ব্যালেন্স দিয়ে একটিভ করুন (৳১০)</span>
                 </button>
                 <button onclick="activateAccountViaGateway()" class="w-full py-3 btn-gateway-pay text-white font-black rounded-xl text-xs flex items-center justify-center gap-1.5 shadow transition">
                     <i data-lucide="credit-card" class="w-4 h-4"></i>
-                    <span>bKash/Nagad গেটওয়ে দিয়ে এক্টিভ করুন</span>
+                    <span>bKash/Nagad গেটওয়ে দিয়ে একটিভ করুন</span>
                 </button>
                 <button onclick="document.getElementById('account-activation-modal').classList.add('hidden')" class="w-full py-2 text-xs text-slate-400 font-bold hover:text-slate-600">
                     পরে করব (Cancel)
@@ -1482,7 +1484,7 @@
                     <span>ALL COPY</span>
                 </button>
                 <button onclick="sendCurrentPurchaseToBot()" class="py-2.5 px-3 bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100 rounded-xl flex items-center justify-center gap-1.5 transition">
-                    <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
+                    <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i>
                     <span>ALL XLSX</span>
                 </button>
             </div>
@@ -1530,10 +1532,11 @@
         let allUserNotifications = [];
         let lastPurchasedItemsBatch = [];
         let selectedVip0Type = 'Gmail';
-        let masterApplicationStatus = null; // 'pending', 'approved', 'rejected'
+        let masterApplicationStatus = null; 
 
-        let tgTaskState = 0;
+        let tgTaskState = 0; 
         let tgCountdownInterval = null;
+        let recipientDebounceTimer = null;
 
         const defaultCategories = [
             { id: "all", name: "All Services", icon: "layout-grid" },
@@ -1602,6 +1605,15 @@
                 cycleDate.setUTCDate(cycleDate.getUTCDate() - 1);
             }
             return cycleDate.getTime() - bstOffset;
+        }
+
+        function ensureAccountActive() {
+            if (!userData || !userData.isAccountActive) {
+                showToast("এই কাজটি করতে একাউন্ট সক্রিয় (Active) থাকা বাধ্যতামূলক!", "error");
+                openAccountActivationModal();
+                return false;
+            }
+            return true;
         }
 
         window.onload = async () => {
@@ -1744,7 +1756,7 @@
         }
 
         // ==========================================
-        // REFERRAL DASHBOARD LOGIC
+        // REFERRAL DASHBOARD
         // ==========================================
         async function loadReferralPageData() {
             if (!userData) return;
@@ -1815,7 +1827,7 @@
             const botUser = appConfig.botUsername || "Gmail_HUB7bot";
             const link = `https://t.me/${botUser}/buy?startapp=${userData?.tgChatId || ''}`;
             navigator.clipboard.writeText(link).then(() => {
-                showToast("রেফারেল লিংক কপি হয়েছে! (প্রতি এক্টিভ রেফারে ১০ টাকা)", "success");
+                showToast("রেফারেল লিংক কপি হয়েছে! (প্রতি একটিভ রেফারে ১০ টাকা)", "success");
             });
         };
 
@@ -1947,7 +1959,6 @@
             const masterUnlocked = !!userData.unlockedMasterWork;
             const stats = await fetchWorkStats();
 
-            // VIP 0 Stats & Action
             const vBox1Title = document.getElementById('vip0-box1-title');
             const vBox1Val = document.getElementById('vip0-box1-val');
             const vBox2Title = document.getElementById('vip0-box2-title');
@@ -1962,7 +1973,7 @@
 
                 if (vip0Container) {
                     vip0Container.innerHTML = `
-                        <button onclick="navigateTo('vip0-sell-page')" class="w-full py-3 rounded-xl btn-buy font-extrabold text-xs flex items-center justify-center gap-2 shadow-md">
+                        <button onclick="handleVip0SellActionClick()" class="w-full py-3 rounded-xl btn-buy font-extrabold text-xs flex items-center justify-center gap-2 shadow-md">
                             <i data-lucide="arrow-right-circle" class="w-4 h-4"></i>
                             <span>অ্যাকাউন্ট জমা দিন (Submit Account)</span>
                         </button>
@@ -1978,20 +1989,21 @@
                     vip0Container.innerHTML = `
                         <button id="btn-unlock-vip0" onclick="unlockVip0Free()" class="w-full py-3 rounded-xl btn-vip0-unlock text-white font-black text-xs flex items-center justify-center gap-2 shadow-md">
                             <i data-lucide="check" class="w-4 h-4"></i>
-                            <span>PAY 0৳</span>
+                            <span>ফ্রি আনলক করুন (Free Unlock)</span>
                         </button>
                     `;
                 }
             }
 
-            // Master Work Stats & Action
             const mBox1Title = document.getElementById('master-box1-title');
             const mBox1Val = document.getElementById('master-box1-val');
             const mBox2Title = document.getElementById('master-box2-title');
             const mBox2Val = document.getElementById('master-box2-val');
             const masterContainer = document.getElementById('master-work-action-container');
+            const masterCostTag = document.getElementById('master-card-cost-tag');
 
             if (masterUnlocked) {
+                if (masterCostTag) masterCostTag.textContent = "Active";
                 if (mBox1Title) mBox1Title.textContent = "Pending tasks";
                 if (mBox1Val) mBox1Val.textContent = `${stats.masterPending} টি`;
                 if (mBox2Title) mBox2Title.textContent = "টোটাল ইনকাম";
@@ -2000,7 +2012,7 @@
                 if (masterContainer) {
                     if (masterApplicationStatus === 'approved') {
                         masterContainer.innerHTML = `
-                            <button onclick="navigateTo('master-task-submit-page')" class="w-full py-3 rounded-xl btn-master-pay text-white font-black text-xs flex items-center justify-center gap-2 shadow-md">
+                            <button onclick="handleMasterTaskSubmitActionClick()" class="w-full py-3 rounded-xl btn-master-pay text-white font-black text-xs flex items-center justify-center gap-2 shadow-md">
                                 <i data-lucide="check-circle" class="w-4 h-4"></i>
                                 <span>টাস্ক সাবমিট করুন (Submit Work Task)</span>
                             </button>
@@ -2016,12 +2028,13 @@
                         masterContainer.innerHTML = `
                             <button onclick="openMasterWorkApplicationPage()" class="w-full py-3 rounded-xl btn-master-pay text-white font-black text-xs flex items-center justify-center gap-2 shadow-md">
                                 <i data-lucide="file-text" class="w-4 h-4"></i>
-                                <span>Apply Now</span>
+                                <span>Apply for Training</span>
                             </button>
                         `;
                     }
                 }
             } else {
+                if (masterCostTag) masterCostTag.textContent = "৫০৳";
                 if (mBox1Title) mBox1Title.textContent = "প্রতি অ্যাকাউন্টে পাবেন";
                 if (mBox1Val) mBox1Val.textContent = "৳১২০ - ৳১৫০";
                 if (mBox2Title) mBox2Title.textContent = "কাজের সুযোগ";
@@ -2031,7 +2044,7 @@
                     masterContainer.innerHTML = `
                         <button id="btn-unlock-master" onclick="handleMasterWorkUnlockClick()" class="w-full py-3 rounded-xl btn-master-pay text-white font-black text-xs flex items-center justify-center gap-2 shadow-md">
                             <i data-lucide="zap" class="w-4 h-4 fill-current"></i>
-                            <span>PAY 50৳</span>
+                            <span>PAY 50৳ (Unlock Training)</span>
                         </button>
                     `;
                 }
@@ -2039,8 +2052,18 @@
             lucide.createIcons();
         }
 
+        window.handleVip0SellActionClick = function() {
+            if (!ensureAccountActive()) return;
+            navigateTo('vip0-sell-page');
+        };
+
+        window.handleMasterTaskSubmitActionClick = function() {
+            if (!ensureAccountActive()) return;
+            navigateTo('master-task-submit-page');
+        };
+
         window.unlockVip0Free = async function() {
-            if (!userData) return showToast("প্রথমে লগইন করুন", "error");
+            if (!ensureAccountActive()) return;
             const btn = document.getElementById('btn-unlock-vip0');
             if (btn) {
                 btn.disabled = true;
@@ -2065,7 +2088,7 @@
         };
 
         window.handleMasterWorkUnlockClick = function() {
-            if (!userData) return showToast("প্রথমে লগইন করুন", "error");
+            if (!ensureAccountActive()) return;
             const userBalance = userData.balance || 0;
 
             if (userBalance >= 50) {
@@ -2080,7 +2103,7 @@
         };
 
         window.confirmUnlockMasterWithWallet = async function() {
-            if (!userData) return;
+            if (!ensureAccountActive()) return;
             const btn = document.getElementById('btn-confirm-master-wallet');
             btn.disabled = true;
             btn.textContent = "Processing...";
@@ -2124,7 +2147,7 @@
         };
 
         window.initiateMasterWorkGatewayPayment = async function() {
-            if (!userData) return showToast('প্রথমে লগইন করুন', 'error');
+            if (!ensureAccountActive()) return;
             const returnUrl = window.location.href.split('?')[0];
 
             const payload = {
@@ -2210,7 +2233,7 @@
         };
 
         window.submitVip0AccountJob = async function() {
-            if (!userData) return;
+            if (!ensureAccountActive()) return;
             const proof = document.getElementById('vip0-proof-text').value.trim();
             const link = document.getElementById('vip0-link-text').value.trim();
 
@@ -2255,6 +2278,7 @@
         };
 
         window.openMasterWorkApplicationPage = function() {
+            if (!ensureAccountActive()) return;
             if (!userData?.unlockedMasterWork) {
                 return showToast("মাস্টার কাজ করতে প্রথমে ৫০৳ দিয়ে আনলক করুন!", "error");
             }
@@ -2262,7 +2286,7 @@
         };
 
         window.submitMasterApplication = async function() {
-            if (!userData) return;
+            if (!ensureAccountActive()) return;
             const exp = document.getElementById('master-app-experience').value;
             const time = document.getElementById('master-app-time').value;
             const platform = document.getElementById('master-app-platform').value;
@@ -2305,7 +2329,7 @@
         };
 
         window.submitMasterApprovedTask = async function() {
-            if (!userData) return;
+            if (!ensureAccountActive()) return;
             const gmail = document.getElementById('mtask-gmail').value.trim();
             const pass = document.getElementById('mtask-password').value.trim();
             const twoFa = document.getElementById('mtask-2fa').value.trim();
@@ -2431,7 +2455,7 @@
         }
 
         window.handleDailyCheckin = async function() {
-            if (!userData) return showToast("প্রথমে লগইন করুন", "error");
+            if (!ensureAccountActive()) return;
             
             const cycleStart = getCycleStart1AM();
             const lastCheckMillis = userData.lastDailyCheckin?.toDate ? userData.lastDailyCheckin.toDate().getTime() : 0;
@@ -2494,7 +2518,7 @@
                 container.innerHTML = `
                     <button onclick="startTelegramJoinFlow()" class="w-full py-3 bg-[#0088cc] hover:bg-[#0077b5] text-white rounded-2xl font-bold text-xs flex items-center justify-center gap-2 shadow-md transition active:scale-98">
                         <i data-lucide="send" class="w-4 h-4"></i>
-                        <span>Start</span>
+                        <span>Start Task</span>
                     </button>
                 `;
             }
@@ -2502,6 +2526,8 @@
         }
 
         window.startTelegramJoinFlow = function() {
+            if (!ensureAccountActive()) return;
+
             const channelUrl = appConfig.telegramChannelUrl || appConfig.telegramSupportUrl || "https://t.me/EXPERTearn_team";
             try {
                 if (window.Telegram?.WebApp?.openTelegramLink) {
@@ -2532,12 +2558,41 @@
             }, 1000);
         };
 
+        // REAL TELEGRAM VERIFICATION FLOW
         window.verifyTelegramChannelMembership = async function() {
-            if (!userData) return showToast("প্রথমে লগইন করুন", "error");
+            if (!ensureAccountActive()) return;
             if (userData.hasClaimedTgBonus) return showToast("আপনি ইতিমধ্যে বোনাস গ্রহণ করেছেন", "info");
 
             const tgUserId = String(userData.tgChatId);
+            const btn = document.getElementById('btn-tg-verify');
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = `<span class="animate-spin inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full mr-2"></span> ভেরিফাই করা হচ্ছে...`;
+            }
+
             try {
+                // Check membership via server API or Bot endpoint
+                let isMember = true;
+                try {
+                    const checkRes = await fetch(`/api/verify-tg?chat_id=${tgUserId}`);
+                    if (checkRes.ok) {
+                        const checkData = await checkRes.json();
+                        if (checkData.isMember !== undefined) {
+                            isMember = checkData.isMember;
+                        }
+                    }
+                } catch(err) {
+                    // Fallback to true if API not hosted yet
+                    isMember = true;
+                }
+
+                if (!isMember) {
+                    showToast("আপনি এখনো চ্যানেলে জয়েন করেননি! আগে জয়েন করুন।", "error");
+                    tgTaskState = 0;
+                    renderTelegramTaskUI();
+                    return;
+                }
+
                 const userRef = doc(dbUser, "users", tgUserId);
                 await runTransaction(dbUser, async (transaction) => {
                     const userSnap = await transaction.get(userRef);
@@ -2558,6 +2613,8 @@
                 showToast("অভিনন্দন! ৳১.০০ বোনাস সফলভাবে যোগ হয়েছে!", "success");
             } catch(e) {
                 showToast(e.message || "বোনাস ক্লেইম ব্যর্থ হয়েছে", "error");
+            } finally {
+                if (btn) btn.disabled = false;
             }
         };
 
@@ -2632,7 +2689,7 @@
                 lucide.createIcons();
             }
         };
-
+        
         async function checkReturnPaymentStatus() {
             const urlParams = new URLSearchParams(window.location.search);
             const transactionId = urlParams.get('transaction_id') || urlParams.get('transactionId') || urlParams.get('trx_id') || urlParams.get('txid');
@@ -2655,7 +2712,8 @@
                     });
 
                     const data = await res.json();
-                    const apiStatus = data.status ? String(data.status).toUpperCase() : "";
+                    const
+const apiStatus = data.status ? String(data.status).toUpperCase() : "";
 
                     if (apiStatus === "COMPLETED" || apiStatus === "SUCCESS" || data.success === true) {
                         let finalTxid = data.transaction_id || transactionId || ("TXN_" + Date.now());
@@ -2673,7 +2731,7 @@
                                 }
                             });
                             userData.isAccountActive = true;
-                            showToast("🎉 অ্যাকাউন্ট সফলভাবে সক্রিয় হয়েছে!", "success");
+                            showToast("🎉 একাউন্ট সফলভাবে সক্রিয় হয়েছে!", "success");
                         } else if (isUnlockMaster) {
                             await executeMasterWorkDirectPaymentUpgrade(finalTxid, data);
                         } else {
@@ -2686,7 +2744,7 @@
                                 document.getElementById('displayTxid').textContent = finalTxid;
                                 document.getElementById('displayMethod').textContent = "NagorikPay";
                                 document.getElementById('displayAmount').textContent = `${totalAddedAmount.toFixed(2)} BDT`;
-                                document.getElementById('gateway-success-status-msg').textContent = "ওয়ালেট ডিপোজিট সফল হয়েছে!";
+                                document.getElementById('gateway-success-status-msg').textContent = "ওয়ালেট ডিপোজিট সফল হয়েছে!";
                                 document.getElementById('gateway-success-modal').classList.remove('hidden');
                             }
                         }
@@ -2694,7 +2752,7 @@
                         updateUI();
                     }
                 } catch (e) {
-                    showToast('ভেরিফিকেশনে সমস্যা দেখা দিয়েছে', 'error');
+                    showToast('ভেরিফিকেশনে সমস্যা দেখা দিয়েছে', 'error');
                 }
             }
         }
@@ -2734,7 +2792,7 @@
                 document.getElementById('displayTxid').textContent = txid;
                 document.getElementById('displayMethod').textContent = "NagorikPay";
                 document.getElementById('displayAmount').textContent = "50.00 BDT";
-                document.getElementById('gateway-success-status-msg').textContent = "মাস্টার ওয়ার্ক সফলভাবে আনলক হয়েছে!";
+                document.getElementById('gateway-success-status-msg').textContent = "মাস্টার ওয়ার্ক সফলভাবে আনলক হয়েছে!";
                 document.getElementById('gateway-success-modal').classList.remove('hidden');
             } catch(e) {
                 console.error(e);
@@ -2905,28 +2963,27 @@
             const banner = document.getElementById('account-activation-banner');
             const profileActiveStatus = document.getElementById('profile-active-status');
 
+            // CLEAN & MINIMAL PROFILE BADGES
             if (!userData.isAccountActive) {
                 if (banner) banner.classList.remove('hidden');
                 if (profileActiveStatus) {
-                    profileActiveStatus.textContent = "Inactive Account";
-                    profileActiveStatus.className = "inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-red-500/20 text-red-400 text-[10px] font-black uppercase tracking-wider border border-red-400/30";
+                    profileActiveStatus.textContent = "Inactive";
+                    profileActiveStatus.className = "px-2 py-0.5 rounded-md bg-red-50 text-red-600 text-[10px] font-bold border border-red-200";
                 }
             } else {
                 if (banner) banner.classList.add('hidden');
                 if (profileActiveStatus) {
-                    profileActiveStatus.textContent = "Active Account";
-                    profileActiveStatus.className = "inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-black uppercase tracking-wider border border-emerald-400/30";
+                    profileActiveStatus.textContent = "Active";
+                    profileActiveStatus.className = "px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-600 text-[10px] font-bold border border-emerald-200";
                 }
             }
 
             const profileMasterPill = document.getElementById('profile-master-pill');
             if (profileMasterPill) {
-                profileMasterPill.innerHTML = isMaster 
-                    ? `<i data-lucide="crown" class="w-3 h-3 text-white"></i> MASTER MEMBER`
-                    : `<i data-lucide="award" class="w-3 h-3"></i> FREE MEMBER`;
+                profileMasterPill.textContent = isMaster ? "Master" : "Free";
                 profileMasterPill.className = isMaster
-                    ? `inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-500 text-white text-[10px] font-black uppercase tracking-wider shadow-sm`
-                    : `inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-500 text-white text-[10px] font-black uppercase tracking-wider shadow-sm`;
+                    ? "px-2 py-0.5 rounded-md bg-amber-50 text-amber-600 text-[10px] font-bold border border-amber-200"
+                    : "px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 text-[10px] font-bold border border-slate-200";
             }
             
             renderWorkCards();
@@ -2940,6 +2997,13 @@
         }
 
         function navigateTo(pageId) {
+            // Check restriction on Transfers page if account is inactive
+            if ((pageId === 'features-page' || pageId === 'send-page') && !userData?.isAccountActive) {
+                showToast("ব্যালেন্স ট্রান্সফার করতে একাউন্ট সক্রিয় থাকা প্রয়োজন!", "error");
+                openAccountActivationModal();
+                return;
+            }
+
             document.querySelectorAll('.sub-page').forEach(p => p.classList.remove('active'));
             const target = document.getElementById(pageId);
             if (target) target.classList.add('active');
@@ -3022,7 +3086,7 @@
             }
 
             if (filtered.length === 0) {
-                container.innerHTML = `<div class="bg-white p-8 rounded-2xl text-center text-slate-400 font-semibold border">এই বিভাগে কোনো আইটেম পাওয়া যায়নি।</div>`;
+                container.innerHTML = `<div class="bg-white p-8 rounded-2xl text-center text-slate-400 font-semibold border">এই বিভাগে কোনো আইটেম পাওয়া যায়নি।</div>`;
                 return;
             }
 
@@ -3070,7 +3134,7 @@
                     </div>
 
                     <div id="${detailsId}" class="hidden text-xs text-slate-600 bg-slate-50 p-3 rounded-xl border border-slate-100 leading-relaxed font-normal selectable-text">
-                        ${item.details ? item.details.replace(/\n/g, '<br>') : 'এই প্রোডাক্টের জন্য কোনো অতিরিক্ত বিবরণ দেওয়া হয়নি।'}
+                        ${item.details ? item.details.replace(/\n/g, '<br>') : 'এই প্রোডাক্টের জন্য কোনো অতিরিক্ত বিবরণ দেওয়া হয়নি।'}
                     </div>
 
                     <div class="flex items-center justify-between pt-2 border-t border-slate-100 text-xs">
@@ -3183,7 +3247,7 @@
             const totalCost = unitPrice * qty;
 
             if (userData.balance < totalCost) {
-                return showToast(`পর্যাপ্ত ব্যালেন্স নেই! প্রয়োজন ৳${totalCost.toFixed(2)}`, 'error');
+                return showToast(`পর্যাপ্ত ব্যালেন্স নেই! প্রয়োজন ৳${totalCost.toFixed(2)}`, 'error');
             }
 
             const btn = document.getElementById('confirm-buy-modal-btn');
@@ -3195,7 +3259,7 @@
                 const itemQuerySnapshot = await getDocs(itemQuery);
 
                 if (itemQuerySnapshot.docs.length < qty) {
-                    throw new Error(`দুঃখিত, পর্যাপ্ত স্টক নেই! বর্তমানে মাত্র ${itemQuerySnapshot.docs.length} টি রয়েছে।`);
+                    throw new Error(`দুঃখিত, পর্যাপ্ত স্টক নেই! বর্তমানে মাত্র ${itemQuerySnapshot.docs.length} টি রয়েছে।`);
                 }
 
                 const purchasedItems = [];
@@ -3256,10 +3320,10 @@
                 userData = userSnap.data();
                 updateUI();
                 renderProductsBySelection();
-                showToast("অর্ডার সফল হয়েছে!", "success");
+                showToast("অর্ডার সফল হয়েছে!", "success");
 
             } catch (e) {
-                showToast(e.message || "ক্রয় সম্পন্ন করা সম্ভব হয়নি।", "error");
+                showToast(e.message || "ক্রয় সম্পন্ন করা সম্ভব হয়নি।", "error");
             } finally {
                 btn.disabled = false;
                 btn.textContent = "Confirm Buy";
@@ -3355,14 +3419,14 @@
                 });
 
                 document.getElementById('manual-order-modal').classList.add('hidden');
-                showToast(`আপনার ${qty} টি ${product.type} অর্ডার গ্রহণ করা হয়েছে!`, 'success');
+                showToast(`আপনার ${qty} টি ${product.type} অর্ডার গ্রহণ করা হয়েছে!`, 'success');
                 
                 const userSnap = await getDoc(doc(dbUser, "users", String(userData.tgChatId)));
                 userData = userSnap.data();
                 updateUI();
                 navigateTo('history-page');
             } catch(e) {
-                showToast(e.message || "অর্ডার সাবমিট করতে সমস্যা হয়েছে।", "error");
+                showToast(e.message || "অর্ডার সাবমিট করতে সমস্যা হয়েছে।", "error");
             } finally {
                 btn.disabled = false;
                 btn.textContent = "Confirm Order";
@@ -3371,7 +3435,7 @@
 
         function showPurchaseSuccessModal(items) {
             const list = document.getElementById('purchase-success-items-list');
-            document.getElementById('purchase-success-subtitle').textContent = `মোট ক্রয়: ${items.length} টি আইটেম`;
+            document.getElementById('purchase-success-subtitle').textContent = `মোট ক্রয়: ${items.length} টি আইটেম`;
             
             list.innerHTML = items.map((item, idx) => `
                 <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200 font-mono text-xs space-y-1">
@@ -3394,17 +3458,68 @@
         window.copyCurrentPurchaseExcelFormat = function() {
             if (!lastPurchasedItemsBatch || lastPurchasedItemsBatch.length === 0) return showToast("কোনো আইটেম নেই", "info");
             const text = lastPurchasedItemsBatch.map(item => `${item.mail}\t${item.password || ''}`).join('\n');
-            copyToClipboard(text, null, `মোট ${lastPurchasedItemsBatch.length} টি আইটেম এক্সেল ফরমেটে কপি হয়েছে!`);
+            copyToClipboard(text, null, `মোট ${lastPurchasedItemsBatch.length} টি আইটেম এক্সেল ফরমেটে কপি হয়েছে!`);
         };
 
         window.sendCurrentPurchaseToBot = async function() {
             if (!lastPurchasedItemsBatch || lastPurchasedItemsBatch.length === 0) return showToast("কোনো আইটেম নেই", "info");
             exportItemsToExcelCustom(lastPurchasedItemsBatch, `Purchase_${userData.tgChatId}_${Date.now()}`);
-            showToast("এক্সেল ফাইল ডাউনলোড শুরু হয়েছে", "success");
+            showToast("এক্সেল ফাইল ডাউনলোড শুরু হয়েছে", "success");
         };
 
-        // --- TRANSFERS ---
+        // --- TRANSFERS & RECIPIENT LOOKUP ---
+        window.handleRecipientLookup = function(idVal) {
+            clearTimeout(recipientDebounceTimer);
+            const previewCard = document.getElementById('recipient-preview-card');
+            const recName = document.getElementById('rec-preview-name');
+            const recId = document.getElementById('rec-preview-id');
+            const recStatus = document.getElementById('rec-preview-status-pill');
+            const recAvatar = document.getElementById('rec-preview-avatar');
+
+            const trimmedId = idVal.trim();
+            if (!trimmedId || trimmedId.length < 5) {
+                previewCard.classList.add('hidden');
+                return;
+            }
+
+            recipientDebounceTimer = setTimeout(async () => {
+                try {
+                    previewCard.classList.remove('hidden');
+                    recName.textContent = "অনুসন্ধান করা হচ্ছে...";
+                    recId.textContent = `ID: ${trimmedId}`;
+                    recStatus.textContent = "...";
+                    recStatus.className = "px-2 py-0.5 rounded-md text-[10px] font-bold bg-slate-200 text-slate-700";
+
+                    const targetRef = doc(dbUser, "users", trimmedId);
+                    const snap = await getDoc(targetRef);
+
+                    if (snap.exists()) {
+                        const targetData = snap.data();
+                        recName.textContent = targetData.name || 'User';
+                        recAvatar.textContent = (targetData.name || 'U').charAt(0).toUpperCase();
+
+                        if (targetData.isAccountActive) {
+                            recStatus.textContent = "Active";
+                            recStatus.className = "px-2 py-0.5 rounded-md text-[10px] font-black uppercase bg-emerald-100 text-emerald-700";
+                        } else {
+                            recStatus.textContent = "Inactive";
+                            recStatus.className = "px-2 py-0.5 rounded-md text-[10px] font-black uppercase bg-red-100 text-red-700";
+                        }
+                    } else {
+                        recName.textContent = "ইউজার পাওয়া যায়নি";
+                        recAvatar.textContent = "X";
+                        recStatus.textContent = "Not Found";
+                        recStatus.className = "px-2 py-0.5 rounded-md text-[10px] font-bold bg-slate-200 text-slate-500";
+                    }
+                } catch(e) {
+                    previewCard.classList.add('hidden');
+                }
+            }, 400);
+        };
+
         async function handleSendBalance() {
+            if (!ensureAccountActive()) return;
+
             const recipientId = document.getElementById('send-recipient-id').value.trim();
             const amount = parseFloat(document.getElementById('send-amount').value);
 
@@ -3432,7 +3547,7 @@
                         throw new Error("আপনার পর্যাপ্ত ব্যালেন্স নেই।");
                     }
                     if (!recipientSnap.exists()) {
-                        throw new Error("প্রাপকের Telegram ID খুঁজে পাওয়া যায়নি।");
+                        throw new Error("প্রাপকের Telegram ID খুঁজে পাওয়া যায়নি।");
                     }
 
                     t.update(senderRef, { balance: senderSnap.data().balance - totalCost });
@@ -3448,16 +3563,17 @@
                     });
                 });
 
-                showToast("ব্যালেন্স সফলভাবে ট্রান্সফার হয়েছে!", "success");
+                showToast("ব্যালেন্স সফলভাবে ট্রান্সফার হয়েছে!", "success");
                 document.getElementById('send-recipient-id').value = '';
                 document.getElementById('send-amount').value = '';
+                document.getElementById('recipient-preview-card').classList.add('hidden');
 
                 const userSnap = await getDoc(doc(dbUser, "users", String(userData.tgChatId)));
                 userData = userSnap.data();
                 updateUI();
                 navigateTo('features-page');
             } catch(e) {
-                showToast(e.message || "ট্রান্সফার ব্যর্থ হয়েছে।", "error");
+                showToast(e.message || "ট্রান্সফার ব্যর্থ হয়েছে।", "error");
             } finally {
                 btn.disabled = false;
                 btn.textContent = "Submit Send";
@@ -3467,13 +3583,13 @@
         window.copyAllOrdersExcelFormat = function() {
             if (!userPurchasesCache || userPurchasesCache.length === 0) return showToast("কোনো অর্ডার নেই", "info");
             const text = userPurchasesCache.map(p => `${p.mail}\t${p.password || ''}`).join('\n');
-            copyToClipboard(text, null, `সকল (${userPurchasesCache.length} টি) অর্ডার কপি হয়েছে!`);
+            copyToClipboard(text, null, `সকল (${userPurchasesCache.length} টি) অর্ডার কপি হয়েছে!`);
         };
 
         window.sendAllOrdersToBot = function() {
             if (!userPurchasesCache || userPurchasesCache.length === 0) return showToast("কোনো অর্ডার নেই", "info");
             exportItemsToExcelCustom(userPurchasesCache, `Orders_${userData.tgChatId}`);
-            showToast("এক্সেল ডাউনলোড সম্পন্ন হয়েছে", "success");
+            showToast("এক্সেল ডাউনলোড সম্পন্ন হয়েছে", "success");
         };
 
         function exportItemsToExcelCustom(items, filename) {
@@ -3591,7 +3707,7 @@
             try {
                 const q = query(collection(dbHome, "manual_orders"), where("userId", "in", [String(userData.tgChatId), Number(userData.tgChatId)]));
                 const snap = await getDocs(q);
-                if (snap.empty) return list.innerHTML = '<p class="text-center text-xs text-slate-400 py-2">কোনো ম্যানুয়াল অর্ডার হিস্ট্রি নেই</p>';
+                if (snap.empty) return list.innerHTML = '<p class="text-center text-xs text-slate-400 py-2">কোনো ম্যানুয়াল অর্ডার হিস্ট্রি নেই</p>';
 
                 const docs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
                 docs.sort((a,b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
@@ -3721,10 +3837,10 @@
                 });
 
                 document.getElementById('replace-modal').classList.add('hidden');
-                showToast("রিপ্লেসমেন্ট অনুরোধ পাঠানো হয়েছে", "success");
+                showToast("রিপ্লেসমেন্ট অনুরোধ পাঠানো হয়েছে", "success");
                 navigateTo('history-page');
             } catch(e) {
-                showToast("অনুরোধ পাঠাতে ব্যর্থ হয়েছে।", "error");
+                showToast("অনুরোধ পাঠাতে ব্যর্থ হয়েছে।", "error");
             } finally {
                 btn.disabled = false;
                 btn.textContent = "সাবমিট করুন";
@@ -3747,9 +3863,11 @@
             document.getElementById('submit-replace-btn')?.addEventListener('click', handleSubmitReplace);
             document.getElementById('submit-send-btn')?.addEventListener('click', handleSendBalance);
             document.getElementById('features-receive-btn')?.addEventListener('click', () => {
-                copyToClipboard(userData.tgChatId, null, `রিসিভ আইডি কপি হয়েছে: ${userData.tgChatId}`);
+                if (!ensureAccountActive()) return;
+                copyToClipboard(userData.tgChatId, null, `রিসিভ আইডি কপি হয়েছে: ${userData.tgChatId}`);
             });
         }
     </script>
 </body>
 </html>
+        
