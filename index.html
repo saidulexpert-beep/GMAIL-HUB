@@ -1710,11 +1710,7 @@
         } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
         const primaryApp = initializeApp(baseFirebaseConfig);
-        const dbUser = getFirestore(primaryApp);
-        const dbHome = dbUser;
-        const dbWork = dbUser;
-        const dbMisc = dbUser;
-
+const db = getFirestore(primaryApp);
         let currentUserTg = null;
         let userData = null;
         let appConfig = {};
