@@ -3259,11 +3259,9 @@
                 document.getElementById('displayAmount').textContent = "50.00 BDT";
                 document.getElementById('gateway-success-status-msg').textContent = "মাস্টার ওয়ার্ক সফলভাবে আনলক হয়েছে!";
                 document.getElementById('gateway-success-modal').classList.remove('hidden');
-            } catch(e) {
-                console.error(
-console.error(e);
+               } catch(e) {
+                console.error("Master upgrade error:", e);
             }
-        }
 
         async function savePaymentAndUpdateBalance(depositAmount, txid, fullData) {
             if (!userData) return;
