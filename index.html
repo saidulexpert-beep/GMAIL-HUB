@@ -2025,7 +2025,7 @@ const db = getFirestore(primaryApp);
                             ${masked}
                         </div>
                         <div class="mt-2 flex items-center justify-between text-[11px] text-blue-100 font-mono">
-                            <span>${wallet.addedAt || '2026-09-03 10:25:34'}</span>
+                            <span>${wallet.addedAt || new Date().toLocaleString('en-GB')}</span>
                             ${isSelected ? '<span class="px-2 py-0.5 rounded-full bg-white text-slate-900 text-[10px] font-black">SELECTED</span>' : ''}
                         </div>
                     </div>
@@ -3045,7 +3045,7 @@ const db = getFirestore(primaryApp);
                         }
                     }
                 } catch(err) {
-                    isMember = true;
+                    isMember = false;
                 }
 
                 if (!isMember) {
