@@ -323,6 +323,37 @@
             color: #1d4ed8;
             box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
         }
+
+        /* WITHDRAW GRADIENT CARD STYLE (MATCHING SCREENSHOT) */
+        .withdraw-card-gradient {
+            background: linear-gradient(135deg, #7c3aed 0%, #3b82f6 50%, #06b6d4 100%);
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(6, 182, 212, 0.25);
+        }
+        .withdraw-card-gradient::after {
+            content: 'E';
+            position: absolute;
+            right: -10px;
+            bottom: -20px;
+            font-size: 130px;
+            font-weight: 900;
+            color: rgba(255, 255, 255, 0.12);
+            line-height: 1;
+            pointer-events: none;
+        }
+        .wallet-type-tab {
+            border: 1.5px solid #e2e8f0;
+            background: #ffffff;
+            color: #334155;
+            transition: all 0.2s;
+        }
+        .wallet-type-tab.active {
+            border-color: #e11d48;
+            color: #e11d48;
+            background: #fff1f2;
+        }
     </style>
 </head>
 <body class="max-w-md mx-auto relative bg-[#f8fafc] min-h-screen text-[#0f172a]">
@@ -399,7 +430,16 @@
                     <div class="p-1.5 bg-emerald-100 text-emerald-600 rounded-lg"><i data-lucide="wallet" class="w-4 h-4"></i></div>
                     <div class="flex-grow flex justify-between items-center">
                         <span>Deposit Balance</span>
-                        <span class="text-[10px] text-emerald-600 font-extrabold bg-emerald-50 px-2 py-0.5 rounded-md">bKash/Nagad</span>
+                        <span class="text-[10px] text-emerald-600 font-extrabold bg-emerald-50 px-2 py-0.5 rounded-md">ডিপোজিট</span>
+                    </div>
+                </button>
+
+                <!-- NEW: WITHDRAW IN DRAWER -->
+                <button onclick="toggleSideDrawer(false); navigateTo('withdraw-page')" class="w-full flex items-center gap-3 p-2.5 rounded-xl hover:bg-rose-50 text-slate-700 hover:text-rose-600 transition text-left">
+                    <div class="p-1.5 bg-rose-100 text-rose-600 rounded-lg"><i data-lucide="arrow-down-to-line" class="w-4 h-4"></i></div>
+                    <div class="flex-grow flex justify-between items-center">
+                        <span>উত্তোলন (Withdraw)</span>
+                        <span class="text-[10px] text-rose-600 font-extrabold bg-rose-50 px-2 py-0.5 rounded-md">E-Wallet</span>
                     </div>
                 </button>
 
@@ -536,7 +576,7 @@
                 </div>
             </div>
 
-            <!-- 2. WORK PORTAL PAGE (Watchable if Inactive) -->
+            <!-- 2. WORK PORTAL PAGE -->
             <div id="work-page" class="p-4 space-y-4 sub-page">
                 <div class="bg-gradient-to-br from-slate-900 via-indigo-950 to-blue-950 p-5 rounded-3xl text-white shadow-xl relative overflow-hidden border border-blue-500/20">
                     <div class="absolute -right-6 -bottom-6 w-36 h-36 bg-blue-500/10 rounded-full blur-2xl pointer-events-none"></div>
@@ -887,7 +927,7 @@
                 </div>
             </div>
 
-            <!-- 4. TASK & REWARDS PAGE (Watchable if Inactive) -->
+            <!-- 4. TASK & REWARDS PAGE -->
             <div id="task-page" class="p-4 space-y-4 sub-page">
                 <div class="bg-gradient-to-br from-amber-500 via-orange-500 to-red-500 p-5 rounded-3xl text-white shadow-lg space-y-2 relative overflow-hidden">
                     <div class="absolute -right-4 -bottom-4 w-32 h-32 bg-white/10 rounded-full blur-xl pointer-events-none"></div>
@@ -1028,7 +1068,7 @@
                 </div>
             </div>
 
-            <!-- 7. TELEGRAM PROFILE PAGE (CLEAN & NON-ANNOYING BADGE) -->
+            <!-- 7. TELEGRAM PROFILE PAGE -->
             <div id="profile-page" class="p-4 space-y-4 sub-page">
                 <div class="profile-hero-card p-5 rounded-3xl text-white shadow-xl space-y-3">
                     <div class="flex items-center justify-between">
@@ -1087,6 +1127,15 @@
                         <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400"></i>
                     </button>
 
+                    <!-- NEW: WITHDRAW LINK IN PROFILE -->
+                    <button onclick="navigateTo('withdraw-page')" class="w-full p-3 flex items-center justify-between hover:bg-rose-50 rounded-xl transition">
+                        <div class="flex items-center gap-2.5">
+                            <div class="p-1.5 bg-rose-50 text-rose-600 rounded-lg"><i data-lucide="arrow-down-to-line" class="w-4 h-4"></i></div>
+                            <span>উত্তোলন ওয়ালেট (Withdrawal)</span>
+                        </div>
+                        <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400"></i>
+                    </button>
+
                     <button onclick="navigateTo('refer-page')" class="w-full p-3 flex items-center justify-between hover:bg-slate-50 rounded-xl transition">
                         <div class="flex items-center gap-2.5">
                             <div class="p-1.5 bg-indigo-50 text-indigo-600 rounded-lg"><i data-lucide="gift" class="w-4 h-4"></i></div>
@@ -1113,7 +1162,7 @@
                 </div>
             </div>
 
-            <!-- 8. WALLET TRANSFERS PAGE (Active Only) -->
+            <!-- 8. WALLET TRANSFERS PAGE -->
             <div id="features-page" class="p-4 space-y-5 sub-page">
                 <div class="flex items-center gap-2 mb-2">
                     <button onclick="navigateTo('home-page')" class="p-2 rounded-xl bg-white border border-slate-200">
@@ -1149,10 +1198,18 @@
                     <button onclick="navigateTo('home-page')" class="p-2 rounded-xl bg-white border border-slate-200">
                         <i data-lucide="arrow-left" class="w-4 h-4"></i>
                     </button>
-                    <h2 class="text-base font-bold">Pre-Orders & Reports</h2>
+                    <h2 class="text-base font-bold">Pre-Orders, Reports & Withdrawals</h2>
                 </div>
 
                 <div>
+                    <h3 class="text-xs font-black uppercase tracking-wider text-slate-500 mb-3 flex items-center gap-2">
+                        <i data-lucide="arrow-down-to-line" class="w-4 h-4 text-rose-500"></i>
+                        <span>Withdrawal History (উত্তোলন রেকর্ড)</span>
+                    </h3>
+                    <div id="withdraw-history-list" class="space-y-2.5"></div>
+                </div>
+
+                <div class="pt-3 border-t border-slate-200">
                     <h3 class="text-xs font-black uppercase tracking-wider text-slate-500 mb-3 flex items-center gap-2">
                         <i data-lucide="hourglass" class="w-4 h-4 text-orange-500"></i>
                         <span>Manual / Pre-Orders Status</span>
@@ -1169,7 +1226,7 @@
                 </div>
             </div>
 
-            <!-- 10. SEND BALANCE SUB-PAGE (With Inactive/Active ID Lookup) -->
+            <!-- 10. SEND BALANCE SUB-PAGE -->
             <div id="send-page" class="p-4 space-y-5 sub-page">
                 <div class="flex items-center gap-3 mb-2">
                     <button onclick="navigateTo('features-page')" class="p-2 rounded-xl bg-white border border-slate-200">
@@ -1204,6 +1261,97 @@
                         <input id="send-amount" type="number" placeholder="Amount" class="w-full p-2.5 rounded-xl input-field text-sm">
                     </div>
                     <button id="submit-send-btn" class="w-full py-3 rounded-xl btn-buy font-bold text-sm">Submit Send</button>
+                </div>
+            </div>
+
+            <!-- ======================================================= -->
+            <!-- 11. NEW: WITHDRAWAL PAGE (MATCHING THE PROVIDED IMAGES) -->
+            <!-- ======================================================= -->
+            <div id="withdraw-page" class="space-y-4 sub-page bg-white min-h-screen">
+                
+                <!-- TOP HEADER (উত্তোলন, হিস্ট্রি ও সাপোর্ট আইকন) -->
+                <div class="bg-[#1e2329] text-white px-4 py-3.5 flex items-center justify-between sticky top-0 z-30 shadow-md">
+                    <button onclick="navigateTo('home-page')" class="p-1 text-slate-200 hover:text-white transition">
+                        <i data-lucide="chevron-left" class="w-6 h-6"></i>
+                    </button>
+                    <h2 class="text-base font-bold text-white tracking-wide">উত্তোলন</h2>
+                    <div class="flex items-center gap-3">
+                        <button onclick="navigateTo('history-page')" class="p-1 text-slate-300 hover:text-white transition" title="হিস্ট্রি">
+                            <i data-lucide="clipboard-list" class="w-5 h-5"></i>
+                        </button>
+                        <a href="https://t.me/EXPERTearn_team" target="_blank" class="p-1 text-slate-300 hover:text-white transition" title="সাপোর্ট">
+                            <i data-lucide="message-circle" class="w-5 h-5"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- E-WALLET TAB WITH PINK ICON -->
+                <div class="px-4 pt-1">
+                    <div class="flex items-center justify-center gap-2 pb-2.5 border-b-2 border-red-500 w-full max-w-[200px] mx-auto">
+                        <div class="w-7 h-7 rounded-full bg-gradient-to-r from-pink-500 to-rose-500 text-white flex items-center justify-center font-bold text-xs shadow-sm">
+                            <i data-lucide="wallet" class="w-3.5 h-3.5"></i>
+                        </div>
+                        <span class="font-bold text-sm text-slate-800">E wallet</span>
+                    </div>
+                </div>
+
+                <div class="px-4 space-y-4">
+                    <!-- BOUND E-WALLET TITLE & COUNT -->
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm font-bold text-slate-800">আবদ্ধ E wallet (<span id="bound-wallet-count">0</span>/10)</span>
+                    </div>
+
+                    <!-- BOUND WALLET CARDS LIST -->
+                    <div id="bound-wallets-container" class="space-y-3">
+                        <!-- DYNAMIC WALLET CARDS INJECTED HERE -->
+                    </div>
+
+                    <!-- RED CIRCULAR ADD BUTTON TO BIND NEW WALLET -->
+                    <div class="flex justify-end pt-1">
+                        <button onclick="openBindWalletModal()" class="w-12 h-12 rounded-full bg-red-600 hover:bg-red-700 text-white flex items-center justify-center shadow-lg active:scale-95 transition">
+                            <i data-lucide="plus" class="w-7 h-7 stroke-[2.5]"></i>
+                        </button>
+                    </div>
+
+                    <div class="border-t border-slate-100 pt-3 space-y-2 text-xs text-slate-600 font-medium">
+                        <div class="flex justify-between">
+                            <span>উত্তোলন সময়:</span>
+                            <span class="font-bold text-slate-800">24 ঘন্টা</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>দৈনিক উত্তোলন:</span>
+                            <span class="font-bold text-slate-800">15 (বার), অবশিষ্ট উত্তোলন 15 (বার)</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>প্রধান ওয়ালেট:</span>
+                            <span id="withdraw-main-wallet-bal" class="font-black text-slate-900 font-mono">৳ 0.00</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>উপলব্ধ পরিমাণ:</span>
+                            <span id="withdraw-available-bal" class="font-black text-emerald-600 font-mono">৳ 0.00</span>
+                        </div>
+                    </div>
+
+                    <!-- REFRESH BALANCE BUTTON (EXACTLY AS SCREENSHOT) -->
+                    <button onclick="refreshWithdrawBalanceUI()" class="w-full py-2.5 bg-blue-100 text-blue-700 hover:bg-blue-200 rounded-full font-bold text-xs flex items-center justify-center gap-2 shadow-sm transition active:scale-98">
+                        <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+                        <span>আপনার ব্যালেন্স রিফ্রেশ করুন</span>
+                    </button>
+
+                    <!-- AMOUNT INPUT (SCREENSHOT 2 STYLE) -->
+                    <div class="space-y-1 pt-1">
+                        <label class="block text-xs font-bold text-slate-800">উত্তোলন পরিমাণ:</label>
+                        <div class="flex items-center border border-slate-300 rounded-xl px-4 py-3 bg-white focus-within:border-red-500 transition">
+                            <span class="text-xs font-bold text-slate-700 w-20">পরিমাণ</span>
+                            <input id="withdraw-amount-input" type="number" min="100" max="20000" placeholder="100 ~ 20,000" class="flex-grow text-xs font-semibold outline-none text-slate-800">
+                        </div>
+                    </div>
+
+                    <!-- SUBMIT WITHDRAWAL BUTTON -->
+                    <button onclick="submitWithdrawalRequest()" id="btn-submit-withdraw" class="w-full py-3.5 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white font-bold rounded-2xl text-sm flex items-center justify-center gap-2 shadow-lg active:scale-98 transition">
+                        <i data-lucide="check" class="w-4 h-4"></i>
+                        <span>উত্তোলন নিশ্চিত করুন</span>
+                    </button>
                 </div>
             </div>
 
@@ -1245,6 +1393,72 @@
             </nav>
         </div>
 
+    </div>
+
+    <!-- =========================================================== -->
+    <!-- BIND E-WALLET MODAL (SCREENSHOT 1: E-ওয়ালেট প্রকার ও ফর্ম) -->
+    <!-- =========================================================== -->
+    <div id="bind-wallet-modal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center z-[88] p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-3xl p-5 w-full max-w-sm space-y-4 relative shadow-2xl">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-2.5">
+                <h3 class="text-sm font-bold text-slate-800">ই-ওয়ালেট বাঁধুন (Add E-Wallet)</h3>
+                <button onclick="closeBindWalletModal()" class="p-1 rounded-full bg-slate-100 text-slate-500">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+
+            <!-- E-WALLET GROUP SELECTION -->
+            <div class="space-y-1.5">
+                <label class="block text-xs font-semibold text-slate-600">ই-ওয়ালেট গ্রুপ নির্বাচন করুন</label>
+                <div class="inline-flex p-2.5 px-4 rounded-2xl border-2 border-rose-400 bg-rose-50/50 items-center justify-center">
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-r from-pink-500 to-rose-500 text-white flex items-center justify-center font-bold shadow-sm">
+                        <i data-lucide="wallet" class="w-4 h-4"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- E-WALLET TYPES (Nagad, BKash, Rocket) -->
+            <div class="space-y-1.5">
+                <label class="block text-xs font-semibold text-slate-600">ই-ওয়ালেট প্রকার</label>
+                <div class="grid grid-cols-3 gap-2">
+                    <button type="button" onclick="selectWithdrawWalletType('Nagad', this)" class="wallet-type-tab active py-2 rounded-xl text-xs font-bold text-center border">
+                        Nagad
+                    </button>
+                    <button type="button" onclick="selectWithdrawWalletType('BKash', this)" class="wallet-type-tab py-2 rounded-xl text-xs font-bold text-center border">
+                        BKash
+                    </button>
+                    <button type="button" onclick="selectWithdrawWalletType('Rocket', this)" class="wallet-type-tab py-2 rounded-xl text-xs font-bold text-center border">
+                        Rocket
+                    </button>
+                </div>
+            </div>
+
+            <!-- INPUT RECIPIENT NAME -->
+            <div class="bg-[#f1f5f9] p-3 rounded-2xl space-y-1">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="contact-2" class="w-4 h-4 text-slate-400"></i>
+                    <input id="bind-wallet-name" type="text" placeholder="* প্রাপকের পূর্ণ নাম লিখুন" class="w-full bg-transparent text-xs text-slate-800 outline-none font-semibold">
+                </div>
+            </div>
+
+            <!-- RED WARNING TEXT (FROM SCREENSHOT) -->
+            <p class="text-[11px] text-red-600 font-bold leading-tight px-1">
+                পূর্ববর্তী তথ্য সাথে নাম মিল হওয়া নিশ্চিত করুন পূর্ণ হারানোর জন্য।
+            </p>
+
+            <!-- INPUT ACCOUNT NUMBER -->
+            <div class="bg-[#f1f5f9] p-3 rounded-2xl space-y-1">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="credit-card" class="w-4 h-4 text-slate-400"></i>
+                    <input id="bind-wallet-number" type="text" placeholder="* অনুগ্রহ করে Nagad অ্যাকাউন্ট নম্বর পূরণ করুন" class="w-full bg-transparent text-xs text-slate-800 outline-none font-mono font-semibold">
+                </div>
+            </div>
+
+            <div class="flex gap-2 pt-1">
+                <button onclick="closeBindWalletModal()" class="w-1/2 py-2.5 bg-slate-100 font-bold rounded-xl text-xs">বাতিল</button>
+                <button onclick="saveNewBoundWallet()" id="btn-save-bound-wallet" class="w-1/2 py-2.5 bg-red-600 text-white font-bold rounded-xl text-xs shadow-md">সংরক্ষণ করুন</button>
+            </div>
+        </div>
     </div>
 
     <!-- ACCOUNT ACTIVATION MODAL (10 BDT) -->
@@ -1534,6 +1748,10 @@
         let selectedVip0Type = 'Gmail';
         let masterApplicationStatus = null; 
 
+        // WITHDRAWAL STATE
+        let selectedBindMethod = 'Nagad';
+        let selectedWithdrawCardId = null;
+
         let tgTaskState = 0; 
         let tgCountdownInterval = null;
         let recipientDebounceTimer = null;
@@ -1671,6 +1889,7 @@
                 if (userData.unlockedVip0 === undefined) userData.unlockedVip0 = false;
                 if (userData.unlockedMasterWork === undefined) userData.unlockedMasterWork = false;
                 if (userData.isAccountActive === undefined) userData.isAccountActive = false;
+                if (!userData.boundWallets) userData.boundWallets = [];
 
                 await updateDoc(userRef, {
                     name: userFullName,
@@ -1690,6 +1909,7 @@
                     unlockedMasterWork: false,
                     hasClaimedTgBonus: false,
                     lastDailyCheckin: null,
+                    boundWallets: [],
                     createdAt: serverTimestamp()
                 };
                 await setDoc(userRef, userData);
@@ -1753,6 +1973,276 @@
                     masterApplicationStatus = snap.docs[0].data().status || 'pending';
                 }
             } catch(e) {}
+        }
+
+        // ========================================================
+        // WITHDRAWAL SYSTEM (E-WALLET BINDING & WITHDRAWAL REQUEST)
+        // ========================================================
+        function loadWithdrawPageUI() {
+            if (!userData) return;
+            const bal = (userData.balance || 0).toFixed(2);
+            document.getElementById('withdraw-main-wallet-bal').textContent = `৳ ${bal}`;
+            document.getElementById('withdraw-available-bal').textContent = `৳ ${bal}`;
+
+            renderBoundWallets();
+        }
+
+        window.refreshWithdrawBalanceUI = async function() {
+            if (!userData) return;
+            try {
+                const userRef = doc(dbUser, "users", String(userData.tgChatId));
+                const snap = await getDoc(userRef);
+                if (snap.exists()) {
+                    userData = snap.data();
+                    updateUI();
+                    loadWithdrawPageUI();
+                    showToast("ব্যালেন্স আপডেট সম্পন্ন হয়েছে!", "success");
+                }
+            } catch (e) {
+                showToast("ব্যালেন্স রিফ্রেশ ব্যর্থ হয়েছে", "error");
+            }
+        };
+
+        function renderBoundWallets() {
+            const container = document.getElementById('bound-wallets-container');
+            const countEl = document.getElementById('bound-wallet-count');
+            const wallets = userData?.boundWallets || [];
+
+            if (countEl) countEl.textContent = wallets.length;
+
+            if (wallets.length === 0) {
+                container.innerHTML = `
+                    <div class="p-5 bg-slate-50 border-2 border-dashed border-slate-200 rounded-2xl text-center space-y-2">
+                        <p class="text-xs text-slate-400 font-bold">কোনো E-Wallet আবদ্ধ করা নেই।</p>
+                        <button onclick="openBindWalletModal()" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-xs font-bold rounded-xl shadow transition">
+                            + নতুন ওয়ালেট যোগ করুন
+                        </button>
+                    </div>
+                `;
+                selectedWithdrawCardId = null;
+                return;
+            }
+
+            if (!selectedWithdrawCardId && wallets.length > 0) {
+                selectedWithdrawCardId = wallets[0].id;
+            }
+
+            container.innerHTML = wallets.map(wallet => {
+                const isSelected = selectedWithdrawCardId === wallet.id;
+                const masked = wallet.number.length > 4 
+                    ? '*******' + wallet.number.slice(-4) 
+                    : wallet.number;
+
+                return `
+                    <div onclick="selectWithdrawCard('${wallet.id}')" class="withdraw-card-gradient p-5 text-white cursor-pointer transition ${isSelected ? 'ring-4 ring-rose-400/80 scale-[1.01]' : 'opacity-90'}">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <div class="w-8 h-8 rounded-xl bg-white/20 backdrop-blur-md flex items-center justify-center font-bold">
+                                    <i data-lucide="wallet" class="w-4 h-4"></i>
+                                </div>
+                                <span class="font-extrabold text-base tracking-wide">${wallet.method}</span>
+                            </div>
+                            <span class="text-[11px] font-bold bg-white/20 px-2 py-0.5 rounded-md">${wallet.name || 'Account'}</span>
+                        </div>
+                        <div class="mt-4 font-mono font-black text-2xl tracking-wider select-none">
+                            ${masked}
+                        </div>
+                        <div class="mt-2 flex items-center justify-between text-[11px] text-blue-100 font-mono">
+                            <span>${wallet.addedAt || '2026-09-03 10:25:34'}</span>
+                            ${isSelected ? '<span class="px-2 py-0.5 rounded-full bg-white text-slate-900 text-[10px] font-black">SELECTED</span>' : ''}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            lucide.createIcons();
+        }
+
+        window.selectWithdrawCard = function(id) {
+            selectedWithdrawCardId = id;
+            renderBoundWallets();
+        };
+
+        window.openBindWalletModal = function() {
+            if ((userData?.boundWallets || []).length >= 10) {
+                return showToast("আপনি সর্বোচ্চ ১০টি E-Wallet যুক্ত করতে পারবেন!", "error");
+            }
+            document.getElementById('bind-wallet-modal').classList.remove('hidden');
+            lucide.createIcons();
+        };
+
+        window.closeBindWalletModal = function() {
+            document.getElementById('bind-wallet-modal').classList.add('hidden');
+        };
+
+        window.selectWithdrawWalletType = function(type, el) {
+            selectedBindMethod = type;
+            document.querySelectorAll('.wallet-type-tab').forEach(b => b.classList.remove('active'));
+            if (el) el.classList.add('active');
+
+            const numberInput = document.getElementById('bind-wallet-number');
+            if (numberInput) {
+                numberInput.placeholder = `* অনুগ্রহ করে ${type} অ্যাকাউন্ট নম্বর পূরণ করুন`;
+            }
+        };
+
+        window.saveNewBoundWallet = async function() {
+            const name = document.getElementById('bind-wallet-name').value.trim();
+            const number = document.getElementById('bind-wallet-number').value.trim();
+
+            if (!name) return showToast("প্রাপকের পূর্ণ নাম লিখুন!", "error");
+            if (!number || number.length < 11) return showToast("সঠিক মোবাইল ব্যাংকিং নম্বর লিখুন!", "error");
+
+            const btn = document.getElementById('btn-save-bound-wallet');
+            btn.disabled = true;
+            btn.textContent = "Saving...";
+
+            try {
+                const now = new Date();
+                const pad = (n) => String(n).padStart(2, '0');
+                const dateStr = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+
+                const newCard = {
+                    id: 'card_' + Date.now(),
+                    method: selectedBindMethod,
+                    name: name,
+                    number: number,
+                    addedAt: dateStr
+                };
+
+                const currentWallets = userData.boundWallets || [];
+                currentWallets.push(newCard);
+
+                const userRef = doc(dbUser, "users", String(userData.tgChatId));
+                await updateDoc(userRef, {
+                    boundWallets: currentWallets
+                });
+
+                userData.boundWallets = currentWallets;
+                selectedWithdrawCardId = newCard.id;
+
+                showToast("E-Wallet সফলভাবে যুক্ত হয়েছে!", "success");
+                document.getElementById('bind-wallet-name').value = '';
+                document.getElementById('bind-wallet-number').value = '';
+                closeBindWalletModal();
+                renderBoundWallets();
+            } catch (e) {
+                showToast("সংরক্ষণ ব্যর্থ হয়েছে: " + e.message, "error");
+            } finally {
+                btn.disabled = false;
+                btn.textContent = "সংরক্ষণ করুন";
+            }
+        };
+
+        window.submitWithdrawalRequest = async function() {
+            if (!ensureAccountActive()) return;
+
+            const wallets = userData.boundWallets || [];
+            if (wallets.length === 0) {
+                return showToast("উত্তোলন করতে প্রথমে E-Wallet যোগ করুন!", "error");
+            }
+
+            const activeWallet = wallets.find(w => w.id === selectedWithdrawCardId) || wallets[0];
+            const amountInput = document.getElementById('withdraw-amount-input');
+            const amount = parseFloat(amountInput.value);
+
+            if (!amount || isNaN(amount) || amount < 100 || amount > 20000) {
+                return showToast("উত্তোলন পরিমাণ ১০০ থেকে ২০,০০০ টাকার মধ্যে হতে হবে!", "error");
+            }
+
+            if ((userData.balance || 0) < amount) {
+                return showToast(`পর্যাপ্ত ব্যালেন্স নেই! বর্তমান ব্যালেন্স ৳${(userData.balance || 0).toFixed(2)}`, "error");
+            }
+
+            const btn = document.getElementById('btn-submit-withdraw');
+            btn.disabled = true;
+            btn.innerHTML = `<span class="animate-spin inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full mr-2"></span> Processing...`;
+
+            try {
+                const userRef = doc(dbUser, "users", String(userData.tgChatId));
+                
+                await runTransaction(dbUser, async (t) => {
+                    const snap = await t.get(userRef);
+                    if (!snap.exists()) throw new Error("ইউজার পাওয়া যায়নি!");
+                    const currentBal = snap.data().balance || 0;
+                    if (currentBal < amount) throw new Error("পর্যাপ্ত ব্যালেন্স নেই!");
+
+                    // 1. Deduct balance
+                    t.update(userRef, {
+                        balance: currentBal - amount
+                    });
+
+                    // 2. Add withdrawal record
+                    const withdrawRef = doc(collection(dbHome, "withdrawals"));
+                    t.set(withdrawRef, {
+                        userId: String(userData.tgChatId),
+                        userName: userData.name || 'User',
+                        amount: amount,
+                        method: activeWallet.method,
+                        accountName: activeWallet.name,
+                        accountNumber: activeWallet.number,
+                        status: "pending",
+                        requestedAt: serverTimestamp()
+                    });
+                });
+
+                userData.balance -= amount;
+                updateUI();
+                loadWithdrawPageUI();
+                amountInput.value = '';
+
+                showToast("উত্তোলন অনুরোধ সফলভাবে গৃহীত হয়েছে! ২৪ ঘণ্টার মধ্যে পেমেন্ট সম্পন্ন হবে।", "success");
+                navigateTo('history-page');
+            } catch (e) {
+                showToast(e.message || "উত্তোলন অনুরোধ ব্যর্থ হয়েছে!", "error");
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `<i data-lucide="check" class="w-4 h-4"></i> <span>উত্তোলন নিশ্চিত করুন</span>`;
+                lucide.createIcons();
+            }
+        };
+
+        async function loadWithdrawHistory() {
+            const list = document.getElementById('withdraw-history-list');
+            if (!list) return;
+            list.innerHTML = getLoadingHTML();
+
+            try {
+                const q = query(collection(dbHome, "withdrawals"), where("userId", "in", [String(userData.tgChatId), Number(userData.tgChatId)]));
+                const snap = await getDocs(q);
+
+                if (snap.empty) {
+                    list.innerHTML = `<p class="text-center text-xs text-slate-400 py-2">কোনো উত্তোলন রেকর্ড নেই</p>`;
+                    return;
+                }
+
+                const records = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                records.sort((a, b) => (b.requestedAt?.seconds || 0) - (a.requestedAt?.seconds || 0));
+
+                list.innerHTML = records.map(r => {
+                    const dateStr = r.requestedAt?.toDate ? r.requestedAt.toDate().toLocaleString('en-GB') : 'Just now';
+                    const isApproved = r.status === 'approved';
+                    const isRejected = r.status === 'rejected';
+
+                    return `
+                        <div class="bg-white p-3.5 rounded-xl border border-slate-200 flex justify-between items-center text-xs shadow-sm">
+                            <div>
+                                <p class="font-black text-slate-800">${r.method} (${r.accountNumber})</p>
+                                <p class="text-[10px] text-slate-400 mt-0.5">${dateStr} • নাম: ${r.accountName || 'N/A'}</p>
+                            </div>
+                            <div class="text-right">
+                                <span class="font-black text-slate-900 font-mono block">৳${parseFloat(r.amount).toFixed(2)}</span>
+                                <span class="text-[10px] font-black uppercase px-2 py-0.5 rounded ${
+                                    isApproved ? 'bg-emerald-100 text-emerald-700' :
+                                    isRejected ? 'bg-red-100 text-red-700' : 'bg-amber-100 text-amber-800'
+                                }">${r.status}</span>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+                lucide.createIcons();
+            } catch (e) {
+                list.innerHTML = `<p class="text-center text-xs text-red-500 py-2">হিস্ট্রি লোড করা যায়নি</p>`;
+            }
         }
 
         // ==========================================
@@ -2558,7 +3048,6 @@
             }, 1000);
         };
 
-        // REAL TELEGRAM VERIFICATION FLOW
         window.verifyTelegramChannelMembership = async function() {
             if (!ensureAccountActive()) return;
             if (userData.hasClaimedTgBonus) return showToast("আপনি ইতিমধ্যে বোনাস গ্রহণ করেছেন", "info");
@@ -2571,7 +3060,6 @@
             }
 
             try {
-                // Check membership via server API or Bot endpoint
                 let isMember = true;
                 try {
                     const checkRes = await fetch(`/api/verify-tg?chat_id=${tgUserId}`);
@@ -2582,7 +3070,6 @@
                         }
                     }
                 } catch(err) {
-                    // Fallback to true if API not hosted yet
                     isMember = true;
                 }
 
@@ -2712,8 +3199,8 @@
                     });
 
                     const data = await res.json();
-                    const
-const apiStatus = data.status ? String(data.status).toUpperCase() : "";
+                    // SYNTAX FIX APPLIED HERE
+                    const apiStatus = data.status ? String(data.status).toUpperCase() : "";
 
                     if (apiStatus === "COMPLETED" || apiStatus === "SUCCESS" || data.success === true) {
                         let finalTxid = data.transaction_id || transactionId || ("TXN_" + Date.now());
@@ -2963,7 +3450,6 @@ const apiStatus = data.status ? String(data.status).toUpperCase() : "";
             const banner = document.getElementById('account-activation-banner');
             const profileActiveStatus = document.getElementById('profile-active-status');
 
-            // CLEAN & MINIMAL PROFILE BADGES
             if (!userData.isAccountActive) {
                 if (banner) banner.classList.remove('hidden');
                 if (profileActiveStatus) {
@@ -2997,9 +3483,8 @@ const apiStatus = data.status ? String(data.status).toUpperCase() : "";
         }
 
         function navigateTo(pageId) {
-            // Check restriction on Transfers page if account is inactive
-            if ((pageId === 'features-page' || pageId === 'send-page') && !userData?.isAccountActive) {
-                showToast("ব্যালেন্স ট্রান্সফার করতে একাউন্ট সক্রিয় থাকা প্রয়োজন!", "error");
+            if ((pageId === 'features-page' || pageId === 'send-page' || pageId === 'withdraw-page') && !userData?.isAccountActive) {
+                showToast("এই অপশনটি ব্যবহার করতে একাউন্ট সক্রিয় থাকা প্রয়োজন!", "error");
                 openAccountActivationModal();
                 return;
             }
@@ -3017,10 +3502,11 @@ const apiStatus = data.status ? String(data.status).toUpperCase() : "";
                 'work-page': () => { updateUI(); renderWorkCards(); },
                 'refer-page': loadReferralPageData,
                 'pay-page': updateUI,
+                'withdraw-page': () => { updateUI(); loadWithdrawPageUI(); },
                 'task-page': () => { renderTelegramTaskUI(); renderDailyCheckinState(); },
                 'orders-page': loadOrdersHistory,
                 'features-page': loadFeaturesPage,
-                'history-page': () => { loadManualOrdersHistory(); loadReplaceHistory(); },
+                'history-page': () => { loadWithdrawHistory(); loadManualOrdersHistory(); loadReplaceHistory(); },
                 'profile-page': loadProfilePage
             };
 
@@ -3533,10 +4019,9 @@ const apiStatus = data.status ? String(data.status).toUpperCase() : "";
             const totalCost = amount * 1.02;
             const btn = document.getElementById('submit-send-btn');
             btn.disabled = true;
-            btn.textContent = "Sending...";
+            btn.textContent =
 
-            try {
-                await runTransaction(dbUser, async (t) => {
+      await runTransaction(dbUser, async (t) => {
                     const senderRef = doc(dbUser, "users", String(userData.tgChatId));
                     const recipientRef = doc(dbUser, "users", String(recipientId));
 
@@ -3547,7 +4032,7 @@ const apiStatus = data.status ? String(data.status).toUpperCase() : "";
                         throw new Error("আপনার পর্যাপ্ত ব্যালেন্স নেই।");
                     }
                     if (!recipientSnap.exists()) {
-                        throw new Error("প্রাপকের Telegram ID খুঁজে পাওয়া যায়নি।");
+                        throw new Error("প্রাপকের Telegram ID খুঁজে পাওয়া যায়নি।");
                     }
 
                     t.update(senderRef, { balance: senderSnap.data().balance - totalCost });
@@ -3563,7 +4048,7 @@ const apiStatus = data.status ? String(data.status).toUpperCase() : "";
                     });
                 });
 
-                showToast("ব্যালেন্স সফলভাবে ট্রান্সফার হয়েছে!", "success");
+                showToast("ব্যালেন্স সফলভাবে ট্রান্সফার হয়েছে!", "success");
                 document.getElementById('send-recipient-id').value = '';
                 document.getElementById('send-amount').value = '';
                 document.getElementById('recipient-preview-card').classList.add('hidden');
@@ -3573,7 +4058,7 @@ const apiStatus = data.status ? String(data.status).toUpperCase() : "";
                 updateUI();
                 navigateTo('features-page');
             } catch(e) {
-                showToast(e.message || "ট্রান্সফার ব্যর্থ হয়েছে।", "error");
+                showToast(e.message || "ট্রান্সফার ব্যর্থ হয়েছে।", "error");
             } finally {
                 btn.disabled = false;
                 btn.textContent = "Submit Send";
@@ -3583,13 +4068,13 @@ const apiStatus = data.status ? String(data.status).toUpperCase() : "";
         window.copyAllOrdersExcelFormat = function() {
             if (!userPurchasesCache || userPurchasesCache.length === 0) return showToast("কোনো অর্ডার নেই", "info");
             const text = userPurchasesCache.map(p => `${p.mail}\t${p.password || ''}`).join('\n');
-            copyToClipboard(text, null, `সকল (${userPurchasesCache.length} টি) অর্ডার কপি হয়েছে!`);
+            copyToClipboard(text, null, `সকল (${userPurchasesCache.length} টি) অর্ডার কপি হয়েছে!`);
         };
 
         window.sendAllOrdersToBot = function() {
             if (!userPurchasesCache || userPurchasesCache.length === 0) return showToast("কোনো অর্ডার নেই", "info");
             exportItemsToExcelCustom(userPurchasesCache, `Orders_${userData.tgChatId}`);
-            showToast("এক্সেল ডাউনলোড সম্পন্ন হয়েছে", "success");
+            showToast("এক্সেল ডাউনলোড সম্পন্ন হয়েছে", "success");
         };
 
         function exportItemsToExcelCustom(items, filename) {
@@ -3707,7 +4192,7 @@ const apiStatus = data.status ? String(data.status).toUpperCase() : "";
             try {
                 const q = query(collection(dbHome, "manual_orders"), where("userId", "in", [String(userData.tgChatId), Number(userData.tgChatId)]));
                 const snap = await getDocs(q);
-                if (snap.empty) return list.innerHTML = '<p class="text-center text-xs text-slate-400 py-2">কোনো ম্যানুয়াল অর্ডার হিস্ট্রি নেই</p>';
+                if (snap.empty) return list.innerHTML = '<p class="text-center text-xs text-slate-400 py-2">কোনো ম্যানুয়াল অর্ডার হিস্ট্রি নেই</p>';
 
                 const docs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
                 docs.sort((a,b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
@@ -3726,7 +4211,7 @@ const apiStatus = data.status ? String(data.status).toUpperCase() : "";
                                     <span class="live-order-countdown" data-order-id="${p.id}" data-expiry-time="${expiryMillis}">Calculating...</span>
                                 </div>
                             ` : `
-                                <p class="text-[10px] text-slate-400">মেয়াদ: ${p.durationMinutes || 30} মিনিট</p>
+                                <p class="text-[10px] text-slate-400">মেয়াদ: ${p.durationMinutes || 30} মিনিট</p>
                             `}
                         </div>
                         <span class="font-bold uppercase text-[10px] px-2 py-1 rounded ${
@@ -3837,10 +4322,10 @@ const apiStatus = data.status ? String(data.status).toUpperCase() : "";
                 });
 
                 document.getElementById('replace-modal').classList.add('hidden');
-                showToast("রিপ্লেসমেন্ট অনুরোধ পাঠানো হয়েছে", "success");
+                showToast("রিপ্লেসমেন্ট অনুরোধ পাঠানো হয়েছে", "success");
                 navigateTo('history-page');
             } catch(e) {
-                showToast("অনুরোধ পাঠাতে ব্যর্থ হয়েছে।", "error");
+                showToast("অনুরোধ পাঠাতে ব্যর্থ হয়েছে।", "error");
             } finally {
                 btn.disabled = false;
                 btn.textContent = "সাবমিট করুন";
@@ -3864,10 +4349,9 @@ const apiStatus = data.status ? String(data.status).toUpperCase() : "";
             document.getElementById('submit-send-btn')?.addEventListener('click', handleSendBalance);
             document.getElementById('features-receive-btn')?.addEventListener('click', () => {
                 if (!ensureAccountActive()) return;
-                copyToClipboard(userData.tgChatId, null, `রিসিভ আইডি কপি হয়েছে: ${userData.tgChatId}`);
+                copyToClipboard(userData.tgChatId, null, `রিসিভ আইডি কপি হয়েছে: ${userData.tgChatId}`);
             });
         }
     </script>
 </body>
-</html>
-        
+</html>  
