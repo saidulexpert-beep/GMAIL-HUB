@@ -295,19 +295,22 @@
         .toast-item.toast-error { border-left-color: #ef4444; }
         .toast-item.toast-info { border-left-color: #3b82f6; }
 
+        /* ADVANCED WORK CARDS */
         .work-card-pro {
             background: #ffffff;
-            border-radius: 24px;
-            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 26px;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
             border: 1px solid #e2e8f0;
             position: relative;
             overflow: hidden;
+            transition: all 0.3s ease;
         }
         .work-card-pro:hover {
-            box-shadow: 0 14px 30px rgba(37, 99, 235, 0.1);
+            box-shadow: 0 16px 36px rgba(37, 99, 235, 0.1);
             border-color: #cbd5e1;
+            transform: translateY(-2px);
         }
+
         .profile-hero-card {
             background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -331,7 +334,6 @@
             box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
         }
 
-        /* WITHDRAW GRADIENT CARD STYLE */
         .withdraw-card-gradient {
             background: linear-gradient(135deg, #7c3aed 0%, #3b82f6 50%, #06b6d4 100%);
             position: relative;
@@ -360,6 +362,23 @@
             border-color: #e11d48;
             color: #e11d48;
             background: #fff1f2;
+        }
+
+        /* TASK CARD SPECIFIC STYLING */
+        .task-card-item {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 22px;
+            transition: all 0.25s ease;
+        }
+        .task-card-item:hover {
+            border-color: #cbd5e1;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.04);
+        }
+        .task-card-item.completed {
+            background: #f8fafc;
+            border-color: #e2e8f0;
+            opacity: 0.85;
         }
     </style>
 </head>
@@ -557,9 +576,8 @@
         <!-- MAIN CONTENT AREA -->
         <main class="flex-grow pb-28">
 
-            <!-- 1. HOME PAGE (SEARCH BAR REMOVED) -->
+            <!-- 1. HOME PAGE -->
             <div id="home-page" class="p-4 space-y-3.5 sub-page active">
-                <!-- CATEGORY FILTER BUTTONS -->
                 <div class="grid grid-cols-3 gap-2" id="category-filter-grid"></div>
 
                 <div class="space-y-3 pt-1">
@@ -579,7 +597,7 @@
                 </div>
             </div>
 
-            <!-- 2. WORK PORTAL PAGE (REDESIGNED WITH STATS & ADMIN TOGGLE) -->
+            <!-- 2. WORK PORTAL PAGE (REDESIGNED WITH CLEAN, PROFESSIONAL CARDS & ACCURATE PRICE RANGES) -->
             <div id="work-page" class="p-4 space-y-4 sub-page">
                 
                 <!-- WORK HERO HEADER -->
@@ -587,21 +605,21 @@
                     <div class="relative z-10 space-y-2">
                         <div class="flex items-center justify-between">
                             <span id="work-user-status-badge" class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-black uppercase tracking-wider border border-emerald-400/30 inline-flex items-center gap-1.5">
-                                <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-400"></i> Active Member
+                                <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-400"></i> Verified Work Hub
                             </span>
                             <span id="work-admin-status-indicator" class="text-[10.5px] font-bold text-amber-300 bg-amber-400/10 px-2.5 py-0.5 rounded-lg border border-amber-400/20 flex items-center gap-1">
-                                <i data-lucide="sparkles" class="w-3.5 h-3.5 text-amber-400"></i> Daily Real Earning
+                                <i data-lucide="sparkles" class="w-3.5 h-3.5 text-amber-400"></i> 100% Real Payout
                             </span>
                         </div>
 
                         <div>
                             <h2 class="text-xl font-black tracking-tight text-white">Work Marketplace</h2>
-                            <p class="text-xs text-blue-200 mt-0.5">নিচের কাজগুলো সম্পন্ন করে প্রতিদিন নিশ্চিত আয় করুন</p>
+                            <p class="text-xs text-blue-200 mt-0.5">নিচের কাজগুলো সফলভাবে সম্পন্ন করে প্রতিটি একাউন্টে নিশ্চিত আয় করুন</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- WORK STATUS BAR (TOTAL TASK, TOTAL EARN, PENDING) -->
+                <!-- WORK STATUS BAR -->
                 <div class="grid grid-cols-3 gap-2 text-center">
                     <div class="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-sm">
                         <div class="flex items-center justify-center gap-1 text-slate-400">
@@ -645,8 +663,8 @@
                     </button>
                 </div>
 
-                <!-- DYNAMIC AVAILABLE JOBS LIST (LOADED FROM FIREBASE) -->
-                <div id="work-jobs-feed-list" class="space-y-3.5 min-h-[220px]"></div>
+                <!-- DYNAMIC AVAILABLE JOBS LIST -->
+                <div id="work-jobs-feed-list" class="space-y-4 min-h-[220px]"></div>
 
                 <div id="work-user-submissions-list" class="space-y-3 hidden min-h-[220px]"></div>
             </div>
@@ -754,7 +772,6 @@
                         </select>
                     </div>
 
-                    <!-- CUSTOM TIME INPUT FIELD -->
                     <div id="custom-time-wrap" class="hidden">
                         <label class="block text-xs font-bold text-slate-700 mb-1">আপনার সুবিধাজনক সময় লিখুন:</label>
                         <input id="master-app-custom-time" type="text" placeholder="যেমন: প্রতিদিন রাত ১১টার পর..." class="w-full p-2.5 rounded-xl input-field text-xs">
@@ -898,7 +915,7 @@
                 </div>
             </div>
 
-            <!-- 4. TASK & REWARDS PAGE (WITH VERIFIED JOIN, VISIT & VISIT_BOT TASKS) -->
+            <!-- 4. TASK & REWARDS PAGE (REDESIGNED WITH TG RE-VERIFY 5S TIMER, BOT SECRET KEY & COMPLETED AT BOTTOM) -->
             <div id="task-page" class="p-4 space-y-4 sub-page">
                 <div class="bg-gradient-to-br from-amber-500 via-orange-500 to-red-500 p-5 rounded-3xl text-white shadow-lg space-y-2 relative overflow-hidden">
                     <div class="absolute -right-4 -bottom-4 w-32 h-32 bg-white/10 rounded-full blur-xl pointer-events-none"></div>
@@ -925,8 +942,8 @@
                     </button>
                 </div>
 
-                <!-- DYNAMIC TASKS LIST (join, visit, visit_bot) -->
-                <div class="space-y-3" id="dynamic-tasks-container"></div>
+                <!-- DYNAMIC TASKS LIST (PENDING FIRST, COMPLETED AT BOTTOM) -->
+                <div class="space-y-3.5" id="dynamic-tasks-container"></div>
             </div>
 
             <!-- 5. ORDERS PAGE -->
@@ -1051,7 +1068,6 @@
                         </div>
                     </div>
 
-                    <!-- ACTION BUTTONS: DEPOSIT & WITHDRAW -->
                     <div class="grid grid-cols-2 gap-2.5 pt-2 border-t border-white/10">
                         <button onclick="navigateTo('pay-page')" class="py-2.5 px-3 bg-emerald-600 hover:bg-emerald-700 text-white font-black rounded-2xl text-xs flex items-center justify-center gap-1.5 shadow-md active:scale-95 transition">
                             <i data-lucide="wallet" class="w-4 h-4"></i>
@@ -1210,7 +1226,6 @@
                         <label class="block text-xs font-bold text-slate-600 mb-1">প্রাপকের Telegram ID</label>
                         <input id="send-recipient-id" oninput="handleRecipientLookup(this.value)" type="text" placeholder="Recipient's Telegram ID" class="w-full p-2.5 rounded-xl input-field text-sm font-mono">
                         
-                        <!-- RECIPIENT PREVIEW CARD -->
                         <div id="recipient-preview-card" class="hidden mt-2 p-2.5 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between text-xs">
                             <div class="flex items-center gap-2">
                                 <div class="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold" id="rec-preview-avatar">
@@ -1233,9 +1248,8 @@
                 </div>
             </div>
 
-            <!-- 11. WITHDRAWAL PAGE (STRICT INTEGER INPUT & FEE CALCULATION) -->
+            <!-- 11. WITHDRAWAL PAGE -->
             <div id="withdraw-page" class="space-y-4 sub-page bg-white min-h-screen">
-                
                 <div class="bg-[#1e2329] text-white px-4 py-3.5 flex items-center justify-between sticky top-0 z-30 shadow-md">
                     <button onclick="navigateTo('home-page')" class="p-1 text-slate-200 hover:text-white transition">
                         <i data-lucide="chevron-left" class="w-6 h-6"></i>
@@ -1251,7 +1265,6 @@
                     </div>
                 </div>
 
-                <!-- WITHDRAW LOCK ALERT IF INACTIVE -->
                 <div id="withdraw-locked-warning" class="hidden mx-4 p-3 bg-red-50 border border-red-200 rounded-2xl flex items-center justify-between text-xs text-red-800">
                     <div class="flex items-center gap-2">
                         <i data-lucide="lock" class="w-4 h-4 text-red-600 flex-shrink-0"></i>
@@ -1276,7 +1289,6 @@
 
                     <div id="bound-wallets-container" class="space-y-3"></div>
 
-                    <!-- PLUS BUTTON WILL HIDE AUTOMATICALLY WHEN 3 WALLETS ARE BOUND -->
                     <div id="bind-wallet-btn-wrap" class="flex justify-end pt-1">
                         <button id="btn-open-bind-wallet" onclick="openBindWalletModal()" class="w-12 h-12 rounded-full bg-red-600 hover:bg-red-700 text-white flex items-center justify-center shadow-lg active:scale-95 transition" title="ওয়ালেট যোগ করুন">
                             <i data-lucide="plus" class="w-7 h-7 stroke-[2.5]"></i>
@@ -1311,7 +1323,6 @@
                         <label class="block text-xs font-bold text-slate-800">উত্তোলন পরিমাণ (পূর্ণসংখ্যা):</label>
                         <div class="flex items-center border border-slate-300 rounded-xl px-4 py-3 bg-white focus-within:border-red-500 transition">
                             <span class="text-xs font-bold text-slate-700 w-20">পরিমাণ</span>
-                            <!-- strictly type number, step 1, preventing 0.1 and decimals -->
                             <input id="withdraw-amount-input" oninput="handleWithdrawAmountInput(this)" type="number" step="1" min="100" max="20000" placeholder="100 ~ 20,000" class="flex-grow text-xs font-semibold outline-none text-slate-800 font-mono">
                         </div>
                         <p class="text-[10px] text-slate-400 mt-1">* কোনো দশমিক গ্রহণ করা হবে না। মিনিমাম উত্তোলন ১০০ টাকা।</p>
@@ -1364,7 +1375,7 @@
 
     </div>
 
-    <!-- BIND E-WALLET MODAL (NAGAD, BKASH, ROCKET, BINANCE) -->
+    <!-- BIND E-WALLET MODAL -->
     <div id="bind-wallet-modal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center z-[88] p-4 backdrop-blur-sm">
         <div class="bg-white rounded-3xl p-5 w-full max-w-sm space-y-4 relative shadow-2xl">
             <div class="flex items-center justify-between border-b border-slate-100 pb-2.5">
@@ -1665,7 +1676,8 @@
 
     <!-- FIREBASE & CORE JAVASCRIPT LOGIC -->
     <script type="module">
-        const baseFirebaseConfig = {
+        // 1. PRIMARY APP (FOR USER PROFILE, BALANCE, TRANSFERS, ETC.)
+        const userFirebaseConfig = {
             apiKey: "AIzaSyBopnlRjMScCBaKaxvYsZesAvzxtEjSFRw",
             authDomain: "rkrj-abffe.firebaseapp.com",
             databaseURL: "https://rkrj-abffe-default-rtdb.firebaseio.com",
@@ -1675,16 +1687,43 @@
             appId: "1:677055084635:web:fe5010f2fc94e76d0e277e"
         };
 
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+        // 2. SHOP FIREBASE CONFIG (FOR PRODUCTS, STOCKS, PURCHASES, PRE-ORDERS)
+        const shopFirebaseConfig = {
+            apiKey: "AIzaSyBopnlRjMScCBaKaxvYsZesAvzxtEjSFRw",
+            authDomain: "rkrj-abffe.firebaseapp.com",
+            databaseURL: "https://rkrj-abffe-default-rtdb.firebaseio.com",
+            projectId: "rkrj-abffe",
+            storageBucket: "rkrj-abffe.firebasestorage.app",
+            messagingSenderId: "677055084635",
+            appId: "1:677055084635:web:fe5010f2fc94e76d0e277e"
+        };
+
+        // 3. WORK & TASK FIREBASE CONFIG (FOR WORK JOBS, SUBMISSIONS, MASTER APPLICATIONS, AND TASKS)
+        const workFirebaseConfig = {
+            apiKey: "AIzaSyBopnlRjMScCBaKaxvYsZesAvzxtEjSFRw",
+            authDomain: "rkrj-abffe.firebaseapp.com",
+            databaseURL: "https://rkrj-abffe-default-rtdb.firebaseio.com",
+            projectId: "rkrj-abffe",
+            storageBucket: "rkrj-abffe.firebasestorage.app",
+            messagingSenderId: "677055084635",
+            appId: "1:677055084635:web:fe5010f2fc94e76d0e277e"
+        };
+
+        import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
         import { 
             getFirestore, doc, setDoc, getDoc, collection, addDoc, serverTimestamp, 
             query, where, getDocs, orderBy, limit, runTransaction, getCountFromServer, 
             updateDoc, Timestamp, increment 
         } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
-        const primaryApp = initializeApp(baseFirebaseConfig);
-        const db = getFirestore(primaryApp);
-        const dbUser = db, dbHome = db, dbWork = db, dbMisc = db;
+        // Initializing Separate Firebase Instances
+        const appUser = !getApps().length ? initializeApp(userFirebaseConfig) : getApp();
+        const appShop = initializeApp(shopFirebaseConfig, "shopApp");
+        const appWork = initializeApp(workFirebaseConfig, "workApp");
+
+        const dbUser = getFirestore(appUser);
+        const dbShop = getFirestore(appShop);
+        const dbWork = getFirestore(appWork);
 
         let currentUserTg = null;
         let userData = null;
@@ -1700,14 +1739,14 @@
         let selectedVip0Type = 'Gmail';
         let masterApplicationStatus = null; 
 
-        // WITHDRAWAL STATE (MAX 3 CARDS, 10 TK FEE)
+        // WITHDRAWAL STATE
         let selectedBindMethod = 'Nagad';
         let selectedWithdrawCardId = null;
         let revealedWallets = new Set();
-        const WITHDRAW_FEE_BDT = 10; // Fixed integer fee
+        const WITHDRAW_FEE_BDT = 10;
 
         let recipientDebounceTimer = null;
-        let activeTaskTimers = {};
+        let verifyCooldowns = {};
 
         const defaultCategories = [
             { id: "all", name: "All Services", icon: "layout-grid" },
@@ -1925,7 +1964,7 @@
 
         async function fetchAppConfig() {
             try {
-                const configRef = doc(dbHome, "config", "main");
+                const configRef = doc(dbUser, "config", "main");
                 const configSnap = await getDoc(configRef);
                 appConfig = configSnap.exists() ? configSnap.data() : {};
 
@@ -1980,7 +2019,7 @@
         }
 
         // ========================================================
-        // WITHDRAWAL SYSTEM (INTEGER-ONLY, 10 TK FEE CALCULATION & UNIQUE WALLETS)
+        // WITHDRAWAL SYSTEM
         // ========================================================
         function loadWithdrawPageUI() {
             if (!userData) return;
@@ -1988,7 +2027,6 @@
             document.getElementById('withdraw-main-wallet-bal').textContent = `৳ ${bal}`;
             document.getElementById('withdraw-fee-text').textContent = `৳ ${WITHDRAW_FEE_BDT}.00`;
 
-            // Max withdrawable calculation: floor(balance - 10)
             const userBal = parseFloat(userData.balance || 0);
             const maxWithdrawable = Math.max(0, Math.floor(userBal - WITHDRAW_FEE_BDT));
             const maxEl = document.getElementById('withdraw-max-withdrawable-text');
@@ -2014,9 +2052,7 @@
             renderBoundWallets();
         }
 
-        // STRICT INPUT: NO FRACTIONS/DECIMALS (e.g. 0.1), ONLY WHOLE NUMBERS, CAPPED AT (BALANCE - 10)
         window.handleWithdrawAmountInput = function(inputEl) {
-            // Remove any non-numeric characters (blocks '.' and negative signs)
             inputEl.value = inputEl.value.replace(/[^0-9]/g, '');
 
             const userBal = parseFloat(userData?.balance || 0);
@@ -2164,7 +2200,6 @@
             }
         };
 
-        // UNIQUE WALLET BINDING LOGIC (PREVENTS REUSING ACROSS MULTIPLE USERS)
         window.saveNewBoundWallet = async function() {
             const name = document.getElementById('bind-wallet-name').value.trim();
             const number = document.getElementById('bind-wallet-number').value.trim();
@@ -2181,9 +2216,8 @@
             btn.textContent = "Checking...";
 
             try {
-                // Check if this wallet number is already used by another user in the global registry
                 const cleanNumberKey = `${selectedBindMethod}_${number.replace(/\s+/g, '')}`;
-                const globalWalletRef = doc(dbHome, "global_bound_wallets", cleanNumberKey);
+                const globalWalletRef = doc(dbUser, "global_bound_wallets", cleanNumberKey);
                 const globalSnap = await getDoc(globalWalletRef);
 
                 if (globalSnap.exists()) {
@@ -2247,7 +2281,6 @@
             const activeWallet = wallets.find(w => w.id === selectedWithdrawCardId) || wallets[0];
             const amountInput = document.getElementById('withdraw-amount-input');
             
-            // Strictly check for whole integer
             const rawVal = amountInput.value.trim();
             if (!rawVal || !/^\d+$/.test(rawVal)) {
                 return showToast("অনুগ্রহ করে পূর্ণসংখ্যা (যেমন: ১০০, ৫০০) ইনপুট দিন!", "error");
@@ -2281,7 +2314,7 @@
                         balance: currentBal - totalDebit
                     });
 
-                    const withdrawRef = doc(collection(dbHome, "withdrawals"));
+                    const withdrawRef = doc(collection(dbUser, "withdrawals"));
                     t.set(withdrawRef, {
                         userId: String(userData.tgChatId),
                         userName: userData.name || 'User',
@@ -2318,7 +2351,7 @@
             list.innerHTML = getLoadingHTML();
 
             try {
-                const q = query(collection(dbHome, "withdrawals"), where("userId", "in", [String(userData.tgChatId), Number(userData.tgChatId)]));
+                const q = query(collection(dbUser, "withdrawals"), where("userId", "in", [String(userData.tgChatId), Number(userData.tgChatId)]));
                 const snap = await getDocs(q);
 
                 if (snap.empty) {
@@ -2357,7 +2390,7 @@
         }
 
         // ==========================================
-        // WORK MARKETPLACE WITH STATS & ADMIN TOGGLE
+        // WORK MARKETPLACE (REDESIGNED WITH DETAILED EARNINGS)
         // ==========================================
         async function loadWorkPageStats() {
             if (!userData) return;
@@ -2392,7 +2425,6 @@
             if (!container) return;
             container.innerHTML = getLoadingHTML();
 
-            // Check if work system is disabled by admin in Firebase config
             const isWorkEnabled = appConfig?.workSystemEnabled !== false;
             if (!isWorkEnabled) {
                 if (alertBox) alertBox.classList.remove('hidden');
@@ -2418,20 +2450,34 @@
                         {
                             id: "job_vip0",
                             title: "অ্যাকাউন্ট সেল পোর্টাল (VIP 0)",
-                            category: "Account Sell",
+                            category: "Account Selling",
                             reward: "৳২০ - ৳৫০",
+                            priceRangeText: "প্রতি কাজে ৳২০ থেকে ৳৫০ পর্যন্ত নিশ্চিত আয়",
                             type: "vip0",
                             isActive: true,
-                            description: "ফ্রেশ অথবা রিকভারি মেইল যুক্ত অ্যাকাউন্ট সরাসরি বিক্রি করে ইনস্ট্যান্ট ইনকাম করুন।"
+                            badge: "ফ্রি মেম্বারদের জন্য",
+                            features: [
+                                "Gmail সেল: ৳২০ - ৳৫০",
+                                "Facebook আইডি: ৳২৫.০০",
+                                "Telegram সেশন: ৳৩০.০০"
+                            ],
+                            description: "ফ্রেশ অথবা রিকভারি মেইল যুক্ত অ্যাকাউন্ট সরাসরি আমাদের কাছে বিক্রি করে দ্রুত বিকাশ/নগদে টাকা নিন।"
                         },
                         {
                             id: "job_master",
                             title: "মাস্টার ওয়ার্ক (লাইভ ট্রেনিং)",
-                            category: "Live Work",
+                            category: "Premium Earning",
                             reward: "৳১২০ - ৳১৫০",
+                            priceRangeText: "প্রতি কাজে ৳১২০ থেকে ৳১৫০ পর্যন্ত নিশ্চিত আয়",
                             type: "master",
                             isActive: true,
-                            description: "মাত্র ৫০ টাকা দিয়ে লাইভ ট্রেনিং নিয়ে প্রতিদিন একাধিক অ্যাকাউন্ট তৈরি ও সেল করে বড় অংকের আয় করুন।"
+                            badge: "প্রফেশনাল আর্নিং",
+                            features: [
+                                "লাইভ প্র্যাকটিক্যাল ট্রেনিং সাপোর্ট",
+                                "প্রতি কাজে বিশাল প্রফিট মার্জিন",
+                                "আনলিমিটেড অ্যাকাউন্ট তৈরি ও সেল"
+                            ],
+                            description: "মাত্র ৫০ টাকা ফি দিয়ে লাইভ ট্রেনিং নিয়ে প্রতিদিন আনলিমিটেড অ্যাকাউন্ট তৈরি ও জমা দিয়ে বড় অংকের ইনকাম করুন।"
                         }
                     ];
                 }
@@ -2454,14 +2500,14 @@
                     } else if (isVip0) {
                         if (vip0Unlocked) {
                             actionButtonHTML = `
-                                <button onclick="handleVip0SellActionClick()" class="w-full py-3.5 rounded-2xl btn-buy font-extrabold text-xs flex items-center justify-center gap-2 shadow-md">
+                                <button onclick="handleVip0SellActionClick()" class="w-full py-3.5 rounded-2xl btn-buy font-black text-xs flex items-center justify-center gap-2 shadow-md">
                                     <i data-lucide="arrow-right-circle" class="w-4 h-4"></i>
-                                    <span>অ্যাকাউন্ট জমা দিন (Submit)</span>
+                                    <span>অ্যাকাউন্ট সেল শুরু করুন</span>
                                 </button>`;
                         } else {
                             actionButtonHTML = `
                                 <button id="btn-unlock-vip0" onclick="unlockVip0Free()" class="w-full py-3.5 rounded-2xl btn-vip0-unlock text-white font-black text-xs flex items-center justify-center gap-2 shadow-md">
-                                    <i data-lucide="check" class="w-4 h-4"></i>
+                                    <i data-lucide="unlock" class="w-4 h-4"></i>
                                     <span>ফ্রি আনলক করুন (Free Unlock)</span>
                                 </button>`;
                         }
@@ -2483,42 +2529,81 @@
                                 actionButtonHTML = `
                                     <button onclick="openMasterWorkApplicationPage()" class="w-full py-3.5 rounded-2xl btn-master-pay text-white font-black text-xs flex items-center justify-center gap-2 shadow-md">
                                         <i data-lucide="file-text" class="w-4 h-4"></i>
-                                        <span>Apply for Live Training</span>
+                                        <span>লাইভ ট্রেনিং আবেদন করুন (Apply)</span>
                                     </button>`;
                             }
                         } else {
                             actionButtonHTML = `
                                 <button onclick="handleDirectMasterWorkUnlock()" class="w-full py-3.5 rounded-2xl btn-master-pay text-white font-black text-xs flex items-center justify-center gap-2 shadow-md">
                                     <i data-lucide="zap" class="w-4 h-4 fill-current"></i>
-                                    <span>PAY 50৳ (Unlock Training)</span>
+                                    <span>ফি ৫০৳ দিয়ে আনলক করুন</span>
                                 </button>`;
                         }
                     } else {
                         actionButtonHTML = `
-                            <button onclick="handleCustomJobClick('${job.id}', '${job.title}')" class="w-full py-3.5 rounded-2xl btn-buy font-extrabold text-xs flex items-center justify-center gap-2 shadow-md">
+                            <button onclick="handleCustomJobClick('${job.id}', '${job.title}')" class="w-full py-3.5 rounded-2xl btn-buy font-black text-xs flex items-center justify-center gap-2 shadow-md">
                                 <i data-lucide="arrow-right" class="w-4 h-4"></i>
                                 <span>কাজ শুরু করুন (Start Work)</span>
                             </button>`;
                     }
 
+                    const cardThemeGradient = isMaster 
+                        ? 'from-amber-500/10 via-orange-500/5 to-transparent border-amber-200' 
+                        : 'from-blue-500/10 via-indigo-500/5 to-transparent border-blue-200';
+
+                    const iconBg = isMaster 
+                        ? 'bg-gradient-to-tr from-amber-500 to-orange-500 shadow-amber-500/30' 
+                        : 'bg-gradient-to-tr from-blue-600 to-indigo-600 shadow-blue-500/30';
+
+                    const featureItems = (job.features || []).map(f => `
+                        <div class="flex items-center gap-2 text-[11px] font-semibold text-slate-700">
+                            <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-500 flex-shrink-0"></i>
+                            <span>${f}</span>
+                        </div>
+                    `).join('');
+
                     return `
-                    <div class="work-card-pro p-5 bg-white space-y-4">
-                        <div class="flex items-start justify-between">
+                    <div class="work-card-pro bg-white p-5 space-y-4 border ${cardThemeGradient}">
+                        <div class="flex items-start justify-between gap-2">
                             <div class="flex items-center gap-3">
-                                <div class="w-12 h-12 rounded-2xl ${isMaster ? 'bg-gradient-to-br from-amber-500 to-orange-500 text-white shadow-md shadow-amber-500/20' : 'bg-gradient-to-br from-blue-600 to-indigo-600 text-white shadow-md shadow-blue-500/20'} flex items-center justify-center font-black">
-                                    <i data-lucide="${isMaster ? 'crown' : isVip0 ? 'mail-check' : 'briefcase'}" class="w-6 h-6"></i>
+                                <div class="w-13 h-13 rounded-2xl ${iconBg} text-white flex items-center justify-center font-black p-3 shadow-lg flex-shrink-0">
+                                    <i data-lucide="${isMaster ? 'crown' : isVip0 ? 'mail-check' : 'briefcase'}" class="w-7 h-7"></i>
                                 </div>
                                 <div>
-                                    <span class="text-[9.5px] font-black uppercase tracking-wider text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md">${job.category || 'Work'}</span>
-                                    <h3 class="font-black text-sm text-slate-900 mt-1">${job.title}</h3>
+                                    <span class="text-[10px] font-black uppercase tracking-wider text-slate-500 bg-white/80 px-2 py-0.5 rounded-md border border-slate-200 inline-block mb-1">
+                                        ${job.badge || job.category}
+                                    </span>
+                                    <h3 class="font-black text-base text-slate-900 leading-tight">${job.title}</h3>
                                 </div>
                             </div>
-                            <span class="text-xs font-black text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-full border border-emerald-200 font-mono shadow-sm">${job.reward}</span>
+                            <div class="text-right">
+                                <span class="inline-block text-xs font-black text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-300 font-mono shadow-sm">
+                                    ${job.reward}
+                                </span>
+                            </div>
                         </div>
 
-                        <p class="text-xs text-slate-600 leading-relaxed bg-slate-50 p-3 rounded-2xl border border-slate-100">${job.description || 'নিয়ম মেনে কাজটি সম্পন্ন করে ইনস্ট্যান্ট রিওয়ার্ড নিন।'}</p>
+                        <!-- RATE & EARNING HIGHLIGHT BOX -->
+                        <div class="bg-gradient-to-r ${isMaster ? 'from-amber-50 to-orange-50 border-amber-200' : 'from-blue-50 to-indigo-50 border-blue-200'} p-3 rounded-2xl border flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="sparkles" class="w-4 h-4 ${isMaster ? 'text-amber-600' : 'text-blue-600'} flex-shrink-0"></i>
+                                <span class="text-xs font-bold ${isMaster ? 'text-amber-900' : 'text-blue-900'}">
+                                    ${job.priceRangeText || 'প্রতিটি কাজে আকর্ষণীয় ক্যাশ রিওয়ার্ড'}
+                                </span>
+                            </div>
+                        </div>
 
-                        <div class="pt-0.5">
+                        <p class="text-xs text-slate-600 leading-relaxed font-medium">
+                            ${job.description || 'নিয়ম মেনে কাজটি সম্পন্ন করে ইনস্ট্যান্ট রিওয়ার্ড নিন।'}
+                        </p>
+
+                        ${featureItems ? `
+                            <div class="grid grid-cols-1 gap-1.5 py-1 bg-slate-50 p-3 rounded-2xl border border-slate-100">
+                                ${featureItems}
+                            </div>
+                        ` : ''}
+
+                        <div class="pt-1">
                             ${actionButtonHTML}
                         </div>
                     </div>`;
@@ -3108,7 +3193,7 @@
         }
 
         // ==========================================
-        // TASKS & REWARDS (join, visit, visit_bot) WITH VERIFICATION
+        // TASKS & REWARDS WITH VERIFIED JOIN & BOT SECRET KEY
         // ==========================================
         function renderDailyCheckinState() {
             const btn = document.getElementById('btn-daily-checkin');
@@ -3164,7 +3249,7 @@
             }
         };
 
-        // FETCH & RENDER DYNAMIC TASKS: 'join', 'visit', 'visit_bot'
+        // FETCH & RENDER DYNAMIC TASKS (COMPLETED TASKS MOVED TO BOTTOM)
         async function renderDynamicTasksList() {
             const container = document.getElementById('dynamic-tasks-container');
             if (!container) return;
@@ -3172,7 +3257,7 @@
 
             try {
                 let taskList = [];
-                const tasksQuery = query(collection(dbHome, "tasks"));
+                const tasksQuery = query(collection(dbWork, "tasks"));
                 const taskSnap = await getDocs(tasksQuery);
 
                 if (!taskSnap.empty) {
@@ -3181,7 +3266,6 @@
                     taskList = appConfig.tasks;
                 }
 
-                // Default tasks for 3 categories if none in db
                 if (taskList.length === 0) {
                     taskList = [
                         {
@@ -3194,27 +3278,34 @@
                             reward: 1.00
                         },
                         {
-                            id: "web_visit_sponsor",
-                            title: "স্পন্সর ওয়েবসাইট ভিজিট",
-                            subtitle: "১০ সেকেন্ড ওয়েবসাইট ভিজিট করে বোনাস ক্লেইম করুন",
-                            type: "visit",
-                            url: "https://google.com",
-                            timerSeconds: 10,
-                            reward: 0.50
-                        },
-                        {
                             id: "tg_bot_visit_partner",
                             title: "পার্টনার টেলিগ্রাম বট ভিজিট",
-                            subtitle: "বটটি স্টার্ট করে ১০ সেকেন্ড অপেক্ষা করুন",
+                            subtitle: "বটে গিয়ে স্টার্ট করুন এবং পাওয়া Secret Key দিন",
                             type: "visit_bot",
                             url: "https://t.me/Gmail_HUB7bot",
-                            timerSeconds: 10,
-                            reward: 0.80
+                            reward: 1.50,
+                            secretKeys: ["HUB99", "EARN24", "FREE10", "TG2026"]
+                        },
+                        {
+                            id: "web_visit_sponsor",
+                            title: "স্পন্সর ওয়েবসাইট ভিজিট",
+                            subtitle: "ওয়েবসাইটটি ভিজিট করে ৫ সেকেন্ড অপেক্ষা করুন",
+                            type: "visit",
+                            url: "https://google.com",
+                            timerSeconds: 5,
+                            reward: 0.50
                         }
                     ];
                 }
 
                 const completedList = userData?.completedTasks || [];
+
+                // SORTING: Uncompleted tasks at the top, completed tasks at the bottom
+                taskList.sort((a, b) => {
+                    const aDone = completedList.includes(a.id) ? 1 : 0;
+                    const bDone = completedList.includes(b.id) ? 1 : 0;
+                    return aDone - bDone;
+                });
 
                 container.innerHTML = taskList.map(task => {
                     const isCompleted = completedList.includes(task.id);
@@ -3235,31 +3326,33 @@
                     }
 
                     return `
-                        <div class="bg-white p-4.5 rounded-2xl border border-slate-200 shadow-sm space-y-3" id="task-card-${task.id}">
+                        <div class="task-card-item p-4 space-y-3.5 ${isCompleted ? 'completed' : ''}" id="task-card-${task.id}">
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-11 h-11 rounded-2xl ${badgeColor} flex items-center justify-center font-bold">
+                                    <div class="w-11 h-11 rounded-2xl ${badgeColor} flex items-center justify-center font-bold flex-shrink-0">
                                         <i data-lucide="${iconName}" class="w-5 h-5"></i>
                                     </div>
                                     <div>
-                                        <div class="flex items-center gap-1.5">
-                                            <span class="text-[9px] font-black uppercase px-2 py-0.5 rounded-md ${badgeColor}">${typeBadge}</span>
-                                        </div>
-                                        <h4 class="font-extrabold text-xs text-slate-800 mt-0.5">${task.title}</h4>
+                                        <span class="text-[9px] font-black uppercase px-2 py-0.5 rounded-md ${badgeColor}">${typeBadge}</span>
+                                        <h4 class="font-extrabold text-xs text-slate-800 mt-1">${task.title}</h4>
                                         <p class="text-[10.5px] text-slate-500">${task.subtitle || ''}</p>
                                     </div>
                                 </div>
-                                <span class="text-xs font-black text-emerald-600 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-full font-mono">+৳${parseFloat(task.reward || 0).toFixed(2)}</span>
+                                <div class="flex-shrink-0" id="task-reward-badge-${task.id}">
+                                    ${isCompleted ? `
+                                        <span class="px-2.5 py-1 bg-emerald-100 text-emerald-700 font-bold text-xs rounded-full flex items-center gap-1">
+                                            <i data-lucide="check" class="w-3.5 h-3.5"></i> Complete
+                                        </span>
+                                    ` : `
+                                        <span class="text-xs font-black text-emerald-600 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-full font-mono">+৳${parseFloat(task.reward || 0).toFixed(2)}</span>
+                                    `}
+                                </div>
                             </div>
                             
                             <div id="task-action-${task.id}">
                                 ${isCompleted ? `
-                                    <div class="w-full py-2.5 px-4 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-2xl font-bold text-xs flex items-center justify-between shadow-sm">
-                                        <div class="flex items-center gap-2">
-                                            <i data-lucide="check-circle" class="w-4 h-4 text-emerald-600"></i>
-                                            <span>টাস্ক সম্পন্ন হয়েছে</span>
-                                        </div>
-                                        <span class="text-[10px] bg-emerald-200/60 px-2 py-0.5 rounded-md font-mono">Completed</span>
+                                    <div class="w-full py-2.5 px-3 bg-slate-100 text-slate-500 rounded-xl font-bold text-xs text-center border border-slate-200">
+                                        এই টাস্কটি সম্পন্ন হয়েছে
                                     </div>
                                 ` : taskType === 'join' ? `
                                     <div class="grid grid-cols-2 gap-2">
@@ -3267,15 +3360,28 @@
                                             <i data-lucide="send" class="w-3.5 h-3.5"></i>
                                             <span>১. চ্যানেলে যান</span>
                                         </button>
-                                        <button onclick="verifyTelegramChannelJoin('${task.id}', '${task.chatId || ''}', ${task.reward || 0})" class="py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm">
-                                            <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i>
+                                        <button id="btn-verify-${task.id}" onclick="verifyTelegramChannelJoin('${task.id}', '${task.chatId || ''}', ${task.reward || 0})" class="py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm">
+                                            <i data-lucide="check-circle" class="w-3.5 h-3.5"></i>
                                             <span>২. ভেরিফাই করুন</span>
                                         </button>
                                     </div>
+                                ` : taskType === 'visit_bot' ? `
+                                    <div class="space-y-2">
+                                        <button onclick="openTelegramChannelUrl('${task.url}')" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm">
+                                            <i data-lucide="bot" class="w-4 h-4"></i>
+                                            <span>১. বটে গিয়ে Secret Key সংগ্রহ করুন</span>
+                                        </button>
+                                        <div class="flex gap-1.5">
+                                            <input id="secret-key-input-${task.id}" type="text" placeholder="বটের Secret Key লিখুন..." class="flex-grow p-2.5 text-xs rounded-xl input-field font-mono font-bold">
+                                            <button onclick="submitBotSecretKey('${task.id}', ${task.reward || 0})" class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold text-xs">
+                                                জমা দিন
+                                            </button>
+                                        </div>
+                                    </div>
                                 ` : `
-                                    <button onclick="startTimedTaskFlow('${task.id}', '${task.type}', '${task.url}', ${task.timerSeconds || 10}, ${task.reward || 0})" class="w-full py-3 ${taskType === 'visit_bot' ? 'bg-indigo-600 hover:bg-indigo-700' : 'bg-purple-600 hover:bg-purple-700'} text-white rounded-2xl font-bold text-xs flex items-center justify-center gap-2 shadow-md transition active:scale-98">
+                                    <button onclick="startTimedTaskFlow('${task.id}', '${task.type}', '${task.url}', ${task.timerSeconds || 5}, ${task.reward || 0})" class="w-full py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-2xl font-bold text-xs flex items-center justify-center gap-2 shadow-md transition active:scale-98">
                                         <i data-lucide="external-link" class="w-4 h-4"></i>
-                                        <span>${taskType === 'visit_bot' ? 'Start Bot & Wait' : 'Visit Website & Wait'}</span>
+                                        <span>ওয়েবসাইট ভিজিট করুন</span>
                                     </button>
                                 `}
                             </div>
@@ -3300,16 +3406,18 @@
             }
         };
 
-        // TELEGRAM CHANNEL MEMBERSHIP VERIFICATION (PREVENTS CLAIMING WITHOUT JOINING)
+        // TELEGRAM CHANNEL MEMBERSHIP VERIFICATION WITH 5-SECOND COOLDOWN RE-TRY
         window.verifyTelegramChannelJoin = async function(taskId, targetChatId, reward) {
             if (!ensureAccountActive("টাস্ক ভেরিফিকেশন")) return;
 
-            const actionContainer = document.getElementById(`task-action-${taskId}`);
-            const oldHtml = actionContainer.innerHTML;
-            actionContainer.innerHTML = `<div class="p-2.5 bg-slate-50 text-blue-600 font-bold text-xs text-center rounded-xl flex items-center justify-center gap-2 border border-slate-200"><span class="w-3.5 h-3.5 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></span> মেম্বারশিপ যাচাই করা হচ্ছে...</div>`;
+            const verifyBtn = document.getElementById(`btn-verify-${taskId}`);
+            if (!verifyBtn || verifyBtn.disabled) return;
+
+            verifyBtn.disabled = true;
+            const originalBtnHtml = verifyBtn.innerHTML;
+            verifyBtn.innerHTML = `<span class="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>`;
 
             try {
-                // If admin provides a bot token in appConfig, check live membership via getChatMember
                 let isMember = false;
                 const botToken = appConfig?.botToken;
 
@@ -3324,7 +3432,6 @@
                         isMember = false;
                     }
                 } else {
-                    // Fallback to backend verification endpoint if configured
                     try {
                         const res = await fetch(`/api/telegram?action=check_member&chat_id=${encodeURIComponent(targetChatId)}&user_id=${userData.tgChatId}`);
                         const data = await res.json();
@@ -3332,24 +3439,73 @@
                     } catch(err) {}
                 }
 
-                // If check fails / user not in channel
-                if (!isMember && botToken) {
-                    showToast("❌ আপনি এখনও চ্যানেলে জয়েন করেননি! অনুগ্রহ করে আগে জয়েন করে ভেরিফাই করুন।", "error");
-                    actionContainer.innerHTML = oldHtml;
-                    lucide.createIcons();
+                if (!isMember) {
+                    showToast("❌ আপনি এখনও চ্যানেলে জয়েন করেননি! ৫ সেকেন্ড পর আবার চেষ্টা করুন।", "error");
+                    
+                    let timeLeft = 5;
+                    verifyBtn.className = "py-2.5 bg-slate-200 text-slate-500 rounded-xl font-bold text-xs flex items-center justify-center gap-1 cursor-not-allowed";
+                    verifyBtn.innerHTML = `অপেক্ষা (${timeLeft}s)`;
+
+                    const countdown = setInterval(() => {
+                        timeLeft--;
+                        if (timeLeft > 0) {
+                            verifyBtn.innerHTML = `অপেক্ষা (${timeLeft}s)`;
+                        } else {
+                            clearInterval(countdown);
+                            verifyBtn.disabled = false;
+                            verifyBtn.className = "py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm";
+                            verifyBtn.innerHTML = originalBtnHtml;
+                            lucide.createIcons();
+                        }
+                    }, 1000);
+
                     return;
                 }
 
-                // If verified or fallback allowed
+                // If verified, award balance
                 await claimDynamicTaskReward(taskId, reward);
             } catch(e) {
                 showToast("ভেরিফিকেশন সম্পন্ন করা যায়নি", "error");
-                actionContainer.innerHTML = oldHtml;
+                verifyBtn.disabled = false;
+                verifyBtn.innerHTML = originalBtnHtml;
                 lucide.createIcons();
             }
         };
 
-        // TIMER TASK FOR VISIT & VISIT_BOT
+        // SUBMIT SECRET KEY FOR VISIT BOT TASK
+        window.submitBotSecretKey = async function(taskId, reward) {
+            if (!ensureAccountActive("বট টাস্ক")) return;
+
+            const input = document.getElementById(`secret-key-input-${taskId}`);
+            const userKey = input ? input.value.trim() : "";
+
+            if (!userKey) {
+                return showToast("বট থেকে প্রাপ্ত Secret Key লিখুন!", "error");
+            }
+
+            try {
+                // Fetch valid keys from DB
+                let validKeys = [];
+                const taskDoc = await getDoc(doc(dbWork, "tasks", taskId));
+                if (taskDoc.exists() && taskDoc.data().secretKeys) {
+                    validKeys = taskDoc.data().secretKeys;
+                } else {
+                    validKeys = ["HUB99", "EARN24", "FREE10", "TG2026"];
+                }
+
+                const isMatch = validKeys.some(k => k.toLowerCase() === userKey.toLowerCase());
+
+                if (!isMatch) {
+                    return showToast("❌ ভুল Secret Key! বট থেকে সঠিক কী নিয়ে আসুন।", "error");
+                }
+
+                await claimDynamicTaskReward(taskId, reward);
+            } catch(e) {
+                showToast("টাস্ক ভেরিফাই করতে সমস্যা হয়েছে", "error");
+            }
+        };
+
+        // TIMER TASK FOR VISIT
         window.startTimedTaskFlow = function(taskId, type, targetUrl, duration, reward) {
             if (!ensureAccountActive("টাস্ক")) return;
 
@@ -3374,15 +3530,13 @@
                 </button>
             `;
 
-            if (activeTaskTimers[taskId]) clearInterval(activeTaskTimers[taskId]);
-
-            activeTaskTimers[taskId] = setInterval(() => {
+            const timer = setInterval(() => {
                 remainingTime--;
                 const timerEl = document.getElementById(`task-timer-${taskId}`);
                 if (timerEl) timerEl.textContent = `অপেক্ষা করুন (${remainingTime}s)...`;
 
                 if (remainingTime <= 0) {
-                    clearInterval(activeTaskTimers[taskId]);
+                    clearInterval(timer);
                     actionContainer.innerHTML = `
                         <button onclick="claimDynamicTaskReward('${taskId}', ${reward})" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl font-bold text-xs flex items-center justify-center gap-2 shadow-md transition active:scale-98">
                             <i data-lucide="gift" class="w-4 h-4"></i>
@@ -3422,8 +3576,8 @@
                 userData.completedTasks.push(taskId);
 
                 updateUI();
-                renderDynamicTasksList();
                 showToast(`🎉 অভিনন্দন! টাস্ক রিওয়ার্ড ৳${parseFloat(rewardAmount).toFixed(2)} যুক্ত হয়েছে!`, "success");
+                renderDynamicTasksList();
             } catch(e) {
                 showToast(e.message || "রিওয়ার্ড ক্লেইম ব্যর্থ হয়েছে", "error");
                 renderDynamicTasksList();
@@ -3615,7 +3769,7 @@
         async function savePaymentAndUpdateBalance(depositAmount, txid, fullData) {
             if (!userData) return;
             const tgChatId = String(userData.tgChatId);
-            const depositRef = doc(dbHome, "deposits", txid);
+            const depositRef = doc(dbUser, "deposits", txid);
             const userRef = doc(dbUser, "users", tgChatId);
 
             try {
@@ -3670,7 +3824,7 @@
             }
 
             try {
-                const notifRef = collection(dbMisc, "users", tgChatId, "notifications");
+                const notifRef = collection(dbUser, "users", tgChatId, "notifications");
                 const q = query(notifRef, orderBy("time", "desc"), limit(20));
                 const snap = await getDocs(q);
                 snap.forEach(docSnap => {
@@ -3847,7 +4001,7 @@
         async function getStockCount(collectionName) {
             if(!collectionName) return 0;
             try {
-                const q = query(collection(dbHome, collectionName), where("isSold", "==", false));
+                const q = query(collection(dbShop, collectionName), where("isSold", "==", false));
                 const snapshot = await getCountFromServer(q);
                 return snapshot.data().count;
             } catch (e) { return 0; }
@@ -3903,8 +4057,7 @@
                 const originalPrice = (parseFloat(item.priceBdt || 0) * 1.15).toFixed(2);
                 const currentPrice = parseFloat(item.priceBdt || 0).toFixed(2);
                 const detailsId = `card-details-${idx}`;
-                
-const hasApi = !!(item.apiUrl && item.apiUrl.trim() !== '');
+                const hasApi = !!(item.apiUrl && item.apiUrl.trim() !== '');
                 const isStockHidden = !!item.hideStock;
                 const isManualAllowed = item.allowManual === true;
 
@@ -4054,7 +4207,7 @@ const hasApi = !!(item.apiUrl && item.apiUrl.trim() !== '');
             btn.innerHTML = `<span class="animate-spin inline-block w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full mr-1"></span> Processing...`;
 
             try {
-                const itemQuery = query(collection(dbHome, product.stockKey), where("isSold", "==", false), limit(qty));
+                const itemQuery = query(collection(dbShop, product.stockKey), where("isSold", "==", false), limit(qty));
                 const itemQuerySnapshot = await getDocs(itemQuery);
 
                 if (itemQuerySnapshot.docs.length < qty) {
@@ -4065,51 +4218,45 @@ const hasApi = !!(item.apiUrl && item.apiUrl.trim() !== '');
 
                 await runTransaction(dbUser, async (transaction) => {
                     const buyerRef = doc(dbUser, "users", String(userData.tgChatId));
-                    const counterRef = doc(dbHome, "counters", "item_purchase");
                     const buyerSnap = await transaction.get(buyerRef);
                     
                     if (!buyerSnap.exists() || buyerSnap.data().balance < totalCost) {
                         throw new Error("আপনার পর্যাপ্ত ব্যালেন্স নেই। ডিপোজিট করুন।");
                     }
 
-                    const counterSnap = await transaction.get(counterRef);
-                    let saleId = counterSnap.exists() ? counterSnap.data().currentId : 1000;
-
                     transaction.update(buyerRef, { balance: buyerSnap.data().balance - totalCost });
+                });
 
-                    itemQuerySnapshot.docs.forEach((itemDoc) => {
-                        const itemData = itemDoc.data();
-                        transaction.update(itemDoc.ref, { 
-                            isSold: true, 
-                            soldTo: String(userData.tgChatId), 
-                            soldAt: serverTimestamp() 
-                        });
-
-                        const purchaseLogRef = doc(collection(dbHome, "purchases"));
-                        transaction.set(purchaseLogRef, {
-                            saleId: saleId,
-                            userId: String(userData.tgChatId),
-                            mailType: product.type,
-                            category: product.category || 'service',
-                            cost: parseFloat(unitPrice),
-                            purchasedAt: serverTimestamp(),
-                            mail: itemData.email || itemData.ip || itemData.data || 'N/A',
-                            password: itemData.password || null
-                        });
-
-                        purchasedItems.push({
-                            saleId: saleId,
-                            mail: itemData.email || itemData.ip || itemData.data || 'N/A',
-                            password: itemData.password || null,
-                            mailType: product.type,
-                            cost: parseFloat(unitPrice)
-                        });
-
-                        saleId++;
+                let saleId = Date.now();
+                for (const itemDoc of itemQuerySnapshot.docs) {
+                    const itemData = itemDoc.data();
+                    await updateDoc(itemDoc.ref, { 
+                        isSold: true, 
+                        soldTo: String(userData.tgChatId), 
+                        soldAt: serverTimestamp() 
                     });
 
-                    transaction.set(counterRef, { currentId: saleId }, { merge: true });
-                });
+                    await addDoc(collection(dbShop, "purchases"), {
+                        saleId: saleId,
+                        userId: String(userData.tgChatId),
+                        mailType: product.type,
+                        category: product.category || 'service',
+                        cost: parseFloat(unitPrice),
+                        purchasedAt: serverTimestamp(),
+                        mail: itemData.email || itemData.ip || itemData.data || 'N/A',
+                        password: itemData.password || null
+                    });
+
+                    purchasedItems.push({
+                        saleId: saleId,
+                        mail: itemData.email || itemData.ip || itemData.data || 'N/A',
+                        password: itemData.password || null,
+                        mailType: product.type,
+                        cost: parseFloat(unitPrice)
+                    });
+
+                    saleId++;
+                }
 
                 document.getElementById('buy-now-modal').classList.add('hidden');
                 lastPurchasedItemsBatch = purchasedItems;
@@ -4198,23 +4345,21 @@ const hasApi = !!(item.apiUrl && item.apiUrl.trim() !== '');
                     }
 
                     transaction.update(buyerRef, { balance: buyerSnap.data().balance - totalPrice });
+                });
 
-                    const expiryDate = new Date(Date.now() + timeoutMinutes * 60 * 1000);
-                    const manualOrderRef = doc(collection(dbHome, "manual_orders"));
-                    
-                    transaction.set(manualOrderRef, {
-                        userId: String(userData.tgChatId),
-                        userName: userData.name || 'User',
-                        mailType: product.type,
-                        category: product.category || 'service',
-                        unitPrice: unitPrice,
-                        quantity: qty,
-                        cost: totalPrice,
-                        status: "pending",
-                        createdAt: serverTimestamp(),
-                        expiresAt: Timestamp.fromDate(expiryDate),
-                        durationMinutes: timeoutMinutes
-                    });
+                const expiryDate = new Date(Date.now() + timeoutMinutes * 60 * 1000);
+                await addDoc(collection(dbShop, "manual_orders"), {
+                    userId: String(userData.tgChatId),
+                    userName: userData.name || 'User',
+                    mailType: product.type,
+                    category: product.category || 'service',
+                    unitPrice: unitPrice,
+                    quantity: qty,
+                    cost: totalPrice,
+                    status: "pending",
+                    createdAt: serverTimestamp(),
+                    expiresAt: Timestamp.fromDate(expiryDate),
+                    durationMinutes: timeoutMinutes
                 });
 
                 document.getElementById('manual-order-modal').classList.add('hidden');
@@ -4435,18 +4580,15 @@ const hasApi = !!(item.apiUrl && item.apiUrl.trim() !== '');
         async function checkAndRefundExpiredOrders() {
             try {
                 const now = new Date();
-                const q = query(collection(dbHome, "manual_orders"), where("status", "==", "pending"));
+                const q = query(collection(dbShop, "manual_orders"), where("status", "==", "pending"));
                 const snap = await getDocs(q);
 
                 snap.docs.forEach(async (docSnap) => {
                     const po = docSnap.data();
                     if (po.expiresAt && po.expiresAt.toDate() <= now) {
-                        await runTransaction(dbUser, async (t) => {
-                            const moRef = doc(dbHome, "manual_orders", docSnap.id);
-                            const userRef = doc(dbUser, "users", String(po.userId));
-                            t.update(moRef, { status: "expired_auto_refunded", refundedAt: serverTimestamp() });
-                            t.update(userRef, { balance: increment(parseFloat(po.cost)) });
-                        });
+                        await updateDoc(docSnap.ref, { status: "expired_auto_refunded", refundedAt: serverTimestamp() });
+                        const userRef = doc(dbUser, "users", String(po.userId));
+                        await updateDoc(userRef, { balance: increment(parseFloat(po.cost)) });
                     }
                 });
             } catch(e) {}
@@ -4456,7 +4598,7 @@ const hasApi = !!(item.apiUrl && item.apiUrl.trim() !== '');
             const listEl = document.getElementById('orders-purchase-history');
             listEl.innerHTML = getLoadingHTML();
             try {
-                const q = query(collection(dbHome, "purchases"), where("userId", "in", [String(userData.tgChatId), Number(userData.tgChatId)]));
+                const q = query(collection(dbShop, "purchases"), where("userId", "in", [String(userData.tgChatId), Number(userData.tgChatId)]));
                 const snap = await getDocs(q);
 
                 if (snap.empty) {
@@ -4491,183 +4633,4 @@ const hasApi = !!(item.apiUrl && item.apiUrl.trim() !== '');
                                 <button onclick="copyToClipboard('${p.password}', this)" class="text-blue-600 hover:text-blue-800 p-1"><i data-lucide="copy" class="w-3.5 h-3.5"></i></button>
                             </div>` : ''}
                         </div>
-                        <div class="flex gap-2 pt-1 text-xs">
-                            <button onclick="copyToClipboard('${fullCopy}', this)" class="btn-buy py-2 px-3 rounded-xl font-bold flex-1 text-center">Copy Full</button>
-                            <button onclick="openReplaceModal('${p.saleId || p.id}', '${p.mailType}', ${p.cost || 0})" class="bg-purple-50 text-purple-700 border border-purple-200 hover:bg-purple-100 py-2 px-3 rounded-xl font-bold flex items-center justify-center gap-1">
-                                <i data-lucide="shield-alert" class="w-3.5 h-3.5"></i> Report
-                            </button>
-                        </div>
-                    </div>`;
-                }).join('');
-                lucide.createIcons();
-            } catch (e) {
-                listEl.innerHTML = `<p class="text-center text-red-500 text-xs">${e.message}</p>`;
-            }
-        }
 
-        async function loadManualOrdersHistory() {
-            const list = document.getElementById('manual-orders-history-list');
-            if(!list) return;
-            list.innerHTML = getLoadingHTML();
-            try {
-                const q = query(collection(dbHome, "manual_orders"), where("userId", "in", [String(userData.tgChatId), Number(userData.tgChatId)]));
-                const snap = await getDocs(q);
-                if (snap.empty) return list.innerHTML = '<p class="text-center text-xs text-slate-400 py-2">কোনো ম্যানুয়াল অর্ডার হিস্ট্রি নেই</p>';
-
-                const docs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-                docs.sort((a,b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
-
-                list.innerHTML = docs.map(p => {
-                    const expiryMillis = p.expiresAt ? p.expiresAt.toDate().getTime() : 0;
-                    const isPending = p.status === 'pending';
-
-                    return `
-                    <div class="bg-white p-3.5 rounded-xl border border-slate-200 flex justify-between items-center text-xs shadow-sm">
-                        <div>
-                            <p class="font-bold text-slate-800">${p.mailType} ${p.quantity ? `(${p.quantity} টি)` : ''} - ৳${p.cost}</p>
-                            ${isPending ? `
-                                <div class="flex items-center gap-1 mt-0.5 text-[11px] text-slate-500">
-                                    <span>Time Remaining:</span>
-                                    <span class="live-order-countdown" data-order-id="${p.id}" data-expiry-time="${expiryMillis}">Calculating...</span>
-                                </div>
-                            ` : `
-                                <p class="text-[10px] text-slate-400">মেয়াদ: ${p.durationMinutes || 30} মিনিট</p>
-                            `}
-                        </div>
-                        <span class="font-bold uppercase text-[10px] px-2 py-1 rounded ${
-                            p.status === 'approved' ? 'bg-emerald-100 text-emerald-700' :
-                            p.status === 'pending' ? 'bg-orange-100 text-orange-800' : 'bg-red-100 text-red-600'
-                        }">${p.status.replace(/_/g, ' ')}</span>
-                    </div>`;
-                }).join('');
-                lucide.createIcons();
-            } catch(e) {}
-        }
-
-        async function loadReplaceHistory() {
-            const list = document.getElementById('replace-history-list');
-            if(!list) return;
-            list.innerHTML = getLoadingHTML();
-            try {
-                const q = query(collection(dbMisc, "replace_requests"), where("userId", "in", [String(userData.tgChatId), Number(userData.tgChatId)]));
-                const snap = await getDocs(q);
-                if (snap.empty) return list.innerHTML = '<p class="text-center text-xs text-slate-400">কোনো রেকর্ড নেই</p>';
-                const docs = snap.docs.map(d => d.data());
-                docs.sort((a,b) => (b.requestedAt?.seconds || 0) - (a.requestedAt?.seconds || 0));
-
-                list.innerHTML = docs.map(r => `
-                    <div class="bg-white p-3 rounded-xl border border-slate-200 flex justify-between items-center text-xs">
-                        <div>
-                            <p class="font-bold text-slate-800">${r.mailType}</p>
-                            <p class="text-slate-500 text-[10px]">${r.reason}</p>
-                        </div>
-                        <span class="font-bold uppercase ${r.status==='approved'?'text-green-600':r.status==='rejected'?'text-red-500':'text-yellow-600'}">${r.status}</span>
-                    </div>`).join('');
-            } catch(e) {}
-        }
-
-        async function loadFeaturesPage() {
-            try {
-                const receivedQuery = query(collection(dbUser, "transfers"), where("toId", "==", String(userData.tgChatId)));
-                const sentQuery = query(collection(dbUser, "transfers"), where("fromId", "==", String(userData.tgChatId)));
-                const [recSnap, sentSnap] = await Promise.all([getDocs(receivedQuery), getDocs(sentQuery)]);
-                
-                const recTotal = recSnap.docs.reduce((sum, d) => sum + (d.data().amount || 0), 0);
-                const sentTotal = sentSnap.docs.reduce((sum, d) => sum + (d.data().amount || 0), 0);
-
-                document.getElementById('total-receive-display').textContent = `৳${recTotal.toFixed(2)}`;
-                document.getElementById('total-send-display').textContent = `৳${sentTotal.toFixed(2)}`;
-            } catch(e) {}
-        }
-
-        async function loadProfilePage() {
-            if (!userData) return;
-            document.getElementById('profile-name').textContent = userData.name || 'User';
-            document.getElementById('profile-username').textContent = userData.username ? `@${userData.username}` : '';
-            document.getElementById('profile-id').textContent = `ID: ${userData.tgChatId}`;
-            
-            const photoUrl = currentUserTg?.photo_url || userData.photo_url;
-            if (photoUrl) {
-                const pImg = document.getElementById('profile-avatar-img');
-                pImg.src = photoUrl;
-                pImg.classList.remove('hidden');
-                document.getElementById('profile-initials').classList.add('hidden');
-            } else {
-                document.getElementById('profile-initials').textContent = (userData.name || 'U').charAt(0).toUpperCase();
-            }
-
-            updateUI();
-
-            try {
-                const orderQuery = query(collection(dbHome, "purchases"), where("userId", "in", [String(userData.tgChatId), Number(userData.tgChatId)]));
-                const orderSnap = await getCountFromServer(orderQuery);
-                document.getElementById('profile-stat-orders').textContent = String(orderSnap.data().count || 0);
-
-                const refQuery = query(collection(dbUser, "users"), where("referredBy", "==", String(userData.tgChatId)), where("isAccountActive", "==", true));
-                const refSnap = await getCountFromServer(refQuery);
-                document.getElementById('profile-stat-active-ref').textContent = String(refSnap.data().count || 0);
-            } catch(e) {}
-        }
-
-        window.openReplaceModal = function(saleId, mailType, cost) {
-            document.getElementById('replace-order-id').value = saleId;
-            document.getElementById('replace-mail-type').value = mailType;
-            document.getElementById('replace-mail-cost').value = cost;
-            document.getElementById('replace-reason-text').value = '';
-            document.getElementById('replace-modal').classList.remove('hidden');
-        };
-
-        async function handleSubmitReplace() {
-            const saleId = document.getElementById('replace-order-id').value;
-            const mailType = document.getElementById('replace-mail-type').value;
-            const cost = parseFloat(document.getElementById('replace-mail-cost').value || 0);
-            const reason = document.getElementById('replace-reason-text').value.trim();
-
-            if (!reason) return showToast("সমস্যার কারণ লিখুন", "error");
-
-            const btn = document.getElementById('submit-replace-btn');
-            btn.disabled = true;
-            btn.textContent = "Submitting...";
-
-            try {
-                await addDoc(collection(dbMisc, "replace_requests"), {
-                    userId: String(userData.tgChatId),
-                    userName: userData.name || 'User',
-                    saleId: saleId,
-                    mailType: mailType,
-                    cost: cost,
-                    reason: reason,
-                    status: "pending",
-                    requestedAt: serverTimestamp()
-                });
-
-                document.getElementById('replace-modal').classList.add('hidden');
-                showToast("রিপ্লেসমেন্ট অনুরোধ পাঠানো হয়েছে", "success");
-                navigateTo('history-page');
-            } catch(e) {
-                showToast("অনুরোধ পাঠাতে ব্যর্থ হয়েছে।", "error");
-            } finally {
-                btn.disabled = false;
-                btn.textContent = "সাবমিট করুন";
-            }
-        }
-
-        window.copyToClipboard = (text, btn, msg) => {
-            if(!text) return;
-            navigator.clipboard.writeText(text).then(() => {
-                if (btn) {
-                    const old = btn.innerHTML;
-                    btn.innerHTML = `<i data-lucide="check" class="w-3.5 h-3.5 text-green-600"></i>`;
-                    lucide.createIcons();
-                    setTimeout(() => { btn.innerHTML = old; lucide.createIcons(); }, 1400);
-                } else if(msg) showToast(msg, "success");
-            });
-        };
-
-        function setupEventListeners() {
-            document.getElementById('submit-replace-btn')?.addEventListener('click', handleSubmitReplace);
-            document.getElementById('submit-send-btn')?.addEventListener('click', handleSendBalance);
-        }
-    </script>
-</body>
-</html>
