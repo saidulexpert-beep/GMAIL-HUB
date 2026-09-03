@@ -2419,13 +2419,13 @@
             if (lastCheckMillis >= cycleStart) {
                 btn.disabled = true;
                 btn.className = "px-3.5 py-2 bg-slate-200 text-slate-500 rounded-xl font-extrabold text-xs cursor-not-allowed flex items-center gap-1 border border-slate-300";
-                btn.innerHTML = `<i data-lucide="check" class="w-3.5 h-3.5"></i> <span>Next Day (রাত ০১:০০ টায়)</span>`;
-                if (subTitle) subTitle.textContent = "আজকের বোনাস ক্লেইম করা হয়েছে";
+                btn.innerHTML = `<i data-lucide="check" class="w-3.5 h-3.5"></i> <span>Next Day</span>`;
+                if (subTitle) subTitle.textContent = "";
             } else {
                 btn.disabled = false;
                 btn.className = "px-3.5 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-xl font-extrabold text-xs shadow-sm transition active:scale-95 flex items-center gap-1";
                 btn.innerHTML = `<span>+৳০.২০ Claim</span>`;
-                if (subTitle) subTitle.textContent = "প্রতিদিন রাত ০১:০০ টায় রিসেট হবে";
+                if (subTitle) subTitle.textContent = "";
             }
             lucide.createIcons();
         }
