@@ -1710,7 +1710,9 @@
         } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
         const primaryApp = initializeApp(baseFirebaseConfig);
-const db = getFirestore(primaryApp);
+        const db = getFirestore(primaryApp);
+        const dbUser = db, dbHome = db, dbWork = db, dbMisc = db;
+
         let currentUserTg = null;
         let userData = null;
         let appConfig = {};
@@ -1817,10 +1819,10 @@ const db = getFirestore(primaryApp);
                 if (appCont) appCont.classList.add('active');
 
                 try {
-                    if (window.Telegram?.WebApp) {
+                    if (window.Telegram?.WebApp && window.Telegram.WebApp.initDataUnsafe?.user) {
                         window.Telegram.WebApp.ready();
                         window.Telegram.WebApp.expand();
-                        currentUserTg = window.Telegram.WebApp.initDataUnsafe?.user || { id: "6954647230", first_name: "User", username: "account" };
+                        currentUserTg = window.Telegram.WebApp.initDataUnsafe.user;
                     } else {
                         currentUserTg = { id: "6954647230", first_name: "User", username: "account" };
                     }
@@ -3255,9 +3257,10 @@ const db = getFirestore(primaryApp);
                 document.getElementById('displayAmount').textContent = "50.00 BDT";
                 document.getElementById('gateway-success-status-msg').textContent = "মাস্টার ওয়ার্ক সফলভাবে আনলক হয়েছে!";
                 document.getElementById('gateway-success-modal').classList.remove('hidden');
-               } catch(e) {
+            } catch(e) {
                 console.error("Master upgrade error:", e);
             }
+        }
 
         async function savePaymentAndUpdateBalance(depositAmount, txid, fullData) {
             if (!userData) return;
