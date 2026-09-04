@@ -4183,3 +4183,1911 @@
             }
         };
 
+// ========================================================
+        // BALANCE HISTORY (LEDGER)
+        // ========================================================
+        async function loadBalanceHistory() {
+            const listEl = document.getElementById('balance-history-list');
+            const balEl = document.getElementById('ledger-current-balance');
+            if (!listEl || !userData) return;
+
+            if (balEl) balEl.textContent = `৳${(userData.balance || 0).toFixed(2)}`;
+            listEl.innerHTML = getLoadingHTML();
+
+            try {
+                const tgChatId = String(userData.tgChatId);
+                const ledgerCol = collection(dbUser, "users", tgChatId, "ledger");
+                const q = query(ledgerCol, orderBy("timestamp", "desc"), limit(50));
+                const snap = await getDocs(q);
+
+                if (snap.empty) {
+                    userLedgerCache = [];
+                    listEl.innerHTML = `<div class="bg-white p-8 rounded-2xl text-center text-slate-400 font-bold border border-slate-200">এখনো কোনো লেনদেনের হিস্ট্রি নেই।</div>`;
+                    return;
+                }
+
+                userLedgerCache = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                renderCleanLedgerList();
+            } catch(e) {
+                listEl.innerHTML = `<div class="p-6 text-center text-xs text-red-500 font-bold">ব্যালেন্স হিস্ট্রি লোড করা যায়নি: ${e.message}</div>`;
+            }
+        }
+
+        function renderCleanLedgerList() {
+            const listEl = document.getElementById('balance-history-list');
+            if (!listEl) return;
+
+            if (userLedgerCache.length === 0) {
+                listEl.innerHTML = `<div class="bg-white p-6 rounded-2xl text-center text-xs text-slate-400 font-bold border border-slate-200">কোনো রেকর্ড পাওয়া যায়নি।</div>`;
+                return;
+            }
+
+            listEl.innerHTML = userLedgerCache.map(item => {
+                const isInc = Boolean(item.isIncome);
+                const sign = isInc ? '+' : '-';
+                const colorText = isInc ? 'text-emerald-600' : 'text-rose-600';
+                const bgIcon = isInc ? 'bg-emerald-100 text-emerald-600' : 'bg-rose-100 text-rose-600';
+                const dateStr = item.timestamp?.toDate ? item.timestamp.toDate().toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' }) : 'Just now';
+
+                let iconName = isInc ? 'arrow-down-left' : 'arrow-up-right';
+                if (item.title?.includes('উত্তোলন')) iconName = 'arrow-down-to-line';
+                else if (item.title?.includes('ডিপোজিট')) iconName = 'wallet';
+                else if (item.title?.includes('রিডিম')) iconName = 'gift';
+                else if (item.title?.includes('অ্যাক্টিভেশন')) iconName = 'zap';
+                else if (item.title?.includes('মাস্টার')) iconName = 'award';
+
+                return `
+                    <div class="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between text-xs">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl flex items-center justify-center font-black ${bgIcon} flex-shrink-0">
+                                <i data-lucide="${iconName}" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-slate-800 text-sm leading-tight">${item.title || 'লেনদেন'}</h4>
+                                <p class="text-[10px] text-slate-400 mt-0.5 font-medium">${dateStr}</p>
+                            </div>
+                        </div>
+                        <div class="text-right flex-shrink-0">
+                            <span class="font-black text-sm font-mono ${colorText}">
+                                ${sign}৳${parseFloat(item.amount || 0).toFixed(2)}
+                            </span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            lucide.createIcons();
+        }
+
+        // ========================================================
+        // WITHDRAWAL SYSTEM
+        // ========================================================
+        function loadWithdrawPageUI() {
+            if (!userData) return;
+            const bal = (userData.balance || 0).toFixed(2);
+            document.getElementById('withdraw-main-wallet-bal').textContent = `৳ ${bal}`;
+            document.getElementById('withdraw-fee-text').textContent = `৳ ${WITHDRAW_FEE_BDT}.00`;
+
+            const userBal = parseFloat(userData.balance || 0);
+            const maxWithdrawable = Math.max(0, Math.floor(userBal - WITHDRAW_FEE_BDT));
+            const maxEl = document.getElementById('withdraw-max-withdrawable-text');
+            if (maxEl) maxEl.textContent = `৳ ${maxWithdrawable}`;
+
+            const warnBox = document.getElementById('withdraw-locked-warning');
+            const submitBtn = document.getElementById('btn-submit-withdraw');
+
+            if (!userData.isAccountActive) {
+                if (warnBox) warnBox.classList.remove('hidden');
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                    submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                }
+            } else {
+                if (warnBox) warnBox.classList.add('hidden');
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                }
+            }
+
+            renderBoundWallets();
+        }
+
+        window.handleWithdrawAmountInput = function(inputEl) {
+            inputEl.value = inputEl.value.replace(/[^0-9]/g, '');
+
+            const userBal = parseFloat(userData?.balance || 0);
+            const maxAllowed = Math.max(0, Math.floor(userBal - WITHDRAW_FEE_BDT));
+            
+            if (!inputEl.value) return;
+            let val = parseInt(inputEl.value, 10);
+
+            if (isNaN(val)) {
+                inputEl.value = '';
+                return;
+            }
+
+            if (val > maxAllowed) {
+                inputEl.value = maxAllowed > 0 ? maxAllowed : '';
+                showToast(`১০ টাকা উইথড্র ফি বাদ দিয়ে আপনি সর্বোচ্চ ৳${maxAllowed} তুলতে পারবেন!`, "info");
+            }
+        };
+
+        window.refreshWithdrawBalanceUI = async function() {
+            if (!userData) return;
+            try {
+                const userRef = doc(dbUser, "users", String(userData.tgChatId));
+                const snap = await getDoc(userRef);
+                if (snap.exists()) {
+                    userData = snap.data();
+                    updateUI();
+                    loadWithdrawPageUI();
+                    showToast("ব্যালেন্স আপডেট সম্পন্ন হয়েছে!", "success");
+                }
+            } catch (e) {
+                showToast("ব্যালেন্স রিফ্রেশ ব্যর্থ হয়েছে", "error");
+            }
+        };
+
+        window.toggleWalletVisibility = function(cardId, event) {
+            if (event) event.stopPropagation();
+            if (revealedWallets.has(cardId)) {
+                revealedWallets.delete(cardId);
+            } else {
+                revealedWallets.add(cardId);
+            }
+            renderBoundWallets();
+        };
+
+        function renderBoundWallets() {
+            const container = document.getElementById('bound-wallets-container');
+            const countEl = document.getElementById('bound-wallet-count');
+            const plusBtnWrap = document.getElementById('bind-wallet-btn-wrap');
+            const wallets = userData?.boundWallets || [];
+
+            if (countEl) countEl.textContent = wallets.length;
+
+            if (plusBtnWrap) {
+                if (wallets.length >= 3) {
+                    plusBtnWrap.classList.add('hidden');
+                } else {
+                    plusBtnWrap.classList.remove('hidden');
+                }
+            }
+
+            if (wallets.length === 0) {
+                container.innerHTML = `
+                    <div class="p-5 bg-slate-50 border-2 border-dashed border-slate-200 rounded-2xl text-center space-y-2">
+                        <p class="text-xs text-slate-400 font-bold">কোনো E-Wallet আবদ্ধ করা নেই (সর্বোচ্চ ৩টি)।</p>
+                        <button onclick="openBindWalletModal()" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-xs font-bold rounded-xl shadow transition">
+                            + নতুন ওয়ালেট যোগ করুন
+                        </button>
+                    </div>
+                `;
+                selectedWithdrawCardId = null;
+                return;
+            }
+
+            if (!selectedWithdrawCardId && wallets.length > 0) {
+                selectedWithdrawCardId = wallets[0].id;
+            }
+
+            container.innerHTML = wallets.map(wallet => {
+                const isSelected = selectedWithdrawCardId === wallet.id;
+                const isRevealed = revealedWallets.has(wallet.id);
+
+                const displayNum = isRevealed 
+                    ? wallet.number 
+                    : (wallet.number.length > 4 ? '*******' + wallet.number.slice(-4) : wallet.number);
+
+                return `
+                    <div onclick="selectWithdrawCard('${wallet.id}')" class="withdraw-card-gradient p-5 text-white cursor-pointer transition relative ${isSelected ? 'ring-4 ring-rose-400/80 scale-[1.01]' : 'opacity-90'}">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <div class="w-8 h-8 rounded-xl bg-white/20 backdrop-blur-md flex items-center justify-center font-bold">
+                                    <i data-lucide="wallet" class="w-4 h-4"></i>
+                                </div>
+                                <span class="font-extrabold text-base tracking-wide">${wallet.method}</span>
+                            </div>
+                            <span class="text-[11px] font-bold bg-white/20 px-2.5 py-0.5 rounded-md">${wallet.name || 'Account'}</span>
+                        </div>
+                        
+                        <div class="mt-4 flex items-center justify-between">
+                            <div class="font-mono font-black text-2xl tracking-wider select-none">
+                                ${displayNum}
+                            </div>
+                            <button onclick="toggleWalletVisibility('${wallet.id}', event)" class="p-1.5 rounded-xl bg-white/20 hover:bg-white/30 backdrop-blur-md transition" title="${isRevealed ? 'নম্বর লুকান' : 'নম্বর দেখুন'}">
+                                <i data-lucide="${isRevealed ? 'eye-off' : 'eye'}" class="w-4 h-4 text-white"></i>
+                            </button>
+                        </div>
+
+                        <div class="mt-2 flex items-center justify-between text-[11px] text-blue-100 font-mono">
+                            <span>${wallet.addedAt || 'Added'}</span>
+                            ${isSelected ? '<span class="px-2 py-0.5 rounded-full bg-white text-slate-900 text-[10px] font-black">SELECTED</span>' : ''}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            lucide.createIcons();
+        }
+
+        window.selectWithdrawCard = function(id) {
+            selectedWithdrawCardId = id;
+            renderBoundWallets();
+        };
+
+        window.openBindWalletModal = function() {
+            if ((userData?.boundWallets || []).length >= 3) {
+                return showToast("আপনি সর্বোচ্চ ৩টি E-Wallet যুক্ত করতে পারবেন!", "error");
+            }
+            document.getElementById('bind-wallet-modal').classList.remove('hidden');
+            lucide.createIcons();
+        };
+
+        window.closeBindWalletModal = function() {
+            document.getElementById('bind-wallet-modal').classList.add('hidden');
+        };
+
+        window.selectWithdrawWalletType = function(type, el) {
+            selectedBindMethod = type;
+            document.querySelectorAll('.wallet-type-tab').forEach(b => b.classList.remove('active'));
+            if (el) el.classList.add('active');
+
+            const numberInput = document.getElementById('bind-wallet-number');
+            if (numberInput) {
+                numberInput.placeholder = type === 'Binance' 
+                    ? '* অনুগ্রহ করে Binance Pay ID বা BEP20 অ্যাড্রেস লিখুন' 
+                    : `* অনুগ্রহ করে ${type} অ্যাকাউন্ট নম্বর পূরণ করুন`;
+            }
+        };
+
+        window.saveNewBoundWallet = async function() {
+            const name = document.getElementById('bind-wallet-name').value.trim();
+            const number = document.getElementById('bind-wallet-number').value.trim();
+
+            if (!name) return showToast("প্রাপকের পূর্ণ নাম লিখুন!", "error");
+            if (!number || number.length < 8) return showToast("সঠিক অ্যাকাউন্ট নম্বর বা Pay ID লিখুন!", "error");
+
+            if ((userData?.boundWallets || []).length >= 3) {
+                return showToast("আপনি সর্বোচ্চ ৩টি E-Wallet যুক্ত করতে পারবেন!", "error");
+            }
+
+            const btn = document.getElementById('btn-save-bound-wallet');
+            btn.disabled = true;
+            btn.textContent = "Checking...";
+
+            try {
+                const cleanNumberKey = `${selectedBindMethod}_${number.replace(/\s+/g, '')}`;
+                const globalWalletRef = doc(dbUser, "global_bound_wallets", cleanNumberKey);
+                const globalSnap = await getDoc(globalWalletRef);
+
+                if (globalSnap.exists()) {
+                    const existingOwner = globalSnap.data().userId;
+                    if (existingOwner && existingOwner !== String(userData.tgChatId)) {
+                        throw new Error(`এই ${selectedBindMethod} অ্যাকাউন্টটি ইতিমধ্যে অন্য একজন ব্যবহারকারী ব্যবহার করছেন!`);
+                    }
+                }
+
+                const now = new Date();
+                const pad = (n) => String(n).padStart(2, '0');
+                const dateStr = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+
+                const newCard = {
+                    id: 'card_' + Date.now(),
+                    method: selectedBindMethod,
+                    name: name,
+                    number: number,
+                    addedAt: dateStr
+                };
+
+                const currentWallets = userData.boundWallets || [];
+                currentWallets.push(newCard);
+
+                const userRef = doc(dbUser, "users", String(userData.tgChatId));
+                
+                await runTransaction(dbUser, async (t) => {
+                    t.set(globalWalletRef, {
+                        userId: String(userData.tgChatId),
+                        method: selectedBindMethod,
+                        number: number,
+                        registeredAt: serverTimestamp()
+                    });
+                    t.update(userRef, { boundWallets: currentWallets });
+                });
+
+                userData.boundWallets = currentWallets;
+                selectedWithdrawCardId = newCard.id;
+
+                showToast("E-Wallet সফলভাবে যুক্ত হয়েছে!", "success");
+                document.getElementById('bind-wallet-name').value = '';
+                document.getElementById('bind-wallet-number').value = '';
+                closeBindWalletModal();
+                renderBoundWallets();
+            } catch (e) {
+                showToast(e.message || "সংরক্ষণ ব্যর্থ হয়েছে!", "error");
+            } finally {
+                btn.disabled = false;
+                btn.textContent = "সংরক্ষণ করুন";
+            }
+        };
+
+        window.submitWithdrawalRequest = async function() {
+            if (!ensureAccountActive("উত্তোলন")) return;
+
+            const wallets = userData.boundWallets || [];
+            if (wallets.length === 0) {
+                return showToast("উত্তোলন করতে প্রথমে E-Wallet যোগ করুন!", "error");
+            }
+
+            const activeWallet = wallets.find(w => w.id === selectedWithdrawCardId) || wallets[0];
+            const amountInput = document.getElementById('withdraw-amount-input');
+            
+            const rawVal = amountInput.value.trim();
+            if (!rawVal || !/^\d+$/.test(rawVal)) {
+                return showToast("অনুগ্রহ করে পূর্ণসংখ্যা (যেমন: ১০০, ৫০০) ইনপুট দিন!", "error");
+            }
+
+            const amount = parseInt(rawVal, 10);
+            if (isNaN(amount) || amount < 100 || amount > 20000) {
+                return showToast("উত্তোলন পরিমাণ ১০০ থেকে ২০,০০০ টাকার মধ্যে হতে হবে!", "error");
+            }
+
+            const totalDebit = amount + WITHDRAW_FEE_BDT;
+
+            if ((userData.balance || 0) < totalDebit) {
+                return showToast(`পর্যাপ্ত ব্যালেন্স নেই! প্রয়োজন ৳${totalDebit} (উত্তোলন ৳${amount} + ফি ৳${WITHDRAW_FEE_BDT})`, "error");
+            }
+
+            const btn = document.getElementById('btn-submit-withdraw');
+            btn.disabled = true;
+            btn.innerHTML = `<span class="animate-spin inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full mr-2"></span> Processing...`;
+
+            try {
+                const userRef = doc(dbUser, "users", String(userData.tgChatId));
+                
+                await runTransaction(dbUser, async (t) => {
+                    const snap = await t.get(userRef);
+                    if (!snap.exists()) throw new Error("ইউজার পাওয়া যায়নি!");
+                    const currentBal = snap.data().balance || 0;
+                    if (currentBal < totalDebit) throw new Error("পর্যাপ্ত ব্যালেন্স নেই!");
+
+                    t.update(userRef, {
+                        balance: currentBal - totalDebit
+                    });
+
+                    const withdrawRef = doc(collection(dbUser, "withdrawals"));
+                    t.set(withdrawRef, {
+                        userId: String(userData.tgChatId),
+                        userName: userData.name || 'User',
+                        amount: amount,
+                        fee: WITHDRAW_FEE_BDT,
+                        totalDebit: totalDebit,
+                        method: activeWallet.method,
+                        accountName: activeWallet.name,
+                        accountNumber: activeWallet.number,
+                        status: "pending",
+                        requestedAt: serverTimestamp()
+                    });
+                });
+
+                userData.balance -= totalDebit;
+                await recordUserLedger('expense', `উত্তোলন (${activeWallet.method})`, totalDebit, false, `ফি: ৳${WITHDRAW_FEE_BDT}`);
+
+                // Admin Notification
+                const withdrawMsg = `💸 <b>নতুন উত্তোলন অনুরোধ!</b>\n\n` +
+                    `👤 <b>নাম:</b> ${userData.name || 'User'}\n` +
+                    `🆔 <b>User ID:</b> <code>${userData.tgChatId}</code>\n` +
+                    `💳 <b>মেথড:</b> ${activeWallet.method} (${activeWallet.name})\n` +
+                    `📞 <b>অ্যাকাউন্ট:</b> <code>${activeWallet.number}</code>\n` +
+                    `💰 <b>উত্তোলন:</b> ৳${amount}\n` +
+                    `🧾 <b>ফি সহ মোট:</b> ৳${totalDebit}`;
+                await notifyAdminTelegram(withdrawMsg);
+
+                updateUI();
+                loadWithdrawPageUI();
+                amountInput.value = '';
+
+                showToast("উত্তোলন অনুরোধ সফলভাবে গৃহীত হয়েছে! ২৪ ঘণ্টার মধ্যে পেমেন্ট সম্পন্ন হবে।", "success");
+                navigateTo('history-page');
+            } catch (e) {
+                showToast(e.message || "উত্তোলন অনুরোধ ব্যর্থ হয়েছে!", "error");
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `<i data-lucide="check" class="w-4 h-4"></i> <span>উত্তোলন নিশ্চিত করুন</span>`;
+                lucide.createIcons();
+            }
+        };
+
+        async function loadWithdrawHistory() {
+            const list = document.getElementById('withdraw-history-list');
+            if (!list) return;
+            list.innerHTML = getLoadingHTML();
+
+            try {
+                const q = query(collection(dbUser, "withdrawals"), where("userId", "in", [String(userData.tgChatId), Number(userData.tgChatId)]));
+                const snap = await getDocs(q);
+
+                if (snap.empty) {
+                    list.innerHTML = `<p class="text-center text-xs text-slate-400 py-2">কোনো উত্তোলন রেকর্ড নেই</p>`;
+                    return;
+                }
+
+                const records = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                records.sort((a, b) => (b.requestedAt?.seconds || 0) - (a.requestedAt?.seconds || 0));
+
+                list.innerHTML = records.map(r => {
+                    const dateStr = r.requestedAt?.toDate ? r.requestedAt.toDate().toLocaleString('en-GB') : 'Just now';
+                    const isApproved = r.status === 'approved';
+                    const isRejected = r.status === 'rejected';
+
+                    return `
+                        <div class="bg-white p-3.5 rounded-xl border border-slate-200 flex justify-between items-center text-xs shadow-sm">
+                            <div>
+                                <p class="font-black text-slate-800">${r.method} (${r.accountNumber})</p>
+                                <p class="text-[10px] text-slate-400 mt-0.5">${dateStr} • ফি: ৳${(r.fee || 10).toFixed(2)}</p>
+                            </div>
+                            <div class="text-right">
+                                <span class="font-black text-slate-900 font-mono block">৳${parseFloat(r.amount).toFixed(2)}</span>
+                                <span class="text-[10px] font-black uppercase px-2 py-0.5 rounded ${
+                                    isApproved ? 'bg-emerald-100 text-emerald-700' :
+                                    isRejected ? 'bg-red-100 text-red-700' : 'bg-amber-100 text-amber-800'
+                                }">${r.status}</span>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+                lucide.createIcons();
+            } catch (e) {
+                list.innerHTML = `<p class="text-center text-xs text-red-500 py-2">হিস্ট্রি লোড করা যায়নি</p>`;
+            }
+        }
+
+        // ========================================================
+        // ACCOUNT ACTIVATION
+        // ========================================================
+        window.openAccountActivationModal = function() {
+            document.getElementById('account-activation-modal').classList.remove('hidden');
+        };
+
+        window.activateAccountViaBalance = async function() {
+            if (userData.isAccountActive) return showToast("আপনার অ্যাকাউন্ট ইতিমধ্যে একটিভ!", "info");
+            
+            const actFee = getActivationFee();
+            const refBonus = getReferralBonus();
+
+            if ((userData.balance || 0) < actFee) return showToast(`পর্যাপ্ত ব্যালেন্স নেই! আগে ডিপোজিট করুন (ফি: ৳${actFee.toFixed(2)})`, "error");
+
+            try {
+                await runTransaction(dbUser, async (transaction) => {
+                    const userRef = doc(dbUser, "users", String(userData.tgChatId));
+                    const inviterRef = userData.referredBy ? doc(dbUser, "users", String(userData.referredBy)) : null;
+
+                    const userSnap = await transaction.get(userRef);
+                    if (!userSnap.exists() || (userSnap.data().balance || 0) < actFee) {
+                        throw new Error("আপনার পর্যাপ্ত ব্যালেন্স নেই।");
+                    }
+                    if (userSnap.data().isAccountActive) {
+                        throw new Error("আপনার অ্যাকাউন্ট ইতিমধ্যে একটিভ রয়েছে।");
+                    }
+
+                    let inviterSnap = null;
+                    if (inviterRef) {
+                        inviterSnap = await transaction.get(inviterRef);
+                    }
+
+                    transaction.update(userRef, {
+                        balance: increment(-actFee),
+                        isAccountActive: true,
+                        activatedAt: serverTimestamp()
+                    });
+
+                    if (inviterRef && inviterSnap && inviterSnap.exists()) {
+                        transaction.update(inviterRef, {
+                            balance: increment(refBonus)
+                        });
+                    }
+                });
+
+                userData.balance -= actFee;
+                userData.isAccountActive = true;
+                await recordUserLedger('expense', 'অ্যাকাউন্ট অ্যাক্টিভেশন ফি', actFee, false, 'সক্রিয়করণ ফি');
+
+                updateUI();
+                document.getElementById('account-activation-modal').classList.add('hidden');
+                showToast(`🎉 আপনার অ্যাকাউন্ট সফলভাবে ৳${actFee.toFixed(0)} দিয়ে সক্রিয় হয়েছে!`, "success");
+            } catch(e) {
+                showToast(e.message || "অ্যাক্টিভেশন ব্যর্থ হয়েছে", "error");
+            }
+        };
+
+        window.activateAccountViaGateway = function() {
+            const actFee = getActivationFee();
+            const returnUrl = window.location.href.split('?')[0];
+            initiateCustomGatewayPayment(actFee, `${returnUrl}?status=success&activate_account=true`);
+        };
+
+        async function initiateCustomGatewayPayment(amount, successUrl) {
+            const returnUrl = window.location.href.split('?')[0];
+            try {
+                const res = await fetch('/api/payment?action=create', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        amount: String(amount),
+                        success_url: successUrl,
+                        cancel_url: returnUrl + "?status=cancel",
+                        metadata: { userId: String(userData.tgChatId) }
+                    })
+                });
+                const data = await res.json();
+                const payUrl = data.payment_url || data.url || (data.data && data.data.payment_url);
+                if (payUrl) window.location.href = payUrl;
+                else showToast("গেটওয়ে ওপেন করতে সমস্যা হয়েছে", "error");
+            } catch(e) {
+                showToast("কানেকশন সমস্যা", "error");
+            }
+        }
+
+        // ========================================================
+        // PAYMENTS & DEPOSITS
+        // ========================================================
+        window.setAutoQuickAmount = function(val) {
+            document.getElementById('amountInput').value = val;
+            document.querySelectorAll('.quick-amount-pill').forEach(chip => {
+                const chipText = chip.textContent.replace(/[^0-9]/g, '');
+                if (parseInt(chipText) === val) chip.classList.add('selected');
+                else chip.classList.remove('selected');
+            });
+            if (val === 2000) {
+                showToast("🎉 ২০০০ টাকা ডিপোজিটে ২০০ টাকা বোনাস প্রযোজ্য!", "success");
+            }
+        };
+
+        window.handleAutoAmountInput = function() {
+            const val = parseInt(document.getElementById('amountInput').value);
+            document.querySelectorAll('.quick-amount-pill').forEach(chip => {
+                const chipText = chip.textContent.replace(/[^0-9]/g, '');
+                if (parseInt(chipText) === val) chip.classList.add('selected');
+                else chip.classList.remove('selected');
+            });
+        };
+
+        window.initiatePayment = async function() {
+            if (!userData) return showToast('প্রথমে লগইন করুন', 'error');
+            const amount = document.getElementById('amountInput').value.trim();
+            if (!amount || parseFloat(amount) < 10) return showToast('সর্বনিম্ন ডিপোজিট ১০ টাকা', 'error');
+
+            const btn = document.getElementById('btnPayGateway');
+            btn.disabled = true; 
+            btn.innerHTML = `<span class="animate-spin inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full mr-2"></span> Processing...`;
+
+            const returnUrl = window.location.href.split('?')[0];
+
+            const payload = {
+                amount: String(amount),
+                success_url: returnUrl + "?status=success&deposit=true",
+                cancel_url: returnUrl + "?status=cancel",
+                webhook_url: returnUrl + "?status=webhook",
+                metadata: {
+                    userId: String(userData.tgChatId),
+                    paymentType: "wallet_deposit"
+                }
+            };
+
+            try {
+                const res = await fetch('/api/payment?action=create', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                const data = await res.json();
+                let payUrl = data.payment_url || data.url || (data.data && (data.data.payment_url || data.data.url));
+
+                if (payUrl) {
+                    window.location.href = payUrl;
+                } else {
+                    showToast(data.message || 'পেমেন্ট গেটওয়েতে সমস্যা হচ্ছে!', 'error');
+                    btn.disabled = false; 
+                    btn.innerHTML = `<i data-lucide="lock" class="w-4 h-4 text-amber-300"></i> <span>Continue to Instant Payment</span>`;
+                    lucide.createIcons();
+                }
+            } catch (err) {
+                showToast('সার্ভার কানেকশন ব্যর্থ হয়েছে', 'error');
+                btn.disabled = false; 
+                btn.innerHTML = `<i data-lucide="lock" class="w-4 h-4 text-amber-300"></i> <span>Continue to Instant Payment</span>`;
+                lucide.createIcons();
+            }
+        };
+        
+        async function checkReturnPaymentStatus() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const transactionId = urlParams.get('transaction_id') || urlParams.get('transactionId') || urlParams.get('trx_id') || urlParams.get('txid');
+            const urlStatus = (urlParams.get('status') || '').toLowerCase();
+            const isUnlockMaster = urlParams.get('unlock_master') === 'true';
+            const isActivateAccount = urlParams.get('activate_account') === 'true';
+
+            if (urlStatus === 'cancel' || urlStatus === 'failed') {
+                showToast('পেমেন্ট বাতিল করা হয়েছে', 'info');
+                window.history.replaceState({}, document.title, window.location.pathname);
+                return;
+            }
+
+            if (transactionId || urlStatus === 'success') {
+                try {
+                    const res = await fetch('/api/payment?action=verify', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ transaction_id: transactionId })
+                    });
+
+                    const data = await res.json();
+                    const apiStatus = data.status ? String(data.status).toUpperCase() : "";
+
+                    if (apiStatus === "COMPLETED" || apiStatus === "SUCCESS" || data.success === true) {
+                        let finalTxid = data.transaction_id || transactionId || ("TXN_" + Date.now());
+                        
+                        if (isActivateAccount) {
+                            const userRef = doc(dbUser, "users", String(userData.tgChatId));
+                            const refBonus = getReferralBonus();
+
+                            await runTransaction(dbUser, async (t) => {
+                                const inviterRef = userData.referredBy ? doc(dbUser, "users", String(userData.referredBy)) : null;
+                                let invSnap = null;
+                                if (inviterRef) invSnap = await t.get(inviterRef);
+
+                                t.update(userRef, { isAccountActive: true, activatedAt: serverTimestamp() });
+                                if (inviterRef && invSnap && invSnap.exists()) {
+                                    t.update(inviterRef, { balance: increment(refBonus) });
+                                }
+                            });
+                            userData.isAccountActive = true;
+                            await recordUserLedger('expense', 'অ্যাকাউন্ট অ্যাক্টিভেশন', getActivationFee(), false, `TXID: ${finalTxid}`);
+                            showToast("🎉 একাউন্ট সফলভাবে সক্রিয় হয়েছে!", "success");
+                        } else if (isUnlockMaster) {
+                            await executeMasterWorkDirectPaymentUpgrade(finalTxid, data);
+                        } else {
+                            let depositAmount = parseFloat(data.amount || 0);
+                            let totalAddedAmount = depositAmount;
+                            if (depositAmount >= 2000) totalAddedAmount += 200;
+
+                            if (depositAmount > 0 && userData) {
+                                await savePaymentAndUpdateBalance(totalAddedAmount, finalTxid, data);
+                                document.getElementById('displayTxid').textContent = finalTxid;
+                                document.getElementById('displayMethod').textContent = "NagorikPay";
+                                document.getElementById('displayAmount').textContent = `${totalAddedAmount.toFixed(2)} BDT`;
+                                document.getElementById('gateway-success-status-msg').textContent = "ওয়ালেট ডিপোজিট সফল হয়েছে!";
+                                document.getElementById('gateway-success-modal').classList.remove('hidden');
+                            }
+                        }
+                        window.history.replaceState({}, document.title, window.location.pathname);
+                        updateUI();
+                    }
+                } catch (e) {
+                    showToast('ভেরিফিকেশনে সমস্যা দেখা দিয়েছে', 'error');
+                }
+            }
+        }
+
+        async function executeMasterWorkDirectPaymentUpgrade(txid, fullData) {
+            if (!userData) return;
+            const tgChatId = String(userData.tgChatId);
+            const masterFee = getMasterUnlockFee();
+            const logRef = doc(dbUser, "master_unlock_logs", txid);
+            const userRef = doc(dbUser, "users", tgChatId);
+
+            try {
+                await runTransaction(dbUser, async (t) => {
+                    const snap = await t.get(logRef);
+                    if (snap.exists()) return;
+
+                    t.set(logRef, {
+                        userId: tgChatId,
+                        userName: userData.name || 'User',
+                        amount: masterFee,
+                        method: "gateway",
+                        transactionId: txid,
+                        paymentDetails: fullData || null,
+                        createdAt: serverTimestamp()
+                    });
+
+                    t.update(userRef, {
+                        unlockedMasterWork: true,
+                        masterUnlockedAt: serverTimestamp()
+                    });
+                });
+
+                const userSnap = await getDoc(userRef);
+                userData = userSnap.data();
+                await recordUserLedger('expense', 'মাস্টার ওয়ার্ক আনলক', masterFee, false, `TXID: ${txid}`);
+
+                updateUI();
+                renderWorkCards();
+                
+                document.getElementById('displayTxid').textContent = txid;
+                document.getElementById('displayMethod').textContent = "NagorikPay";
+                document.getElementById('displayAmount').textContent = `${masterFee.toFixed(2)} BDT`;
+                document.getElementById('gateway-success-status-msg').textContent = "মাস্টার ওয়ার্ক সফলভাবে আনলক হয়েছে!";
+                document.getElementById('gateway-success-modal').classList.remove('hidden');
+            } catch(e) {
+                console.error("Master upgrade error:", e);
+            }
+        }
+
+        async function savePaymentAndUpdateBalance(depositAmount, txid, fullData) {
+            if (!userData) return;
+            const tgChatId = String(userData.tgChatId);
+            const depositRef = doc(dbUser, "deposits", txid);
+            const userRef = doc(dbUser, "users", tgChatId);
+
+            try {
+                await runTransaction(dbUser, async (transaction) => {
+                    const depSnap = await transaction.get(depositRef);
+                    if (depSnap.exists()) return;
+
+                    transaction.set(depositRef, {
+                        userId: tgChatId,
+                        userName: userData.name,
+                        method: 'NagorikPay',
+                        gateway: 'NagorikPay',
+                        amount: depositAmount,
+                        transactionId: txid,
+                        status: "approved",
+                        details: fullData || null,
+                        requestedAt: serverTimestamp()
+                    });
+
+                    transaction.update(userRef, {
+                        balance: increment(depositAmount)
+                    });
+                });
+
+                const userSnap = await getDoc(userRef);
+                userData = userSnap.data();
+                await recordUserLedger('income', 'ডিপোজিট (NagorikPay)', depositAmount, true, `TXID: ${txid}`);
+
+                updateUI();
+                await loadUserNotifications();
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        // ==========================================
+        // NOTIFICATIONS SYSTEM
+        // ==========================================
+        async function loadUserNotifications() {
+            if (!userData) return;
+            const tgChatId = String(userData.tgChatId);
+            let notifications = [];
+
+            if (appConfig.notices && Array.isArray(appConfig.notices)) {
+                appConfig.notices.forEach((n, idx) => {
+                    notifications.push({
+                        id: `admin_notice_${idx}`,
+                        title: n.title || 'নোটিশ',
+                        message: n.message || '',
+                        timeStr: n.time || 'Admin',
+                        timestamp: Date.now() - (idx * 1000)
+                    });
+                });
+            }
+
+            try {
+                const notifRef = collection(dbUser, "users", tgChatId, "notifications");
+                const q = query(notifRef, orderBy("time", "desc"), limit(20));
+                const snap = await getDocs(q);
+                snap.forEach(docSnap => {
+                    const data = docSnap.data();
+                    const dateObj = data.time?.toDate ? data.time.toDate() : new Date();
+                    notifications.push({
+                        id: docSnap.id,
+                        title: data.title || 'মেসেজ',
+                        message: data.message || '',
+                        timeStr: dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                        timestamp: dateObj.getTime()
+                    });
+                });
+            } catch (e) {}
+
+            notifications.sort((a, b) => b.timestamp - a.timestamp);
+            allUserNotifications = notifications;
+            updateNotificationBadgeUI();
+        }
+
+        window.toggleNotificationModal = function() {
+            const modal = document.getElementById('notification-modal');
+            const isOpening = modal.classList.contains('hidden');
+            modal.classList.toggle('hidden');
+
+            if (isOpening) {
+                const tgChatId = String(userData?.tgChatId || '0');
+                localStorage.setItem(`notif_last_read_${tgChatId}`, String(Date.now()));
+                const badge = document.getElementById('notif-badge');
+                if (badge) {
+                    badge.classList.add('hidden');
+                    badge.textContent = "0";
+                }
+                renderNotifications();
+            }
+        };
+
+        function renderNotifications() {
+            const container = document.getElementById('notification-list-container');
+            if (allUserNotifications.length === 0) {
+                container.innerHTML = `<div class="p-8 text-center text-xs text-slate-400 font-bold bg-white rounded-2xl border">কোনো নোটিফিকেশন নেই</div>`;
+                return;
+            }
+
+            container.innerHTML = allUserNotifications.map(n => `
+                <div class="bg-white p-4 rounded-2xl border border-slate-200 text-left space-y-1.5 shadow-sm">
+                    <div class="flex justify-between items-center">
+                        <h4 class="font-bold text-xs text-blue-950 flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-blue-600"></span>
+                            ${n.title}
+                        </h4>
+                        <span class="text-[10px] text-slate-400 font-semibold">${n.timeStr}</span>
+                    </div>
+                    <p class="text-xs text-slate-600 leading-relaxed pl-4">${n.message}</p>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        function renderDynamicCategories() {
+            const grid = document.getElementById('category-filter-grid');
+            const categories = appConfig.categories && Array.isArray(appConfig.categories) && appConfig.categories.length > 0 
+                                ? appConfig.categories 
+                                : defaultCategories;
+
+            grid.innerHTML = categories.map((cat, index) => {
+                const isActive = (selectedCategory === cat.id || (index === 0 && selectedCategory === 'all')) ? 'active' : '';
+                return `
+                <button class="category-btn ${isActive}" data-category="${cat.id}" onclick="filterByCategory('${cat.id}', this)">
+                    <i data-lucide="${cat.icon || 'tag'}" class="w-3.5 h-3.5"></i>
+                    <span class="truncate">${cat.name}</span>
+                </button>`;
+            }).join('');
+            lucide.createIcons();
+        }
+
+        function updateUI() {
+            if (!userData) return;
+            const balanceFormatted = (userData.balance || 0).toFixed(2);
+            const isMaster = !!userData.unlockedMasterWork;
+
+            document.getElementById('header-coin-balance').textContent = `৳${balanceFormatted}`;
+            
+            const depBalance = document.getElementById('deposit-page-balance');
+            if (depBalance) depBalance.textContent = `৳${balanceFormatted}`;
+
+            const profileStatBal = document.getElementById('profile-stat-balance');
+            if (profileStatBal) profileStatBal.textContent = `৳${balanceFormatted}`;
+
+            const banner = document.getElementById('account-activation-banner');
+            const profileActiveStatus = document.getElementById('profile-active-status');
+            const profileCardWithdrawBtn = document.getElementById('profile-card-withdraw-btn');
+
+            if (!userData.isAccountActive) {
+                if (banner) banner.classList.remove('hidden');
+                if (profileActiveStatus) {
+                    profileActiveStatus.textContent = "Inactive";
+                    profileActiveStatus.className = "px-2 py-0.5 rounded-md bg-red-50 text-red-600 text-[10px] font-bold border border-red-200";
+                }
+                if (profileCardWithdrawBtn) {
+                    profileCardWithdrawBtn.classList.remove('bg-rose-600', 'hover:bg-rose-700');
+                    profileCardWithdrawBtn.classList.add('bg-slate-400', 'cursor-not-allowed', 'opacity-70');
+                    profileCardWithdrawBtn.innerHTML = `<i data-lucide="lock" class="w-4 h-4"></i><span>উত্তোলন (Locked)</span>`;
+                }
+            } else {
+                if (banner) banner.classList.add('hidden');
+                if (profileActiveStatus) {
+                    profileActiveStatus.textContent = "Active";
+                    profileActiveStatus.className = "px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-600 text-[10px] font-bold border border-emerald-200";
+                }
+                if (profileCardWithdrawBtn) {
+                    profileCardWithdrawBtn.classList.add('bg-rose-600', 'hover:bg-rose-700');
+                    profileCardWithdrawBtn.classList.remove('bg-slate-400', 'cursor-not-allowed', 'opacity-70');
+                    profileCardWithdrawBtn.innerHTML = `<i data-lucide="arrow-down-to-line" class="w-4 h-4"></i><span>উত্তোলন (Withdraw)</span>`;
+                }
+            }
+
+            const profileMasterPill = document.getElementById('profile-master-pill');
+            if (profileMasterPill) {
+                profileMasterPill.textContent = isMaster ? "Master" : "Free";
+                profileMasterPill.className = isMaster
+                    ? "px-2 py-0.5 rounded-md bg-amber-50 text-amber-600 text-[10px] font-bold border border-amber-200"
+                    : "px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 text-[10px] font-bold border border-slate-200";
+            }
+            
+            renderWorkCards();
+            renderDailyCheckinState();
+            lucide.createIcons();
+        }
+
+        function showMainPage(pageId) {
+            document.querySelectorAll('.main-page').forEach(p => p.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+        }
+
+        function navigateTo(pageId) {
+            if ((pageId === 'features-page' || pageId === 'send-page' || pageId === 'withdraw-page') && !userData?.isAccountActive) {
+                showToast("এই অপশনটি ব্যবহার করতে একাউন্ট সক্রিয় (Active) থাকা প্রয়োজন!", "error");
+                openAccountActivationModal();
+                return;
+            }
+
+            document.querySelectorAll('.sub-page').forEach(p => p.classList.remove('active'));
+            const target = document.getElementById(pageId);
+            if (target) target.classList.add('active');
+
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.toggle('active', item.dataset.page === pageId);
+            });
+
+            const routes = {
+                'home-page': renderProductsBySelection,
+                'work-page': () => { updateUI(); renderWorkCards(); },
+                'refer-page': loadReferralPageData,
+                'pay-page': updateUI,
+                'withdraw-page': () => { updateUI(); loadWithdrawPageUI(); },
+                'task-page': () => { renderDynamicTasksList(); renderDailyCheckinState(); },
+                'orders-page': loadOrdersHistory,
+                'balance-history-page': loadBalanceHistory,
+                'features-page': loadFeaturesPage,
+                'history-page': () => { loadWithdrawHistory(); loadManualOrdersHistory(); loadReplaceHistory(); },
+                'profile-page': loadProfilePage
+            };
+
+            if (routes[pageId]) routes[pageId]();
+            lucide.createIcons();
+        }
+        window.navigateTo = navigateTo;
+
+        window.filterByCategory = function(category, element) {
+            document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+            if(element) element.classList.add('active');
+            selectedCategory = category;
+            renderProductsBySelection();
+        };
+
+        // Reads real-time stock count from dbShop (Secondary Firebase)
+        async function getStockCount(collectionName) {
+            if(!collectionName) return 0;
+            try {
+                const q = query(collection(dbShop, collectionName), where("isSold", "==", false));
+                const snapshot = await getCountFromServer(q);
+                return snapshot.data().count;
+            } catch (e) { return 0; }
+        }
+
+        window.toggleCardDetails = function(detailsId, btnElement) {
+            const el = document.getElementById(detailsId);
+            if (el) {
+                const isHidden = el.classList.contains('hidden');
+                el.classList.toggle('hidden');
+                if (btnElement) {
+                    const icon = btnElement.querySelector('i');
+                    if (icon) {
+                        icon.setAttribute('data-lucide', isHidden ? 'chevron-up' : 'chevron-down');
+                        lucide.createIcons();
+                    }
+                }
+            }
+        };
+
+        async function renderProductsBySelection() {
+            const container = document.getElementById('product-list-container');
+            container.innerHTML = getLoadingHTML();
+
+            const allProducts = [...(appConfig.mails || []), ...(appConfig.proxies || []), ...(appConfig.products || [])];
+            let filtered = allProducts;
+
+            if (selectedCategory.toLowerCase() !== 'all') {
+                filtered = allProducts.filter(item => {
+                    const type = (item.type || '').toLowerCase();
+                    const cat = (item.category || '').toLowerCase();
+                    const target = selectedCategory.toLowerCase();
+                    return type.includes(target) || cat.includes(target);
+                });
+            }
+
+            if (filtered.length === 0) {
+                container.innerHTML = `<div class="bg-white p-8 rounded-2xl text-center text-slate-400 font-semibold border">এই বিভাগে কোনো আইটেম পাওয়া যায়নি।</div>`;
+                return;
+            }
+
+            const stockPromises = filtered.map(item => getStockCount(item.stockKey));
+            const stockCounts = await Promise.all(stockPromises);
+
+            displayedProductsCache = filtered.map((item, idx) => ({
+                ...item,
+                stock: stockCounts[idx] || 0
+            }));
+
+            container.innerHTML = displayedProductsCache.map((item, idx) => {
+                const stock = item.stock;
+                const outOfStock = stock <= 0;
+                const originalPrice = (parseFloat(item.priceBdt || 0) * 1.15).toFixed(2);
+                const currentPrice = parseFloat(item.priceBdt || 0).toFixed(2);
+                const detailsId = `card-details-${idx}`;
+                const hasApi = !!(item.apiUrl && item.apiUrl.trim() !== '');
+                const isStockHidden = !!item.hideStock;
+                const isManualAllowed = item.allowManual === true;
+
+                return `
+                <div class="product-card p-4 space-y-3">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center p-2">
+                                <img src="${item.logoUrl || 'https://i.postimg.cc/mD1YdG5y/mail.png'}" class="w-full h-full object-contain" alt="Logo">
+                            </div>
+                            <div>
+                                <div class="flex items-center gap-2">
+                                    <h4 class="font-extrabold text-slate-800 text-sm">${item.type}</h4>
+                                    <span class="bg-blue-100 text-blue-700 text-[10px] font-bold px-2 py-0.5 rounded-full">Instant</span>
+                                </div>
+                                <div class="flex items-center gap-2 mt-0.5">
+                                    <span class="text-xs text-slate-400 line-through">৳${originalPrice}</span>
+                                    <span class="text-base font-black text-blue-600">৳${currentPrice}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <button onclick="toggleCardDetails('${detailsId}', this)" class="text-xs font-bold text-blue-600 bg-blue-50 hover:bg-blue-100 px-2.5 py-1.5 rounded-lg flex items-center gap-1 transition">
+                            <span>Details</span>
+                            <i data-lucide="chevron-down" class="w-3.5 h-3.5"></i>
+                        </button>
+                    </div>
+
+                    <div id="${detailsId}" class="hidden text-xs text-slate-600 bg-slate-50 p-3 rounded-xl border border-slate-100 leading-relaxed font-normal selectable-text">
+                        ${item.details ? item.details.replace(/\n/g, '<br>') : 'এই প্রোডাক্টের জন্য কোনো অতিরিক্ত বিবরণ দেওয়া হয়নি।'}
+                    </div>
+
+                    <div class="flex items-center justify-between pt-2 border-t border-slate-100 text-xs">
+                        <div class="flex items-center gap-2">
+                            ${isStockHidden ? '<span></span>' : `
+                                <span class="font-semibold ${outOfStock ? 'text-orange-500' : 'text-emerald-600'}">
+                                    Stock: <b>${stock}</b>
+                                </span>
+                            `}
+
+                            ${hasApi ? `
+                                <a href="${item.apiUrl}" target="_blank" class="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-emerald-600 text-white hover:bg-emerald-700 shadow-sm flex items-center gap-1 transition">
+                                    <i data-lucide="code" class="w-3 h-3"></i> API
+                                </a>
+                            ` : ''}
+                        </div>
+
+                        <div>
+                            ${!outOfStock ? `
+                                <button type="button" class="btn-buy px-5 py-2 text-xs flex items-center gap-1" onclick="openBuyModal(${idx})">
+                                    <i data-lucide="shopping-bag" class="w-3.5 h-3.5"></i>
+                                    <span>Buy Now</span>
+                                </button>
+                            ` : isManualAllowed ? `
+                                <button type="button" class="btn-order-orange px-4 py-2 text-xs flex items-center gap-1" onclick="openManualModal(${idx})">
+                                    <i data-lucide="clock" class="w-3.5 h-3.5"></i>
+                                    <span>Order Now</span>
+                                </button>
+                            ` : `
+                                <button disabled type="button" class="px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-400 cursor-not-allowed">
+                                    Out of Stock
+                                </button>
+                            `}
+                        </div>
+                    </div>
+                </div>`;
+            }).join('');
+            lucide.createIcons();
+        }
+
+        // --- BUY NOW MODAL ---
+        window.openBuyModal = function(index) {
+            const item = displayedProductsCache[index];
+            if (!item) return;
+
+            const unitPrice = parseFloat(item.priceBdt || 0);
+            const userBal = userData?.balance || 0;
+            const maxCanAfford = unitPrice > 0 ? Math.floor(userBal / unitPrice) : 1;
+            const maxAllowed = Math.min(item.stock, maxCanAfford > 0 ? maxCanAfford : 1);
+
+            activeBuyModalData = {
+                product: item,
+                unitPrice: unitPrice,
+                stock: item.stock,
+                maxAllowed: maxAllowed,
+                qty: 1
+            };
+
+            document.getElementById('buy-modal-title').textContent = `${item.type} (Buy Now)`;
+            document.getElementById('buy-modal-stock-display').textContent = `${item.stock} টি`;
+            document.getElementById('buy-modal-qty-input').value = 1;
+            updateBuyModalPriceDisplay();
+
+            document.getElementById('buy-now-modal').classList.remove('hidden');
+            lucide.createIcons();
+        };
+
+        function updateBuyModalPriceDisplay() {
+            if (!activeBuyModalData) return;
+            const total = activeBuyModalData.unitPrice * activeBuyModalData.qty;
+            document.getElementById('buy-modal-price').textContent = `৳${total.toFixed(2)} (${activeBuyModalData.qty} টি)`;
+        }
+
+        window.adjustBuyModalQty = function(delta) {
+            if (!activeBuyModalData) return;
+            let current = activeBuyModalData.qty;
+            let target = current + delta;
+            if (target < 1) target = 1;
+
+            const userBal = userData?.balance || 0;
+            const maxCanAfford = activeBuyModalData.unitPrice > 0 ? Math.floor(userBal / activeBuyModalData.unitPrice) : 1;
+            const effectiveMax = Math.min(activeBuyModalData.stock, maxCanAfford > 0 ? maxCanAfford : 1);
+
+            if (target > effectiveMax) target = effectiveMax;
+
+            activeBuyModalData.qty = target;
+            document.getElementById('buy-modal-qty-input').value = target;
+            updateBuyModalPriceDisplay();
+        };
+
+        window.handleBuyModalQtyInput = function(inputEl) {
+            if (!activeBuyModalData) return;
+            let val = parseInt(inputEl.value) || 1;
+            if (val < 1) val = 1;
+
+            const userBal = userData?.balance || 0;
+            const maxCanAfford = activeBuyModalData.unitPrice > 0 ? Math.floor(userBal / activeBuyModalData.unitPrice) : 1;
+            const effectiveMax = Math.min(activeBuyModalData.stock, maxCanAfford > 0 ? maxCanAfford : 1);
+
+            if (val > effectiveMax) val = effectiveMax;
+
+            inputEl.value = val;
+            activeBuyModalData.qty = val;
+            updateBuyModalPriceDisplay();
+        };
+
+        // Purchases item: deducts balance from primary DB (dbUser), updates stock in secondary DB (dbShop)
+        window.executeBuyNowConfirmed = async function() {
+            if (!activeBuyModalData) return;
+            const { product, unitPrice, qty } = activeBuyModalData;
+            const totalCost = unitPrice * qty;
+
+            if (userData.balance < totalCost) {
+                return showToast(`পর্যাপ্ত ব্যালেন্স নেই! প্রয়োজন ৳${totalCost.toFixed(2)}`, 'error');
+            }
+
+            const btn = document.getElementById('confirm-buy-modal-btn');
+            btn.disabled = true;
+            btn.innerHTML = `<span class="animate-spin inline-block w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full mr-1"></span> Processing...`;
+
+            try {
+                // Check stock in secondary DB (dbShop)
+                const itemQuery = query(collection(dbShop, product.stockKey), where("isSold", "==", false), limit(qty));
+                const itemQuerySnapshot = await getDocs(itemQuery);
+
+                if (itemQuerySnapshot.docs.length < qty) {
+                    throw new Error(`দুঃখিত, পর্যাপ্ত স্টক নেই! বর্তমানে মাত্র ${itemQuerySnapshot.docs.length} টি রয়েছে।`);
+                }
+
+                const purchasedItems = [];
+
+                // Deduct balance from primary DB (dbUser)
+                await runTransaction(dbUser, async (transaction) => {
+                    const buyerRef = doc(dbUser, "users", String(userData.tgChatId));
+                    const buyerSnap = await transaction.get(buyerRef);
+                    
+                    if (!buyerSnap.exists() || buyerSnap.data().balance < totalCost) {
+                        throw new Error("আপনার পর্যাপ্ত ব্যালেন্স নেই। ডিপোজিট করুন।");
+                    }
+
+                    transaction.update(buyerRef, { balance: buyerSnap.data().balance - totalCost });
+                });
+
+                // Update stock and save purchases in secondary DB (dbShop)
+                let saleId = Date.now();
+                for (const itemDoc of itemQuerySnapshot.docs) {
+                    const itemData = itemDoc.data();
+                    await updateDoc(itemDoc.ref, { 
+                        isSold: true, 
+                        soldTo: String(userData.tgChatId), 
+                        soldAt: serverTimestamp() 
+                    });
+
+                    const addedPurchaseRef = await addDoc(collection(dbShop, "purchases"), {
+                        saleId: saleId,
+                        userId: String(userData.tgChatId),
+                        mailType: product.type,
+                        category: product.category || 'service',
+                        cost: parseFloat(unitPrice),
+                        purchasedAt: serverTimestamp(),
+                        mail: itemData.email || itemData.ip || itemData.data || 'N/A',
+                        password: itemData.password || null
+                    });
+
+                    purchasedItems.push({
+                        docId: addedPurchaseRef.id,
+                        saleId: saleId,
+                        mail: itemData.email || itemData.ip || itemData.data || 'N/A',
+                        password: itemData.password || null,
+                        mailType: product.type,
+                        cost: parseFloat(unitPrice)
+                    });
+
+                    saleId++;
+                }
+
+                await recordUserLedger('expense', `পণ্য ক্রয় (${product.type})`, totalCost, false, `${qty} টি আইটেম`);
+
+                document.getElementById('buy-now-modal').classList.add('hidden');
+                lastPurchasedItemsBatch = purchasedItems;
+                showPurchaseSuccessModal(purchasedItems);
+
+                const userSnap = await getDoc(doc(dbUser, "users", String(userData.tgChatId)));
+                userData = userSnap.data();
+                updateUI();
+                renderProductsBySelection();
+                showToast("অর্ডার সফল হয়েছে!", "success");
+
+            } catch (e) {
+                showToast(e.message || "ক্রয় সম্পন্ন করা সম্ভব হয়নি।", "error");
+            } finally {
+                btn.disabled = false;
+                btn.textContent = "Confirm Buy";
+            }
+        };
+
+        // --- PRE-ORDER LOGIC ---
+        window.openManualModal = function(index) {
+            const item = displayedProductsCache[index];
+            if (!item) return;
+
+            const unitPrice = item.manualPrice !== undefined ? parseFloat(item.manualPrice) : parseFloat(item.priceBdt || 0);
+            const timeoutMinutes = item.manualDurationMinutes || appConfig.manualOrderTimeoutMinutes || 30;
+
+            activeManualModalData = {
+                product: item,
+                unitPrice: unitPrice,
+                timeoutMinutes: timeoutMinutes,
+                qty: 1
+            };
+
+            document.getElementById('manual-modal-title').textContent = `${item.type} (Order Now)`;
+            document.getElementById('manual-modal-duration').textContent = `${timeoutMinutes} মিনিট`;
+            document.getElementById('manual-modal-qty-input').value = 1;
+            updateManualModalPriceDisplay();
+
+            document.getElementById('manual-order-modal').classList.remove('hidden');
+            lucide.createIcons();
+        };
+
+        function updateManualModalPriceDisplay() {
+            if (!activeManualModalData) return;
+            const total = activeManualModalData.unitPrice * activeManualModalData.qty;
+            document.getElementById('manual-modal-price').textContent = `৳${total.toFixed(2)} (${activeManualModalData.qty} টি)`;
+        }
+
+        window.adjustManualOrderModalQty = function(delta) {
+            if (!activeManualModalData) return;
+            let current = activeManualModalData.qty;
+            let target = current + delta;
+            if (target < 1) target = 1;
+
+            activeManualModalData.qty = target;
+            document.getElementById('manual-modal-qty-input').value = target;
+            updateManualModalPriceDisplay();
+        };
+
+        window.handleManualModalQtyChange = function(inputEl) {
+            if (!activeManualModalData) return;
+            let val = parseInt(inputEl.value) || 1;
+            if (val < 1) val = 1;
+            inputEl.value = val;
+            activeManualModalData.qty = val;
+            updateManualModalPriceDisplay();
+        };
+
+        window.handleConfirmManualOrder = async function() {
+            if (!activeManualModalData) return;
+            const { product, unitPrice, timeoutMinutes, qty } = activeManualModalData;
+            const totalPrice = unitPrice * qty;
+
+            const btn = document.getElementById('confirm-manual-order-btn');
+            btn.disabled = true;
+            btn.textContent = "Processing...";
+
+            try {
+                // Deduct balance from primary DB (dbUser)
+                await runTransaction(dbUser, async (transaction) => {
+                    const buyerRef = doc(dbUser, "users", String(userData.tgChatId));
+                    const buyerSnap = await transaction.get(buyerRef);
+                    
+                    if (!buyerSnap.exists() || buyerSnap.data().balance < totalPrice) {
+                        throw new Error("আপনার পর্যাপ্ত ব্যালেন্স নেই। অনুগ্রহ করে ডিপোজিট করুন।");
+                    }
+
+                    transaction.update(buyerRef, { balance: buyerSnap.data().balance - totalPrice });
+                });
+
+                const expiryDate = new Date(Date.now() + timeoutMinutes * 60 * 1000);
+                
+                // Store manual order in secondary DB (dbShop)
+                const orderDocRef = await addDoc(collection(dbShop, "manual_orders"), {
+                    userId: String(userData.tgChatId),
+                    userName: userData.name || 'User',
+                    mailType: product.type,
+                    category: product.category || 'service',
+                    unitPrice: unitPrice,
+                    quantity: qty,
+                    cost: totalPrice,
+                    status: "pending",
+                    deliveryData: "",
+                    createdAt: serverTimestamp(),
+                    expiresAt: Timestamp.fromDate(expiryDate),
+                    durationMinutes: timeoutMinutes
+                });
+
+                await recordUserLedger('expense', `প্রি-অর্ডার (${product.type})`, totalPrice, false, `${qty} টি আইটেম`);
+
+                // Send notification to Admin Telegram
+                const adminNotice = `📦 <b>নতুন ম্যানুয়াল / প্রি-অর্ডার!</b>\n\n` +
+                    `👤 <b>ইউজার:</b> ${userData.name || 'User'} (<code>${userData.tgChatId}</code>)\n` +
+                    `🏷 <b>পণ্য:</b> ${product.type}\n` +
+                    `🔢 <b>পরিমাণ:</b> ${qty} টি\n` +
+                    `💰 <b>মূল্য:</b> ৳${totalPrice}\n` +
+                    `⏳ <b>ডেলিভারি সময়সীমা:</b> ${timeoutMinutes} মিনিট\n` +
+                    `🔑 <b>Order ID:</b> <code>${orderDocRef.id}</code>`;
+                await notifyAdminTelegram(adminNotice);
+
+                document.getElementById('manual-order-modal').classList.add('hidden');
+                showToast(`আপনার ${qty} টি ${product.type} অর্ডার গ্রহণ করা হয়েছে!`, 'success');
+                
+                const userSnap = await getDoc(doc(dbUser, "users", String(userData.tgChatId)));
+                userData = userSnap.data();
+                updateUI();
+                navigateTo('history-page');
+            } catch(e) {
+                showToast(e.message || "অর্ডার সাবমিট করতে সমস্যা হয়েছে।", "error");
+            } finally {
+                btn.disabled = false;
+                btn.textContent = "Confirm Order";
+            }
+        };
+
+        function showPurchaseSuccessModal(items) {
+            const list = document.getElementById('purchase-success-items-list');
+            document.getElementById('purchase-success-subtitle').textContent = `মোট ক্রয়: ${items.length} টি আইটেম`;
+            
+            list.innerHTML = items.map((item, idx) => `
+                <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200 font-mono text-xs space-y-1">
+                    <div class="flex items-center justify-between">
+                        <span class="truncate text-slate-800 font-semibold">${idx + 1}. ${item.mail}</span>
+                        <button onclick="copyToClipboard('${item.mail}', this)" class="p-1 text-blue-600 hover:bg-blue-50 rounded"><i data-lucide="copy" class="w-3.5 h-3.5"></i></button>
+                    </div>
+                    ${item.password ? `
+                    <div class="flex items-center justify-between border-t border-slate-200/60 pt-1 text-slate-600">
+                        <span>${item.password}</span>
+                        <button onclick="copyToClipboard('${item.password}', this)" class="p-1 text-blue-600 hover:bg-blue-50 rounded"><i data-lucide="copy" class="w-3.5 h-3.5"></i></button>
+                    </div>` : ''}
+                </div>
+            `).join('');
+
+            document.getElementById('purchase-success-modal').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        window.copyCurrentPurchaseExcelFormat = function() {
+            if (!lastPurchasedItemsBatch || lastPurchasedItemsBatch.length === 0) return showToast("কোনো আইটেম নেই", "info");
+            const text = lastPurchasedItemsBatch.map(item => `${item.mail}\t${item.password || ''}`).join('\n');
+            copyToClipboard(text, null, `মোট ${lastPurchasedItemsBatch.length} টি আইটেম এক্সেল ফরমেটে কপি হয়েছে!`);
+        };
+
+        window.sendCurrentPurchaseToBot = async function() {
+            if (!lastPurchasedItemsBatch || lastPurchasedItemsBatch.length === 0) return showToast("কোনো আইটেম নেই", "info");
+            exportItemsToExcelCustom(lastPurchasedItemsBatch, `Purchase_${userData.tgChatId}_${Date.now()}`);
+            showToast("এক্সেল ফাইল ডাউনলোড শুরু হয়েছে", "success");
+        };
+
+        // --- TRANSFERS & RECIPIENT LOOKUP ---
+        window.copyMyReceiveId = function() {
+            if (!ensureAccountActive("আইডি রিসিভ")) return;
+            copyToClipboard(userData.tgChatId, null, `আপনার রিসিভ আইডি কপি হয়েছে: ${userData.tgChatId}`);
+        };
+
+        window.handleRecipientLookup = function(idVal) {
+            clearTimeout(recipientDebounceTimer);
+            const previewCard = document.getElementById('recipient-preview-card');
+            const recName = document.getElementById('rec-preview-name');
+            const recId = document.getElementById('rec-preview-id');
+            const recStatus = document.getElementById('rec-preview-status-pill');
+            const recAvatar = document.getElementById('rec-preview-avatar');
+
+            const trimmedId = idVal.trim();
+            if (!trimmedId || trimmedId.length < 5) {
+                previewCard.classList.add('hidden');
+                return;
+            }
+
+            recipientDebounceTimer = setTimeout(async () => {
+                try {
+                    previewCard.classList.remove('hidden');
+                    recName.textContent = "অনুসন্ধান করা হচ্ছে...";
+                    recId.textContent = `ID: ${trimmedId}`;
+                    recStatus.textContent = "...";
+                    recStatus.className = "px-2 py-0.5 rounded-md text-[10px] font-bold bg-slate-200 text-slate-700";
+
+                    const targetRef = doc(dbUser, "users", trimmedId);
+                    const snap = await getDoc(targetRef);
+
+                    if (snap.exists()) {
+                        const targetData = snap.data();
+                        recName.textContent = targetData.name || 'User';
+                        recAvatar.textContent = (targetData.name || 'U').charAt(0).toUpperCase();
+
+                        if (targetData.isAccountActive) {
+                            recStatus.textContent = "Active";
+                            recStatus.className = "px-2 py-0.5 rounded-md text-[10px] font-black uppercase bg-emerald-100 text-emerald-700";
+                        } else {
+                            recStatus.textContent = "Inactive";
+                            recStatus.className = "px-2 py-0.5 rounded-md text-[10px] font-black uppercase bg-red-100 text-red-700";
+                        }
+                    } else {
+                        recName.textContent = "ইউজার পাওয়া যায়নি";
+                        recAvatar.textContent = "X";
+                        recStatus.textContent = "Not Found";
+                        recStatus.className = "px-2 py-0.5 rounded-md text-[10px] font-bold bg-slate-200 text-slate-500";
+                    }
+                } catch(e) {
+                    previewCard.classList.add('hidden');
+                }
+            }, 400);
+        };
+
+        async function handleSendBalance() {
+            if (!ensureAccountActive("ব্যালেন্স ট্রান্সফার")) return;
+
+            const recipientId = document.getElementById('send-recipient-id').value.trim();
+            const amountInput = document.getElementById('send-amount');
+            const amount = parseInt(amountInput.value, 10);
+
+            if (!recipientId || !amount || amount < 10) {
+                return showToast("সর্বনিম্ন ৳১০ পাঠাতে হবে এবং প্রাপকের Telegram ID দিন", "error");
+            }
+            if (recipientId === String(userData.tgChatId)) {
+                return showToast("নিজের অ্যাকাউন্টে ব্যালেন্স পাঠানো যাবে না", "error");
+            }
+
+            const totalCost = amount * 1.02;
+            const btn = document.getElementById('submit-send-btn');
+            btn.disabled = true;
+            btn.textContent = "Sending...";
+
+            try {
+                await runTransaction(dbUser, async (t) => {
+                    const senderRef = doc(dbUser, "users", String(userData.tgChatId));
+                    const recipientRef = doc(dbUser, "users", String(recipientId));
+
+                    const senderSnap = await t.get(senderRef);
+                    const recipientSnap = await t.get(recipientRef);
+
+                    if (!senderSnap.exists() || senderSnap.data().balance < totalCost) {
+                        throw new Error("আপনার পর্যাপ্ত ব্যালেন্স নেই।");
+                    }
+                    if (!recipientSnap.exists()) {
+                        throw new Error("প্রাপকের Telegram ID খুঁজে পাওয়া যায়নি।");
+                    }
+
+                    t.update(senderRef, { balance: senderSnap.data().balance - totalCost });
+                    t.update(recipientRef, { balance: increment(amount) });
+
+                    const transferRef = doc(collection(dbUser, "transfers"));
+                    t.set(transferRef, {
+                        fromId: String(userData.tgChatId),
+                        toId: String(recipientId),
+                        amount: amount,
+                        charge: totalCost - amount,
+                        createdAt: serverTimestamp()
+                    });
+                });
+
+                await recordUserLedger('expense', `ব্যালেন্স ট্রান্সফার (ID: ${recipientId})`, totalCost, false, `চার্জ: ৳${(totalCost - amount).toFixed(2)}`);
+
+                showToast("ব্যালেন্স সফলভাবে ট্রান্সফার হয়েছে!", "success");
+                document.getElementById('send-recipient-id').value = '';
+                amountInput.value = '';
+                document.getElementById('recipient-preview-card').classList.add('hidden');
+
+                const userSnap = await getDoc(doc(dbUser, "users", String(userData.tgChatId)));
+                userData = userSnap.data();
+                updateUI();
+                navigateTo('features-page');
+            } catch(e) {
+                showToast(e.message || "ট্রান্সফার ব্যর্থ হয়েছে।", "error");
+            } finally {
+                btn.disabled = false;
+                btn.textContent = "Submit Send";
+            }
+        }
+
+        window.copyAllOrdersExcelFormat = function() {
+            if (!userPurchasesCache || userPurchasesCache.length === 0) return showToast("কোনো অর্ডার নেই", "info");
+            const text = userPurchasesCache.map(p => `${p.mail}\t${p.password || ''}`).join('\n');
+            copyToClipboard(text, null, `সকল (${userPurchasesCache.length} টি) অর্ডার কপি হয়েছে!`);
+        };
+
+        window.sendAllOrdersToBot = function() {
+            if (!userPurchasesCache || userPurchasesCache.length === 0) return showToast("কোনো অর্ডার নেই", "info");
+            exportItemsToExcelCustom(userPurchasesCache, `Orders_${userData.tgChatId}`);
+            showToast("এক্সেল ডাউনলোড সম্পন্ন হয়েছে", "success");
+        };
+
+        function exportItemsToExcelCustom(items, filename) {
+            const dataToExport = items.map(p => ({
+                "Sale ID": p.saleId || '',
+                "Service": p.mailType || '',
+                "Credentials / Email": p.mail || '',
+                "Password": p.password || '',
+                "Cost (BDT)": p.cost || 0
+            }));
+            const ws = XLSX.utils.json_to_sheet(dataToExport);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Items");
+            XLSX.writeFile(wb, `${filename}.xlsx`);
+        }
+
+        function startCountdownTimerRoutine() {
+            if (countdownTimerInterval) clearInterval(countdownTimerInterval);
+            countdownTimerInterval = setInterval(() => {
+                const timerElements = document.querySelectorAll('.live-order-countdown');
+                const now = new Date().getTime();
+
+                timerElements.forEach(el => {
+                    const expiryTime = parseInt(el.dataset.expiryTime);
+                    const diff = expiryTime - now;
+
+                    if (diff <= 0) {
+                        el.innerHTML = `<span class="text-red-500 font-bold font-mono">00:00 (Expired)</span>`;
+                    } else {
+                        const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                        const s = Math.floor((diff % (1000 * 60)) / 1000);
+                        el.innerHTML = `<span class="text-orange-600 font-bold font-mono">${m}m ${s < 10 ? '0' : ''}${s}s</span>`;
+                    }
+                });
+            }, 1000);
+        }
+
+        async function checkAndRefundExpiredOrders() {
+            try {
+                const now = new Date();
+                const q = query(collection(dbShop, "manual_orders"), where("status", "==", "pending"));
+                const snap = await getDocs(q);
+
+                snap.docs.forEach(async (docSnap) => {
+                    const po = docSnap.data();
+                    if (po.expiresAt && po.expiresAt.toDate() <= now) {
+                        await updateDoc(docSnap.ref, { status: "expired_auto_refunded", refundedAt: serverTimestamp() });
+                        const userRef = doc(dbUser, "users", String(po.userId));
+                        await updateDoc(userRef, { balance: increment(parseFloat(po.cost)) });
+                        await recordUserLedger('income', `প্রি-অর্ডার রিফান্ড (${po.mailType})`, parseFloat(po.cost), true, 'অটোমেটিক রিফান্ড');
+                    }
+                });
+            } catch(e) {}
+        }
+
+        // --- 48-HOUR RETENTION ORDERS HISTORY (Loaded from secondary DB: dbShop) ---
+        async function loadOrdersHistory() {
+            const listEl = document.getElementById('orders-purchase-history');
+            listEl.innerHTML = getLoadingHTML();
+            try {
+                const q = query(collection(dbShop, "purchases"), where("userId", "in", [String(userData.tgChatId), Number(userData.tgChatId)]));
+                const snap = await getDocs(q);
+
+                if (snap.empty) {
+                    userPurchasesCache = [];
+                    listEl.innerHTML = `<div class="bg-white p-8 rounded-2xl text-center text-slate-400 font-semibold border">আপনার কোনো অর্ডার ইতিহাস নেই।</div>`;
+                    return;
+                }
+
+                const nowMs = Date.now();
+                const maxAgeMs = getOrdersRetentionHours() * 60 * 60 * 1000;
+
+                const allItems = snap.docs.map(d => ({ docId: d.id, ...d.data() }));
+
+                // Filter out orders older than retention threshold (default 48h)
+                userPurchasesCache = allItems.filter(item => {
+                    const purchaseTime = item.purchasedAt?.toDate ? item.purchasedAt.toDate().getTime() : 0;
+                    return (nowMs - purchaseTime) <= maxAgeMs;
+                });
+
+                userPurchasesCache.sort((a, b) => (b.purchasedAt?.seconds || 0) - (a.purchasedAt?.seconds || 0));
+
+                if (userPurchasesCache.length === 0) {
+                    listEl.innerHTML = `<div class="bg-white p-8 rounded-2xl text-center text-slate-400 font-semibold border">বিগত ${getOrdersRetentionHours()} ঘণ্টার মধ্যে কোনো অর্ডার নেই (পুরনো রেকর্ড স্বয়ংক্রিয়ভাবে মুছে গেছে)।</div>`;
+                    return;
+                }
+
+                listEl.innerHTML = userPurchasesCache.map(p => {
+                    const date = p.purchasedAt?.toDate ? p.purchasedAt.toDate().toLocaleString('en-GB') : 'Just now';
+                    const fullCopy = `${p.mail}|${p.password || ''}`;
+
+                    return `
+                    <div class="product-card p-4 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h4 class="font-extrabold text-sm text-slate-800">${p.mailType}</h4>
+                                <p class="text-[11px] text-slate-400 mt-0.5">${date} • ID: #${p.saleId || 'N/A'}</p>
+                            </div>
+                            <span class="text-sm font-black text-blue-600">৳${p.cost ? p.cost.toFixed(2) : '0.00'}</span>
+                        </div>
+                        <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-100 space-y-1.5 font-mono text-xs">
+                            <div class="flex justify-between items-center">
+                                <span class="truncate text-slate-700">${p.mail || ''}</span>
+                                <button onclick="copyToClipboard('${p.mail}', this)" class="text-blue-600 hover:text-blue-800 p-1"><i data-lucide="copy" class="w-3.5 h-3.5"></i></button>
+                            </div>
+                            ${p.password ? `<div class="flex justify-between items-center border-t pt-1">
+                                <span class="text-slate-600">${p.password}</span>
+                                <button onclick="copyToClipboard('${p.password}', this)" class="text-blue-600 hover:text-blue-800 p-1"><i data-lucide="copy" class="w-3.5 h-3.5"></i></button>
+                            </div>` : ''}
+                        </div>
+
+                        <div class="flex gap-2 pt-1 text-xs">
+                            <button onclick="copyToClipboard('${fullCopy}', this)" class="btn-buy py-2 px-3 rounded-xl font-bold flex-1 text-center">Copy Full</button>
+                            <button onclick="openReplaceModal('${p.docId}', '${p.saleId || p.docId}', '${p.mailType}', ${p.cost || 0})" class="bg-purple-50 text-purple-700 border border-purple-200 hover:bg-purple-100 py-2 px-3 rounded-xl font-bold flex items-center justify-center gap-1">
+                                <i data-lucide="shield-alert" class="w-3.5 h-3.5"></i> Report
+                            </button>
+                        </div>
+                    </div>`;
+                }).join('');
+                lucide.createIcons();
+            } catch (e) {
+                listEl.innerHTML = `<p class="text-center text-red-500 text-xs">${e.message}</p>`;
+            }
+        }
+
+        // --- 10-HOUR RETENTION MANUAL ORDERS HISTORY WITH VIEW SECTION (Loaded from secondary DB: dbShop) ---
+        async function loadManualOrdersHistory() {
+            const list = document.getElementById('manual-orders-history-list');
+            if(!list) return;
+            list.innerHTML = getLoadingHTML();
+            try {
+                const q = query(collection(dbShop, "manual_orders"), where("userId", "in", [String(userData.tgChatId), Number(userData.tgChatId)]));
+                const snap = await getDocs(q);
+                if (snap.empty) return list.innerHTML = '<p class="text-center text-xs text-slate-400 py-2">কোনো ম্যানুয়াল অর্ডার হিস্ট্রি নেই</p>';
+
+                const nowMs = Date.now();
+                const maxAgeMs = getManualRetentionHours() * 60 * 60 * 1000;
+
+                const docs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+
+                // Filter out orders older than retention threshold (default 10h)
+                const visibleOrders = docs.filter(item => {
+                    const createdTime = item.createdAt?.toDate ? item.createdAt.toDate().getTime() : 0;
+                    return (nowMs - createdTime) <= maxAgeMs;
+                });
+
+                visibleOrders.sort((a,b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+
+                if (visibleOrders.length === 0) {
+                    list.innerHTML = `<p class="text-center text-xs text-slate-400 py-2">বিগত ${getManualRetentionHours()} ঘণ্টার মধ্যে কোনো অর্ডার নেই (স্বয়ংক্রিয় রিমুভ হয়েছে)।</p>`;
+                    return;
+                }
+
+                list.innerHTML = visibleOrders.map(p => {
+                    const expiryMillis = p.expiresAt ? p.expiresAt.toDate().getTime() : 0;
+                    const isPending = p.status === 'pending';
+                    const isApproved = p.status === 'approved';
+
+                    return `
+                    <div class="bg-white p-3.5 rounded-2xl border border-slate-200 space-y-2.5 text-xs shadow-sm">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <p class="font-black text-slate-800">${p.mailType} ${p.quantity ? `(${p.quantity} টি)` : ''} - ৳${p.cost}</p>
+                                ${isPending ? `
+                                    <div class="flex items-center gap-1 mt-0.5 text-[11px] text-slate-500">
+                                        <span>Time Remaining:</span>
+                                        <span class="live-order-countdown" data-order-id="${p.id}" data-expiry-time="${expiryMillis}">Calculating...</span>
+                                    </div>
+                                ` : `
+                                    <p class="text-[10px] text-slate-400">মেয়াদ: ${p.durationMinutes || 30} মিনিট</p>
+                                `}
+                            </div>
+                            <span class="font-bold uppercase text-[10px] px-2 py-1 rounded ${
+                                isApproved ? 'bg-emerald-100 text-emerald-700' :
+                                isPending ? 'bg-orange-100 text-orange-800' : 'bg-red-100 text-red-600'
+                            }">${p.status.replace(/_/g, ' ')}</span>
+                        </div>
+
+                        ${isApproved ? `
+                            <div class="pt-2 border-t border-slate-100 flex items-center justify-between">
+                                <span class="text-[11px] font-bold text-emerald-600 flex items-center gap-1">
+                                    <i data-lucide="check-circle" class="w-3.5 h-3.5"></i>
+                                    <span>অর্ডার ডেলিভার সম্পন্ন হয়েছে</span>
+                                </span>
+                                <button onclick="openDeliveredManualOrderModal('${p.id}', '${p.mailType}', '${encodeURIComponent(p.deliveryData || 'No account data found')}')" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-black flex items-center gap-1 shadow-sm active:scale-95 transition">
+                                    <i data-lucide="eye" class="w-3.5 h-3.5"></i>
+                                    <span>View Accounts</span>
+                                </button>
+                            </div>
+                        ` : ''}
+                    </div>`;
+                }).join('');
+                lucide.createIcons();
+            } catch(e) {}
+        }
+
+        window.openDeliveredManualOrderModal = function(orderId, mailType, encodedData) {
+            const rawData = decodeURIComponent(encodedData);
+            activeDeliveredOrderText = rawData;
+            document.getElementById('vmo-title').textContent = mailType;
+            document.getElementById('vmo-subtitle').textContent = `Order #${orderId}`;
+            
+            const contentBox = document.getElementById('vmo-content-box');
+            contentBox.innerHTML = rawData.replace(/\n/g, '<br>');
+
+            document.getElementById('view-manual-order-modal').classList.remove('hidden');
+            lucide.createIcons();
+        };
+
+        window.copyManualOrderDeliveryText = function() {
+            if (!activeDeliveredOrderText) return;
+            copyToClipboard(activeDeliveredOrderText, null, "অ্যাকাউন্টের সম্পূর্ণ তালিকা কপি হয়েছে!");
+        };
+
+        // --- 10-HOUR RETENTION REPLACE / REPORT HISTORY (Loaded from secondary DB: dbShop) ---
+        async function loadReplaceHistory() {
+            const list = document.getElementById('replace-history-list');
+            if(!list) return;
+            list.innerHTML = getLoadingHTML();
+            try {
+                const q = query(collection(dbShop, "replace_requests"), where("userId", "in", [String(userData.tgChatId), Number(userData.tgChatId)]));
+                const snap = await getDocs(q);
+                if (snap.empty) return list.innerHTML = '<p class="text-center text-xs text-slate-400 py-2">কোনো রেকর্ড নেই</p>';
+                
+                const nowMs = Date.now();
+                const maxAgeMs = getReplaceRetentionHours() * 60 * 60 * 1000;
+
+                const docs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+
+                // Filter out reports older than retention threshold (default 10h)
+                const visibleReports = docs.filter(r => {
+                    const reqTime = r.requestedAt?.toDate ? r.requestedAt.toDate().getTime() : 0;
+                    return (nowMs - reqTime) <= maxAgeMs;
+                });
+
+                visibleReports.sort((a,b) => (b.requestedAt?.seconds || 0) - (a.requestedAt?.seconds || 0));
+
+                if (visibleReports.length === 0) {
+                    list.innerHTML = `<p class="text-center text-xs text-slate-400 py-2">বিগত ${getReplaceRetentionHours()} ঘণ্টার মধ্যে কোনো রিপোর্ট হিস্ট্রি নেই (স্বয়ংক্রিয় রিমুভ হয়েছে)।</p>`;
+                    return;
+                }
+
+                list.innerHTML = visibleReports.map(r => `
+                    <div class="bg-white p-3 rounded-xl border border-slate-200 flex justify-between items-center text-xs">
+                        <div>
+                            <p class="font-bold text-slate-800">${r.mailType}</p>
+                            <p class="text-slate-500 text-[10px]">${r.reason}</p>
+                        </div>
+                        <span class="font-bold uppercase ${r.status==='approved'?'text-green-600':r.status==='rejected'?'text-red-500':'text-yellow-600'}">${r.status}</span>
+                    </div>`).join('');
+                lucide.createIcons();
+            } catch(e) {}
+        }
+
+        async function loadFeaturesPage() {
+            try {
+                const receivedQuery = query(collection(dbUser, "transfers"), where("toId", "==", String(userData.tgChatId)));
+                const sentQuery = query(collection(dbUser, "transfers"), where("fromId", "==", String(userData.tgChatId)));
+                const [recSnap, sentSnap] = await Promise.all([getDocs(receivedQuery), getDocs(sentQuery)]);
+                
+                const recTotal = recSnap.docs.reduce((sum, d) => sum + (d.data().amount || 0), 0);
+                const sentTotal = sentSnap.docs.reduce((sum, d) => sum + (d.data().amount || 0), 0);
+
+                document.getElementById('total-receive-display').textContent = `৳${recTotal.toFixed(2)}`;
+                document.getElementById('total-send-display').textContent = `৳${sentTotal.toFixed(2)}`;
+            } catch(e) {}
+        }
+
+        async function loadProfilePage() {
+            if (!userData) return;
+            document.getElementById('profile-name').textContent = userData.name || 'User';
+            document.getElementById('profile-username').textContent = userData.username ? `@${userData.username}` : '';
+            document.getElementById('profile-id').textContent = `ID: ${userData.tgChatId}`;
+            
+            const photoUrl = currentUserTg?.photo_url || userData.photo_url;
+            if (photoUrl) {
+                const pImg = document.getElementById('profile-avatar-img');
+                pImg.src = photoUrl;
+                pImg.classList.remove('hidden');
+                document.getElementById('profile-initials').classList.add('hidden');
+            } else {
+                document.getElementById('profile-initials').textContent = (userData.name || 'U').charAt(0).toUpperCase();
+            }
+
+            updateUI();
+
+            try {
+                const orderQuery = query(collection(dbShop, "purchases"), where("userId", "in", [String(userData.tgChatId), Number(userData.tgChatId)]));
+                const orderSnap = await getCountFromServer(orderQuery);
+                document.getElementById('profile-stat-orders').textContent = String(orderSnap.data().count || 0);
+
+                const refQuery = query(collection(dbUser, "users"), where("referredBy", "==", String(userData.tgChatId)), where("isAccountActive", "==", true));
+                const refSnap = await getCountFromServer(refQuery);
+                document.getElementById('profile-stat-active-ref').textContent = String(refSnap.data().count || 0);
+            } catch(e) {}
+        }
+
+        window.openReplaceModal = function(purchaseDocId, saleId, mailType, cost) {
+            document.getElementById('replace-purchase-doc-id').value = purchaseDocId || '';
+            document.getElementById('replace-order-id').value = saleId || '';
+            document.getElementById('replace-mail-type').value = mailType || '';
+            document.getElementById('replace-mail-cost').value = cost || 0;
+            document.getElementById('replace-reason-text').value = '';
+            document.getElementById('replace-modal').classList.remove('hidden');
+        };
+
+        async function handleSubmitReplace() {
+            const purchaseDocId = document.getElementById('replace-purchase-doc-id').value;
+            const saleId = document.getElementById('replace-order-id').value;
+            const mailType = document.getElementById('replace-mail-type').value;
+            const cost = parseFloat(document.getElementById('replace-mail-cost').value || 0);
+            const reason = document.getElementById('replace-reason-text').value.trim();
+
+            if (!reason) return showToast("সমস্যার কারণ লিখুন", "error");
+
+            const btn = document.getElementById('submit-replace-btn');
+            btn.disabled = true;
+            btn.textContent = "Submitting...";
+
+            try {
+                // Store replace request in secondary DB (dbShop)
+                await addDoc(collection(dbShop, "replace_requests"), {
+                    userId: String(userData.tgChatId),
+                    userName: userData.name || 'User',
+                    purchaseDocId: purchaseDocId,
+                    purchaseId: purchaseDocId,
+                    saleId: saleId,
+                    mailType: mailType,
+                    cost: cost,
+                    reason: reason,
+                    status: "pending",
+                    requestedAt: serverTimestamp()
+                });
+
+                // Notify admin via Telegram
+                const replaceMsg = `⚠️ <b>নতুন রিপ্লেসমেন্ট / রিপোর্ট রিকোয়েস্ট!</b>\n\n` +
+                    `👤 <b>ইউজার:</b> ${userData.name || 'User'} (<code>${userData.tgChatId}</code>)\n` +
+                    `🏷 <b>সার্ভিস:</b> ${mailType}\n` +
+                    `💰 <b>মূল্য:</b> ৳${cost.toFixed(2)}\n` +
+                    `📝 <b>কারণ:</b> ${reason}\n` +
+                    `🔑 <b>Doc ID:</b> <code>${purchaseDocId}</code>`;
+                await notifyAdminTelegram(replaceMsg);
+
+                document.getElementById('replace-modal').classList.add('hidden');
+                showToast("রিপ্লেসমেন্ট অনুরোধ পাঠানো হয়েছে", "success");
+                navigateTo('history-page');
+            } catch(e) {
+                showToast("অনুরোধ পাঠাতে ব্যর্থ হয়েছে।", "error");
+            } finally {
+                btn.disabled = false;
+                btn.textContent = "সাবমিট করুন";
+            }
+        }
+
+        window.copyToClipboard = (text, btn, msg) => {
+            if(!text) return;
+            navigator.clipboard.writeText(text).then(() => {
+                if (btn) {
+                    const old = btn.innerHTML;
+                    btn.innerHTML = `<i data-lucide="check" class="w-3.5 h-3.5 text-green-600"></i>`;
+                    lucide.createIcons();
+                    setTimeout(() => { btn.innerHTML = old; lucide.createIcons(); }, 1400);
+                } else if(msg) showToast(msg, "success");
+            });
+        };
+
+        function setupEventListeners() {
+            document.getElementById('submit-replace-btn')?.addEventListener('click', handleSubmitReplace);
+            document.getElementById('submit-send-btn')?.addEventListener('click', handleSendBalance);
+        }
+    </script>
+</body>
+</html>
