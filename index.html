@@ -1841,13 +1841,25 @@
 
     <!-- FIREBASE & CORE JAVASCRIPT LOGIC -->
     <script type="module">
-        const firebaseConfig = {
+        // 1. Primary Firebase Config (User Auth, Balance, Config, Withdrawals)
+        const primaryFirebaseConfig = {
             apiKey: "AIzaSyC_Qj_G_FOrlSehcj6qjdYB8x_G-yIyWnU",
             authDomain: "hub-54f3d.firebaseapp.com",
             projectId: "hub-54f3d",
             storageBucket: "hub-54f3d.firebasestorage.app",
             messagingSenderId: "379028334299",
             appId: "1:379028334299:web:20b8340f8115cd10de0efe"
+        };
+
+        // 2. Secondary Firebase Config (Shop Stock, Purchases, Work Submissions & Accounts)
+        const secondaryFirebaseConfig = {
+            apiKey: "AIzaSyCagqvWu9t5Qp1IALosaP3-9jN52fhxQ2M",
+            authDomain: "saidul4x-78b68.firebaseapp.com",
+            databaseURL: "https://saidul4x-78b68-default-rtdb.firebaseio.com",
+            projectId: "saidul4x-78b68",
+            storageBucket: "saidul4x-78b68.firebasestorage.app",
+            messagingSenderId: "89460698631",
+            appId: "1:89460698631:web:827621e6358efeabce04a2"
         };
 
         import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
@@ -1857,15 +1869,24 @@
             updateDoc, Timestamp, increment, arrayUnion, enableNetwork 
         } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
-        const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
-        const db = getFirestore(app);
+        // Initialize Primary Firebase
+        const primaryApp = !getApps().some(a => a.name === '[DEFAULT]') 
+            ? initializeApp(primaryFirebaseConfig) 
+            : getApp();
 
-        const dbUser = db;
-        const dbShop = db;
-        const dbWork = db;
+        // Initialize Secondary Firebase
+        const secondaryApp = !getApps().some(a => a.name === 'secondaryApp') 
+            ? initializeApp(secondaryFirebaseConfig, 'secondaryApp') 
+            : getApp('secondaryApp');
+
+        const dbUser = getFirestore(primaryApp);
+        const dbShop = getFirestore(secondaryApp);
+        const dbWork = getFirestore(secondaryApp);
 
         async function ensureFirebaseOnline() {
-            try { await enableNetwork(db); } catch(e) {}
+            try { 
+                await Promise.all([enableNetwork(dbUser), enableNetwork(dbShop)]);
+            } catch(e) {}
         }
         ensureFirebaseOnline();
 
@@ -3128,6 +3149,11 @@
             }
         };
 
+        window.handleDirectMasterWorkUnlock = async function() {
+            if (!ensureAccountActive("মাস্টার ওয়ার্ক আনলক")) return;
+            
+            if ((userData?.balance || 0) >= 50) {
+                try {
                     const userRef = doc(dbUser, "users", String(userData.tgChatId));
                     const logRef = doc(collection(dbUser, "master_unlock_logs"));
 
@@ -3947,7 +3973,7 @@
                 const q = query(ledgerCol, orderBy("timestamp", "desc"), limit(50));
                 const snap = await getDocs(q);
 
-                if (snap.empty) {
+if (snap.empty) {
                     userLedgerCache = [];
                     listEl.innerHTML = `<div class="bg-white p-8 rounded-2xl text-center text-slate-400 font-bold border border-slate-200">এখনো কোনো লেনদেনের হিস্ট্রি নেই।</div>`;
                     return;
@@ -4885,6 +4911,7 @@
             renderProductsBySelection();
         };
 
+        // Reads real-time stock count from dbShop (Secondary Firebase)
         async function getStockCount(collectionName) {
             if(!collectionName) return 0;
             try {
@@ -5080,6 +5107,7 @@
             updateBuyModalPriceDisplay();
         };
 
+        // Purchases item: deducts balance from primary DB (dbUser), updates stock in secondary DB (dbShop)
         window.executeBuyNowConfirmed = async function() {
             if (!activeBuyModalData) return;
             const { product, unitPrice, qty } = activeBuyModalData;
@@ -5094,6 +5122,7 @@
             btn.innerHTML = `<span class="animate-spin inline-block w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full mr-1"></span> Processing...`;
 
             try {
+                // Check stock in secondary DB (dbShop)
                 const itemQuery = query(collection(dbShop, product.stockKey), where("isSold", "==", false), limit(qty));
                 const itemQuerySnapshot = await getDocs(itemQuery);
 
@@ -5103,6 +5132,7 @@
 
                 const purchasedItems = [];
 
+                // Deduct balance from primary DB (dbUser)
                 await runTransaction(dbUser, async (transaction) => {
                     const buyerRef = doc(dbUser, "users", String(userData.tgChatId));
                     const buyerSnap = await transaction.get(buyerRef);
@@ -5114,6 +5144,7 @@
                     transaction.update(buyerRef, { balance: buyerSnap.data().balance - totalCost });
                 });
 
+                // Update stock and save purchases in secondary DB (dbShop)
                 let saleId = Date.now();
                 for (const itemDoc of itemQuerySnapshot.docs) {
                     const itemData = itemDoc.data();
@@ -5226,6 +5257,7 @@
             btn.textContent = "Processing...";
 
             try {
+                // Deduct balance from primary DB (dbUser)
                 await runTransaction(dbUser, async (transaction) => {
                     const buyerRef = doc(dbUser, "users", String(userData.tgChatId));
                     const buyerSnap = await transaction.get(buyerRef);
@@ -5238,6 +5270,8 @@
                 });
 
                 const expiryDate = new Date(Date.now() + timeoutMinutes * 60 * 1000);
+                
+                // Store manual order in secondary DB (dbShop)
                 const orderDocRef = await addDoc(collection(dbShop, "manual_orders"), {
                     userId: String(userData.tgChatId),
                     userName: userData.name || 'User',
@@ -5500,7 +5534,7 @@
             } catch(e) {}
         }
 
-        // --- 48-HOUR RETENTION ORDERS HISTORY ---
+        // --- 48-HOUR RETENTION ORDERS HISTORY (Loaded from secondary DB: dbShop) ---
         async function loadOrdersHistory() {
             const listEl = document.getElementById('orders-purchase-history');
             listEl.innerHTML = getLoadingHTML();
@@ -5570,7 +5604,7 @@
             }
         }
 
-        // --- 10-HOUR RETENTION MANUAL ORDERS HISTORY WITH VIEW SECTION ---
+        // --- 10-HOUR RETENTION MANUAL ORDERS HISTORY WITH VIEW SECTION (Loaded from secondary DB: dbShop) ---
         async function loadManualOrdersHistory() {
             const list = document.getElementById('manual-orders-history-list');
             if(!list) return;
@@ -5602,7 +5636,6 @@
                     const expiryMillis = p.expiresAt ? p.expiresAt.toDate().getTime() : 0;
                     const isPending = p.status === 'pending';
                     const isApproved = p.status === 'approved';
-                    const hasDelivery = !!(p.deliveryData && p.deliveryData.trim() !== "");
 
                     return `
                     <div class="bg-white p-3.5 rounded-2xl border border-slate-200 space-y-2.5 text-xs shadow-sm">
@@ -5660,7 +5693,7 @@
             copyToClipboard(activeDeliveredOrderText, null, "অ্যাকাউন্টের সম্পূর্ণ তালিকা কপি হয়েছে!");
         };
 
-        // --- 10-HOUR RETENTION REPLACE / REPORT HISTORY ---
+        // --- 10-HOUR RETENTION REPLACE / REPORT HISTORY (Loaded from secondary DB: dbShop) ---
         async function loadReplaceHistory() {
             const list = document.getElementById('replace-history-list');
             if(!list) return;
@@ -5767,7 +5800,7 @@
             btn.textContent = "Submitting...";
 
             try {
-                // Store purchaseDocId and purchaseId so Firebase admin update won't fail with undefined
+                // Store replace request in secondary DB (dbShop)
                 await addDoc(collection(dbShop, "replace_requests"), {
                     userId: String(userData.tgChatId),
                     userName: userData.name || 'User',
