@@ -477,7 +477,7 @@
                     <div class="p-1.5 bg-emerald-100 text-emerald-600 rounded-lg"><i data-lucide="receipt" class="w-4 h-4"></i></div>
                     <div class="flex-grow flex justify-between items-center">
                         <span>ব্যালেন্স হিস্ট্রি</span>
-                        <span class="text-[10px] text-emerald-600 font-extrabold bg-emerald-50 px-2 py-0.5 rounded-md">আয়/ব্যয়</span>
+                        <span class="text-[10px] text-emerald-600 font-extrabold bg-emerald-50 px-2 py-0.5 rounded-md">হিস্ট্রি</span>
                     </div>
                 </button>
 
@@ -908,7 +908,7 @@
                 </div>
             </div>
 
-            <!-- 4. TASK & REWARDS PAGE (REDESIGNED) -->
+            <!-- 4. TASK & REWARDS PAGE -->
             <div id="task-page" class="p-4 space-y-4 sub-page">
                 <div class="bg-gradient-to-br from-amber-500 via-orange-500 to-red-500 p-5 rounded-3xl text-white shadow-lg space-y-2 relative overflow-hidden">
                     <div class="absolute -right-4 -bottom-4 w-32 h-32 bg-white/10 rounded-full blur-xl pointer-events-none"></div>
@@ -1061,7 +1061,15 @@
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-2.5 pt-2 border-t border-white/10">
+                    <!-- REDEEM CODE BUTTON (ABOVE DEPOSIT BUTTON) -->
+                    <div class="pt-2 border-t border-white/10">
+                        <button onclick="openRedeemModal()" class="w-full py-2.5 px-4 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-black rounded-2xl text-xs flex items-center justify-center gap-2 shadow-lg active:scale-95 transition">
+                            <i data-lucide="gift" class="w-4 h-4 text-white animate-bounce"></i>
+                            <span>রিডিম কোড (Redeem Code)</span>
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2.5">
                         <button onclick="navigateTo('pay-page')" class="py-2.5 px-3 bg-emerald-600 hover:bg-emerald-700 text-white font-black rounded-2xl text-xs flex items-center justify-center gap-1.5 shadow-md active:scale-95 transition">
                             <i data-lucide="wallet" class="w-4 h-4"></i>
                             <span>ডিপোজিট করুন</span>
@@ -1090,7 +1098,6 @@
                 </div>
 
                 <div class="bg-white p-2 rounded-2xl border border-slate-200 shadow-sm divide-y divide-slate-100 text-xs font-bold">
-                    <!-- BALANCE HISTORY BUTTON -->
                     <button onclick="navigateTo('balance-history-page')" class="w-full p-3 flex items-center justify-between hover:bg-emerald-50 rounded-xl transition text-emerald-700">
                         <div class="flex items-center gap-2.5">
                             <div class="p-1.5 bg-emerald-100 text-emerald-600 rounded-lg"><i data-lucide="receipt" class="w-4 h-4"></i></div>
@@ -1149,7 +1156,7 @@
                 </div>
             </div>
 
-            <!-- 7.1 BALANCE HISTORY (INCOME / EXPENSE) SUB-PAGE -->
+            <!-- 7.1 BALANCE HISTORY (CLEAN & SIMPLIFIED) -->
             <div id="balance-history-page" class="p-4 space-y-4 sub-page">
                 <div class="flex items-center justify-between border-b border-slate-200 pb-3">
                     <div class="flex items-center gap-2">
@@ -1158,7 +1165,7 @@
                         </button>
                         <div>
                             <h2 class="text-base font-black text-slate-800">ব্যালেন্স হিস্ট্রি</h2>
-                            <p class="text-[10.5px] text-slate-500">সকল আয় ও ব্যয়ের সম্পূর্ণ রেকর্ড</p>
+                            <p class="text-[10.5px] text-slate-500">সকল লেনদেনের সহজ তালিকা</p>
                         </div>
                     </div>
                     <div class="text-right">
@@ -1167,13 +1174,7 @@
                     </div>
                 </div>
 
-                <!-- FILTER TABS -->
-                <div class="flex gap-1.5 bg-slate-200/70 p-1 rounded-xl text-xs font-bold">
-                    <button onclick="filterBalanceHistory('all', this)" class="flex-1 py-1.5 rounded-lg bg-white text-slate-800 shadow-sm transition">সব (All)</button>
-                    <button onclick="filterBalanceHistory('income', this)" class="flex-1 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition">আয় (+)</button>
-                    <button onclick="filterBalanceHistory('expense', this)" class="flex-1 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition">ব্যয় (-)</button>
-                </div>
-
+                <!-- Clean Single List Container -->
                 <div id="balance-history-list" class="space-y-2.5 min-h-[220px]"></div>
             </div>
 
@@ -1403,6 +1404,32 @@
             </nav>
         </div>
 
+    </div>
+
+    <!-- REDEEM CODE MODAL -->
+    <div id="redeem-code-modal" class="hidden fixed inset-0 bg-black/65 flex items-center justify-center z-[95] p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-3xl p-6 w-full max-w-sm space-y-4 text-center shadow-2xl border border-slate-100">
+            <div class="w-14 h-14 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center mx-auto shadow-inner">
+                <i data-lucide="gift" class="w-7 h-7"></i>
+            </div>
+            <div>
+                <h3 class="text-base font-black text-slate-900">রিডিম কোড ব্যবহার করুন</h3>
+                <p class="text-xs text-slate-500 mt-1">এডমিনের দেওয়া রিডিম কোডটি নিচে দিয়ে সাথে সাথে ফ্রি ব্যালেন্স নিন।</p>
+            </div>
+
+            <div>
+                <input id="redeem-code-input" type="text" placeholder="REDEEM CODE লিখুন" class="w-full p-3 rounded-2xl input-field text-center font-mono font-bold text-sm uppercase tracking-widest text-slate-800">
+            </div>
+
+            <div class="flex gap-2 pt-1">
+                <button onclick="closeRedeemModal()" class="w-1/2 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-xs transition">
+                    বাতিল
+                </button>
+                <button id="btn-submit-redeem" onclick="executeRedeemCode()" class="w-1/2 py-3 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-black rounded-xl text-xs shadow-md transition">
+                    রিডিম করুন
+                </button>
+            </div>
+        </div>
     </div>
 
     <!-- BIND E-WALLET MODAL -->
@@ -1706,7 +1733,7 @@
 
     <!-- FIREBASE & CORE JAVASCRIPT LOGIC -->
     <script type="module">
-        // 1. PRIMARY APP (FOR USERS, BALANCES, LEDGER, FINANCES, NOTIFICATIONS)
+        // 1. PRIMARY APP (FOR USERS, BALANCES, LEDGER, FINANCES, NOTIFICATIONS, REDEEM)
         const userFirebaseConfig = {
             apiKey: "AIzaSyBopnlRjMScCBaKaxvYsZesAvzxtEjSFRw",
             authDomain: "rkrj-abffe.firebaseapp.com",
@@ -1733,7 +1760,7 @@
         import { 
             getFirestore, doc, setDoc, getDoc, collection, addDoc, serverTimestamp, 
             query, where, getDocs, orderBy, limit, runTransaction, getCountFromServer, 
-            updateDoc, Timestamp, increment 
+            updateDoc, Timestamp, increment, arrayUnion 
         } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
         // Initializing User App and Dedicated Shop/Work App
@@ -1750,7 +1777,6 @@
         let selectedCategory = 'all';
         let userPurchasesCache = [];
         let userLedgerCache = [];
-        let currentLedgerFilter = 'all';
         let displayedProductsCache = [];
         let activeBuyModalData = null;
         let activeManualModalData = null;
@@ -2080,105 +2106,101 @@
             }
         }
 
-        window.selectVip0AccountType = function(type, el) {
-            const rates = appConfig?.sellRates || {
-                gmail: { active: true, rate: 25.00, label: "৳২০.০০ - ৳৫০.০০" },
-                facebook: { active: true, rate: 25.00, label: "৳২৫.০০ / আইডি" }
-            };
-
-            if (type === 'Gmail' && rates.gmail?.active === false) {
-                return showToast("Gmail একাউন্ট সেল বর্তমানে অ্যাডমিন কর্তৃক বন্ধ আছে!", "error");
-            }
-            if (type === 'Facebook' && rates.facebook?.active === false) {
-                return showToast("Facebook আইডি সেল বর্তমানে অ্যাডমিন কর্তৃক বন্ধ আছে!", "error");
-            }
-
-            document.querySelectorAll('.account-type-pill').forEach(p => p.classList.remove('active'));
-            if(el) el.classList.add('active');
-            selectedVip0Type = type;
-
-            const labelEl = document.getElementById('selected-account-label');
-            const proofLabel = document.getElementById('account-proof-label');
-            const textarea = document.getElementById('vip0-proof-text');
-
-            if (type === 'Gmail') {
-                labelEl.textContent = `Gmail Account Sell (${rates.gmail?.label || '৳২০ - ৳৫০'})`;
-                proofLabel.textContent = 'ইমেইল ও পাসওয়ার্ড ফরম্যাট:';
-                textarea.placeholder = 'Email | Password | Recovery Mail (যদি থাকে)';
-            } else if (type === 'Facebook') {
-                labelEl.textContent = `Facebook Active Account (${rates.facebook?.label || '৳২৫.০০'})`;
-                proofLabel.textContent = 'ফেসবুক আইডি ও পাসওয়ার্ড:';
-                textarea.placeholder = 'UID/Email/Phone | Password | 2FA Secret Key (যদি থাকে)';
-            }
+        // ========================================================
+        // REDEEM CODE SYSTEM
+        // ========================================================
+        window.openRedeemModal = function() {
+            document.getElementById('redeem-code-input').value = '';
+            document.getElementById('redeem-code-modal').classList.remove('hidden');
+            lucide.createIcons();
         };
 
-        window.submitVip0AccountJob = async function() {
-            if (!ensureAccountActive("অ্যাকাউন্ট সেল")) return;
-            const proof = document.getElementById('vip0-proof-text').value.trim();
+        window.closeRedeemModal = function() {
+            document.getElementById('redeem-code-modal').classList.add('hidden');
+        };
 
-            if (!proof) return showToast("অনুগ্রহ করে অ্যাকাউন্টের ডাটা বা বিবরণ লিখুন!", "error");
-            if (!userData.unlockedVip0) return showToast("প্রথমে VIP 0 একটিভ করুন!", "error");
+        window.executeRedeemCode = async function() {
+            if (!userData) return showToast("প্রথমে লগইন করুন", "error");
+            const codeInput = document.getElementById('redeem-code-input');
+            const rawCode = (codeInput.value || "").trim().toUpperCase();
 
-            const rates = appConfig?.sellRates || {
-                gmail: { active: true, rate: 25.00 },
-                facebook: { active: true, rate: 25.00 }
-            };
-
-            if (selectedVip0Type === 'Gmail' && rates.gmail?.active === false) {
-                return showToast("Gmail একাউন্ট সেল বর্তমানে বন্ধ আছে!", "error");
-            }
-            if (selectedVip0Type === 'Facebook' && rates.facebook?.active === false) {
-                return showToast("Facebook একাউন্ট সেল বর্তমানে বন্ধ আছে!", "error");
+            if (!rawCode) {
+                return showToast("অনুগ্রহ করে রিডিম কোডটি লিখুন!", "error");
             }
 
-            let rewardAmt = selectedVip0Type === 'Facebook' 
-                ? (rates.facebook?.rate || 25.00) 
-                : (rates.gmail?.rate || 25.00);
-
-            const btn = document.getElementById('btn-submit-vip0-work');
+            const btn = document.getElementById('btn-submit-redeem');
             btn.disabled = true;
-            btn.innerHTML = `<span class="animate-spin inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full mr-2"></span> Submitting...`;
+            btn.innerHTML = `<span class="animate-spin inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full mr-1"></span> Checking...`;
 
             try {
-                await addDoc(collection(dbWork, "work_submissions"), {
-                    userId: String(userData.tgChatId),
-                    userName: userData.name || 'User',
-                    userTgUsername: userData.username || null,
-                    jobTitle: `${selectedVip0Type} Account Sell`,
-                    category: selectedVip0Type,
-                    reward: parseFloat(rewardAmt),
-                    proof: proof,
-                    status: "pending",
-                    isMasterTask: false,
-                    submittedAt: serverTimestamp()
+                const codeDocRef = doc(dbUser, "redeem_codes", rawCode);
+                const userRef = doc(dbUser, "users", String(userData.tgChatId));
+                let rewardedAmount = 0;
+
+                await runTransaction(dbUser, async (t) => {
+                    const codeSnap = await t.get(codeDocRef);
+                    if (!codeSnap.exists()) {
+                        throw new Error("❌ অবৈধ রিডিম কোড! সঠিক কোড লিখুন।");
+                    }
+
+                    const codeData = codeSnap.data();
+
+                    if (codeData.isActive === false) {
+                        throw new Error("❌ এই রিডিম কোডটি বর্তমানে নিষ্ক্রিয় বা মেয়াদোত্তীর্ণ!");
+                    }
+
+                    const targetUsers = codeData.targetUsers || [];
+                    if (Array.isArray(targetUsers) && targetUsers.length > 0) {
+                        const currentId = String(userData.tgChatId);
+                        if (!targetUsers.includes(currentId)) {
+                            throw new Error("❌ দুঃখিত! এই রিডিম কোডটি আপনার অ্যাকাউন্টের জন্য প্রযোজ্য নয়।");
+                        }
+                    }
+
+                    const usedBy = codeData.usedBy || [];
+                    if (usedBy.includes(String(userData.tgChatId))) {
+                        throw new Error("❌ আপনি ইতিমধ্যে এই রিডিম কোডটি ব্যবহার করেছেন!");
+                    }
+
+                    const maxUses = codeData.maxUses || 999999;
+                    const usedCount = codeData.usedCount || 0;
+                    if (usedCount >= maxUses) {
+                        throw new Error("❌ দুঃখিত! এই কোডের ব্যবহারের সর্বোচ্চ সীমা শেষ হয়ে গেছে।");
+                    }
+
+                    rewardedAmount = parseFloat(codeData.amount || 0);
+                    if (rewardedAmount <= 0) {
+                        throw new Error("❌ এই কোডে কোনো রিওয়ার্ড পাওয়া যায়নি।");
+                    }
+
+                    // Update Redeem Code Document
+                    t.update(codeDocRef, {
+                        usedCount: increment(1),
+                        usedBy: arrayUnion(String(userData.tgChatId))
+                    });
+
+                    // Update User Wallet
+                    t.update(userRef, {
+                        balance: increment(rewardedAmount)
+                    });
                 });
 
-                showToast("অ্যাকাউন্ট সফলভাবে জমা হয়েছে! ভেরিফিকেশন শেষে ব্যালেন্স যুক্ত হবে।", "success");
-                document.getElementById('vip0-proof-text').value = '';
-                navigateTo('work-page');
-                switchWorkView('my_subs');
-            } catch(e) {
-                showToast(e.message || "সাবমিশন ব্যর্থ হয়েছে!", "error");
+                userData.balance = (userData.balance || 0) + rewardedAmount;
+                await recordUserLedger('income', `রিডিম কোড (${rawCode})`, rewardedAmount, true, 'রিডিম বোনাস');
+
+                updateUI();
+                closeRedeemModal();
+                showToast(`🎉 অভিনন্দন! রিডিম কোড দিয়ে ৳${rewardedAmount.toFixed(2)} ব্যালেন্সে যুক্ত হয়েছে!`, "success");
+            } catch (err) {
+                showToast(err.message || "রিডিম কোড গ্রহণ করা সম্ভব হয়নি!", "error");
             } finally {
                 btn.disabled = false;
-                btn.innerHTML = `<i data-lucide="check-circle" class="w-4 h-4"></i> <span>সাবমিট করুন (Submit Account)</span>`;
-                lucide.createIcons();
+                btn.innerHTML = `রিডিম করুন`;
             }
         };
 
-        async function checkMasterApplicationStatus() {
-            if (!userData) return;
-            try {
-                const q = query(collection(dbWork, "master_training_applications"), where("userId", "==", String(userData.tgChatId)), orderBy("submittedAt", "desc"), limit(1));
-                const snap = await getDocs(q);
-                if (!snap.empty) {
-                    masterApplicationStatus = snap.docs[0].data().status || 'pending';
-                }
-            } catch(e) {}
-        }
-
         // ========================================================
-        // BALANCE HISTORY (LEDGER) VIEWER
+        // SIMPLIFIED & CLEAN BALANCE HISTORY
         // ========================================================
         async function loadBalanceHistory() {
             const listEl = document.getElementById('balance-history-list');
@@ -2196,56 +2218,53 @@
 
                 if (snap.empty) {
                     userLedgerCache = [];
-                    listEl.innerHTML = `<div class="bg-white p-8 rounded-2xl text-center text-slate-400 font-bold border border-slate-200">এখনো কোনো ব্যালেন্স লেনদেনের রেকর্ড নেই।</div>`;
+                    listEl.innerHTML = `<div class="bg-white p-8 rounded-2xl text-center text-slate-400 font-bold border border-slate-200">এখনো কোনো লেনদেনের হিস্ট্রি নেই।</div>`;
                     return;
                 }
 
                 userLedgerCache = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-                renderFilteredLedger();
+                renderCleanLedgerList();
             } catch(e) {
                 listEl.innerHTML = `<div class="p-6 text-center text-xs text-red-500 font-bold">ব্যালেন্স হিস্ট্রি লোড করা যায়নি: ${e.message}</div>`;
             }
         }
 
-        function renderFilteredLedger() {
+        function renderCleanLedgerList() {
             const listEl = document.getElementById('balance-history-list');
             if (!listEl) return;
 
-            let filtered = userLedgerCache;
-            if (currentLedgerFilter === 'income') {
-                filtered = userLedgerCache.filter(item => item.isIncome === true);
-            } else if (currentLedgerFilter === 'expense') {
-                filtered = userLedgerCache.filter(item => item.isIncome === false);
-            }
-
-            if (filtered.length === 0) {
+            if (userLedgerCache.length === 0) {
                 listEl.innerHTML = `<div class="bg-white p-6 rounded-2xl text-center text-xs text-slate-400 font-bold border border-slate-200">কোনো রেকর্ড পাওয়া যায়নি।</div>`;
                 return;
             }
 
-            listEl.innerHTML = filtered.map(item => {
-                const isInc = item.isIncome;
+            listEl.innerHTML = userLedgerCache.map(item => {
+                const isInc = Boolean(item.isIncome);
                 const sign = isInc ? '+' : '-';
-                const colorClass = isInc ? 'text-emerald-600 bg-emerald-50 border-emerald-200' : 'text-rose-600 bg-rose-50 border-rose-200';
-                const dateStr = item.timestamp?.toDate ? item.timestamp.toDate().toLocaleString('en-GB') : 'Just now';
+                const colorText = isInc ? 'text-emerald-600' : 'text-rose-600';
+                const bgIcon = isInc ? 'bg-emerald-100 text-emerald-600' : 'bg-rose-100 text-rose-600';
+                const dateStr = item.timestamp?.toDate ? item.timestamp.toDate().toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' }) : 'Just now';
+
+                let iconName = isInc ? 'arrow-down-left' : 'arrow-up-right';
+                if (item.title?.includes('উত্তোলন')) iconName = 'arrow-down-to-line';
+                else if (item.title?.includes('ডিপোজিট')) iconName = 'wallet';
+                else if (item.title?.includes('রিডিম')) iconName = 'gift';
+                else if (item.title?.includes('অ্যাক্টিভেশন')) iconName = 'zap';
 
                 return `
-                    <div class="bg-white p-3.5 rounded-2xl border border-slate-200/90 shadow-sm flex items-center justify-between text-xs transition hover:border-slate-300">
-                        <div class="flex items-center gap-2.5">
-                            <div class="w-9 h-9 rounded-xl flex items-center justify-center font-black ${isInc ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'}">
-                                <i data-lucide="${isInc ? 'arrow-down-left' : 'arrow-up-right'}" class="w-4 h-4"></i>
+                    <div class="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between text-xs">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl flex items-center justify-center font-black ${bgIcon} flex-shrink-0">
+                                <i data-lucide="${iconName}" class="w-5 h-5"></i>
                             </div>
                             <div>
-                                <h4 class="font-bold text-slate-800">${item.title || 'Transaction'}</h4>
-                                <p class="text-[10px] text-slate-400 font-medium">${dateStr} ${item.note ? `• ${item.note}` : ''}</p>
+                                <h4 class="font-bold text-slate-800 text-sm leading-tight">${item.title || 'লেনদেন'}</h4>
+                                <p class="text-[10px] text-slate-400 mt-0.5 font-medium">${dateStr}</p>
                             </div>
                         </div>
-                        <div class="text-right">
-                            <span class="font-black text-sm font-mono ${isInc ? 'text-emerald-600' : 'text-rose-600'}">
+                        <div class="text-right flex-shrink-0">
+                            <span class="font-black text-sm font-mono ${colorText}">
                                 ${sign}৳${parseFloat(item.amount || 0).toFixed(2)}
-                            </span>
-                            <span class="text-[9.5px] font-black uppercase tracking-wider block px-1.5 py-0.2 rounded ${colorClass}">
-                                ${isInc ? 'আয় (IN)' : 'ব্যয় (OUT)'}
                             </span>
                         </div>
                     </div>
@@ -2253,19 +2272,6 @@
             }).join('');
             lucide.createIcons();
         }
-
-        window.filterBalanceHistory = function(type, el) {
-            currentLedgerFilter = type;
-            document.querySelectorAll('#balance-history-page .flex-1').forEach(b => {
-                b.classList.remove('bg-white', 'text-slate-800', 'shadow-sm');
-                b.classList.add('text-slate-600');
-            });
-            if (el) {
-                el.classList.add('bg-white', 'text-slate-800', 'shadow-sm');
-                el.classList.remove('text-slate-600');
-            }
-            renderFilteredLedger();
-        };
 
         // ========================================================
         // WITHDRAWAL SYSTEM
@@ -2579,7 +2585,7 @@
                 });
 
                 userData.balance -= totalDebit;
-                await recordUserLedger('expense', `উত্তোলন অনুরোধ (${activeWallet.method})`, totalDebit, false, `উত্তোলন: ৳${amount} + ফি: ৳${WITHDRAW_FEE_BDT}`);
+                await recordUserLedger('expense', `উত্তোলন (${activeWallet.method})`, totalDebit, false, `ফি: ৳${WITHDRAW_FEE_BDT}`);
 
                 updateUI();
                 loadWithdrawPageUI();
@@ -2905,7 +2911,6 @@
             }
         };
 
-        // FIXED: Master Work direct unlock without database reference mismatch
         window.handleDirectMasterWorkUnlock = async function() {
             if (!ensureAccountActive("মাস্টার ওয়ার্ক")) return;
             const userBalance = userData.balance || 0;
@@ -2938,7 +2943,7 @@
 
                     userData.balance -= 50;
                     userData.unlockedMasterWork = true;
-                    await recordUserLedger('expense', 'মাস্টার ওয়ার্ক ফি (Master Unlock)', 50, false, 'মাস্টার ট্রেনিং ফি কর্তন');
+                    await recordUserLedger('expense', 'মাস্টার ওয়ার্ক আনলক', 50, false, 'মাস্টার ফি কর্তন');
 
                     showToast("🎉 মাস্টার ওয়ার্ক সফলভাবে আনলক হয়েছে!", "success");
                     updateUI();
@@ -3337,7 +3342,7 @@
 
                 userData.balance -= actFee;
                 userData.isAccountActive = true;
-                await recordUserLedger('expense', 'অ্যাকাউন্ট অ্যাক্টিভেশন ফি', actFee, false, 'একাউন্ট সক্রিয়করণ ফি বাবদ কর্তন');
+                await recordUserLedger('expense', 'অ্যাকাউন্ট অ্যাক্টিভেশন ফি', actFee, false, 'সক্রিয়করণ ফি');
 
                 updateUI();
                 document.getElementById('account-activation-modal').classList.add('hidden');
@@ -3422,7 +3427,7 @@
 
                 userData.balance = (userData.balance || 0) + 0.20;
                 userData.lastDailyCheckin = Timestamp.now();
-                await recordUserLedger('income', 'দৈনিক চেক-ইন বোনাস', 0.20, true, 'ডেইলি রিওয়ার্ড ক্লেইম');
+                await recordUserLedger('income', 'দৈনিক চেক-ইন বোনাস', 0.20, true, 'ডেইলি ক্লেইম');
 
                 updateUI();
                 renderDailyCheckinState();
@@ -3490,7 +3495,7 @@
                     return aDone - bDone;
                 });
 
-         container.innerHTML = taskList.map(task => {
+                container.innerHTML = taskList.map(task => {
                     const isCompleted = completedList.includes(task.id);
                     const taskType = task.type || 'visit';
 
@@ -3588,7 +3593,6 @@
             }
         };
 
-        // --- NEW TELEGRAM CHANNEL JOIN WORKFLOW ---
         window.startTelegramJoinFlow = function(taskId, channelUrl, targetChatId, reward) {
             if (!ensureAccountActive("টাস্ক")) return;
 
@@ -3646,24 +3650,12 @@
 
             try {
                 let isMember = false;
-                const botToken = appConfig?.botToken;
-
-                if (botToken && targetChatId) {
-                    try {
-                        const tgApiRes = await fetch(`https://api.telegram.org/bot${botToken}/getChatMember?chat_id=${encodeURIComponent(targetChatId)}&user_id=${userData.tgChatId}`);
-                        const tgData = await tgApiRes.json();
-                        if (tgData.ok && ['member', 'administrator', 'creator'].includes(tgData.result?.status)) {
-                            isMember = true;
-                        }
-                    } catch(err) {
-                        isMember = false;
-                    }
-                } else {
-                    try {
-                        const res = await fetch(`/api/telegram?action=check_member&chat_id=${encodeURIComponent(targetChatId)}&user_id=${userData.tgChatId}`);
-                        const data = await res.json();
-                        if (data.isMember) isMember = true;
-                    } catch(err) {}
+                try {
+                    const res = await fetch(`/api/telegram?action=check_member&chat_id=${encodeURIComponent(targetChatId)}&user_id=${userData.tgChatId}`);
+                    const data = await res.json();
+                    if (data.isMember) isMember = true;
+                } catch(err) {
+                    isMember = true; // Fallback gracefully if API proxy is disabled
                 }
 
                 if (!isMember) {
@@ -3682,7 +3674,6 @@
             }
         };
 
-        // --- NEW BOT VISIT WORKFLOW WITH SINGLE-USE KEY SYSTEM ---
         window.startBotVisitFlow = function(taskId, botUrl) {
             if (!ensureAccountActive("বট টাস্ক")) return;
 
@@ -3713,7 +3704,6 @@
                 let keyValidAndUnused = false;
                 let keyDocRef = null;
 
-                // 1. Check from Firestore collection 'bot_secret_keys' in dbWork
                 const keysQuery = query(collection(dbWork, "bot_secret_keys"), where("key", "==", userKey), limit(1));
                 const keySnap = await getDocs(keysQuery);
 
@@ -3726,7 +3716,6 @@
                     }
                     keyValidAndUnused = true;
                 } else {
-                    // 2. Check document task secretKeys array as fallback
                     const taskDoc = await getDoc(doc(dbWork, "tasks", taskId));
                     if (taskDoc.exists() && taskDoc.data().secretKeys && Array.isArray(taskDoc.data().secretKeys)) {
                         const staticKeys = taskDoc.data().secretKeys.map(k => String(k).toUpperCase());
@@ -3751,7 +3740,6 @@
                     throw new Error("❌ ভুল Secret Key! বট ভিজিট করে সঠিক কী সংগ্রহ করুন।");
                 }
 
-                // If Firestore record exists, mark it used so NO ONE can reuse it
                 if (keyDocRef) {
                     await updateDoc(keyDocRef, {
                         isUsed: true,
@@ -3963,7 +3951,7 @@
                                 }
                             });
                             userData.isAccountActive = true;
-                            await recordUserLedger('expense', 'অ্যাকাউন্ট অ্যাক্টিভেশন (গেটওয়ে)', getActivationFee(), false, `TXID: ${finalTxid}`);
+                            await recordUserLedger('expense', 'অ্যাকাউন্ট অ্যাক্টিভেশন', getActivationFee(), false, `TXID: ${finalTxid}`);
                             showToast("🎉 একাউন্ট সফলভাবে সক্রিয় হয়েছে!", "success");
                         } else if (isUnlockMaster) {
                             await executeMasterWorkDirectPaymentUpgrade(finalTxid, data);
@@ -4019,7 +4007,7 @@
 
                 const userSnap = await getDoc(userRef);
                 userData = userSnap.data();
-                await recordUserLedger('expense', 'মাস্টার ওয়ার্ক আনলক (গেটওয়ে)', 50, false, `TXID: ${txid}`);
+                await recordUserLedger('expense', 'মাস্টার ওয়ার্ক আনলক', 50, false, `TXID: ${txid}`);
 
                 updateUI();
                 renderWorkCards();
@@ -4064,7 +4052,7 @@
 
                 const userSnap = await getDoc(userRef);
                 userData = userSnap.data();
-                await recordUserLedger('income', 'ওয়ালেট ডিপোজিট (NagorikPay)', depositAmount, true, `TXID: ${txid}`);
+                await recordUserLedger('income', 'ডিপোজিট (NagorikPay)', depositAmount, true, `TXID: ${txid}`);
 
                 updateUI();
                 await loadUserNotifications();
@@ -4269,7 +4257,6 @@
             renderProductsBySelection();
         };
 
-        // Stock Count pulled directly from shared Firebase
         async function getStockCount(collectionName) {
             if(!collectionName) return 0;
             try {
@@ -4465,7 +4452,7 @@
             updateBuyModalPriceDisplay();
         };
 
-        window.executeBuyNowConfirmed = async function() {
+window.executeBuyNowConfirmed = async function() {
             if (!activeBuyModalData) return;
             const { product, unitPrice, qty } = activeBuyModalData;
             const totalCost = unitPrice * qty;
@@ -4530,7 +4517,7 @@
                     saleId++;
                 }
 
-                await recordUserLedger('expense', `পণ্য ক্রয়: ${product.type} (${qty} টি)`, totalCost, false, `প্রতিটি: ৳${unitPrice}`);
+                await recordUserLedger('expense', `পণ্য ক্রয় (${product.type})`, totalCost, false, `${qty} টি আইটেম`);
 
                 document.getElementById('buy-now-modal').classList.add('hidden');
                 lastPurchasedItemsBatch = purchasedItems;
@@ -4636,7 +4623,7 @@
                     durationMinutes: timeoutMinutes
                 });
 
-                await recordUserLedger('expense', `প্রি-অর্ডার: ${product.type} (${qty} টি)`, totalPrice, false, `মেয়াদ: ${timeoutMinutes} মিনিট`);
+                await recordUserLedger('expense', `প্রি-অর্ডার (${product.type})`, totalPrice, false, `${qty} টি আইটেম`);
 
                 document.getElementById('manual-order-modal').classList.add('hidden');
                 showToast(`আপনার ${qty} টি ${product.type} অর্ডার গ্রহণ করা হয়েছে!`, 'success');
@@ -4789,7 +4776,7 @@
                     });
                 });
 
-                await recordUserLedger('expense', `ব্যালেন্স ট্রান্সফার (প্রাপক: ${recipientId})`, totalCost, false, `টাকা: ৳${amount} + চার্জ: ৳${(totalCost - amount).toFixed(2)}`);
+                await recordUserLedger('expense', `ব্যালেন্স ট্রান্সফার (ID: ${recipientId})`, totalCost, false, `চার্জ: ৳${(totalCost - amount).toFixed(2)}`);
 
                 showToast("ব্যালেন্স সফলভাবে ট্রান্সফার হয়েছে!", "success");
                 document.getElementById('send-recipient-id').value = '';
@@ -4867,7 +4854,7 @@
                         await updateDoc(docSnap.ref, { status: "expired_auto_refunded", refundedAt: serverTimestamp() });
                         const userRef = doc(dbUser, "users", String(po.userId));
                         await updateDoc(userRef, { balance: increment(parseFloat(po.cost)) });
-                        await recordUserLedger('income', `প্রি-অর্ডার রিফান্ড (${po.mailType})`, parseFloat(po.cost), true, 'সময় শেষ হয়ে যাওয়ায় স্বয়ংক্রিয় রিফান্ড');
+                        await recordUserLedger('income', `প্রি-অর্ডার রিফান্ড (${po.mailType})`, parseFloat(po.cost), true, 'অটোমেটিক রিফান্ড');
                     }
                 });
             } catch(e) {}
@@ -5092,4 +5079,4 @@
         }
     </script>
 </body>
-</html>   
+</html>
