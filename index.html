@@ -4112,10 +4112,14 @@
             }
         }
 
-        // ========================================================
+// ========================================================
         // PAYMENTS & DEPOSITS
         // ========================================================
-        if (parseInt(chipText) === val) chip.classList.add('selected');
+        window.setAutoQuickAmount = function(val) {
+            document.getElementById('amountInput').value = val;
+            document.querySelectorAll('.quick-amount-pill').forEach(chip => {
+                const chipText = chip.textContent.replace(/[^0-9]/g, '');
+                if (parseInt(chipText) === val) chip.classList.add('selected');
                 else chip.classList.remove('selected');
             });
             if (val === 2000) {
