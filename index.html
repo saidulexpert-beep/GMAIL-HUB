@@ -295,7 +295,6 @@
         .toast-item.toast-error { border-left-color: #ef4444; }
         .toast-item.toast-info { border-left-color: #3b82f6; }
 
-        /* ADVANCED WORK CARDS */
         .work-card-pro {
             background: #ffffff;
             border-radius: 26px;
@@ -321,8 +320,8 @@
         .account-type-pill {
             border: 1.5px solid #e2e8f0;
             background: #ffffff;
-            padding: 10px;
-            border-radius: 16px;
+            padding: 12px;
+            border-radius: 18px;
             cursor: pointer;
             transition: all 0.2s;
             text-align: center;
@@ -332,6 +331,12 @@
             background: #eff6ff;
             color: #1d4ed8;
             box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+        }
+        .account-type-pill.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none;
+            background: #f1f5f9;
         }
 
         .withdraw-card-gradient {
@@ -364,7 +369,6 @@
             background: #fff1f2;
         }
 
-        /* TASK CARD SPECIFIC STYLING */
         .task-card-item {
             background: #ffffff;
             border: 1px solid #e2e8f0;
@@ -597,7 +601,7 @@
                 </div>
             </div>
 
-            <!-- 2. WORK PORTAL PAGE (REDESIGNED WITH CLEAN, PROFESSIONAL CARDS & ACCURATE PRICE RANGES) -->
+            <!-- 2. WORK PORTAL PAGE -->
             <div id="work-page" class="p-4 space-y-4 sub-page">
                 
                 <!-- WORK HERO HEADER -->
@@ -669,7 +673,7 @@
                 <div id="work-user-submissions-list" class="space-y-3 hidden min-h-[220px]"></div>
             </div>
 
-            <!-- 2.1 VIP 0 ACCOUNT SELL SUBMISSION PAGE -->
+            <!-- 2.1 VIP 0 ACCOUNT SELL SUBMISSION PAGE (CLEANED: ONLY GMAIL & FACEBOOK) -->
             <div id="vip0-sell-page" class="p-4 space-y-4 sub-page">
                 <div class="flex items-center gap-2 mb-1">
                     <button onclick="navigateTo('work-page')" class="p-2 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 transition">
@@ -677,37 +681,24 @@
                     </button>
                     <div>
                         <h2 class="text-base font-extrabold text-slate-800">অ্যাকাউন্ট সেল পোর্টাল (VIP 0)</h2>
-                        <p class="text-[10.5px] text-slate-400">যে অ্যাকাউন্টটি সেল করবেন তা নির্বাচন করে তথ্য দিন</p>
+                        <p class="text-[10.5px] text-slate-400">যে অ্যাকাউন্টটি সেল করবেন তা নির্বাচন করে সঠিক তথ্য দিন</p>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-2 gap-2">
-                    <div class="account-type-pill active" onclick="selectVip0AccountType('Gmail', this)">
+                <!-- ONLY GMAIL AND FACEBOOK OPTIONS -->
+                <div class="grid grid-cols-2 gap-2.5">
+                    <div id="pill-opt-gmail" class="account-type-pill active" onclick="selectVip0AccountType('Gmail', this)">
                         <div class="flex items-center justify-center gap-1.5 font-black text-xs">
                             <i data-lucide="mail" class="w-4 h-4 text-blue-600"></i> Gmail Sell
                         </div>
-                        <span class="text-[10px] text-emerald-600 font-bold block mt-0.5">৳২০.০০ - ৳৫০.০০</span>
+                        <span id="rate-display-gmail" class="text-[10px] text-emerald-600 font-bold block mt-1">৳২০.০০ - ৳৫০.০০</span>
                     </div>
 
-                    <div class="account-type-pill" onclick="selectVip0AccountType('Facebook', this)">
+                    <div id="pill-opt-facebook" class="account-type-pill" onclick="selectVip0AccountType('Facebook', this)">
                         <div class="flex items-center justify-center gap-1.5 font-black text-xs">
                             <i data-lucide="facebook" class="w-4 h-4 text-blue-600"></i> Facebook Sell
                         </div>
-                        <span class="text-[10px] text-emerald-600 font-bold block mt-0.5">৳২৫.০০ / আইডি</span>
-                    </div>
-
-                    <div class="account-type-pill" onclick="selectVip0AccountType('Telegram', this)">
-                        <div class="flex items-center justify-center gap-1.5 font-black text-xs">
-                            <i data-lucide="send" class="w-4 h-4 text-sky-500"></i> Telegram Sell
-                        </div>
-                        <span class="text-[10px] text-emerald-600 font-bold block mt-0.5">৳৩০.০০ / সেশন</span>
-                    </div>
-
-                    <div class="account-type-pill" onclick="selectVip0AccountType('Other', this)">
-                        <div class="flex items-center justify-center gap-1.5 font-black text-xs">
-                            <i data-lucide="grid" class="w-4 h-4 text-slate-600"></i> Other Account
-                        </div>
-                        <span class="text-[10px] text-slate-500 font-bold block mt-0.5">কাস্টম রেট</span>
+                        <span id="rate-display-facebook" class="text-[10px] text-emerald-600 font-bold block mt-1">৳২৫.০০ / আইডি</span>
                     </div>
                 </div>
 
@@ -719,12 +710,7 @@
 
                     <div>
                         <label class="block text-xs font-bold text-slate-700 mb-1" id="account-proof-label">ইমেইল ও পাসওয়ার্ড ফরম্যাট:</label>
-                        <textarea id="vip0-proof-text" rows="4" placeholder="Email | Password | Recovery Mail (যদি থাকে)" class="w-full p-3 rounded-2xl input-field text-xs font-mono"></textarea>
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1">স্ক্রিনশট / অতিরিক্ত প্রুফ লিংক (যদি থাকে):</label>
-                        <input id="vip0-link-text" type="text" placeholder="https://..." class="w-full p-2.5 rounded-xl input-field text-xs">
+                        <textarea id="vip0-proof-text" rows="5" placeholder="Email | Password | Recovery Mail (যদি থাকে)" class="w-full p-3 rounded-2xl input-field text-xs font-mono"></textarea>
                     </div>
 
                     <button id="btn-submit-vip0-work" onclick="submitVip0AccountJob()" class="w-full py-3.5 rounded-2xl btn-buy font-extrabold text-sm flex items-center justify-center gap-2 shadow-lg">
@@ -915,7 +901,7 @@
                 </div>
             </div>
 
-            <!-- 4. TASK & REWARDS PAGE (REDESIGNED WITH TG RE-VERIFY 5S TIMER, BOT SECRET KEY & COMPLETED AT BOTTOM) -->
+            <!-- 4. TASK & REWARDS PAGE -->
             <div id="task-page" class="p-4 space-y-4 sub-page">
                 <div class="bg-gradient-to-br from-amber-500 via-orange-500 to-red-500 p-5 rounded-3xl text-white shadow-lg space-y-2 relative overflow-hidden">
                     <div class="absolute -right-4 -bottom-4 w-32 h-32 bg-white/10 rounded-full blur-xl pointer-events-none"></div>
@@ -942,7 +928,7 @@
                     </button>
                 </div>
 
-                <!-- DYNAMIC TASKS LIST (PENDING FIRST, COMPLETED AT BOTTOM) -->
+                <!-- DYNAMIC TASKS LIST -->
                 <div class="space-y-3.5" id="dynamic-tasks-container"></div>
             </div>
 
@@ -1687,26 +1673,16 @@
             appId: "1:677055084635:web:fe5010f2fc94e76d0e277e"
         };
 
-        // 2. SHOP FIREBASE CONFIG (FOR PRODUCTS, STOCKS, PURCHASES, PRE-ORDERS)
-        const shopFirebaseConfig = {
-            apiKey: "AIzaSyBopnlRjMScCBaKaxvYsZesAvzxtEjSFRw",
-            authDomain: "rkrj-abffe.firebaseapp.com",
-            databaseURL: "https://rkrj-abffe-default-rtdb.firebaseio.com",
-            projectId: "rkrj-abffe",
-            storageBucket: "rkrj-abffe.firebasestorage.app",
-            messagingSenderId: "677055084635",
-            appId: "1:677055084635:web:fe5010f2fc94e76d0e277e"
-        };
-
-        // 3. WORK & TASK FIREBASE CONFIG (FOR WORK JOBS, SUBMISSIONS, MASTER APPLICATIONS, AND TASKS)
-        const workFirebaseConfig = {
-            apiKey: "AIzaSyBopnlRjMScCBaKaxvYsZesAvzxtEjSFRw",
-            authDomain: "rkrj-abffe.firebaseapp.com",
-            databaseURL: "https://rkrj-abffe-default-rtdb.firebaseio.com",
-            projectId: "rkrj-abffe",
-            storageBucket: "rkrj-abffe.firebasestorage.app",
-            messagingSenderId: "677055084635",
-            appId: "1:677055084635:web:fe5010f2fc94e76d0e277e"
+        // 2. SHOP & WORK FIREBASE CONFIG (NEW PROVIDED CONFIG FOR STOCK, PRODUCTS, JOBS, AND TASKS)
+        const newSharedShopWorkFirebaseConfig = {
+            apiKey: "AIzaSyALek-biuraaH0F8w2tVmLIToB7WvCMANY",
+            authDomain: "xadminbd-8c45b.firebaseapp.com",
+            databaseURL: "https://xadminbd-8c45b-default-rtdb.firebaseio.com",
+            projectId: "xadminbd-8c45b",
+            storageBucket: "xadminbd-8c45b.firebasestorage.app",
+            messagingSenderId: "366297743215",
+            appId: "1:366297743215:web:46b005f88734d51b6cb29a",
+            measurementId: "G-4LXNTDMMZ6"
         };
 
         import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
@@ -1716,14 +1692,13 @@
             updateDoc, Timestamp, increment 
         } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
-        // Initializing Separate Firebase Instances
+        // Initializing User App and Dedicated Shop/Work App
         const appUser = !getApps().length ? initializeApp(userFirebaseConfig) : getApp();
-        const appShop = initializeApp(shopFirebaseConfig, "shopApp");
-        const appWork = initializeApp(workFirebaseConfig, "workApp");
+        const appSharedShopWork = initializeApp(newSharedShopWorkFirebaseConfig, "sharedShopWorkApp");
 
         const dbUser = getFirestore(appUser);
-        const dbShop = getFirestore(appShop);
-        const dbWork = getFirestore(appWork);
+        const dbShop = getFirestore(appSharedShopWork);
+        const dbWork = getFirestore(appSharedShopWork);
 
         let currentUserTg = null;
         let userData = null;
@@ -1746,7 +1721,6 @@
         const WITHDRAW_FEE_BDT = 10;
 
         let recipientDebounceTimer = null;
-        let verifyCooldowns = {};
 
         const defaultCategories = [
             { id: "all", name: "All Services", icon: "layout-grid" },
@@ -1999,13 +1973,133 @@
                 const refRule = document.getElementById('refer-rule-bonus-text');
                 if (refRule) refRule.textContent = `২. আপনার বন্ধু বটে জয়েন করে একাউন্ট একটিভ করলেই আপনি ইনস্ট্যান্ট ${refBonus.toFixed(0)} টাকা পাবেন।`;
 
+                updateVip0RatesUI();
                 renderDynamicCategories();
                 renderDailyCheckinState();
             } catch (e) {
+                updateVip0RatesUI();
                 renderDynamicCategories();
                 renderDailyCheckinState();
             }
         }
+
+        // ========================================================
+        // VIP 0 SELL RATES DYNAMIC CONFIG & UI (GMAIL & FB ONLY)
+        // ========================================================
+        function updateVip0RatesUI() {
+            const rates = appConfig?.sellRates || {
+                gmail: { active: true, rate: 25.00, label: "৳২০.০০ - ৳৫০.০০" },
+                facebook: { active: true, rate: 25.00, label: "৳২৫.০০ / আইডি" }
+            };
+
+            const gmailRateEl = document.getElementById('rate-display-gmail');
+            const fbRateEl = document.getElementById('rate-display-facebook');
+            const gmailPill = document.getElementById('pill-opt-gmail');
+            const fbPill = document.getElementById('pill-opt-facebook');
+
+            if (gmailRateEl) gmailRateEl.textContent = rates.gmail?.label || `৳${rates.gmail?.rate || 25}.00`;
+            if (fbRateEl) fbRateEl.textContent = rates.facebook?.label || `৳${rates.facebook?.rate || 25}.00`;
+
+            if (rates.gmail?.active === false) {
+                gmailPill?.classList.add('disabled');
+                if (gmailRateEl) gmailRateEl.textContent = "বর্তমানে বন্ধ";
+            } else {
+                gmailPill?.classList.remove('disabled');
+            }
+
+            if (rates.facebook?.active === false) {
+                fbPill?.classList.add('disabled');
+                if (fbRateEl) fbRateEl.textContent = "বর্তমানে বন্ধ";
+            } else {
+                fbPill?.classList.remove('disabled');
+            }
+        }
+
+        window.selectVip0AccountType = function(type, el) {
+            const rates = appConfig?.sellRates || {
+                gmail: { active: true, rate: 25.00, label: "৳২০.০০ - ৳৫০.০০" },
+                facebook: { active: true, rate: 25.00, label: "৳২৫.০০ / আইডি" }
+            };
+
+            if (type === 'Gmail' && rates.gmail?.active === false) {
+                return showToast("Gmail একাউন্ট সেল বর্তমানে অ্যাডমিন কর্তৃক বন্ধ আছে!", "error");
+            }
+            if (type === 'Facebook' && rates.facebook?.active === false) {
+                return showToast("Facebook আইডি সেল বর্তমানে অ্যাডমিন কর্তৃক বন্ধ আছে!", "error");
+            }
+
+            document.querySelectorAll('.account-type-pill').forEach(p => p.classList.remove('active'));
+            if(el) el.classList.add('active');
+            selectedVip0Type = type;
+
+            const labelEl = document.getElementById('selected-account-label');
+            const proofLabel = document.getElementById('account-proof-label');
+            const textarea = document.getElementById('vip0-proof-text');
+
+            if (type === 'Gmail') {
+                labelEl.textContent = `Gmail Account Sell (${rates.gmail?.label || '৳২০ - ৳৫০'})`;
+                proofLabel.textContent = 'ইমেইল ও পাসওয়ার্ড ফরম্যাট:';
+                textarea.placeholder = 'Email | Password | Recovery Mail (যদি থাকে)';
+            } else if (type === 'Facebook') {
+                labelEl.textContent = `Facebook Active Account (${rates.facebook?.label || '৳২৫.০০'})`;
+                proofLabel.textContent = 'ফেসবুক আইডি ও পাসওয়ার্ড:';
+                textarea.placeholder = 'UID/Email/Phone | Password | 2FA Secret Key (যদি থাকে)';
+            }
+        };
+
+        window.submitVip0AccountJob = async function() {
+            if (!ensureAccountActive("অ্যাকাউন্ট সেল")) return;
+            const proof = document.getElementById('vip0-proof-text').value.trim();
+
+            if (!proof) return showToast("অনুগ্রহ করে অ্যাকাউন্টের ডাটা বা বিবরণ লিখুন!", "error");
+            if (!userData.unlockedVip0) return showToast("প্রথমে VIP 0 একটিভ করুন!", "error");
+
+            const rates = appConfig?.sellRates || {
+                gmail: { active: true, rate: 25.00 },
+                facebook: { active: true, rate: 25.00 }
+            };
+
+            if (selectedVip0Type === 'Gmail' && rates.gmail?.active === false) {
+                return showToast("Gmail একাউন্ট সেল বর্তমানে বন্ধ আছে!", "error");
+            }
+            if (selectedVip0Type === 'Facebook' && rates.facebook?.active === false) {
+                return showToast("Facebook একাউন্ট সেল বর্তমানে বন্ধ আছে!", "error");
+            }
+
+            let rewardAmt = selectedVip0Type === 'Facebook' 
+                ? (rates.facebook?.rate || 25.00) 
+                : (rates.gmail?.rate || 25.00);
+
+            const btn = document.getElementById('btn-submit-vip0-work');
+            btn.disabled = true;
+            btn.innerHTML = `<span class="animate-spin inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full mr-2"></span> Submitting...`;
+
+            try {
+                await addDoc(collection(dbWork, "work_submissions"), {
+                    userId: String(userData.tgChatId),
+                    userName: userData.name || 'User',
+                    userTgUsername: userData.username || null,
+                    jobTitle: `${selectedVip0Type} Account Sell`,
+                    category: selectedVip0Type,
+                    reward: parseFloat(rewardAmt),
+                    proof: proof,
+                    status: "pending",
+                    isMasterTask: false,
+                    submittedAt: serverTimestamp()
+                });
+
+                showToast("অ্যাকাউন্ট সফলভাবে জমা হয়েছে! ভেরিফিকেশন শেষে ব্যালেন্স যুক্ত হবে।", "success");
+                document.getElementById('vip0-proof-text').value = '';
+                navigateTo('work-page');
+                switchWorkView('my_subs');
+            } catch(e) {
+                showToast(e.message || "সাবমিশন ব্যর্থ হয়েছে!", "error");
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `<i data-lucide="check-circle" class="w-4 h-4"></i> <span>সাবমিট করুন (Submit Account)</span>`;
+                lucide.createIcons();
+            }
+        };
 
         async function checkMasterApplicationStatus() {
             if (!userData) return;
@@ -2390,7 +2484,7 @@
         }
 
         // ==========================================
-        // WORK MARKETPLACE (REDESIGNED WITH DETAILED EARNINGS)
+        // WORK MARKETPLACE
         // ==========================================
         async function loadWorkPageStats() {
             if (!userData) return;
@@ -2458,10 +2552,9 @@
                             badge: "ফ্রি মেম্বারদের জন্য",
                             features: [
                                 "Gmail সেল: ৳২০ - ৳৫০",
-                                "Facebook আইডি: ৳২৫.০০",
-                                "Telegram সেশন: ৳৩০.০০"
+                                "Facebook আইডি: ৳২৫.০০"
                             ],
-                            description: "ফ্রেশ অথবা রিকভারি মেইল যুক্ত অ্যাকাউন্ট সরাসরি আমাদের কাছে বিক্রি করে দ্রুত বিকাশ/নগদে টাকা নিন।"
+                            description: "ফ্রেশ অথবা রিকভারি মেইল ও ফেসবুক অ্যাকাউন্ট সরাসরি আমাদের কাছে বিক্রি করে দ্রুত বিকাশ/নগদে টাকা নিন।"
                         },
                         {
                             id: "job_master",
@@ -2755,79 +2848,6 @@
                 btnSubs.className = "flex-1 py-2.5 bg-blue-600 text-white rounded-xl font-bold text-xs shadow-md transition";
                 btnFeed.className = "flex-1 py-2.5 bg-slate-100 text-slate-700 hover:bg-slate-200 rounded-xl font-bold text-xs transition";
                 loadUserWorkSubmissions();
-            }
-        };
-
-        window.selectVip0AccountType = function(type, el) {
-            document.querySelectorAll('.account-type-pill').forEach(p => p.classList.remove('active'));
-            if(el) el.classList.add('active');
-            selectedVip0Type = type;
-
-            const labelEl = document.getElementById('selected-account-label');
-            const proofLabel = document.getElementById('account-proof-label');
-            const textarea = document.getElementById('vip0-proof-text');
-
-            if (type === 'Gmail') {
-                labelEl.textContent = 'Gmail Account Sell (৳২০ - ৳৫০)';
-                proofLabel.textContent = 'ইমেইল ও পাসওয়ার্ড ফরম্যাট:';
-                textarea.placeholder = 'Email | Password | Recovery Mail (যদি থাকে)';
-            } else if (type === 'Facebook') {
-                labelEl.textContent = 'Facebook Active Account (৳২৫.০০)';
-                proofLabel.textContent = 'ফেসবুক আইডি ও পাসওয়ার্ড:';
-                textarea.placeholder = 'UID/Email/Phone | Password | 2FA Secret Key (যদি থাকে)';
-            } else if (type === 'Telegram') {
-                labelEl.textContent = 'Telegram Account / Session (৳৩০.০০)';
-                proofLabel.textContent = 'টেলিগ্রাম নম্বর / সেশন ডাটা:';
-                textarea.placeholder = 'Phone Number | Session File Code / OTP বিবরণ';
-            } else {
-                labelEl.textContent = 'Other Account Sell';
-                proofLabel.textContent = 'অ্যাকাউন্ট টাইপ ও বিস্তারিত ডাটা:';
-                textarea.placeholder = 'অ্যাকাউন্টের ধরন | ইউজারনেম/ইমেইল | পাসওয়ার্ড | প্রয়োজনীয় তথ্য';
-            }
-        };
-
-        window.submitVip0AccountJob = async function() {
-            if (!ensureAccountActive("অ্যাকাউন্ট সেল")) return;
-            const proof = document.getElementById('vip0-proof-text').value.trim();
-            const link = document.getElementById('vip0-link-text').value.trim();
-
-            if (!proof) return showToast("অনুগ্রহ করে অ্যাকাউন্টের ডাটা বা বিবরণ লিখুন!", "error");
-            if (!userData.unlockedVip0) return showToast("প্রথমে VIP 0 একটিভ করুন!", "error");
-
-            let rewardAmt = 20.00;
-            if (selectedVip0Type === 'Facebook') rewardAmt = 25.00;
-            else if (selectedVip0Type === 'Telegram') rewardAmt = 30.00;
-
-            const btn = document.getElementById('btn-submit-vip0-work');
-            btn.disabled = true;
-            btn.innerHTML = `<span class="animate-spin inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full mr-2"></span> Submitting...`;
-
-            try {
-                await addDoc(collection(dbWork, "work_submissions"), {
-                    userId: String(userData.tgChatId),
-                    userName: userData.name || 'User',
-                    userTgUsername: userData.username || null,
-                    jobTitle: `${selectedVip0Type} Account Sell`,
-                    category: selectedVip0Type,
-                    reward: rewardAmt,
-                    proof: proof,
-                    link: link || null,
-                    status: "pending",
-                    isMasterTask: false,
-                    submittedAt: serverTimestamp()
-                });
-
-                showToast("অ্যাকাউন্ট সফলভাবে জমা হয়েছে! ভেরিফিকেশন শেষে ব্যালেন্স যুক্ত হবে।", "success");
-                document.getElementById('vip0-proof-text').value = '';
-                document.getElementById('vip0-link-text').value = '';
-                navigateTo('work-page');
-                switchWorkView('my_subs');
-            } catch(e) {
-                showToast(e.message || "সাবমিশন ব্যর্থ হয়েছে!", "error");
-            } finally {
-                btn.disabled = false;
-                btn.innerHTML = `<i data-lucide="check-circle" class="w-4 h-4"></i> <span>সাবমিট করুন (Submit Account)</span>`;
-                lucide.createIcons();
             }
         };
 
@@ -3193,7 +3213,7 @@
         }
 
         // ==========================================
-        // TASKS & REWARDS WITH VERIFIED JOIN & BOT SECRET KEY
+        // TASKS & REWARDS
         // ==========================================
         function renderDailyCheckinState() {
             const btn = document.getElementById('btn-daily-checkin');
@@ -3249,7 +3269,7 @@
             }
         };
 
-        // FETCH & RENDER DYNAMIC TASKS (COMPLETED TASKS MOVED TO BOTTOM)
+        // FETCH & RENDER DYNAMIC TASKS FROM NEW FIREBASE
         async function renderDynamicTasksList() {
             const container = document.getElementById('dynamic-tasks-container');
             if (!container) return;
@@ -3300,7 +3320,6 @@
 
                 const completedList = userData?.completedTasks || [];
 
-                // SORTING: Uncompleted tasks at the top, completed tasks at the bottom
                 taskList.sort((a, b) => {
                     const aDone = completedList.includes(a.id) ? 1 : 0;
                     const bDone = completedList.includes(b.id) ? 1 : 0;
@@ -3406,7 +3425,6 @@
             }
         };
 
-        // TELEGRAM CHANNEL MEMBERSHIP VERIFICATION WITH 5-SECOND COOLDOWN RE-TRY
         window.verifyTelegramChannelJoin = async function(taskId, targetChatId, reward) {
             if (!ensureAccountActive("টাস্ক ভেরিফিকেশন")) return;
 
@@ -3462,7 +3480,6 @@
                     return;
                 }
 
-                // If verified, award balance
                 await claimDynamicTaskReward(taskId, reward);
             } catch(e) {
                 showToast("ভেরিফিকেশন সম্পন্ন করা যায়নি", "error");
@@ -3472,7 +3489,6 @@
             }
         };
 
-        // SUBMIT SECRET KEY FOR VISIT BOT TASK
         window.submitBotSecretKey = async function(taskId, reward) {
             if (!ensureAccountActive("বট টাস্ক")) return;
 
@@ -3484,7 +3500,6 @@
             }
 
             try {
-                // Fetch valid keys from DB
                 let validKeys = [];
                 const taskDoc = await getDoc(doc(dbWork, "tasks", taskId));
                 if (taskDoc.exists() && taskDoc.data().secretKeys) {
@@ -3505,7 +3520,6 @@
             }
         };
 
-        // TIMER TASK FOR VISIT
         window.startTimedTaskFlow = function(taskId, type, targetUrl, duration, reward) {
             if (!ensureAccountActive("টাস্ক")) return;
 
@@ -3718,7 +3732,7 @@
                         window.history.replaceState({}, document.title, window.location.pathname);
                         updateUI();
                     }
-                } catch (e) {
+} catch (e) {
                     showToast('ভেরিফিকেশনে সমস্যা দেখা দিয়েছে', 'error');
                 }
             }
@@ -3804,13 +3818,14 @@
         }
 
         // ==========================================
-        // NOTIFICATIONS
+        // NOTIFICATIONS SYSTEM (ACTIVE & FUNCTIONAL)
         // ==========================================
         async function loadUserNotifications() {
             if (!userData) return;
             const tgChatId = String(userData.tgChatId);
             let notifications = [];
 
+            // Global Notices from DB Configuration
             if (appConfig.notices && Array.isArray(appConfig.notices)) {
                 appConfig.notices.forEach((n, idx) => {
                     notifications.push({
@@ -3823,6 +3838,7 @@
                 });
             }
 
+            // User Specific Realtime Notifications
             try {
                 const notifRef = collection(dbUser, "users", tgChatId, "notifications");
                 const q = query(notifRef, orderBy("time", "desc"), limit(20));
@@ -3998,6 +4014,7 @@
             renderProductsBySelection();
         };
 
+        // Stock Count pulled directly from the new shared Firebase
         async function getStockCount(collectionName) {
             if(!collectionName) return 0;
             try {
@@ -4634,7 +4651,7 @@
                             </div>` : ''}
                         </div>
 
-<div class="flex gap-2 pt-1 text-xs">
+                        <div class="flex gap-2 pt-1 text-xs">
                             <button onclick="copyToClipboard('${fullCopy}', this)" class="btn-buy py-2 px-3 rounded-xl font-bold flex-1 text-center">Copy Full</button>
                             <button onclick="openReplaceModal('${p.saleId || p.id}', '${p.mailType}', ${p.cost || 0})" class="bg-purple-50 text-purple-700 border border-purple-200 hover:bg-purple-100 py-2 px-3 rounded-xl font-bold flex items-center justify-center gap-1">
                                 <i data-lucide="shield-alert" class="w-3.5 h-3.5"></i> Report
