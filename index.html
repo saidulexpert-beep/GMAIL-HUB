@@ -4457,19 +4457,19 @@
         }
 
         window.toggleNotificationModal = function() {
-            const modal = document.getElementById('notification-modal');
-            const isOpening = modal.classList.contains('hidden');
-            modal.classList.toggle('hidden');
+    const modal = document.getElementById('notification-modal');
+    const isOpening = modal.classList.contains('hidden');
+    modal.classList.toggle('hidden');
 
-const tgChatId = String(userData?.tgChatId || '0');
-                localStorage.setItem(`notif_last_read_${tgChatId}`, String(Date.now()));
-                const badge = document.getElementById('notif-badge');
-                badge.classList.add('hidden');
-                badge.textContent = "0";
-                renderNotifications();
-            }
-        };
-
+    if (isOpening) {
+        const tgChatId = String(userData?.tgChatId || '0');
+        localStorage.setItem(`notif_last_read_${tgChatId}`, String(Date.now()));
+        const badge = document.getElementById('notif-badge');
+        badge.classList.add('hidden');
+        badge.textContent = "0";
+        renderNotifications();
+    }
+};
         function renderNotifications() {
             const container = document.getElementById('notification-list-container');
             if (allUserNotifications.length === 0) {
