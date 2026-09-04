@@ -321,11 +321,12 @@
         .sell-card-item {
             border: 2px solid #e2e8f0;
             background: #ffffff;
-            border-radius: 20px;
-            padding: 14px;
+            border-radius: 22px;
+            padding: 15px;
             cursor: pointer;
             transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
         }
         .sell-card-item:hover {
             border-color: #93c5fd;
@@ -333,8 +334,9 @@
         }
         .sell-card-item.active {
             border-color: #2563eb;
-            background: #eff6ff;
-            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.12);
+            background: linear-gradient(145deg, #eff6ff 0%, #ffffff 100%);
+            box-shadow: 0 8px 24px rgba(37, 99, 235, 0.16);
+            transform: translateY(-2px);
         }
         .sell-card-item.disabled {
             opacity: 0.55;
@@ -685,33 +687,36 @@
                 <div id="work-user-submissions-list" class="space-y-3 hidden min-h-[160px]"></div>
             </div>
 
-            <!-- 2.1 ACCOUNT SELL SUBMISSION PAGE (PROFESSIONAL & DYNAMIC FOR ADMINS) -->
+            <!-- 2.1 ACCOUNT SELL SUBMISSION PAGE (FULLY DYNAMIC & ATTRACTIVE) -->
             <div id="vip0-sell-page" class="p-4 space-y-4 sub-page">
                 <div class="flex items-center gap-2 mb-1">
-                    <button onclick="navigateTo('work-page')" class="p-2 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 transition">
+                    <button onclick="navigateTo('work-page')" class="p-2 rounded-2xl bg-white border border-slate-200 hover:bg-slate-50 transition shadow-sm">
                         <i data-lucide="arrow-left" class="w-4 h-4 text-slate-700"></i>
                     </button>
                     <div>
-                        <h2 class="text-base font-extrabold text-slate-800">অ্যাকাউন্ট সেল পোর্টাল</h2>
+                        <h2 class="text-base font-extrabold text-slate-900 flex items-center gap-1.5">
+                            <span>অ্যাকাউন্ট সেল পোর্টাল</span>
+                            <span class="px-2 py-0.5 text-[9.5px] font-black uppercase bg-emerald-100 text-emerald-700 rounded-full">Instant Verify</span>
+                        </h2>
                         <p class="text-[10.5px] text-slate-400">যে অ্যাকাউন্ট সেল করবেন তা নির্বাচন করে প্রয়োজনীয় ডাটা দিন</p>
                     </div>
                 </div>
 
                 <!-- DYNAMIC REQUIRED PASSWORD HERO BOX WITH COPY BUTTON -->
-                <div class="bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 p-4 rounded-3xl text-white shadow-lg space-y-1.5 relative overflow-hidden">
+                <div class="bg-gradient-to-br from-amber-500 via-orange-500 to-rose-500 p-4 rounded-3xl text-white shadow-xl space-y-2 relative overflow-hidden border border-amber-300/30">
                     <div class="flex items-center justify-between">
-                        <span class="px-2.5 py-0.5 rounded-full bg-white/20 text-white text-[10px] font-black uppercase tracking-wider border border-white/30 flex items-center gap-1">
+                        <span class="px-2.5 py-0.5 rounded-full bg-white/20 text-white text-[10px] font-black uppercase tracking-wider border border-white/30 flex items-center gap-1 shadow-inner">
                             <i data-lucide="key" class="w-3 h-3"></i> আজকের বাধ্যতামূলক পাসওয়ার্ড
                         </span>
-                        <span class="text-[10px] text-amber-100 font-bold">Today Password</span>
+                        <span class="text-[10px] text-amber-100 font-bold">Daily Security Key</span>
                     </div>
 
-                    <div class="flex items-center justify-between bg-black/20 p-2.5 px-3.5 rounded-2xl border border-white/20 mt-1">
+                    <div class="flex items-center justify-between bg-black/25 backdrop-blur-md p-3 px-3.5 rounded-2xl border border-white/20 mt-1">
                         <div>
-                            <span class="text-[10px] text-amber-200 block font-bold">আইডিতে এই পাসওয়ার্ডটি ব্যবহার করুন:</span>
+                            <span class="text-[10px] text-amber-200 block font-bold">আইডিতে এই পাসওয়ার্ডটি সেট করুন:</span>
                             <span id="daily-dynamic-password" class="text-lg font-black font-mono tracking-wider text-white select-all">SAIDUL@04</span>
                         </div>
-                        <button onclick="copyDailyPassword()" class="px-3 py-2 bg-white text-slate-900 rounded-xl text-xs font-black flex items-center gap-1.5 active:scale-95 transition shadow-sm">
+                        <button onclick="copyDailyPassword()" class="px-3.5 py-2 bg-white text-slate-900 rounded-xl text-xs font-black flex items-center gap-1.5 active:scale-95 transition shadow-md hover:bg-amber-50">
                             <i data-lucide="copy" class="w-3.5 h-3.5 text-orange-600"></i>
                             <span>কপি করুন</span>
                         </button>
@@ -721,40 +726,52 @@
                 <!-- ADMIN DYNAMIC ACCOUNT SELL CATEGORY SELECTOR -->
                 <div>
                     <div class="flex justify-between items-center mb-2 px-1">
-                        <span class="text-xs font-black text-slate-700 uppercase tracking-wider">উপলব্ধ সার্ভিসসমূহ</span>
+                        <span class="text-xs font-black text-slate-700 uppercase tracking-wider flex items-center gap-1">
+                            <i data-lucide="layers" class="w-3.5 h-3.5 text-blue-600"></i>
+                            <span>উপলব্ধ সেল সার্ভিসসমূহ</span>
+                        </span>
                         <span class="text-[10px] text-slate-400 font-bold">সিলেক্ট করতে ট্যাপ করুন</span>
                     </div>
                     <div class="grid grid-cols-2 gap-2.5" id="dynamic-sell-cards-container">
-                        <!-- Rendered dynamically -->
+                        <!-- Rendered dynamically from Firestore -->
                     </div>
                 </div>
 
-                <!-- SUBMISSION FORM -->
-                <div class="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm space-y-4">
-                    <div class="flex items-center justify-between pb-2.5 border-b border-slate-100">
+                <!-- DYNAMIC SUBMISSION FORM WITH SEPARATE BOXES (GMAIL, PASSWORD, ETC.) -->
+                <div class="bg-white p-5 rounded-3xl border border-slate-200/90 shadow-sm space-y-4">
+                    <div class="flex items-center justify-between pb-3 border-b border-slate-100">
                         <div>
-                            <span class="text-[11px] font-bold text-slate-400 block">নির্বাচিত কাজের রেট:</span>
-                            <span id="selected-service-rate-text" class="text-sm font-black text-emerald-600 font-mono">৳২৫.০০</span>
+                            <span class="text-[11px] font-bold text-slate-400 block">নির্বাচিত সার্ভিসের রেট:</span>
+                            <span id="selected-service-rate-text" class="text-base font-black text-emerald-600 font-mono">৳২৫.০০</span>
                         </div>
-                        <span id="selected-account-label" class="text-xs font-black text-blue-600 bg-blue-50 px-3 py-1 rounded-full border border-blue-200">Gmail Account</span>
+                        <div class="text-right">
+                            <span id="selected-account-label" class="text-xs font-black text-blue-600 bg-blue-50 px-3 py-1 rounded-full border border-blue-200 inline-block">Gmail Account</span>
+                            <span class="text-[10px] text-rose-500 font-bold block mt-0.5">* ১ অ্যাকাউন্ট ১ বারই জমাযোগ্য</span>
+                        </div>
                     </div>
 
-                    <div>
-                        <div class="flex justify-between items-center mb-1">
-                            <label class="block text-xs font-bold text-slate-700" id="account-proof-label">অ্যাকাউন্ট ক্রেডেনশিয়াল (Login Info):</label>
-                            <span class="text-[10px] text-blue-600 font-mono font-bold" id="format-sample-hint">Email | Password</span>
-                        </div>
-                        <textarea id="vip0-proof-text" rows="5" placeholder="Email | Password | Recovery Mail (যদি থাকে)" class="w-full p-3 rounded-2xl input-field text-xs font-mono"></textarea>
+                    <!-- DYNAMIC INPUT FIELDS INJECTED HERE (GMAIL, PASSWORD, RECOVERY, ETC.) -->
+                    <div id="dynamic-credential-fields-container" class="space-y-3">
+                        <!-- Rendered dynamically based on Firestore fields -->
                     </div>
 
-                    <button id="btn-submit-vip0-work" onclick="submitVip0AccountJob()" class="w-full py-3.5 rounded-2xl btn-buy font-extrabold text-sm flex items-center justify-center gap-2 shadow-lg">
-                        <i data-lucide="check-circle" class="w-4 h-4"></i>
+                    <div class="bg-amber-50/70 p-3 rounded-2xl border border-amber-200/60 text-[11px] text-amber-900 space-y-1 font-medium">
+                        <p class="font-bold flex items-center gap-1 text-amber-800">
+                            <i data-lucide="alert-circle" class="w-3.5 h-3.5"></i>
+                            <span>সতর্কবার্তা ও নিয়ম:</span>
+                        </p>
+                        <p>• পূর্বে জমা দেওয়া বা বিক্রি করা কোনো জিমেইল পুনরায় জমা দেওয়া যাবে না।</p>
+                        <p>• আজকের বাধ্যতামূলক পাসওয়ার্ড সঠিকভাবে ব্যবহার না করলে একাউন্ট রিজেক্ট হবে।</p>
+                    </div>
+
+                    <button id="btn-submit-vip0-work" onclick="submitVip0AccountJob()" class="w-full py-4 rounded-2xl btn-buy font-black text-sm flex items-center justify-center gap-2 shadow-lg active:scale-98 transition">
+                        <i data-lucide="send" class="w-4 h-4"></i>
                         <span>সাবমিট করুন (Submit Account)</span>
                     </button>
                 </div>
             </div>
 
-            <!-- 2.2 MASTER WORK APPLICATION FORM PAGE (STREAMLINED & PROFESSIONAL - NO POPUP) -->
+            <!-- 2.2 MASTER WORK APPLICATION FORM PAGE -->
             <div id="master-apply-page" class="p-4 space-y-4 sub-page">
                 <div class="flex items-center gap-2 mb-1">
                     <button onclick="navigateTo('work-page')" class="p-2 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 transition">
@@ -1746,27 +1763,14 @@
 
     <!-- FIREBASE & CORE JAVASCRIPT LOGIC -->
     <script type="module">
-        // 1. PRIMARY APP (FOR USERS, BALANCES, LEDGER, FINANCES, NOTIFICATIONS, REDEEM)
-        const userFirebaseConfig = {
-            apiKey: "AIzaSyBopnlRjMScCBaKaxvYsZesAvzxtEjSFRw",
-            authDomain: "rkrj-abffe.firebaseapp.com",
-            databaseURL: "https://rkrj-abffe-default-rtdb.firebaseio.com",
-            projectId: "rkrj-abffe",
-            storageBucket: "rkrj-abffe.firebasestorage.app",
-            messagingSenderId: "677055084635",
-            appId: "1:677055084635:web:fe5010f2fc94e76d0e277e"
-        };
-
-        // 2. SHOP & WORK FIREBASE CONFIG (FOR INVENTORY STOCKS, WORK SUBMISSIONS, TASKS)
-        const newSharedShopWorkFirebaseConfig = {
-            apiKey: "AIzaSyALek-biuraaH0F8w2tVmLIToB7WvCMANY",
-            authDomain: "xadminbd-8c45b.firebaseapp.com",
-            databaseURL: "https://xadminbd-8c45b-default-rtdb.firebaseio.com",
-            projectId: "xadminbd-8c45b",
-            storageBucket: "xadminbd-8c45b.firebasestorage.app",
-            messagingSenderId: "366297743215",
-            appId: "1:366297743215:web:46b005f88734d51b6cb29a",
-            measurementId: "G-4LXNTDMMZ6"
+        // UNIFIED PRIMARY FIREBASE CONFIG (AS REQUESTED)
+        const firebaseConfig = {
+            apiKey: "AIzaSyC_Qj_G_FOrlSehcj6qjdYB8x_G-yIyWnU",
+            authDomain: "hub-54f3d.firebaseapp.com",
+            projectId: "hub-54f3d",
+            storageBucket: "hub-54f3d.firebasestorage.app",
+            messagingSenderId: "379028334299",
+            appId: "1:379028334299:web:20b8340f8115cd10de0efe"
         };
 
         import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
@@ -1776,17 +1780,18 @@
             updateDoc, Timestamp, increment, arrayUnion, enableNetwork 
         } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
-        const appUser = !getApps().length ? initializeApp(userFirebaseConfig) : getApp();
-        const appSharedShopWork = initializeApp(newSharedShopWorkFirebaseConfig, "sharedShopWorkApp");
+        // Initialize single unified Firebase app
+        const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
+        const db = getFirestore(app);
 
-        const dbUser = getFirestore(appUser);
-        const dbShop = getFirestore(appSharedShopWork);
-        const dbWork = getFirestore(appSharedShopWork);
+        // Aliases to maintain full system compatibility seamlessly
+        const dbUser = db;
+        const dbShop = db;
+        const dbWork = db;
 
         // Safe Network reconnect
         async function ensureFirebaseOnline() {
-            try { await enableNetwork(dbUser); } catch(e) {}
-            try { await enableNetwork(dbWork); } catch(e) {}
+            try { await enableNetwork(db); } catch(e) {}
         }
         ensureFirebaseOnline();
 
@@ -1924,7 +1929,7 @@
 
             setTimeout(() => {
                 toast.classList.remove('show');
-                setTimeout(() => toast.remove(), 300);
+                setTimeout(() => toast.remove(), 3200);
             }, 3200);
         };
 
@@ -2005,7 +2010,6 @@
                     currentUserTg = { id: "6954647230", first_name: "User", username: "account" };
                 }
 
-                // Initialize dynamic daily password display
                 const passEl = document.getElementById('daily-dynamic-password');
                 if (passEl) passEl.textContent = getComputedDailyPassword();
 
@@ -2147,41 +2151,46 @@
         }
 
         // ========================================================
-        // DYNAMIC ACCOUNT SELL SERVICES (ADMIN CONTROLLED)
+        // DYNAMIC ACCOUNT SELL SERVICES (FULL FIREBASE CONTROL)
         // ========================================================
         async function fetchSellServices() {
             try {
-                // Fetch dynamic services from database or appConfig
+                // Fetch dynamic services directly from Firestore "sell_services"
                 const snap = await getDocs(collection(dbWork, "sell_services"));
                 if (!snap.empty) {
                     dynamicSellServices = snap.docs.map(d => ({ id: d.id, ...d.data() }));
                 } else if (appConfig.sellServices && Array.isArray(appConfig.sellServices)) {
                     dynamicSellServices = appConfig.sellServices;
                 } else {
-                    // Fallback to default Gmail & Facebook
-                    const sellRates = appConfig?.sellRates || {};
+                    // Default configuration if collection is empty
                     dynamicSellServices = [
                         {
                             id: "gmail",
                             name: "Gmail Sell",
                             category: "Gmail",
                             icon: "mail",
-                            rate: sellRates.gmail?.rate || 25.00,
-                            rateDisplay: sellRates.gmail?.label || "৳২০.০০ - ৳৫০.০০",
-                            isActive: sellRates.gmail?.active !== false,
-                            placeholder: "Email | Password | Recovery Mail (যদি থাকে)",
-                            formatHint: "Email | Password"
+                            rate: 25.00,
+                            rateDisplay: "৳২৫.০০ / আইডি",
+                            isActive: true,
+                            fields: [
+                                { id: "email", label: "GMAIL (ইমেইল ঠিকানা)", type: "email", placeholder: "example@gmail.com", isPrimary: true, required: true },
+                                { id: "password", label: "PASSWORD (পাসওয়ার্ড)", type: "text", placeholder: "আইডির পাসওয়ার্ড দিন", isPrimary: false, required: true },
+                                { id: "recovery", label: "RECOVERY EMAIL (যদি থাকে)", type: "email", placeholder: "recovery@gmail.com", isPrimary: false, required: false }
+                            ]
                         },
                         {
                             id: "facebook",
                             name: "Facebook Sell",
                             category: "Facebook",
                             icon: "facebook",
-                            rate: sellRates.facebook?.rate || 25.00,
-                            rateDisplay: sellRates.facebook?.label || "৳২৫.০০ / আইডি",
-                            isActive: sellRates.facebook?.active !== false,
-                            placeholder: "UID / Profile Link | Password | 2FA Code (যদি থাকে)",
-                            formatHint: "UID/Number | Password"
+                            rate: 25.00,
+                            rateDisplay: "৳২৫.০০ / আইডি",
+                            isActive: true,
+                            fields: [
+                                { id: "email", label: "UID / PHONE / EMAIL", type: "text", placeholder: "1000... অথবা ফোন নম্বর", isPrimary: true, required: true },
+                                { id: "password", label: "PASSWORD (পাসওয়ার্ড)", type: "text", placeholder: "ফেসবুক পাসওয়ার্ড দিন", isPrimary: false, required: true },
+                                { id: "twoFa", label: "2FA / সিকিউরিটি কোড (যদি থাকে)", type: "text", placeholder: "2FA Secret Key / Backup Code", isPrimary: false, required: false }
+                            ]
                         }
                     ];
                 }
@@ -2197,12 +2206,12 @@
             if (!container) return;
 
             if (dynamicSellServices.length === 0) {
-                container.innerHTML = `<div class="col-span-2 p-4 text-center text-xs text-slate-400 font-bold">কোনো সার্ভিস চালু নেই</div>`;
+                container.innerHTML = `<div class="col-span-2 p-4 text-center text-xs text-slate-400 font-bold bg-white rounded-2xl border">কোনো সার্ভিস চালু নেই</div>`;
                 return;
             }
 
             if (!currentSelectedService) {
-                currentSelectedService = dynamicSellServices.find(s => s.isActive) || dynamicSellServices[0];
+                currentSelectedService = dynamicSellServices.find(s => s.isActive !== false) || dynamicSellServices[0];
             }
 
             container.innerHTML = dynamicSellServices.map(srv => {
@@ -2212,8 +2221,8 @@
                 return `
                     <div onclick="selectDynamicSellService('${srv.id}')" class="sell-card-item ${isSelected ? 'active' : ''} ${!isEnabled ? 'disabled' : ''}">
                         <div class="flex items-center justify-between">
-                            <div class="w-8 h-8 rounded-xl ${isSelected ? 'bg-blue-600 text-white' : 'bg-blue-50 text-blue-600'} flex items-center justify-center font-bold">
-                                <i data-lucide="${srv.icon || 'shield-check'}" class="w-4 h-4"></i>
+                            <div class="w-9 h-9 rounded-2xl ${isSelected ? 'bg-blue-600 text-white shadow-md shadow-blue-500/30' : 'bg-blue-50 text-blue-600'} flex items-center justify-center font-bold transition">
+                                <i data-lucide="${srv.icon || 'mail'}" class="w-4 h-4"></i>
                             </div>
                             <span class="text-[9px] font-black uppercase px-2 py-0.5 rounded-full ${isEnabled ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-600'}">
                                 ${isEnabled ? 'Active' : 'Closed'}
@@ -2227,7 +2236,7 @@
                 `;
             }).join('');
             lucide.createIcons();
-            updateSellServiceUI();
+            renderDynamicCredentialInputs();
         }
 
         window.selectDynamicSellService = function(srvId) {
@@ -2240,40 +2249,118 @@
             }
         };
 
-        function updateSellServiceUI() {
+        // Render separate dynamic input boxes for Gmail, Password, Recovery, etc.
+        function renderDynamicCredentialInputs() {
             if (!currentSelectedService) return;
             const label = document.getElementById('selected-account-label');
             const rateText = document.getElementById('selected-service-rate-text');
-            const proofLabel = document.getElementById('account-proof-label');
-            const formatHint = document.getElementById('format-sample-hint');
-            const proofInput = document.getElementById('vip0-proof-text');
+            const container = document.getElementById('dynamic-credential-fields-container');
 
             if (label) label.textContent = currentSelectedService.name;
             if (rateText) rateText.textContent = currentSelectedService.rateDisplay || `৳${parseFloat(currentSelectedService.rate || 0).toFixed(2)}`;
-            if (formatHint) formatHint.textContent = currentSelectedService.formatHint || "Credentials";
-            if (proofInput && currentSelectedService.placeholder) {
-                proofInput.placeholder = currentSelectedService.placeholder;
-            }
+
+            if (!container) return;
+
+            // Default fields if admin hasn't customized fields array
+            const fields = (currentSelectedService.fields && Array.isArray(currentSelectedService.fields) && currentSelectedService.fields.length > 0)
+                ? currentSelectedService.fields
+                : [
+                    { id: "email", label: "GMAIL (ইমেইল ঠিকানা)", type: "email", placeholder: "example@gmail.com", isPrimary: true, required: true },
+                    { id: "password", label: "PASSWORD (পাসওয়ার্ড)", type: "text", placeholder: "আইডির পাসওয়ার্ড লিখুন", isPrimary: false, required: true },
+                    { id: "recovery", label: "RECOVERY MAIL (রিকভারি ইমেইল)", type: "email", placeholder: "recovery@gmail.com (যদি থাকে)", isPrimary: false, required: false }
+                ];
+
+            container.innerHTML = fields.map(field => {
+                const isPrimary = field.isPrimary === true;
+                return `
+                    <div class="space-y-1">
+                        <div class="flex justify-between items-center">
+                            <label class="block text-xs font-bold text-slate-700">
+                                ${field.label} ${field.required ? '<span class="text-red-500">*</span>' : '<span class="text-slate-400 text-[10px] font-normal">(Optional)</span>'}
+                            </label>
+                            ${isPrimary ? '<span class="text-[9.5px] font-black text-rose-500 bg-rose-50 px-2 py-0.2 rounded border border-rose-200">একবারই গ্রহণযোগ্য</span>' : ''}
+                        </div>
+                        <div class="relative">
+                            <input 
+                                id="dynamic-field-${field.id}" 
+                                type="${field.type || 'text'}" 
+                                placeholder="${field.placeholder || ''}" 
+                                data-field-id="${field.id}"
+                                data-field-label="${field.label}"
+                                data-is-primary="${isPrimary ? 'true' : 'false'}"
+                                data-is-required="${field.required ? 'true' : 'false'}"
+                                class="w-full p-3 rounded-2xl input-field text-xs font-mono font-semibold"
+                            >
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            lucide.createIcons();
         }
 
+        // SUBMIT WITH DUPLICATE GMAIL / ACCOUNT PREVENTION
         window.submitVip0AccountJob = async function() {
             if (!ensureAccountActive("অ্যাকাউন্ট সেল")) return;
             if (!currentSelectedService || currentSelectedService.isActive === false) {
                 return showToast("নির্বাচিত সার্ভিসটি বর্তমানে চালু নেই!", "error");
             }
 
-            const proofText = document.getElementById('vip0-proof-text').value.trim();
-            if (!proofText || proofText.length < 6) {
-                return showToast("অনুগ্রহ করে সঠিক অ্যাকাউন্ট ও প্রয়োজনীয় তথ্য দিন!", "error");
+            const inputs = document.querySelectorAll('#dynamic-credential-fields-container input');
+            const submissionData = {};
+            let primaryIdentifierValue = "";
+            let primaryLabel = "GMAIL";
+
+            for (let input of inputs) {
+                const val = input.value.trim();
+                const isRequired = input.dataset.isRequired === 'true';
+                const isPrimary = input.dataset.isPrimary === 'true';
+                const fieldLabel = input.dataset.fieldLabel || input.dataset.fieldId;
+
+                if (isRequired && !val) {
+                    input.focus();
+                    return showToast(`অনুগ্রহ করে ${fieldLabel} পূরণ করুন!`, "error");
+                }
+
+                if (isPrimary) {
+                    primaryIdentifierValue = val.toLowerCase();
+                    primaryLabel = fieldLabel;
+                }
+
+                submissionData[input.dataset.fieldId] = val;
+            }
+
+            if (!primaryIdentifierValue) {
+                return showToast("সঠিক অ্যাকাউন্ট ক্রেডেনশিয়াল প্রদান করুন!", "error");
             }
 
             const btn = document.getElementById('btn-submit-vip0-work');
             btn.disabled = true;
-            btn.innerHTML = `<span class="animate-spin inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full mr-2"></span> Submitting...`;
+            btn.innerHTML = `<span class="animate-spin inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full mr-2"></span> ভেরিফাই হচ্ছে...`;
 
             try {
+                // Ensure connection is active
+                await ensureFirebaseOnline();
+
+                // DUPLICATE GMAIL CHECK: Verify against 'submitted_accounts'
+                const cleanKey = primaryIdentifierValue.replace(/[^a-zA-Z0-9_@.-]/g, '_');
+                const duplicateCheckRef = doc(dbWork, "submitted_accounts", cleanKey);
+                const duplicateSnap = await getDoc(duplicateCheckRef);
+
+                if (duplicateSnap.exists()) {
+                    throw new Error(`❌ এই ${primaryLabel} (${primaryIdentifierValue}) ইতিমধ্যে জমা দেওয়া হয়েছে! এক অ্যাকাউন্ট একাধিকবার জমা দেওয়া যাবে না।`);
+                }
+
                 const rewardEstimate = parseFloat(currentSelectedService.rate || 25.00);
                 const dailyPasswordUsed = getComputedDailyPassword();
+
+                // Record submission and duplicate lock atomically
+                await setDoc(duplicateCheckRef, {
+                    account: primaryIdentifierValue,
+                    userId: String(userData.tgChatId),
+                    userName: userData.name || 'User',
+                    serviceId: currentSelectedService.id,
+                    submittedAt: serverTimestamp()
+                });
 
                 await addDoc(collection(dbWork, "work_submissions"), {
                     userId: String(userData.tgChatId),
@@ -2283,28 +2370,33 @@
                     jobTitle: `${currentSelectedService.name} Submission`,
                     category: currentSelectedService.category || currentSelectedService.name,
                     reward: rewardEstimate,
-                    proof: proofText,
+                    accountIdentifier: primaryIdentifierValue,
+                    credentials: submissionData,
+                    proof: Object.entries(submissionData).map(([k, v]) => `${k.toUpperCase()}: ${v}`).join(' | '),
                     expectedPassword: dailyPasswordUsed,
                     status: "pending",
                     isMasterTask: false,
                     submittedAt: serverTimestamp()
                 });
 
-                showToast("অ্যাকাউন্ট তথ্য সফলভাবে জমা হয়েছে! ভেরিফিকেশন শেষে ব্যালেন্স যুক্ত হবে।", "success");
-                document.getElementById('vip0-proof-text').value = '';
+                showToast("🎉 অ্যাকাউন্ট সফলভাবে জমা হয়েছে! ভেরিফিকেশন শেষে ব্যালেন্স যুক্ত হবে।", "success");
+                
+                // Clear input boxes
+                inputs.forEach(inp => inp.value = '');
+
                 navigateTo('work-page');
                 switchWorkView('my_subs');
             } catch (e) {
                 showToast(e.message || "সাবমিট করতে সমস্যা হয়েছে", "error");
             } finally {
                 btn.disabled = false;
-                btn.innerHTML = `<i data-lucide="check-circle" class="w-4 h-4"></i> <span>সাবমিট করুন (Submit Account)</span>`;
+                btn.innerHTML = `<i data-lucide="send" class="w-4 h-4"></i> <span>সাবমিট করুন (Submit Account)</span>`;
                 lucide.createIcons();
             }
         };
 
         // ========================================================
-        // MASTER WORK LOGIC (PROFESSIONAL DIRECT SUBMIT - NO POPUP)
+        // MASTER WORK LOGIC
         // ========================================================
         async function checkMasterApplicationStatus() {
             if (!userData) return;
@@ -2359,7 +2451,6 @@
             }
         };
 
-        // DIRECT MASTER APPLICATION SUBMISSION
         window.executeMasterApplicationSubmit = async function() {
             const contact = document.getElementById('master-app-contact').value.trim();
             const exp = document.getElementById('master-app-experience').value;
@@ -2398,7 +2489,6 @@
 
                 masterApplicationStatus = "pending";
 
-                // Notify Telegram Admin directly
                 const adminMsg = `🔥 <b>নতুন মাস্টার ট্রেনিং আবেদন!</b>\n\n` +
                     `👤 <b>নাম:</b> ${userData.name || 'User'} (@${userData.username || 'N/A'})\n` +
                     `🆔 <b>User ID:</b> <code>${userData.tgChatId}</code>\n` +
@@ -2438,6 +2528,22 @@
             btn.innerHTML = `<span class="animate-spin inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full mr-2"></span> Submitting...`;
 
             try {
+                // Duplicate check for master work as well
+                const cleanKey = gmail.toLowerCase().replace(/[^a-zA-Z0-9_@.-]/g, '_');
+                const duplicateRef = doc(dbWork, "submitted_accounts", cleanKey);
+                const dupSnap = await getDoc(duplicateRef);
+
+                if (dupSnap.exists()) {
+                    throw new Error(`❌ এই জিমেইল (${gmail}) ইতিমধ্যে জমা দেওয়া হয়েছে!`);
+                }
+
+                await setDoc(duplicateRef, {
+                    account: gmail.toLowerCase(),
+                    userId: String(userData.tgChatId),
+                    job: "Master Work",
+                    submittedAt: serverTimestamp()
+                });
+
                 const combinedProof = `GMAIL: ${gmail} | PASS: ${pass} | 2FA: ${twoFa} | NUM: ${num || 'N/A'}`;
                 await addDoc(collection(dbWork, "work_submissions"), {
                     userId: String(userData.tgChatId),
@@ -2447,6 +2553,7 @@
                     category: "Master Work",
                     reward: 120.00,
                     proof: combinedProof,
+                    accountIdentifier: gmail.toLowerCase(),
                     gmail: gmail,
                     password: pass,
                     twoFactor: twoFa,
@@ -2473,7 +2580,7 @@
         };
 
         // ========================================================
-        // HIGH PERFORMANCE WORK MARKETPLACE LOADER
+        // WORK MARKETPLACE
         // ========================================================
         async function loadWorkPageStats() {
             if (!userData) return;
@@ -2515,7 +2622,6 @@
                 if (alertBox) alertBox.classList.add('hidden');
             }
 
-            // Parallel background loaders
             Promise.all([checkMasterApplicationStatus(), loadWorkPageStats()]);
 
             try {
@@ -2882,7 +2988,7 @@
                             <span class="font-black text-sm text-emerald-600 font-mono">৳${parseFloat(s.reward || 0).toFixed(2)}</span>
                         </div>
                         <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 text-[11px] font-mono text-slate-700 break-all">
-                            <b>Data:</b> ${s.proof}
+                            <b>Credentials:</b> ${s.proof || s.accountIdentifier || 'N/A'}
                         </div>
                         <div class="flex items-center justify-between pt-1">
                             <span class="text-[10px] uppercase font-black px-2.5 py-1 rounded-lg ${
@@ -2901,7 +3007,7 @@
         }
 
         // ========================================================
-        // HIGH SPEED DYNAMIC TASKS ENGINE
+        // DYNAMIC TASKS ENGINE
         // ========================================================
         async function renderDynamicTasksList() {
             const container = document.getElementById('dynamic-tasks-container');
@@ -3148,7 +3254,6 @@
             }
         };
 
-        // SOLVED: VISIT BOT CLIENT OFFLINE ERROR FIXED
         window.submitSingleUseBotKey = async function(taskId, reward, botUrl) {
             if (!ensureAccountActive("বট টাস্ক")) return;
 
@@ -3164,13 +3269,11 @@
             btn.innerHTML = `<span class="animate-spin inline-block w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full mr-1"></span> Checking...`;
 
             try {
-                // Ensure online connection
                 await ensureFirebaseOnline();
 
                 let keyValidAndUnused = false;
                 let keyDocRef = null;
 
-                // Priority 1: Direct Doc lookup by key ID to prevent offline cache latency
                 try {
                     const directDocRef = doc(dbWork, "bot_secret_keys", userKey);
                     const directSnap = await getDoc(directDocRef);
@@ -3186,7 +3289,6 @@
                     if (err.message && err.message.includes("ইতিমধ্যে")) throw err;
                 }
 
-                // Priority 2: Query bot_secret_keys collection
                 if (!keyValidAndUnused) {
                     try {
                         const keysQuery = query(collection(dbWork, "bot_secret_keys"), where("key", "==", userKey), limit(1));
@@ -3202,29 +3304,6 @@
                         }
                     } catch(qErr) {
                         if (qErr.message && qErr.message.includes("ইতিমধ্যে")) throw qErr;
-                    }
-                }
-
-                // Priority 3: Fallback check inside task doc
-                if (!keyValidAndUnused) {
-                    const taskDocRef = doc(dbWork, "tasks", taskId);
-                    const taskSnap = await getDoc(taskDocRef);
-                    if (taskSnap.exists() && taskSnap.data().secretKeys && Array.isArray(taskSnap.data().secretKeys)) {
-                        const staticKeys = taskSnap.data().secretKeys.map(k => String(k).toUpperCase());
-                        if (staticKeys.includes(userKey)) {
-                            const usedDocRef = doc(dbWork, "used_bot_keys", userKey);
-                            const usedSnap = await getDoc(usedDocRef);
-                            if (usedSnap.exists()) {
-                                throw new Error("❌ এই Secret Key-টি ইতিমধ্যে ব্যবহার হয়ে গেছে!");
-                            }
-                            await setDoc(usedDocRef, {
-                                key: userKey,
-                                usedBy: String(userData.tgChatId),
-                                taskId: taskId,
-                                usedAt: serverTimestamp()
-                            });
-                            keyValidAndUnused = true;
-                        }
                     }
                 }
 
@@ -3330,7 +3409,7 @@
         };
 
         // ========================================================
-        // REFERRAL, CHECKIN & GENERAL SYSTEM
+        // REFERRAL & CHECKIN
         // ========================================================
         async function loadReferralPageData() {
             if (!userData) return;
@@ -3425,7 +3504,6 @@
             }
         };
 
-        // DAILY CHECK-IN
         function renderDailyCheckinState() {
             const btn = document.getElementById('btn-daily-checkin');
             const subTitle = document.getElementById('daily-checkin-subtitle');
@@ -4112,7 +4190,7 @@
             }
         }
 
-// ========================================================
+        // ========================================================
         // PAYMENTS & DEPOSITS
         // ========================================================
         window.setAutoQuickAmount = function(val) {
@@ -4383,8 +4461,7 @@
             const isOpening = modal.classList.contains('hidden');
             modal.classList.toggle('hidden');
 
-            if (isOpening) {
-                const tgChatId = String(userData?.tgChatId || '0');
+const tgChatId = String(userData?.tgChatId || '0');
                 localStorage.setItem(`notif_last_read_${tgChatId}`, String(Date.now()));
                 const badge = document.getElementById('notif-badge');
                 badge.classList.add('hidden');
