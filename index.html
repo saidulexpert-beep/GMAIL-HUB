@@ -4045,7 +4045,7 @@
                             keyDocRef = keySnap.docs[0].ref;
 
                             if (keyData.isUsed === true) {
-                                throw new Error("❌ এই Secret Key-টি ইতিমধ্যে অন্য কেউ ব্যবহার করেছে!");
+                                throw new Error("❌ Secret Key used");
                             }
                             keyValidAndUnused = true;
                         }
@@ -4397,13 +4397,13 @@
                 await runTransaction(dbUser, async (t) => {
                     const codeSnap = await t.get(codeDocRef);
                     if (!codeSnap.exists()) {
-                        throw new Error("❌ অবৈধ রিডিম কোড! ফায়ারবেসে এমন কোনো কোড নেই।");
+                        throw new Error("❌ ফেক রিডিম কোড 🎁");
                     }
 
                     const codeData = codeSnap.data();
 
                     if (codeData.isActive === false) {
-                        throw new Error("❌ এই রিডিম কোডটি বর্তমানে নিষ্ক্রিয় বা মেয়াদোত্তীর্ণ!");
+                        throw new Error("❌ আপনার দেওয়া রিডিম কোডের মেয়াদ শেষ 🎁!");
                     }
 
                     const targetUsers = codeData.targetUsers || [];
