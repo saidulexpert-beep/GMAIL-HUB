@@ -700,7 +700,7 @@
                     </button>
                     <div>
                         <h2 class="text-base font-extrabold text-slate-900 flex items-center gap-1.5">
-                            <span>অ্যাকাউন্ট সেল পোর্টাল</span>
+                            <span>অ্যাকাউন্ট সেল করুন</span>
                             <span class="px-2 py-0.5 text-[9.5px] font-black uppercase bg-emerald-100 text-emerald-700 rounded-full">Instant Verify</span>
                         </h2>
                         <p class="text-[10.5px] text-slate-400">যে অ্যাকাউন্ট সেল করবেন তা নির্বাচন করে ডাটা দিন</p>
@@ -711,14 +711,14 @@
                 <div class="bg-gradient-to-br from-amber-500 via-orange-500 to-rose-500 p-4 rounded-3xl text-white shadow-xl space-y-2 relative overflow-hidden border border-amber-300/30">
                     <div class="flex items-center justify-between">
                         <span class="px-2.5 py-0.5 rounded-full bg-white/20 text-white text-[10px] font-black uppercase tracking-wider border border-white/30 flex items-center gap-1 shadow-inner">
-                            <i data-lucide="key" class="w-3 h-3"></i> আজকের বাধ্যতামূলক পাসওয়ার্ড
+                            <i data-lucide="key" class="w-3 h-3"></i> আজকের পাসওয়ার্ড
                         </span>
                         <span class="text-[10px] text-amber-100 font-bold">Daily Security Key</span>
                     </div>
 
                     <div class="flex items-center justify-between bg-black/25 backdrop-blur-md p-3 px-3.5 rounded-2xl border border-white/20 mt-1">
                         <div>
-                            <span class="text-[10px] text-amber-200 block font-bold">আইডিতে এই পাসওয়ার্ডটি সেট করুন:</span>
+                            <span class="text-[10px] text-amber-200 block font-bold">আইডিতে এই পাসওয়ার্ডটি যুক্ত করুন:</span>
                             <span id="daily-dynamic-password" class="text-lg font-black font-mono tracking-wider text-white select-all">SAIDUL@04</span>
                         </div>
                         <button onclick="copyDailyPassword()" class="px-3.5 py-2 bg-white text-slate-900 rounded-xl text-xs font-black flex items-center gap-1.5 active:scale-95 transition shadow-md hover:bg-amber-50">
@@ -733,7 +733,7 @@
                     <div class="flex justify-between items-center mb-2 px-1">
                         <span class="text-xs font-black text-slate-700 uppercase tracking-wider flex items-center gap-1">
                             <i data-lucide="layers" class="w-3.5 h-3.5 text-blue-600"></i>
-                            <span>উপলব্ধ সেল সার্ভিসসমূহ</span>
+                            <span>বর্তমান কাজ</span>
                         </span>
                         <span class="text-[10px] text-slate-400 font-bold">সিলেক্ট করতে ট্যাপ করুন</span>
                     </div>
@@ -744,11 +744,11 @@
                 <div class="flex bg-slate-200/80 p-1 rounded-2xl">
                     <button id="btn-mode-single" onclick="toggleSellInputMode('single')" class="flex-1 py-2 rounded-xl text-xs font-black transition bg-white text-blue-600 shadow-sm flex items-center justify-center gap-1">
                         <i data-lucide="user" class="w-3.5 h-3.5"></i>
-                        <span>একটি একাউন্ট (Single)</span>
+                        <span>একাউন্ট জমা দিন</span>
                     </button>
                     <button id="btn-mode-bulk" onclick="toggleSellInputMode('bulk')" class="flex-1 py-2 rounded-xl text-xs font-black transition text-slate-600 hover:text-slate-900 flex items-center justify-center gap-1">
                         <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i>
-                        <span>একাধিক একাউন্ট (Bulk XLSX)</span>
+                        <span>XLSX জমা দিন</span>
                     </button>
                 </div>
 
@@ -756,12 +756,12 @@
                 <div class="bg-white p-5 rounded-3xl border border-slate-200/90 shadow-sm space-y-4">
                     <div class="flex items-center justify-between pb-3 border-b border-slate-100">
                         <div>
-                            <span class="text-[11px] font-bold text-slate-400 block">নির্বাচিত সার্ভিসের রেট:</span>
+                            <span class="text-[11px] font-bold text-slate-400 block">রেট পাবেন</span>
                             <span id="selected-service-rate-text" class="text-base font-black text-emerald-600 font-mono">৳২৫.০০</span>
                         </div>
                         <div class="text-right">
                             <span id="selected-account-label" class="text-xs font-black text-blue-600 bg-blue-50 px-3 py-1 rounded-full border border-blue-200 inline-block">Gmail Account</span>
-                            <span class="text-[10px] text-rose-500 font-bold block mt-0.5">* ১ অ্যাকাউন্ট ১ বারই জমাযোগ্য</span>
+                            <span class="text-[10px] text-rose-500 font-bold block mt-0.5">* নিয়ম মেনে কাজ করুন</span>
                         </div>
                     </div>
 
@@ -802,7 +802,7 @@
 
                     <button id="btn-submit-vip0-work" onclick="submitVip0AccountJob()" class="w-full py-4 rounded-2xl btn-buy font-black text-sm flex items-center justify-center gap-2 shadow-lg active:scale-98 transition">
                         <i data-lucide="send" class="w-4 h-4"></i>
-                        <span id="btn-submit-vip0-text">সাবমিট করুন (Submit Account)</span>
+                        <span id="btn-submit-vip0-text">সাবমিট করুন</span>
                     </button>
                 </div>
             </div>
@@ -815,7 +815,7 @@
                     </button>
                     <div>
                         <h2 class="text-base font-extrabold text-slate-900 flex items-center gap-1.5">
-                            <span>Master Work অনুমোদিত পোর্টাল</span>
+                            <span>Master Work</span>
                             <span class="px-2 py-0.5 text-[9.5px] font-black uppercase bg-emerald-100 text-emerald-800 rounded-full">Approved Worker</span>
                         </h2>
                         <p class="text-[10.5px] text-slate-400">অ্যাডমিনের নির্ধারিত স্পেশাল টাস্ক ও অ্যাকাউন্ট জমা দিন</p>
