@@ -1760,7 +1760,7 @@
             <div>
                 <h3 class="text-base font-black text-slate-900">আবেদন সফলভাবে জমা হয়েছে!</h3>
                 <p class="text-xs text-slate-700 mt-2 leading-relaxed bg-slate-50 p-3 rounded-2xl border border-slate-100 font-bold">
-                    আবেদনটি অ্যাডমিনের চ্যাটে এবং সিস্টেমে জমা হয়েছে। আমরা শীঘ্রই যোগাযোগ করব।
+                    আবেদনটি অ্যাডমিনের চ্যাটে এবং সিস্টেমে জমা হয়েছে। অ্যাডমিন আবেদন অ্যাপ্রুভ করলে আপনি সরাসরি কাজ জমা দিতে পারবেন।
                 </p>
             </div>
             <button onclick="document.getElementById('master-success-contact-modal').classList.add('hidden'); navigateTo('work-page');" class="w-full py-3 bg-blue-600 text-white font-bold rounded-xl text-xs">
@@ -2142,7 +2142,6 @@
             } catch (err) {}
         }
 
-        // রুটভিত্তিক নির্দিষ্ট এডমিন চ্যাটে মেসেজ প্রেরক
         async function dispatchTelegramNotification(type, defaultText, replacements = {}) {
             let targetAdminId = appConfig?.adminChatId || "6954647230";
             let customMessageTemplate = "";
@@ -2330,7 +2329,7 @@
             if (userSnap.exists()) {
                 userData = userSnap.data();
                 if (userData.unlockedVip0 === undefined) userData.unlockedVip0 = false;
-                if (userData.unlockedMasterWork === undefined) userData.unlockedMasterWork = false;
+                if (userData.hasUnlockedMasterFee === undefined) userData.hasUnlockedMasterFee = false;
                 if (userData.isAccountActive === undefined) userData.isAccountActive = false;
                 if (!userData.boundWallets) userData.boundWallets = [];
                 if (!userData.completedTasks) userData.completedTasks = [];
@@ -2350,7 +2349,7 @@
                     isAccountActive: false,
                     referredBy: inviterId && inviterId !== tgChatId ? inviterId : null,
                     unlockedVip0: false,
-                    unlockedMasterWork: false,
+                    hasUnlockedMasterFee: false,
                     lastDailyCheckin: null,
                     boundWallets: [],
                     completedTasks: [],
@@ -2445,7 +2444,6 @@
             }
         }
 
-        // Helper to render Firebase Image URL or Lucide Icon
         function renderServiceIconHtml(iconVal, isSelected, defaultIcon = 'mail') {
             const iconStr = iconVal || defaultIcon;
             const isUrl = iconStr.startsWith('http://') || iconStr.startsWith('https://') || iconStr.startsWith('data:image');
@@ -2473,7 +2471,7 @@
                             id: "gmail",
                             name: "Gmail Sell",
                             category: "Gmail",
-                            icon: "mail", // Can be an icon name OR image URL from Firebase
+                            icon: "mail",
                             rate: defaultVip0Rate,
                             rateDisplay: `৳${defaultVip0Rate.toFixed(2)} / আইডি`,
                             isActive: true,
@@ -2840,7 +2838,6 @@
         // MASTER WORK APPROVED SUBMISSION & DYNAMIC RATE
         // ========================================================
         window.openMasterTelegramChannel = function() {
-            // Firebase Controlled Channel URL
             const channelUrl = appConfig.masterChannelUrl || "https://t.me/EXPERTearn_team";
             try {
                 if (window.Telegram?.WebApp?.openTelegramLink) {
@@ -2985,6 +2982,9 @@
 
         window.submitMasterApprovedJob = async function() {
             if (!ensureAccountActive("মাস্টার কাজ")) return;
+            if (masterApplicationStatus !== 'approved') {
+                return showToast("আপনার মাস্টার কাজ জমা দেওয়ার অনুমতি নেই। অ্যাডমিন অ্যাপ্রুভ করলে তবেই কাজ জমা দেওয়া যাবে।", "error");
+            }
             if (!currentSelectedMasterService) return;
 
             const inputs = document.querySelectorAll('#master-dynamic-credential-fields-container input');
@@ -3103,7 +3103,6 @@
                     masterApplicationStatus = appStatus;
 
                     if (appStatus === 'approved') {
-                        userData.unlockedMasterWork = true;
                         masterCooldownRemaining = 0;
                     } else if (appStatus === 'rejected') {
                         let rejectedMillis = 0;
@@ -3125,7 +3124,7 @@
                             startMasterRejectCountdown();
                         } else {
                             masterCooldownRemaining = 0;
-                            masterApplicationStatus = null;
+                            masterApplicationStatus = null; // 24 hours expired, allow applying again
                         }
                     } else {
                         masterCooldownRemaining = 0;
@@ -3168,12 +3167,18 @@
         window.openMasterWorkApplicationPage = function() {
             if (!ensureAccountActive()) return;
             const unlockFee = getMasterUnlockFee();
-            if (!userData?.unlockedMasterWork) {
-                return showToast(`মাস্টার কাজ করতে প্রথমে ৳${unlockFee.toFixed(0)} দিয়ে আনলক করুন!`, "error");
+            if (!userData?.hasUnlockedMasterFee) {
+                return showToast(`মাস্টার কাজের ফি ৳${unlockFee.toFixed(0)} পরিশোধ করে আনলক করুন!`, "error");
             }
             if (masterApplicationStatus === 'rejected' && masterCooldownRemaining > 0) {
                 const hoursLeft = Math.ceil(masterCooldownRemaining / (1000 * 60 * 60));
                 return showToast(`আপনার পূর্ববর্তী আবেদন বাতিল হয়েছে। ${hoursLeft} ঘণ্টা পর পুনরায় আবেদন করতে পারবেন!`, "error");
+            }
+            if (masterApplicationStatus === 'pending') {
+                return showToast("আপনার আবেদন পর্যালোচনায় আছে। অ্যাডমিনের সিদ্ধান্তের জন্য অপেক্ষা করুন।", "info");
+            }
+            if (masterApplicationStatus === 'approved') {
+                return navigateTo('master-approved-portal-page');
             }
             
             const nameInp = document.getElementById('master-app-fullname');
@@ -3366,13 +3371,13 @@
                                 `প্রতি অ্যাকাউন্টে ৳${masterRate.toFixed(2)} ক্যাশ`,
                                 "আনলিমিটেড অ্যাকাউন্ট তৈরি ও সেল"
                             ],
-                            description: `মাত্র ৳${masterFee.toFixed(0)} ফি দিয়ে লাইভ ট্রেনিং নিয়ে প্রতিদিন আনলিমিটেড অ্যাকাউন্ট তৈরি ও জমা দিয়ে বড় অংকের ইনকাম করুন।`
+                            description: `মাত্র ৳${masterFee.toFixed(0)} ফি দিয়ে লাইভ ট্রেনিং আবেদন করুন। অ্যাডমিন অনুমোদনের পর প্রতিদিন আনলিমিটেড অ্যাকাউন্ট তৈরি ও জমা দিয়ে ইনকাম করুন।`
                         }
                     ];
                 }
 
                 const vip0Unlocked = !!userData?.unlockedVip0;
-                const masterUnlocked = !!userData?.unlockedMasterWork || masterApplicationStatus === 'approved';
+                const hasUnlockedFee = !!userData?.hasUnlockedMasterFee;
 
                 container.innerHTML = dynamicJobs.map(job => {
                     const isMaster = job.type === 'master';
@@ -3402,17 +3407,17 @@
                                 </button>`;
                         }
                     } else if (isMaster) {
-                        if (masterApplicationStatus === 'approved' || masterUnlocked) {
+                        if (masterApplicationStatus === 'approved') {
                             actionButtonHTML = `
                                 <button onclick="navigateTo('master-approved-portal-page')" class="w-full py-3.5 rounded-2xl btn-master-pay text-white font-black text-xs flex items-center justify-center gap-2 shadow-md">
                                     <i data-lucide="external-link" class="w-4 h-4"></i>
-                                    <span>Master Work পোর্টালে যান (Approved)</span>
+                                    <span>কাজ জমা দিন (Master Approved)</span>
                                 </button>`;
                         } else if (masterApplicationStatus === 'pending') {
                             actionButtonHTML = `
-                                <button onclick="showToast('আপনার আবেদন পর্যালোচনায় আছে, শীঘ্রই যোগাযোগ করা হবে।', 'info')" class="w-full py-3.5 rounded-2xl bg-amber-100 text-amber-900 border border-amber-300 font-black text-xs flex items-center justify-center gap-2 shadow-sm">
+                                <button onclick="showToast('আপনার আবেদন পর্যালোচনায় আছে। অ্যাডমিন অনুমোদন করলে কাজ জমা দিতে পারবেন।', 'info')" class="w-full py-3.5 rounded-2xl bg-amber-100 text-amber-900 border border-amber-300 font-black text-xs flex items-center justify-center gap-2 shadow-sm">
                                     <i data-lucide="clock" class="w-4 h-4"></i>
-                                    <span>যোগাযোগের জন্য অপেক্ষায় আছেন</span>
+                                    <span>আবেদন প্রক্রিয়াধীন (Pending Approval)</span>
                                 </button>`;
                         } else if (masterApplicationStatus === 'rejected' && masterCooldownRemaining > 0) {
                             actionButtonHTML = `
@@ -3420,11 +3425,11 @@
                                     <i data-lucide="alert-circle" class="w-4 h-4"></i>
                                     <span id="master-cooldown-timer-text">আবেদন বাতিল হয়েছে (২৪ ঘণ্টা কাউন্টডাউন...)</span>
                                 </button>`;
-                        } else if (userData?.unlockedMasterWork) {
+                        } else if (hasUnlockedFee) {
                             actionButtonHTML = `
                                 <button onclick="openMasterWorkApplicationPage()" class="w-full py-3.5 rounded-2xl btn-master-pay text-white font-black text-xs flex items-center justify-center gap-2 shadow-md">
                                     <i data-lucide="file-text" class="w-4 h-4"></i>
-                                    <span>লাইভ ট্রেনিং আবেদন করুন (Apply)</span>
+                                    <span>লাইভ ট্রেনিং আবেদন করুন (Apply Now)</span>
                                 </button>`;
                         } else {
                             actionButtonHTML = `
@@ -3583,8 +3588,8 @@
 
                         t.update(userRef, {
                             balance: bal - masterFee,
-                            unlockedMasterWork: true,
-                            masterUnlockedAt: serverTimestamp()
+                            hasUnlockedMasterFee: true,
+                            masterFeeUnlockedAt: serverTimestamp()
                         });
 
                         t.set(logRef, {
@@ -3597,12 +3602,13 @@
                     });
 
                     userData.balance -= masterFee;
-                    userData.unlockedMasterWork = true;
-                    await recordUserLedger('expense', 'মাস্টার ওয়ার্ক আনলক', masterFee, false, 'মাস্টার ফি কর্তন');
+                    userData.hasUnlockedMasterFee = true;
+                    await recordUserLedger('expense', 'মাস্টার ফি আনলক', masterFee, false, 'মাস্টার ফি কর্তন');
 
-                    showToast("🎉 মাস্টার ওয়ার্ক সফলভাবে আনলক হয়েছে!", "success");
+                    showToast("🎉 মাস্টার ট্রেনিং রেজিস্ট্রেশন ফি পরিশোধ সফল হয়েছে! এখন আবেদন করুন।", "success");
                     updateUI();
                     renderWorkCards();
+                    openMasterWorkApplicationPage();
                 } catch(e) {
                     showToast(e.message || "আনলক করা সম্ভব হয়নি", "error");
                 }
@@ -4071,7 +4077,6 @@
                 btn.textContent = "জমা দিন";
                 if (input) input.value = '';
 
-                // রিডাইরেক্ট লজিক যদি কি ভুল হয়
                 setTimeout(() => {
                     startBotVisitFlow(taskId, botUrl, duration, reward);
                 }, 1000);
@@ -4411,7 +4416,7 @@
                         }
                     }
 
-                    const usedBy = codeData.usedBy || [];
+                        const usedBy = codeData.usedBy || [];
                     if (usedBy.includes(String(userData.tgChatId))) {
                         throw new Error("❌ আপনি ইতিমধ্যে এই রিডিম কোডটি ব্যবহার করেছেন!");
                     }
@@ -5159,14 +5164,14 @@
                     });
 
                     t.update(userRef, {
-                        unlockedMasterWork: true,
-                        masterUnlockedAt: serverTimestamp()
+                        hasUnlockedMasterFee: true,
+                        masterFeeUnlockedAt: serverTimestamp()
                     });
                 });
 
                 const userSnap = await getDoc(userRef);
                 userData = userSnap.data();
-                await recordUserLedger('expense', 'মাস্টার ওয়ার্ক আনলক', masterFee, false, `TXID: ${txid}`);
+                await recordUserLedger('expense', 'মাস্টার ফি আনলক', masterFee, false, `TXID: ${txid}`);
 
                 updateUI();
                 renderWorkCards();
@@ -5174,8 +5179,11 @@
                 document.getElementById('displayTxid').textContent = txid;
                 document.getElementById('displayMethod').textContent = "NagorikPay";
                 document.getElementById('displayAmount').textContent = `${masterFee.toFixed(2)} BDT`;
-                document.getElementById('gateway-success-status-msg').textContent = "মাস্টার ওয়ার্ক সফলভাবে আনলক হয়েছে!";
+                document.getElementById('gateway-success-status-msg').textContent = "মাস্টার ট্রেনিং ফি সফলভাবে পরিশোধ হয়েছে!";
                 document.getElementById('gateway-success-modal').classList.remove('hidden');
+
+                // সরাসরি ট্রেনিং আবেদন পেজে নিয়ে যাওয়া হবে
+                openMasterWorkApplicationPage();
             } catch(e) {
                 console.error("Master upgrade error:", e);
             }
@@ -5321,7 +5329,7 @@
         function updateUI() {
             if (!userData) return;
             const balanceFormatted = (userData.balance || 0).toFixed(2);
-            const isMaster = !!userData.unlockedMasterWork || masterApplicationStatus === 'approved';
+            const isMaster = masterApplicationStatus === 'approved';
 
             document.getElementById('header-coin-balance').textContent = `৳${balanceFormatted}`;
             
@@ -5384,6 +5392,13 @@
                 return;
             }
 
+            // যদি মাস্টার কাজ পেইজে যেতে চায় এবং অনুমোদিত না থাকে
+            if (pageId === 'master-approved-portal-page' && masterApplicationStatus !== 'approved') {
+                showToast("আপনার আবেদন এখনো অ্যাডমিন কর্তৃক অনুমোদিত হয়নি!", "error");
+                navigateTo('work-page');
+                return;
+            }
+
             document.querySelectorAll('.sub-page').forEach(p => p.classList.remove('active'));
             const target = document.getElementById(pageId);
             if (target) target.classList.add('active');
@@ -5418,7 +5433,6 @@
             renderProductsBySelection();
         };
 
-        // Reads real-time stock count from dbShop (Secondary Firebase)
         async function getStockCount(collectionName) {
             if(!collectionName) return 0;
             try {
@@ -5614,7 +5628,6 @@
             updateBuyModalPriceDisplay();
         };
 
-        // Purchases item: deducts balance from primary DB (dbUser), updates stock in secondary DB (dbShop)
         window.executeBuyNowConfirmed = async function() {
             if (!activeBuyModalData) return;
             const { product, unitPrice, qty } = activeBuyModalData;
@@ -5629,7 +5642,6 @@
             btn.innerHTML = `<span class="animate-spin inline-block w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full mr-1"></span> Processing...`;
 
             try {
-                // Check stock in secondary DB (dbShop)
                 const itemQuery = query(collection(dbShop, product.stockKey), where("isSold", "==", false), limit(qty));
                 const itemQuerySnapshot = await getDocs(itemQuery);
 
@@ -5639,7 +5651,6 @@
 
                 const purchasedItems = [];
 
-                // Deduct balance from primary DB (dbUser)
                 await runTransaction(dbUser, async (transaction) => {
                     const buyerRef = doc(dbUser, "users", String(userData.tgChatId));
                     const buyerSnap = await transaction.get(buyerRef);
@@ -5651,7 +5662,6 @@
                     transaction.update(buyerRef, { balance: buyerSnap.data().balance - totalCost });
                 });
 
-                // Update stock and save purchases in secondary DB (dbShop)
                 let saleId = Date.now();
                 for (const itemDoc of itemQuerySnapshot.docs) {
                     const itemData = itemDoc.data();
@@ -5704,7 +5714,7 @@
             }
         };
 
-        // --- PRE-ORDER LOGIC WITH DISPATCHER ---
+        // --- PRE-ORDER LOGIC ---
         window.openManualModal = function(index) {
             const item = displayedProductsCache[index];
             if (!item) return;
@@ -5764,7 +5774,6 @@
             btn.textContent = "Processing...";
 
             try {
-                // Deduct balance from primary DB (dbUser)
                 await runTransaction(dbUser, async (transaction) => {
                     const buyerRef = doc(dbUser, "users", String(userData.tgChatId));
                     const buyerSnap = await transaction.get(buyerRef);
@@ -5778,7 +5787,6 @@
 
                 const expiryDate = new Date(Date.now() + timeoutMinutes * 60 * 1000);
                 
-                // Store manual order in secondary DB (dbShop)
                 const orderDocRef = await addDoc(collection(dbShop, "manual_orders"), {
                     userId: String(userData.tgChatId),
                     userName: userData.name || 'User',
@@ -5796,7 +5804,6 @@
 
                 await recordUserLedger('expense', `প্রি-অর্ডার (${product.type})`, totalPrice, false, `${qty} টি আইটেম`);
 
-                // Send Notification using dispatcher for manual order
                 const defaultManualAdminNotice = `📦 <b>নতুন ম্যানুয়াল / প্রি-অর্ডার!</b>\n\n` +
                     `👤 <b>ইউজার:</b> ${userData.name || 'User'} (<code>${userData.tgChatId}</code>)\n` +
                     `🏷 <b>পণ্য:</b> ${product.type}\n` +
@@ -6312,7 +6319,6 @@
             btn.textContent = "Submitting...";
 
             try {
-                // Store replace request in secondary DB (dbShop)
                 const docRef = await addDoc(collection(dbShop, "replace_requests"), {
                     userId: String(userData.tgChatId),
                     userName: userData.name || 'User',
@@ -6326,7 +6332,6 @@
                     requestedAt: serverTimestamp()
                 });
 
-                // Dispatch telegram notification for replacement
                 const defaultReplaceMsg = `⚠️ <b>নতুন রিপ্লেসমেন্ট / রিপোর্ট রিকোয়েস্ট!</b>\n\n` +
                     `👤 <b>ইউজার:</b> ${userData.name || 'User'} (<code>${userData.tgChatId}</code>)\n` +
                     `🏷 <b>সার্ভিস:</b> ${mailType}\n` +
@@ -6373,4 +6378,4 @@
         }
     </script>
 </body>
-</html>
+</html>             
