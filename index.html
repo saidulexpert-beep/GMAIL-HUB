@@ -692,7 +692,7 @@
                 <div id="work-user-submissions-list" class="space-y-3 hidden min-h-[160px]"></div>
             </div>
 
-            <!-- 2.1 ACCOUNT SELL SUBMISSION PAGE (VIP 0) -->
+            <!-- 2.1 ACCOUNT SELL SUBMISSION PAGE (VIP 0) WITH BULK EXCEL PASTE -->
             <div id="vip0-sell-page" class="p-4 space-y-4 sub-page">
                 <div class="flex items-center gap-2 mb-1">
                     <button onclick="navigateTo('work-page')" class="p-2 rounded-2xl bg-white border border-slate-200 hover:bg-slate-50 transition shadow-sm">
@@ -703,7 +703,7 @@
                             <span>অ্যাকাউন্ট সেল পোর্টাল</span>
                             <span class="px-2 py-0.5 text-[9.5px] font-black uppercase bg-emerald-100 text-emerald-700 rounded-full">Instant Verify</span>
                         </h2>
-                        <p class="text-[10.5px] text-slate-400">যে অ্যাকাউন্ট সেল করবেন তা নির্বাচন করে প্রয়োজনীয় ডাটা দিন</p>
+                        <p class="text-[10.5px] text-slate-400">যে অ্যাকাউন্ট সেল করবেন তা নির্বাচন করে ডাটা দিন</p>
                     </div>
                 </div>
 
@@ -740,7 +740,19 @@
                     <div class="grid grid-cols-2 gap-2.5" id="dynamic-sell-cards-container"></div>
                 </div>
 
-                <!-- SUBMISSION FORM -->
+                <!-- SUBMISSION MODE TOGGLE (SINGLE / BULK XLSX) -->
+                <div class="flex bg-slate-200/80 p-1 rounded-2xl">
+                    <button id="btn-mode-single" onclick="toggleSellInputMode('single')" class="flex-1 py-2 rounded-xl text-xs font-black transition bg-white text-blue-600 shadow-sm flex items-center justify-center gap-1">
+                        <i data-lucide="user" class="w-3.5 h-3.5"></i>
+                        <span>একটি একাউন্ট (Single)</span>
+                    </button>
+                    <button id="btn-mode-bulk" onclick="toggleSellInputMode('bulk')" class="flex-1 py-2 rounded-xl text-xs font-black transition text-slate-600 hover:text-slate-900 flex items-center justify-center gap-1">
+                        <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i>
+                        <span>একাধিক একাউন্ট (Bulk XLSX)</span>
+                    </button>
+                </div>
+
+                <!-- SUBMISSION FORM WRAPPER -->
                 <div class="bg-white p-5 rounded-3xl border border-slate-200/90 shadow-sm space-y-4">
                     <div class="flex items-center justify-between pb-3 border-b border-slate-100">
                         <div>
@@ -753,25 +765,49 @@
                         </div>
                     </div>
 
-                    <div id="dynamic-credential-fields-container" class="space-y-3"></div>
+                    <!-- 1. SINGLE SUBMISSION MODE -->
+                    <div id="single-sell-mode-container" class="space-y-3">
+                        <div id="dynamic-credential-fields-container" class="space-y-3"></div>
+                    </div>
+
+                    <!-- 2. BULK XLSX PASTE SUBMISSION MODE -->
+                    <div id="bulk-sell-mode-container" class="hidden space-y-3">
+                        <div class="bg-blue-50 p-3 rounded-2xl border border-blue-200 text-xs text-blue-900 space-y-1">
+                            <span class="font-black flex items-center gap-1">
+                                <i data-lucide="file-text" class="w-3.5 h-3.5 text-blue-600"></i>
+                                <span>Excel / টেক্সট পেস্ট করার নিয়ম:</span>
+                            </span>
+                            <p class="text-[11px]">প্রতি লাইনে একটি করে একাউন্ট দিন। ফরম্যাট: <br><code class="bg-white/80 px-1 py-0.5 rounded font-mono text-blue-950 font-bold">ইমেইল&lt;Tab&gt;পাসওয়ার্ড</code> অথবা <code class="bg-white/80 px-1 py-0.5 rounded font-mono text-blue-950 font-bold">ইমেইল:পাসওয়ার্ড</code></p>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1.5">একাধিক একাউন্টের তালিকা এখানে পেস্ট করুন:</label>
+                            <textarea id="bulk-accounts-input" oninput="calculateBulkAccountsPreview()" rows="6" placeholder="user1@gmail.com&#9;pass1&#10;user2@gmail.com&#9;pass2&#10;user3@gmail.com:pass3" class="w-full p-3 rounded-2xl input-field text-xs font-mono"></textarea>
+                        </div>
+
+                        <div class="flex justify-between items-center bg-slate-50 p-3 rounded-2xl border border-slate-200 text-xs font-bold">
+                            <span>চিহ্নিত একাউন্ট সংখ্যা: <span id="bulk-detected-count" class="text-blue-600 font-mono font-black">0</span> টি</span>
+                            <span>সম্ভাব্য মোট আর্ন: <span id="bulk-detected-earn" class="text-emerald-600 font-mono font-black">৳0.00</span></span>
+                        </div>
+                    </div>
 
                     <div class="bg-amber-50/70 p-3 rounded-2xl border border-amber-200/60 text-[11px] text-amber-900 space-y-1 font-medium">
                         <p class="font-bold flex items-center gap-1 text-amber-800">
                             <i data-lucide="alert-circle" class="w-3.5 h-3.5"></i>
                             <span>সতর্কবার্তা ও নিয়ম:</span>
                         </p>
-                        <p>• পূর্বে জমা দেওয়া বা বিক্রি করা কোনো জিমেইল পুনরায় জমা দেওয়া যাবে না।</p>
-                        <p>• আজকের বাধ্যতামূলক পাসওয়ার্ড সঠিকভাবে ব্যবহার না করলে একাউন্ট রিজেক্ট হবে।</p>
+                        <p>• পূর্বে জমা দেওয়া বা বিক্রি করা কোনো আইডি পুনরায় জমা দিলে তা বাতিল হবে।</p>
+                        <p>• আজকের বাধ্যতামূলক পাসওয়ার্ড সঠিকভাবে সেট থাকতে হবে।</p>
                     </div>
 
                     <button id="btn-submit-vip0-work" onclick="submitVip0AccountJob()" class="w-full py-4 rounded-2xl btn-buy font-black text-sm flex items-center justify-center gap-2 shadow-lg active:scale-98 transition">
                         <i data-lucide="send" class="w-4 h-4"></i>
-                        <span>সাবমিট করুন (Submit Account)</span>
+                        <span id="btn-submit-vip0-text">সাবমিট করুন (Submit Account)</span>
                     </button>
                 </div>
             </div>
 
-            <!-- 2.2 MASTER APPROVED WORK PORTAL (ADMIN ADDED ACCOUNTS SUBMISSION PAGE) -->
+            <!-- 2.2 MASTER APPROVED WORK PORTAL -->
             <div id="master-approved-portal-page" class="p-4 space-y-4 sub-page">
                 <div class="flex items-center gap-2 mb-1">
                     <button onclick="navigateTo('work-page')" class="p-2 rounded-2xl bg-white border border-slate-200 hover:bg-slate-50 transition shadow-sm">
@@ -870,7 +906,7 @@
                     <p class="text-[11px] text-amber-100">আবেদন যাচাই শেষে এডমিন টিম সরাসরি আপনার সাথে যোগাযোগ করে প্র্যাকটিক্যাল কাজ ও ট্রিকস বুঝিয়ে দেবে।</p>
                 </div>
 
-                <!-- PROFESSIONAL MULTI-SECTION FORM (CLEAN & BEAUTIFUL UI) -->
+                <!-- PROFESSIONAL MULTI-SECTION FORM -->
                 <div class="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm space-y-5">
                     
                     <!-- SECTION 1: PERSONAL & CONTACT -->
@@ -1584,7 +1620,6 @@
             </div>
 
             <div id="vmo-content-box" class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200 max-h-60 overflow-y-auto font-mono text-xs text-slate-800 space-y-2 select-text">
-                <!-- Delivery Data Inserted Here -->
             </div>
 
             <div class="grid grid-cols-2 gap-2 pt-1">
@@ -1949,7 +1984,6 @@
 
     <!-- FIREBASE & CORE JAVASCRIPT LOGIC -->
     <script type="module">
-        // 1. Primary Firebase Config (User Auth, Balance, Config, Withdrawals, Redeem Codes)
         const primaryFirebaseConfig = {
             apiKey: "AIzaSyC_Qj_G_FOrlSehcj6qjdYB8x_G-yIyWnU",
             authDomain: "hub-54f3d.firebaseapp.com",
@@ -1959,7 +1993,6 @@
             appId: "1:379028334299:web:20b8340f8115cd10de0efe"
         };
 
-        // 2. Secondary Firebase Config (Shop Stock, Purchases, Work Submissions & Accounts)
         const secondaryFirebaseConfig = {
             apiKey: "AIzaSyCagqvWu9t5Qp1IALosaP3-9jN52fhxQ2M",
             authDomain: "saidul4x-78b68.firebaseapp.com",
@@ -1974,7 +2007,7 @@
         import { 
             getFirestore, doc, setDoc, getDoc, collection, addDoc, serverTimestamp, 
             query, where, getDocs, orderBy, limit, runTransaction, getCountFromServer, 
-            updateDoc, Timestamp, increment, arrayUnion, enableNetwork 
+            updateDoc, Timestamp, increment, arrayUnion, writeBatch, enableNetwork 
         } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
         const primaryApp = !getApps().some(a => a.name === '[DEFAULT]') 
@@ -2013,11 +2046,12 @@
         let masterCooldownRemaining = 0;
         let activeDeliveredOrderText = "";
 
-        // Dynamic Account Sell Services State
+        // Dynamic Account Sell Services State & Bulk Input
         let dynamicSellServices = [];
         let currentSelectedService = null;
         let currentSelectedMasterService = null;
         let dynamicMasterTasks = [];
+        let currentSellInputMode = 'single'; // 'single' | 'bulk'
 
         // WITHDRAWAL STATE
         let selectedBindMethod = 'Nagad';
@@ -2077,6 +2111,9 @@
             return parseFloat(appConfig?.ordersRetentionHours || 48);
         }
 
+        // ==========================================
+        // DYNAMIC TELEGRAM DISPATCHER (Firebase Config Driven)
+        // ==========================================
         async function sendTelegramMessage(chatId, messageText) {
             if (!chatId || !messageText) return;
             try {
@@ -2105,11 +2142,34 @@
             } catch (err) {}
         }
 
-        async function notifyAdminTelegram(messageText) {
-            const adminId = appConfig?.adminChatId || "6954647230";
-            if (adminId) {
-                await sendTelegramMessage(adminId, messageText);
+        // রুটভিত্তিক নির্দিষ্ট এডমিন চ্যাটে মেসেজ প্রেরক
+        async function dispatchTelegramNotification(type, defaultText, replacements = {}) {
+            let targetAdminId = appConfig?.adminChatId || "6954647230";
+            let customMessageTemplate = "";
+
+            if (type === 'master_app') {
+                targetAdminId = appConfig?.adminMasterAppChatId || appConfig?.adminChatId || "6954647230";
+                customMessageTemplate = appConfig?.msgTplMasterApp;
+            } else if (type === 'manual_order') {
+                targetAdminId = appConfig?.adminManualOrderChatId || appConfig?.adminChatId || "6954647230";
+                customMessageTemplate = appConfig?.msgTplManualOrder;
+            } else if (type === 'replacement') {
+                targetAdminId = appConfig?.adminReplacementChatId || appConfig?.adminChatId || "6954647230";
+                customMessageTemplate = appConfig?.msgTplReplacement;
+            } else if (type === 'master_submit') {
+                targetAdminId = appConfig?.adminMasterSubmissionChatId || appConfig?.adminChatId || "6954647230";
+                customMessageTemplate = appConfig?.msgTplMasterSubmit;
             }
+
+            let finalText = defaultText;
+            if (customMessageTemplate) {
+                finalText = customMessageTemplate;
+                for (const [key, val] of Object.entries(replacements)) {
+                    finalText = finalText.replaceAll(`{${key}}`, val);
+                }
+            }
+
+            await sendTelegramMessage(targetAdminId, finalText);
         }
 
         async function recordUserLedger(type, title, amount, isIncome, note = '') {
@@ -2385,6 +2445,17 @@
             }
         }
 
+        // Helper to render Firebase Image URL or Lucide Icon
+        function renderServiceIconHtml(iconVal, isSelected, defaultIcon = 'mail') {
+            const iconStr = iconVal || defaultIcon;
+            const isUrl = iconStr.startsWith('http://') || iconStr.startsWith('https://') || iconStr.startsWith('data:image');
+            
+            if (isUrl) {
+                return `<img src="${iconStr}" class="w-5 h-5 object-contain rounded-lg" alt="Icon" onerror="this.src='https://i.postimg.cc/mD1YdG5y/mail.png'">`;
+            }
+            return `<i data-lucide="${iconStr}" class="w-4 h-4"></i>`;
+        }
+
         // ========================================================
         // DYNAMIC ACCOUNT SELL SERVICES (VIP 0 & WORK RATES)
         // ========================================================
@@ -2402,7 +2473,7 @@
                             id: "gmail",
                             name: "Gmail Sell",
                             category: "Gmail",
-                            icon: "mail",
+                            icon: "mail", // Can be an icon name OR image URL from Firebase
                             rate: defaultVip0Rate,
                             rateDisplay: `৳${defaultVip0Rate.toFixed(2)} / আইডি`,
                             isActive: true,
@@ -2429,7 +2500,6 @@
                     ];
                 }
 
-                // লাইভ কনফিগ রেট প্রয়োগ
                 if (appConfig.vip0SellRate !== undefined) {
                     dynamicSellServices.forEach(s => {
                         if (s.id === 'gmail' && !s.customRate) {
@@ -2466,7 +2536,7 @@
                     <div onclick="selectDynamicSellService('${srv.id}')" class="sell-card-item ${isSelected ? 'active' : ''} ${!isEnabled ? 'disabled' : ''}">
                         <div class="flex items-center justify-between">
                             <div class="w-9 h-9 rounded-2xl ${isSelected ? 'bg-blue-600 text-white shadow-md shadow-blue-500/30' : 'bg-blue-50 text-blue-600'} flex items-center justify-center font-bold transition">
-                                <i data-lucide="${srv.icon || 'mail'}" class="w-4 h-4"></i>
+                                ${renderServiceIconHtml(srv.icon, isSelected, 'mail')}
                             </div>
                             <span class="text-[9px] font-black uppercase px-2 py-0.5 rounded-full ${isEnabled ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-600'}">
                                 ${isEnabled ? 'Active' : 'Closed'}
@@ -2488,9 +2558,47 @@
             if (found && found.isActive !== false) {
                 currentSelectedService = found;
                 renderDynamicSellCards();
+                calculateBulkAccountsPreview();
             } else {
                 showToast("এই সার্ভিসটি বর্তমানে অ্যাডমিন কর্তৃক স্থগিত রয়েছে!", "info");
             }
+        };
+
+        window.toggleSellInputMode = function(mode) {
+            currentSellInputMode = mode;
+            const btnSingle = document.getElementById('btn-mode-single');
+            const btnBulk = document.getElementById('btn-mode-bulk');
+            const singleWrap = document.getElementById('single-sell-mode-container');
+            const bulkWrap = document.getElementById('bulk-sell-mode-container');
+            const btnSubmitText = document.getElementById('btn-submit-vip0-text');
+
+            if (mode === 'bulk') {
+                btnBulk.className = "flex-1 py-2 rounded-xl text-xs font-black transition bg-white text-blue-600 shadow-sm flex items-center justify-center gap-1";
+                btnSingle.className = "flex-1 py-2 rounded-xl text-xs font-black transition text-slate-600 hover:text-slate-900 flex items-center justify-center gap-1";
+                singleWrap.classList.add('hidden');
+                bulkWrap.classList.remove('hidden');
+                btnSubmitText.textContent = "সব একাউন্ট সাবমিট করুন (Bulk Submit)";
+            } else {
+                btnSingle.className = "flex-1 py-2 rounded-xl text-xs font-black transition bg-white text-blue-600 shadow-sm flex items-center justify-center gap-1";
+                btnBulk.className = "flex-1 py-2 rounded-xl text-xs font-black transition text-slate-600 hover:text-slate-900 flex items-center justify-center gap-1";
+                bulkWrap.classList.add('hidden');
+                singleWrap.classList.remove('hidden');
+                btnSubmitText.textContent = "সাবমিট করুন (Submit Account)";
+            }
+            lucide.createIcons();
+        };
+
+        window.calculateBulkAccountsPreview = function() {
+            const text = document.getElementById('bulk-accounts-input')?.value || "";
+            const lines = text.split('\n').map(l => l.trim()).filter(l => l.length > 5);
+            const count = lines.length;
+            const rate = parseFloat(currentSelectedService?.rate || 25.00);
+            const total = count * rate;
+
+            const cntEl = document.getElementById('bulk-detected-count');
+            const earnEl = document.getElementById('bulk-detected-earn');
+            if (cntEl) cntEl.textContent = count;
+            if (earnEl) earnEl.textContent = `৳${total.toFixed(2)}`;
         };
 
         function renderDynamicCredentialInputs() {
@@ -2546,6 +2654,108 @@
                 return showToast("নির্বাচিত সার্ভিসটি বর্তমানে চালু নেই!", "error");
             }
 
+            const btn = document.getElementById('btn-submit-vip0-work');
+            const dailyPasswordUsed = getComputedDailyPassword();
+            const rewardEstimate = parseFloat(currentSelectedService.rate || 25.00);
+
+            // ----------------------------------------------------
+            // CASE A: BULK EXCEL PASTE SUBMISSION
+            // ----------------------------------------------------
+            if (currentSellInputMode === 'bulk') {
+                const rawText = document.getElementById('bulk-accounts-input').value.trim();
+                if (!rawText) return showToast("অনুগ্রহ করে এক্সেল বা টেক্সট তালিকা পেস্ট করুন!", "error");
+
+                const lines = rawText.split('\n').map(l => l.trim()).filter(l => l.length > 3);
+                if (lines.length === 0) return showToast("কোনো একাউন্ট লাইন পাওয়া যায়নি!", "error");
+
+                btn.disabled = true;
+                btn.innerHTML = `<span class="animate-spin inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full mr-2"></span> ভেরিফাই হচ্ছে...`;
+
+                try {
+                    await ensureFirebaseOnline();
+                    const batch = writeBatch(dbWork);
+                    let validCount = 0;
+                    let skippedCount = 0;
+
+                    for (const line of lines) {
+                        let parts = [];
+                        if (line.includes('\t')) parts = line.split('\t');
+                        else if (line.includes(':')) parts = line.split(':');
+                        else if (line.includes('|')) parts = line.split('|');
+                        else if (line.includes(',')) parts = line.split(',');
+                        else parts = line.split(/\s+/);
+
+                        const primaryVal = (parts[0] || '').trim().toLowerCase();
+                        const passVal = (parts[1] || '').trim();
+                        const extraVal = (parts[2] || '').trim();
+
+                        if (!primaryVal || primaryVal.length < 5) continue;
+
+                        const cleanKey = primaryVal.replace(/[^a-zA-Z0-9_@.-]/g, '_');
+                        const duplicateCheckRef = doc(dbWork, "submitted_accounts", cleanKey);
+                        const duplicateSnap = await getDoc(duplicateCheckRef);
+
+                        if (duplicateSnap.exists()) {
+                            skippedCount++;
+                            continue;
+                        }
+
+                        batch.set(duplicateCheckRef, {
+                            account: primaryVal,
+                            userId: String(userData.tgChatId),
+                            userName: userData.name || 'User',
+                            serviceId: currentSelectedService.id,
+                            isBulk: true,
+                            submittedAt: serverTimestamp()
+                        });
+
+                        const subRef = doc(collection(dbWork, "work_submissions"));
+                        batch.set(subRef, {
+                            userId: String(userData.tgChatId),
+                            userName: userData.name || 'User',
+                            userTgUsername: userData.username || null,
+                            serviceId: currentSelectedService.id,
+                            jobTitle: `${currentSelectedService.name} (Bulk)`,
+                            category: currentSelectedService.category || currentSelectedService.name,
+                            reward: rewardEstimate,
+                            accountIdentifier: primaryVal,
+                            credentials: { email: primaryVal, password: passVal, recovery: extraVal },
+                            proof: `EMAIL: ${primaryVal} | PASS: ${passVal} | EXTRA: ${extraVal}`,
+                            expectedPassword: dailyPasswordUsed,
+                            status: "pending",
+                            isMasterTask: false,
+                            isBulk: true,
+                            submittedAt: serverTimestamp()
+                        });
+
+                        validCount++;
+                    }
+
+                    if (validCount === 0) {
+                        throw new Error("❌ পেস্ট করা সবকটি একাউন্ট ইতিমধ্যে সিস্টেমে জমা দেওয়া আছে অথবা ইনভ্যালিড!");
+                    }
+
+                    await batch.commit();
+
+                    document.getElementById('bulk-accounts-input').value = '';
+                    calculateBulkAccountsPreview();
+
+                    showToast(`🎉 মোট ${validCount} টি একাউন্ট সফলভাবে জমা হয়েছে! (${skippedCount} টি ডুপ্লিকেট বাদ দেওয়া হয়েছে)`, "success");
+                    navigateTo('work-page');
+                    switchWorkView('my_subs');
+                } catch(e) {
+                    showToast(e.message || "বাল্ক সাবমিশনে সমস্যা হয়েছে", "error");
+                } finally {
+                    btn.disabled = false;
+                    btn.innerHTML = `<i data-lucide="send" class="w-4 h-4"></i> <span id="btn-submit-vip0-text">সব একাউন্ট সাবমিট করুন (Bulk Submit)</span>`;
+                    lucide.createIcons();
+                }
+                return;
+            }
+
+            // ----------------------------------------------------
+            // CASE B: SINGLE ACCOUNT SUBMISSION
+            // ----------------------------------------------------
             const inputs = document.querySelectorAll('#dynamic-credential-fields-container input');
             const submissionData = {};
             let primaryIdentifierValue = "";
@@ -2574,7 +2784,6 @@
                 return showToast("সঠিক অ্যাকাউন্ট ক্রেডেনশিয়াল প্রদান করুন!", "error");
             }
 
-            const btn = document.getElementById('btn-submit-vip0-work');
             btn.disabled = true;
             btn.innerHTML = `<span class="animate-spin inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full mr-2"></span> ভেরিফাই হচ্ছে...`;
 
@@ -2588,9 +2797,6 @@
                 if (duplicateSnap.exists()) {
                     throw new Error(`❌ এই ${primaryLabel} (${primaryIdentifierValue}) ইতিমধ্যে জমা দেওয়া হয়েছে! এক অ্যাকাউন্ট একাধিকবার জমা দেওয়া যাবে না।`);
                 }
-
-                const rewardEstimate = parseFloat(currentSelectedService.rate || 25.00);
-                const dailyPasswordUsed = getComputedDailyPassword();
 
                 await setDoc(duplicateCheckRef, {
                     account: primaryIdentifierValue,
@@ -2625,7 +2831,7 @@
                 showToast(e.message || "সাবমিট করতে সমস্যা হয়েছে", "error");
             } finally {
                 btn.disabled = false;
-                btn.innerHTML = `<i data-lucide="send" class="w-4 h-4"></i> <span>সাবমিট করুন (Submit Account)</span>`;
+                btn.innerHTML = `<i data-lucide="send" class="w-4 h-4"></i> <span id="btn-submit-vip0-text">সাবমিট করুন (Submit Account)</span>`;
                 lucide.createIcons();
             }
         };
@@ -2634,6 +2840,7 @@
         // MASTER WORK APPROVED SUBMISSION & DYNAMIC RATE
         // ========================================================
         window.openMasterTelegramChannel = function() {
+            // Firebase Controlled Channel URL
             const channelUrl = appConfig.masterChannelUrl || "https://t.me/EXPERTearn_team";
             try {
                 if (window.Telegram?.WebApp?.openTelegramLink) {
@@ -2708,7 +2915,7 @@
                     <div onclick="selectMasterDynamicService('${srv.id}')" class="sell-card-item ${isSelected ? 'active' : ''}">
                         <div class="flex items-center justify-between">
                             <div class="w-9 h-9 rounded-2xl ${isSelected ? 'bg-amber-600 text-white shadow-md shadow-amber-500/30' : 'bg-amber-50 text-amber-600'} flex items-center justify-center font-bold transition">
-                                <i data-lucide="${srv.icon || 'shield'}" class="w-4 h-4"></i>
+                                ${renderServiceIconHtml(srv.icon, isSelected, 'shield')}
                             </div>
                             <span class="text-[9px] font-black uppercase px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700">Approved</span>
                         </div>
@@ -2833,7 +3040,7 @@
                     submittedAt: serverTimestamp()
                 });
 
-                await addDoc(collection(dbWork, "work_submissions"), {
+                const addedSub = await addDoc(collection(dbWork, "work_submissions"), {
                     userId: String(userData.tgChatId),
                     userName: userData.name || 'User',
                     userTgUsername: userData.username || null,
@@ -2849,12 +3056,20 @@
                     submittedAt: serverTimestamp()
                 });
 
-                const masterAdminMsg = `⭐ <b>নতুন মাস্টার অ্যাকাউন্ট সাবমিশন!</b>\n\n` +
+                const defaultMasterSubmitMsg = `⭐ <b>নতুন মাস্টার অ্যাকাউন্ট সাবমিশন!</b>\n\n` +
                     `👤 <b>ইউজার:</b> ${userData.name || 'User'} (<code>${userData.tgChatId}</code>)\n` +
                     `🏷 <b>টাস্ক:</b> ${currentSelectedMasterService.name}\n` +
                     `🔑 <b>অ্যাকাউন্ট:</b> <code>${primaryIdentifierValue}</code>\n` +
                     `💰 <b>রিওয়ার্ড:</b> ৳${rewardEstimate.toFixed(2)}`;
-                await notifyAdminTelegram(masterAdminMsg);
+
+                await dispatchTelegramNotification('master_submit', defaultMasterSubmitMsg, {
+                    name: userData.name || 'User',
+                    userId: userData.tgChatId,
+                    taskName: currentSelectedMasterService.name,
+                    account: primaryIdentifierValue,
+                    reward: rewardEstimate.toFixed(2),
+                    id: addedSub.id
+                });
 
                 showToast("🎉 মাস্টার টাস্ক সফলভাবে জমা হয়েছে! ভেরিফিকেশন শেষে ব্যালেন্স যুক্ত হবে।", "success");
                 inputs.forEach(inp => inp.value = '');
@@ -2910,7 +3125,7 @@
                             startMasterRejectCountdown();
                         } else {
                             masterCooldownRemaining = 0;
-                            masterApplicationStatus = null; // ২৪ ঘণ্টা শেষ, পুনরায় আবেদন করা যাবে
+                            masterApplicationStatus = null;
                         }
                     } else {
                         masterCooldownRemaining = 0;
@@ -2961,7 +3176,6 @@
                 return showToast(`আপনার পূর্ববর্তী আবেদন বাতিল হয়েছে। ${hoursLeft} ঘণ্টা পর পুনরায় আবেদন করতে পারবেন!`, "error");
             }
             
-            // প্রি-ফিল ইউজার ডাটা
             const nameInp = document.getElementById('master-app-fullname');
             if (nameInp && !nameInp.value) nameInp.value = userData.name || '';
 
@@ -2994,21 +3208,10 @@
             const expectations = document.getElementById('master-app-expectations').value.trim() || 'কোনো মন্তব্য নেই';
             const agreement = document.getElementById('master-app-agreement').checked;
 
-            if (!fullName) {
-                return showToast("অনুগ্রহ করে আপনার পূর্ণ নাম লিখুন!", "error");
-            }
-
-            if (!contact) {
-                return showToast("অনুগ্রহ করে যোগাযোগের নম্বর বা ইউজারনেম দিন!", "error");
-            }
-
-            if (!agreement) {
-                return showToast("শর্তাবলীতে সম্মত হতে টিক চিহ্ন দিন!", "error");
-            }
-
-            if (timeSelect === 'CUSTOM' && !customTime) {
-                return showToast("অনুগ্রহ করে আপনার কাস্টম সময় উল্লেখ করুন!", "error");
-            }
+            if (!fullName) return showToast("অনুগ্রহ করে আপনার পূর্ণ নাম লিখুন!", "error");
+            if (!contact) return showToast("অনুগ্রহ করে যোগাযোগের নম্বর বা ইউজারনেম দিন!", "error");
+            if (!agreement) return showToast("শর্তাবলীতে সম্মত হতে টিক চিহ্ন দিন!", "error");
+            if (timeSelect === 'CUSTOM' && !customTime) return showToast("অনুগ্রহ করে আপনার কাস্টম সময় উল্লেখ করুন!", "error");
 
             const btn = document.getElementById('btn-submit-master-app');
             btn.disabled = true;
@@ -3035,7 +3238,7 @@
 
                 masterApplicationStatus = "pending";
 
-                const adminMsg = `🔥 <b>নতুন প্রফেশনাল মাস্টার ট্রেনিং আবেদন!</b>\n\n` +
+                const defaultAdminAppMsg = `🔥 <b>নতুন প্রফেশনাল মাস্টার ট্রেনিং আবেদন!</b>\n\n` +
                     `👤 <b>নাম:</b> ${fullName} (@${userData.username || 'N/A'})\n` +
                     `🆔 <b>User ID:</b> <code>${userData.tgChatId}</code>\n` +
                     `📱 <b>ডিভাইস:</b> ${device} | <b>নেট:</b> ${internet}\n` +
@@ -3045,7 +3248,20 @@
                     `📝 <b>মন্তব্য:</b> ${expectations}\n` +
                     `🔑 <b>Application ID:</b> <code>${docRef.id}</code>`;
 
-                await notifyAdminTelegram(adminMsg);
+                await dispatchTelegramNotification('master_app', defaultAdminAppMsg, {
+                    fullName: fullName,
+                    username: userData.username || 'N/A',
+                    userId: userData.tgChatId,
+                    device: device,
+                    internet: internet,
+                    platform: platform,
+                    contact: contact,
+                    time: finalTime,
+                    dailyHours: dailyHours,
+                    experience: exp,
+                    expectations: expectations,
+                    id: docRef.id
+                });
 
                 document.getElementById('master-success-contact-modal').classList.remove('hidden');
                 lucide.createIcons();
@@ -3509,7 +3725,7 @@
         }
 
         // ========================================================
-        // DYNAMIC TASKS ENGINE
+        // DYNAMIC TASKS ENGINE WITH VISIT BOT REDIRECT RETRY
         // ========================================================
         async function renderDynamicTasksList() {
             const container = document.getElementById('dynamic-tasks-container');
@@ -3544,6 +3760,7 @@
                             subtitle: "বটে গিয়ে স্টার্ট করুন এবং প্রাপ্ত Secret Key দিন",
                             type: "visit_bot",
                             url: "https://t.me/Gmail_HUB7bot",
+                            timerSeconds: 10,
                             reward: 1.50
                         },
                         {
@@ -3622,18 +3839,18 @@
                                     </div>
                                 ` : taskType === 'visit_bot' ? `
                                     <div id="bot-flow-box-${task.id}" class="space-y-2.5">
-                                        <button id="btn-visit-bot-${task.id}" onclick="startBotVisitFlow('${task.id}', '${task.url}')" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl font-bold text-xs flex items-center justify-center gap-2 shadow-md transition active:scale-98">
+                                        <button id="btn-visit-bot-${task.id}" onclick="startBotVisitFlow('${task.id}', '${task.url}', ${task.timerSeconds || 8}, ${task.reward || 0})" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl font-bold text-xs flex items-center justify-center gap-2 shadow-md transition active:scale-98">
                                             <i data-lucide="bot" class="w-4 h-4"></i>
                                             <span>১. বটে যান ও Secret Key সংগ্রহ করুন</span>
                                         </button>
                                         <div id="bot-key-submit-wrap-${task.id}" class="hidden space-y-2">
                                             <div class="flex gap-1.5">
                                                 <input id="secret-key-input-${task.id}" type="text" placeholder="বট থেকে প্রাপ্ত Secret Key দিন..." class="flex-grow p-2.5 text-xs rounded-xl input-field font-mono font-bold uppercase tracking-wider">
-                                                <button id="btn-submit-key-${task.id}" onclick="submitSingleUseBotKey('${task.id}', ${task.reward || 0}, '${task.url}')" class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold text-xs shadow transition active:scale-95">
+                                                <button id="btn-submit-key-${task.id}" onclick="submitSingleUseBotKey('${task.id}', ${task.reward || 0}, '${task.url}', ${task.timerSeconds || 8})" class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold text-xs shadow transition active:scale-95">
                                                     জমা দিন
                                                 </button>
                                             </div>
-                                            <p class="text-[10px] text-slate-400">* প্রতিটি Secret Key শুধুমাত্র ১ বারই ব্যবহারযোগ্য।</p>
+                                            <p class="text-[10px] text-slate-400">* ভুল Key দিলে পুনরায় বটে নিয়ে যাওয়া হবে।</p>
                                         </div>
                                     </div>
                                 ` : `
@@ -3744,19 +3961,44 @@
             }
         };
 
-        window.startBotVisitFlow = function(taskId, botUrl) {
+        // VISIT BOT TASK WITH TIMER AND REDIRECT
+        window.startBotVisitFlow = function(taskId, botUrl, duration = 8, reward) {
             if (!ensureAccountActive("বট টাস্ক")) return;
 
             openTelegramChannelUrl(botUrl);
 
+            const btn = document.getElementById(`btn-visit-bot-${taskId}`);
             const keyWrap = document.getElementById(`bot-key-submit-wrap-${taskId}`);
-            if (keyWrap) {
-                keyWrap.classList.remove('hidden');
-                showToast("বটে গিয়ে স্টার্ট করুন এবং পাওয়া Secret Key টি নিচে দিন!", "info");
-            }
+            if (!btn) return;
+
+            let remainingTime = duration;
+            btn.disabled = true;
+            btn.className = "w-full py-3 bg-slate-100 text-slate-600 rounded-2xl font-bold text-xs flex items-center justify-center gap-2 border border-slate-200 cursor-not-allowed shadow-inner";
+            btn.innerHTML = `<span class="w-4 h-4 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin"></span> <span id="bot-timer-txt-${taskId}">বটে অপেক্ষা করুন (${remainingTime}s)...</span>`;
+
+            if (taskActiveTimers[`bot_${taskId}`]) clearInterval(taskActiveTimers[`bot_${taskId}`]);
+
+            taskActiveTimers[`bot_${taskId}`] = setInterval(() => {
+                remainingTime--;
+                const timerEl = document.getElementById(`bot-timer-txt-${taskId}`);
+                if (timerEl) timerEl.textContent = `বটে অপেক্ষা করুন (${remainingTime}s)...`;
+
+                if (remainingTime <= 0) {
+                    clearInterval(taskActiveTimers[`bot_${taskId}`]);
+                    delete taskActiveTimers[`bot_${taskId}`];
+
+                    btn.disabled = false;
+                    btn.className = "w-full py-2.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-2xl font-bold text-xs flex items-center justify-center gap-1.5 border border-indigo-200 transition";
+                    btn.innerHTML = `<i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> <span>পুনরায় বট ওপেন করুন</span>`;
+                    btn.onclick = () => openTelegramChannelUrl(botUrl);
+
+                    if (keyWrap) keyWrap.classList.remove('hidden');
+                    lucide.createIcons();
+                }
+            }, 1000);
         };
 
-        window.submitSingleUseBotKey = async function(taskId, reward, botUrl) {
+        window.submitSingleUseBotKey = async function(taskId, reward, botUrl, duration) {
             if (!ensureAccountActive("বট টাস্ক")) return;
 
             const input = document.getElementById(`secret-key-input-${taskId}`);
@@ -3810,7 +4052,7 @@
                 }
 
                 if (!keyValidAndUnused) {
-                    throw new Error("❌ ভুল Secret Key! বটে জয়েন করে সঠিক কী দিন।");
+                    throw new Error("❌ ভুল Secret Key! বটে গিয়ে সঠিক কোডটি আনুন।");
                 }
 
                 if (keyDocRef) {
@@ -3824,9 +4066,15 @@
 
                 await claimDynamicTaskReward(taskId, reward, 'বট ভিজিট Secret Key রিওয়ার্ড');
             } catch(e) {
-                showToast(e.message || "টাস্ক ভেরিফাই করতে সমস্যা হয়েছে", "error");
+                showToast(e.message || "ভুল Key দেওয়া হয়েছে, পুনরায় বটে রিডাইরেক্ট করা হচ্ছে...", "error");
                 btn.disabled = false;
                 btn.textContent = "জমা দিন";
+                if (input) input.value = '';
+
+                // রিডাইরেক্ট লজিক যদি কি ভুল হয়
+                setTimeout(() => {
+                    startBotVisitFlow(taskId, botUrl, duration, reward);
+                }, 1000);
             }
         };
 
@@ -4600,7 +4848,7 @@
                     `📞 <b>অ্যাকাউন্ট:</b> <code>${activeWallet.number}</code>\n` +
                     `💰 <b>উত্তোলন:</b> ৳${amount}\n` +
                     `🧾 <b>ফি সহ মোট:</b> ৳${totalDebit}`;
-                await notifyAdminTelegram(withdrawMsg);
+                await dispatchTelegramNotification('default', withdrawMsg);
 
                 updateUI();
                 loadWithdrawPageUI();
@@ -5456,7 +5704,7 @@
             }
         };
 
-        // --- PRE-ORDER LOGIC ---
+        // --- PRE-ORDER LOGIC WITH DISPATCHER ---
         window.openManualModal = function(index) {
             const item = displayedProductsCache[index];
             if (!item) return;
@@ -5548,15 +5796,24 @@
 
                 await recordUserLedger('expense', `প্রি-অর্ডার (${product.type})`, totalPrice, false, `${qty} টি আইটেম`);
 
-                // Send notification to Admin Telegram
-                const adminNotice = `📦 <b>নতুন ম্যানুয়াল / প্রি-অর্ডার!</b>\n\n` +
+                // Send Notification using dispatcher for manual order
+                const defaultManualAdminNotice = `📦 <b>নতুন ম্যানুয়াল / প্রি-অর্ডার!</b>\n\n` +
                     `👤 <b>ইউজার:</b> ${userData.name || 'User'} (<code>${userData.tgChatId}</code>)\n` +
                     `🏷 <b>পণ্য:</b> ${product.type}\n` +
                     `🔢 <b>পরিমাণ:</b> ${qty} টি\n` +
                     `💰 <b>মূল্য:</b> ৳${totalPrice}\n` +
                     `⏳ <b>ডেলিভারি সময়সীমা:</b> ${timeoutMinutes} মিনিট\n` +
                     `🔑 <b>Order ID:</b> <code>${orderDocRef.id}</code>`;
-                await notifyAdminTelegram(adminNotice);
+
+                await dispatchTelegramNotification('manual_order', defaultManualAdminNotice, {
+                    name: userData.name || 'User',
+                    userId: userData.tgChatId,
+                    productType: product.type,
+                    qty: String(qty),
+                    totalPrice: String(totalPrice),
+                    timeoutMinutes: String(timeoutMinutes),
+                    id: orderDocRef.id
+                });
 
                 document.getElementById('manual-order-modal').classList.add('hidden');
                 showToast(`আপনার ${qty} টি ${product.type} অর্ডার গ্রহণ করা হয়েছে!`, 'success');
@@ -5793,7 +6050,7 @@
             } catch(e) {}
         }
 
-        // --- 48-HOUR RETENTION ORDERS HISTORY (Loaded from secondary DB: dbShop) ---
+        // --- 48-HOUR RETENTION ORDERS HISTORY ---
         async function loadOrdersHistory() {
             const listEl = document.getElementById('orders-purchase-history');
             listEl.innerHTML = getLoadingHTML();
@@ -5812,7 +6069,6 @@
 
                 const allItems = snap.docs.map(d => ({ docId: d.id, ...d.data() }));
 
-                // Filter out orders older than retention threshold (default 48h)
                 userPurchasesCache = allItems.filter(item => {
                     const purchaseTime = item.purchasedAt?.toDate ? item.purchasedAt.toDate().getTime() : 0;
                     return (nowMs - purchaseTime) <= maxAgeMs;
@@ -5863,7 +6119,7 @@
             }
         }
 
-        // --- 10-HOUR RETENTION MANUAL ORDERS HISTORY WITH VIEW SECTION (Loaded from secondary DB: dbShop) ---
+        // --- 10-HOUR RETENTION MANUAL ORDERS HISTORY WITH VIEW SECTION ---
         async function loadManualOrdersHistory() {
             const list = document.getElementById('manual-orders-history-list');
             if(!list) return;
@@ -5878,7 +6134,6 @@
 
                 const docs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
 
-                // Filter out orders older than retention threshold (default 10h)
                 const visibleOrders = docs.filter(item => {
                     const createdTime = item.createdAt?.toDate ? item.createdAt.toDate().getTime() : 0;
                     return (nowMs - createdTime) <= maxAgeMs;
@@ -5952,7 +6207,7 @@
             copyToClipboard(activeDeliveredOrderText, null, "অ্যাকাউন্টের সম্পূর্ণ তালিকা কপি হয়েছে!");
         };
 
-        // --- 10-HOUR RETENTION REPLACE / REPORT HISTORY (Loaded from secondary DB: dbShop) ---
+        // --- 10-HOUR RETENTION REPLACE / REPORT HISTORY ---
         async function loadReplaceHistory() {
             const list = document.getElementById('replace-history-list');
             if(!list) return;
@@ -5967,7 +6222,6 @@
 
                 const docs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
 
-                // Filter out reports older than retention threshold (default 10h)
                 const visibleReports = docs.filter(r => {
                     const reqTime = r.requestedAt?.toDate ? r.requestedAt.toDate().getTime() : 0;
                     return (nowMs - reqTime) <= maxAgeMs;
@@ -6059,7 +6313,7 @@
 
             try {
                 // Store replace request in secondary DB (dbShop)
-                await addDoc(collection(dbShop, "replace_requests"), {
+                const docRef = await addDoc(collection(dbShop, "replace_requests"), {
                     userId: String(userData.tgChatId),
                     userName: userData.name || 'User',
                     purchaseDocId: purchaseDocId,
@@ -6072,14 +6326,23 @@
                     requestedAt: serverTimestamp()
                 });
 
-                // Notify admin via Telegram
-                const replaceMsg = `⚠️ <b>নতুন রিপ্লেসমেন্ট / রিপোর্ট রিকোয়েস্ট!</b>\n\n` +
+                // Dispatch telegram notification for replacement
+                const defaultReplaceMsg = `⚠️ <b>নতুন রিপ্লেসমেন্ট / রিপোর্ট রিকোয়েস্ট!</b>\n\n` +
                     `👤 <b>ইউজার:</b> ${userData.name || 'User'} (<code>${userData.tgChatId}</code>)\n` +
                     `🏷 <b>সার্ভিস:</b> ${mailType}\n` +
                     `💰 <b>মূল্য:</b> ৳${cost.toFixed(2)}\n` +
                     `📝 <b>কারণ:</b> ${reason}\n` +
                     `🔑 <b>Doc ID:</b> <code>${purchaseDocId}</code>`;
-                await notifyAdminTelegram(replaceMsg);
+
+                await dispatchTelegramNotification('replacement', defaultReplaceMsg, {
+                    name: userData.name || 'User',
+                    userId: userData.tgChatId,
+                    mailType: mailType,
+                    cost: cost.toFixed(2),
+                    reason: reason,
+                    purchaseDocId: purchaseDocId,
+                    id: docRef.id
+                });
 
                 document.getElementById('replace-modal').classList.add('hidden');
                 showToast("রিপ্লেসমেন্ট অনুরোধ পাঠানো হয়েছে", "success");
@@ -6111,5 +6374,3 @@
     </script>
 </body>
 </html>
-
-        
