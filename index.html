@@ -7,9 +7,15 @@
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Hind+Siliguri:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+    <!-- Support Chat Firebase Realtime Database SDKs (Compat) -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-database-compat.js"></script>
+
     <style>
         body {
             font-family: 'Plus Jakarta Sans', 'Hind Siliguri', sans-serif;
@@ -390,12 +396,785 @@
             border-color: #e2e8f0;
             opacity: 0.85;
         }
+
+        /* ======================================================== */
+        /* FLOATING TELEGRAM SUPPORT BUTTON & SUPPORT DESK MODAL    */
+        /* ======================================================== */
+        .floating-telegram-btn {
+            position: fixed;
+            bottom: 84px;
+            right: 18px;
+            width: 54px;
+            height: 54px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2AABEE 0%, #229ed9 100%);
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.55rem;
+            box-shadow: 0 8px 25px rgba(42, 171, 238, 0.45);
+            z-index: 60;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid rgba(255, 255, 255, 0.35);
+        }
+        .floating-telegram-btn:active {
+            transform: scale(0.92);
+        }
+        .floating-telegram-btn .pulse-ring {
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            border: 2px solid #2AABEE;
+            animation: supportPulse 2s infinite;
+            pointer-events: none;
+            opacity: 0.7;
+        }
+        @keyframes supportPulse {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            70% { transform: scale(1.2); opacity: 0; }
+            100% { transform: scale(1.2); opacity: 0; }
+        }
+        .floating-support-badge {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            background: #ef4444;
+            color: white;
+            font-size: 10px;
+            font-weight: 900;
+            padding: 2px 6px;
+            border-radius: 9999px;
+            border: 2px solid #ffffff;
+            display: none;
+        }
+
+        /* SUPPORT MODAL STYLING ISOLATED */
+        #support-modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 120;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(8px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+        #support-chat-wrapper {
+            width: 100%;
+            max-width: 480px;
+            height: 100vh;
+            height: 100dvh;
+            background: #0e1621;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            font-family: 'Poppins', sans-serif;
+        }
+        #support-chat-wrapper * {
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Support Top Bar */
+        .tg-top-bar {
+            background: #17212b;
+            color: #fff;
+            padding: 10px 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            z-index: 10;
+            flex-shrink: 0;
+        }
+        .tg-back-btn { 
+            background: none; 
+            border: none; 
+            color: #fff; 
+            font-size: 1.2rem; 
+            cursor: pointer; 
+            padding: 6px; 
+            display: none;
+            transition: transform .2s;
+        }
+        .tg-close-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #fff;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+        .tg-close-btn:active {
+            transform: scale(0.9);
+            background: rgba(239, 68, 68, 0.3);
+        }
+        .tg-chat-user { 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            flex: 1; 
+            overflow: hidden;
+            cursor: pointer;
+        }
+        .tg-avatar-wrap {
+            position: relative;
+            flex-shrink: 0;
+        }
+        .tg-avatar-wrap img { 
+            width: 42px; 
+            height: 42px; 
+            border-radius: 50%; 
+            object-fit: cover; 
+            border: 2px solid #2AABEE; 
+            display: block;
+            background: #111;
+        }
+        .online-badge {
+            width: 11px;
+            height: 11px;
+            background: #00b894;
+            border: 2px solid #17212b;
+            border-radius: 50%;
+            position: absolute;
+            bottom: 0;
+            right: 0;
+        }
+        .user-text-info {
+            flex: 1;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        .user-text-info h4 { 
+            font-size: 0.92rem; 
+            font-weight: 700; 
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .tg-verified-svg {
+            width: 18px;
+            height: 18px;
+            display: inline-block;
+            vertical-align: middle;
+            flex-shrink: 0;
+        }
+        .user-text-info p { 
+            font-size: 0.72rem; 
+            color: #2AABEE; 
+            font-weight: 600; 
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-complete-ticket {
+            display: none;
+            background: linear-gradient(135deg, #00b894, #00cec9);
+            color: #fff;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            cursor: pointer;
+            align-items: center;
+            gap: 5px;
+            box-shadow: 0 3px 10px rgba(0, 184, 148, 0.35);
+            transition: transform 0.2s;
+            flex-shrink: 0;
+        }
+        .btn-manage-links {
+            display: none;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.12);
+            color: #fff;
+            padding: 6px 9px;
+            border-radius: 12px;
+            font-size: 0.72rem;
+            cursor: pointer;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Support Search */
+        .search-box {
+            padding: 10px 14px;
+            background: #17212b;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            display: none;
+            flex-shrink: 0;
+        }
+        .search-box input {
+            width: 100%;
+            padding: 9px 14px;
+            border-radius: 12px;
+            background: #0e1621;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #fff;
+            outline: none;
+            font-size: 0.85rem;
+        }
+
+        /* Support Admin Inbox */
+        #admin-inbox-view {
+            display: none;
+            flex-direction: column;
+            flex: 1;
+            overflow-y: auto;
+            padding: 14px;
+            gap: 10px;
+        }
+        .inbox-card {
+            background: #182236;
+            border-radius: 16px;
+            padding: 12px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            cursor: pointer;
+            transition: all .2s;
+        }
+        .inbox-card:active { background: #22304d; transform: scale(0.98); }
+        .inbox-left { 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+            flex: 1;
+            overflow: hidden;
+        }
+        .inbox-left img { 
+            width: 44px; 
+            height: 44px; 
+            border-radius: 50%; 
+            object-fit: cover; 
+            border: 1.5px solid #6C5CE7;
+            flex-shrink: 0;
+        }
+        .inbox-meta { flex: 1; overflow: hidden; }
+        .inbox-meta h4 { font-size: 0.9rem; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 6px; }
+        .inbox-meta p { 
+            font-size: 0.74rem; 
+            color: #8e9bb2; 
+            white-space: nowrap; 
+            overflow: hidden; 
+            text-overflow: ellipsis; 
+            margin-top: 2px;
+        }
+        .unread-pill {
+            background: #eb4d4b;
+            color: #fff;
+            font-size: 0.68rem;
+            font-weight: 800;
+            padding: 3px 8px;
+            border-radius: 20px;
+            margin-left: 8px;
+        }
+
+        /* Support Chat Body */
+        .tg-chat-body {
+            flex: 1;
+            padding: 16px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background: radial-gradient(circle at 50% 20%, #172435 0%, #0a1017 100%);
+        }
+        .msg-row {
+            display: flex;
+            align-items: flex-end;
+            gap: 8px;
+            width: 100%;
+        }
+        .msg-row.admin { justify-content: flex-start; }
+        .msg-row.user { justify-content: flex-end; }
+        .msg-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+            flex-shrink: 0;
+            border: 1px solid rgba(255,255,255,0.15);
+            background: #111;
+        }
+        .msg-bubble {
+            max-width: 86%;
+            padding: 11px 14px;
+            border-radius: 16px;
+            font-size: 0.86rem;
+            line-height: 1.45;
+            color: #fff;
+            position: relative;
+            word-break: break-word;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+        }
+        .msg-row.admin .msg-bubble {
+            background: #1e2c3a;
+            border-bottom-left-radius: 4px;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        .msg-row.user .msg-bubble {
+            background: #2b5278;
+            border-bottom-right-radius: 4px;
+        }
+        .msg-time {
+            font-size: 0.65rem;
+            color: rgba(255,255,255,0.5);
+            text-align: right;
+            margin-top: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 4px;
+        }
+        .tick-blue { color: #54a0ff; font-weight: 700; }
+
+        /* Rating & Community Hub */
+        .rating-box-wrap {
+            margin-top: 10px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px dashed rgba(255, 255, 255, 0.25);
+            border-radius: 14px;
+            padding: 12px;
+            text-align: center;
+        }
+        .rating-stars-row {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 10px 0 4px 0;
+        }
+        .rating-star-btn {
+            font-size: 1.65rem;
+            color: #636e72;
+            cursor: pointer;
+            transition: transform 0.15s ease, color 0.15s ease;
+        }
+        .rating-star-btn:hover {
+            color: #f1c40f;
+            transform: scale(1.2);
+        }
+        .community-hub-card {
+            margin-top: 8px;
+            background: linear-gradient(145deg, rgba(23, 33, 43, 0.95), rgba(14, 22, 33, 0.95));
+            border: 1px solid rgba(42, 171, 238, 0.3);
+            border-radius: 16px;
+            padding: 14px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+        }
+        .community-hub-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 8px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+        .community-hub-desc {
+            font-size: 0.8rem;
+            color: #dfe6e9;
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+        .community-links-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .community-link-btn {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 9px 12px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+            text-decoration: none;
+            font-size: 0.82rem;
+            font-weight: 600;
+            transition: all .2s ease;
+        }
+        .community-link-btn:hover, .community-link-btn:active {
+            background: rgba(42, 171, 238, 0.18);
+            border-color: #2AABEE;
+            transform: translateY(-1px);
+        }
+        .community-link-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .community-link-left i {
+            font-size: 1.15rem;
+            width: 22px;
+            text-align: center;
+        }
+
+        /* Support Typing Bar */
+        .typing-bar {
+            padding: 4px 16px;
+            font-size: 0.72rem;
+            color: #2AABEE;
+            font-weight: 600;
+            display: none;
+            background: #17212b;
+            align-items: center;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+        .typing-dots span {
+            animation: blink 1.2s infinite;
+            display: inline-block;
+        }
+        .typing-dots span:nth-child(2) { animation-delay: .2s; }
+        .typing-dots span:nth-child(3) { animation-delay: .4s; }
+        @keyframes blink { 0%, 100% { opacity: 0.2; } 50% { opacity: 1; } }
+
+        /* Support Bottom Input */
+        .tg-bottom-bar {
+            background: #17212b;
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            flex-shrink: 0;
+        }
+        .tg-input {
+            flex: 1;
+            min-width: 0;
+            padding: 10px 16px;
+            border-radius: 22px;
+            border: 1px solid rgba(255,255,255,0.12);
+            outline: none;
+            font-size: 0.88rem;
+            background: #0e1621;
+            color: #fff;
+            transition: border-color .2s;
+        }
+        .tg-input:focus { border-color: #2AABEE; }
+        .tg-send-btn {
+            background: #2AABEE;
+            color: #fff;
+            width: 40px;
+            height: 40px;
+            min-width: 40px;
+            border-radius: 50%;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1rem;
+            box-shadow: 0 4px 12px rgba(42, 171, 238, 0.3);
+            transition: transform .15s, background .2s;
+            flex-shrink: 0;
+        }
+        .tg-send-btn i { margin-left: 2px; }
+        .tg-send-btn:active { transform: scale(0.92); }
+
+        #user-status-banner {
+            display: none;
+            padding: 10px 16px;
+            background: #2c1214;
+            color: #ff7675;
+            font-size: 0.8rem;
+            text-align: center;
+            font-weight: 600;
+            border-top: 1px solid rgba(255, 118, 117, 0.2);
+        }
+
+        /* Support Desk Custom Modals */
+        .sp-modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.75);
+            backdrop-filter: blur(6px);
+            z-index: 999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .sp-modal-box {
+            background: #17212b;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px;
+            width: 100%;
+            max-width: 400px;
+            max-height: 85vh;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .sp-modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .sp-modal-profile {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+        .sp-modal-profile img {
+            width: 68px;
+            height: 68px;
+            border-radius: 50%;
+            border: 2px solid #2AABEE;
+            object-fit: cover;
+        }
+        .sp-modal-section {
+            background: rgba(255,255,255,0.04);
+            padding: 12px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .sp-modal-section label {
+            font-size: 0.75rem;
+            color: #8e9bb2;
+            font-weight: 600;
+        }
+        .sp-btn-group {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 6px;
+        }
+        .sp-btn-action {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: #fff;
+            padding: 7px 4px;
+            border-radius: 8px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+        }
+        .sp-btn-action:hover { background: rgba(255,255,255,0.15); }
+        .sp-btn-danger { background: #eb4d4b !important; color: #fff; }
+        .sp-btn-success { background: #00b894 !important; color: #fff; }
+
+        .links-list-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 10px;
+            padding: 8px 12px;
+            font-size: 0.8rem;
+        }
+        .btn-del-link {
+            background: none;
+            border: none;
+            color: #eb4d4b;
+            font-size: 0.95rem;
+            cursor: pointer;
+            padding: 4px;
+        }
     </style>
 </head>
 <body class="max-w-md mx-auto relative bg-[#f8fafc] min-h-screen text-[#0f172a]">
 
     <!-- TOAST CONTAINER -->
     <div id="toast-container" class="toast-container"></div>
+
+    <!-- FLOATING TELEGRAM LIVE SUPPORT BUTTON (VISIBLE ON ALL PAGES) -->
+    <div id="floating-support-btn" class="floating-telegram-btn" onclick="openSupportModal()" title="লাইভ সাপোর্ট">
+        <div class="pulse-ring"></div>
+        <i class="fab fa-telegram-plane"></i>
+        <span id="floating-support-badge" class="floating-support-badge">1</span>
+    </div>
+
+    <!-- FULL POPUP SUPPORT CHAT DESK MODAL -->
+    <div id="support-modal-overlay">
+        <div id="support-chat-wrapper">
+            <!-- Top Bar -->
+            <div class="tg-top-bar">
+                <button id="btn-back" class="tg-back-btn" onclick="handleSupportBack()"><i class="fas fa-arrow-left"></i></button>
+                
+                <div class="tg-chat-user" onclick="handleHeaderClick()">
+                    <div class="tg-avatar-wrap">
+                        <img id="support-header-img" src="https://i.postimg.cc/vmSBzy63/file-00000000eb4c81faa545e57c85285455.png" alt="Avatar">
+                        <div class="online-badge"></div>
+                    </div>
+                    <div class="user-text-info">
+                        <h4 id="support-header-title">
+                            <span>𝐆𝐌𝐀𝐈𝐋 𝐇𝐔𝐁 ˢᵘᵖᵖᵒʳᵗ</span>
+                            <svg class="tg-verified-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M10.29 2.3c.75-.4 1.67-.4 2.42 0l1.58.84c.32.17.68.26 1.04.26h1.79c.85 0 1.63.45 2.05 1.18l.89 1.55c.18.31.44.57.75.75l1.55.89c.73.42 1.18 1.2 1.18 2.05v1.79c0 .36.09.72.26 1.04l.84 1.58c.4.75.4 1.67 0 2.42l-.84 1.58c-.17.32-.26.68-.26 1.04v1.79c0 .85-.45 1.63-1.18 2.05l-1.55.89c-.31.18-.57.44-.75.75l-.89 1.55c-.42.73-1.2 1.18-2.05 1.18h-1.79c-.36 0-.72.09-1.04.26l-1.58.84c-.75.4-1.67.4-2.42 0l-1.58-.84a2.44 2.44 0 0 0-1.04-.26h-1.79c-.85 0-1.63-.45-2.05-1.18l-.89-1.55a2.44 2.44 0 0 0-.75-.75l-1.55-.89c-.73-.42-1.18-1.2-1.18-2.05v-1.79c0-.36-.09-.72-.26-1.04l-.84-1.58a2.44 2.44 0 0 1 0-2.42l.84-1.58c.17-.32.26-.68.26-1.04V6.18c0-.85.45-1.63 1.18-2.05l1.55-.89c.31-.18.57-.44.75-.75l.89-1.55c.42-.73 1.2-1.18 2.05-1.18h1.79c.36 0 .72-.09 1.04-.26l1.58-.84z" fill="#2AABEE"/>
+                                <path d="M9.3 12.2l1.9 1.9 4.3-4.3" stroke="#ffffff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </h4>
+                        <p id="support-header-sub">অনলাইন সাপোর্ট টিম</p>
+                    </div>
+                </div>
+
+                <div class="header-actions">
+                    <!-- Admin Social Links Manage Button -->
+                    <button id="btn-manage-links" class="btn-manage-links" onclick="openLinksManageModal()">
+                        <i class="fas fa-link"></i> লিংক
+                    </button>
+
+                    <!-- Admin Support Complete Action -->
+                    <button id="btn-complete-ticket" class="btn-complete-ticket" onclick="completeSupportTicket()">
+                        <i class="fas fa-check-circle"></i> সমাধান
+                    </button>
+
+                    <!-- EXIT / CLOSE BUTTON -->
+                    <button class="tg-close-btn" onclick="closeSupportModal()" title="বন্ধ করুন">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Admin Search Input -->
+            <div id="admin-search-bar" class="search-box">
+                <input type="text" id="admin-search-input" placeholder="ব্যবহারকারীর নাম বা আইডি দিয়ে খুঁজুন..." oninput="filterInbox()">
+            </div>
+
+            <!-- Admin Inbox View -->
+            <div id="admin-inbox-view"></div>
+
+            <!-- Messages Area -->
+            <div class="tg-chat-body" id="chat-messages">
+                <div class="msg-row admin">
+                    <img src="https://i.postimg.cc/vmSBzy63/file-00000000eb4c81faa545e57c85285455.png" class="msg-avatar" alt="Admin">
+                    <div class="msg-bubble">
+                        হ্যালো! <b>𝐆𝐌𝐀𝐈𝐋 𝐇𝐔𝐁 ˢᵘᵖᵖᵒʳᵗ</b> এ আপনাকে স্বাগতম। আপনার সমস্যা বা অভিযোগ বিস্তারিত লিখে জানান।
+                        <div class="msg-time">Official Support</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Typing Indicator -->
+            <div id="typing-box" class="typing-bar">
+                <i class="fas fa-pencil-alt"></i> <span id="typing-user">এডমিন</span> লিখছেন
+                <div class="typing-dots"><span>.</span><span>.</span><span>.</span></div>
+            </div>
+
+            <!-- User Notice / Block Banner -->
+            <div id="user-status-banner">আপনার অ্যাকাউন্টটি সাময়িকভাবে বার্তা প্রেরণের জন্য নিষিদ্ধ করা হয়েছে।</div>
+
+            <!-- Bottom Input Bar -->
+            <div class="tg-bottom-bar" id="support-input-bar">
+                <input type="text" id="chat-text-input" class="tg-input" placeholder="মেসেজ লিখুন..." oninput="handleTypingEvent()" onkeydown="if(event.key==='Enter') sendSupportMessage()">
+                <button class="tg-send-btn" onclick="sendSupportMessage()" title="Send">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 1: User Profile & Moderation (Admin Only) -->
+    <div id="admin-user-modal" class="sp-modal-overlay">
+        <div class="sp-modal-box">
+            <div class="sp-modal-header">
+                <span style="font-weight:700; font-size:0.9rem;">ব্যবহারকারী প্রোফাইল ও নিয়ন্ত্রণ</span>
+                <button style="background:none; border:none; color:#fff; font-size:1.1rem; cursor:pointer;" onclick="closeSpModal('admin-user-modal')"><i class="fas fa-times"></i></button>
+            </div>
+            
+            <div class="sp-modal-profile">
+                <img id="modal-user-avatar" src="" alt="User">
+                <h4 id="modal-user-name">User Name</h4>
+                <span id="modal-user-id" style="font-size:0.75rem; color:#8e9bb2;">Telegram ID: -</span>
+                <span id="modal-user-status" style="font-size:0.75rem; font-weight:700; color:#00b894;">Status: Active</span>
+            </div>
+
+            <div class="sp-modal-section">
+                <label>বার্তা পাঠানো সাময়িক বন্ধ করুন (Mute):</label>
+                <div class="sp-btn-group">
+                    <button class="sp-btn-action" onclick="setModerationStatus('mute', 2)">২ ঘন্টা</button>
+                    <button class="sp-btn-action" onclick="setModerationStatus('mute', 24)">১ দিন</button>
+                    <button class="sp-btn-action" onclick="setModerationStatus('mute', 168)">৭ দিন</button>
+                </div>
+            </div>
+
+            <div class="sp-modal-section">
+                <label>মেসেজ লিমিট নির্ধারণ (০ = আনলিমিটেড):</label>
+                <div style="display:flex; gap:8px;">
+                    <input type="number" id="modal-msg-limit" style="width:70px; background:#0e1621; border:1px solid rgba(255,255,255,0.08); color:#fff; padding:6px 10px; border-radius:8px; outline:none; font-size:0.8rem;" placeholder="0">
+                    <button class="sp-btn-action sp-btn-success" style="flex:1;" onclick="updateMessageLimit()">লিমিট সেট করুন</button>
+                </div>
+            </div>
+
+            <div style="display:flex; gap:8px;">
+                <button class="sp-btn-action sp-btn-danger" style="flex:1; padding:9px;" onclick="setModerationStatus('ban')">সম্পূর্ণ ব্যান</button>
+                <button class="sp-btn-action sp-btn-success" style="flex:1; padding:9px;" onclick="setModerationStatus('unban')">আনব্যান করুন</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 2: Manage Official Social Links (Admin Only) -->
+    <div id="admin-links-modal" class="sp-modal-overlay">
+        <div class="sp-modal-box">
+            <div class="sp-modal-header">
+                <span style="font-weight:700; font-size:0.9rem;">অফিসিয়াল সোশ্যাল লিংক ব্যবস্থাপনা</span>
+                <button style="background:none; border:none; color:#fff; font-size:1.1rem; cursor:pointer;" onclick="closeSpModal('admin-links-modal')"><i class="fas fa-times"></i></button>
+            </div>
+
+            <!-- Add New Link Form -->
+            <div class="sp-modal-section">
+                <label>নতুন লিংক যুক্ত করুন:</label>
+                <input type="text" id="new-link-title" placeholder="নাম (যেমন: অফিসিয়াল চ্যানেল)" style="background:#0e1621; border:1px solid rgba(255,255,255,0.08); color:#fff; padding:8px 10px; border-radius:8px; outline:none; font-size:0.8rem;">
+                
+                <div style="display:flex; gap:8px;">
+                    <select id="new-link-icon" style="background:#0e1621; border:1px solid rgba(255,255,255,0.08); color:#fff; padding:8px 10px; border-radius:8px; outline:none; font-size:0.8rem; flex:1;">
+                        <option value="fab fa-telegram">টেলিগ্রাম (Telegram)</option>
+                        <option value="fab fa-youtube">ইউটিউব (YouTube)</option>
+                        <option value="fab fa-tiktok">টিকটক (TikTok)</option>
+                        <option value="fab fa-facebook">ফেসবুক (Facebook)</option>
+                        <option value="fas fa-globe">ওয়েবসাইট (Website)</option>
+                        <option value="fab fa-whatsapp">হোয়াটসঅ্যাপ (WhatsApp)</option>
+                    </select>
+                </div>
+
+                <input type="url" id="new-link-url" placeholder="URL লিংক (https://...)" style="background:#0e1621; border:1px solid rgba(255,255,255,0.08); color:#fff; padding:8px 10px; border-radius:8px; outline:none; font-size:0.8rem;">
+                
+                <button class="sp-btn-action sp-btn-success" style="padding:8px;" onclick="addNewSocialLink()">
+                    <i class="fas fa-plus-circle"></i> লিংক যুক্ত করুন
+                </button>
+            </div>
+
+            <!-- Current Links List -->
+            <div class="sp-modal-section">
+                <label>বর্তমান সক্রিয় লিংকসমূহ:</label>
+                <div id="admin-links-container" style="display:flex; flex-direction:column; gap:6px;">
+                    <!-- Loaded Dynamically -->
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- INTRO LOADER -->
     <div id="loader" class="fixed inset-0 flex flex-col items-center justify-center z-[100] p-6 select-none text-white">
@@ -507,10 +1286,10 @@
             <div class="space-y-1 text-xs font-bold text-slate-700 pt-2 border-t border-slate-100">
                 <div class="px-2 py-1 text-[10px] uppercase tracking-wider text-slate-400 font-black">Support & Community</div>
                 
-                <a id="drawer-tg-support" href="https://t.me/EXPERTearn_team" target="_blank" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-blue-50 text-slate-700 hover:text-blue-600 transition">
-                    <div class="p-1.5 bg-sky-100 text-sky-600 rounded-lg"><i data-lucide="send" class="w-4 h-4"></i></div>
-                    <span>Telegram Support</span>
-                </a>
+                <button onclick="toggleSideDrawer(false); openSupportModal();" class="w-full flex items-center gap-3 p-2.5 rounded-xl hover:bg-sky-50 text-slate-700 hover:text-sky-600 transition text-left">
+                    <div class="p-1.5 bg-sky-100 text-sky-600 rounded-lg"><i class="fab fa-telegram"></i></div>
+                    <span>লাইভ টেলিগ্রাম সাপোর্ট (Chat)</span>
+                </button>
                 <a id="drawer-wa-support" href="https://wa.me/8801827750260" target="_blank" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-emerald-50 text-slate-700 hover:text-emerald-600 transition">
                     <div class="p-1.5 bg-emerald-100 text-emerald-600 rounded-lg"><i data-lucide="message-circle" class="w-4 h-4"></i></div>
                     <span>WhatsApp Support</span>
@@ -622,8 +1401,6 @@
 
             <!-- 2. WORK PORTAL PAGE -->
             <div id="work-page" class="p-4 space-y-4 sub-page">
-                
-                <!-- WORK HERO HEADER -->
                 <div class="bg-gradient-to-br from-slate-900 via-indigo-950 to-blue-950 p-5 rounded-3xl text-white shadow-xl relative overflow-hidden border border-blue-500/20">
                     <div class="relative z-10 space-y-2">
                         <div class="flex items-center justify-between">
@@ -634,7 +1411,6 @@
                                 <i data-lucide="wallet" class="w-3.5 h-3.5 text-amber-400"></i> Pay / ডিপোজিট
                             </button>
                         </div>
-
                         <div>
                             <h2 class="text-xl font-black tracking-tight text-white">Work Marketplace</h2>
                             <p class="text-xs text-blue-200 mt-0.5">নিচের কাজগুলো সফলভাবে সম্পন্ন করে ইনকাম করুন</p>
@@ -642,7 +1418,6 @@
                     </div>
                 </div>
 
-                <!-- WORK STATUS BAR -->
                 <div class="grid grid-cols-3 gap-2 text-center">
                     <div class="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-sm">
                         <div class="flex items-center justify-center gap-1 text-slate-400">
@@ -667,7 +1442,6 @@
                     </div>
                 </div>
 
-                <!-- ADMIN WORK PAUSE ALERT IF DISABLED -->
                 <div id="work-paused-admin-alert" class="hidden bg-red-50 border border-red-200 p-4 rounded-2xl text-center space-y-1">
                     <div class="flex items-center justify-center gap-1.5 text-red-600 font-bold text-xs">
                         <i data-lucide="alert-octagon" class="w-4 h-4"></i>
@@ -676,7 +1450,6 @@
                     <p class="text-[11px] text-slate-600">অ্যাডমিন কর্তৃক নতুন কাজের প্রক্রিয়া সাময়িক বন্ধ রয়েছে। অনুগ্রহ করে পরে চেষ্টা করুন।</p>
                 </div>
 
-                <!-- TABS (AVAILABLE JOBS / SUBMISSIONS) -->
                 <div class="flex gap-2">
                     <button id="btn-tab-work-feed" onclick="switchWorkView('jobs')" class="flex-1 py-2.5 bg-blue-600 text-white rounded-xl font-bold text-xs shadow-md transition">
                         Available Jobs
@@ -686,13 +1459,11 @@
                     </button>
                 </div>
 
-                <!-- DYNAMIC AVAILABLE JOBS LIST -->
                 <div id="work-jobs-feed-list" class="space-y-4 min-h-[160px]"></div>
-
                 <div id="work-user-submissions-list" class="space-y-3 hidden min-h-[160px]"></div>
             </div>
 
-            <!-- 2.1 ACCOUNT SELL SUBMISSION PAGE (VIP 0) WITH BULK EXCEL PASTE -->
+            <!-- 2.1 ACCOUNT SELL SUBMISSION PAGE (VIP 0) -->
             <div id="vip0-sell-page" class="p-4 space-y-4 sub-page">
                 <div class="flex items-center gap-2 mb-1">
                     <button onclick="navigateTo('work-page')" class="p-2 rounded-2xl bg-white border border-slate-200 hover:bg-slate-50 transition shadow-sm">
@@ -707,7 +1478,6 @@
                     </div>
                 </div>
 
-                <!-- DYNAMIC REQUIRED PASSWORD HERO BOX -->
                 <div class="bg-gradient-to-br from-amber-500 via-orange-500 to-rose-500 p-4 rounded-3xl text-white shadow-xl space-y-2 relative overflow-hidden border border-amber-300/30">
                     <div class="flex items-center justify-between">
                         <span class="px-2.5 py-0.5 rounded-full bg-white/20 text-white text-[10px] font-black uppercase tracking-wider border border-white/30 flex items-center gap-1 shadow-inner">
@@ -728,7 +1498,6 @@
                     </div>
                 </div>
 
-                <!-- CATEGORY SELECTOR -->
                 <div>
                     <div class="flex justify-between items-center mb-2 px-1">
                         <span class="text-xs font-black text-slate-700 uppercase tracking-wider flex items-center gap-1">
@@ -740,7 +1509,6 @@
                     <div class="grid grid-cols-2 gap-2.5" id="dynamic-sell-cards-container"></div>
                 </div>
 
-                <!-- SUBMISSION MODE TOGGLE (SINGLE / BULK XLSX) -->
                 <div class="flex bg-slate-200/80 p-1 rounded-2xl">
                     <button id="btn-mode-single" onclick="toggleSellInputMode('single')" class="flex-1 py-2 rounded-xl text-xs font-black transition bg-white text-blue-600 shadow-sm flex items-center justify-center gap-1">
                         <i data-lucide="user" class="w-3.5 h-3.5"></i>
@@ -752,7 +1520,6 @@
                     </button>
                 </div>
 
-                <!-- SUBMISSION FORM WRAPPER -->
                 <div class="bg-white p-5 rounded-3xl border border-slate-200/90 shadow-sm space-y-4">
                     <div class="flex items-center justify-between pb-3 border-b border-slate-100">
                         <div>
@@ -765,12 +1532,10 @@
                         </div>
                     </div>
 
-                    <!-- 1. SINGLE SUBMISSION MODE -->
                     <div id="single-sell-mode-container" class="space-y-3">
                         <div id="dynamic-credential-fields-container" class="space-y-3"></div>
                     </div>
 
-                    <!-- 2. BULK XLSX PASTE SUBMISSION MODE -->
                     <div id="bulk-sell-mode-container" class="hidden space-y-3">
                         <div class="bg-blue-50 p-3 rounded-2xl border border-blue-200 text-xs text-blue-900 space-y-1">
                             <span class="font-black flex items-center gap-1">
@@ -822,7 +1587,6 @@
                     </div>
                 </div>
 
-                <!-- TELEGRAM CHANNEL & NOTICE HERO BOX -->
                 <div class="bg-gradient-to-br from-indigo-950 via-slate-900 to-blue-950 p-4 rounded-3xl text-white shadow-xl space-y-2 relative overflow-hidden border border-blue-500/30">
                     <div class="flex items-center justify-between">
                         <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-black uppercase tracking-wider border border-emerald-400/30 flex items-center gap-1 shadow-inner">
@@ -843,7 +1607,6 @@
                     </div>
                 </div>
 
-                <!-- ADMIN ADDED MASTER TASKS / SERVICES -->
                 <div>
                     <div class="flex justify-between items-center mb-2 px-1">
                         <span class="text-xs font-black text-slate-700 uppercase tracking-wider flex items-center gap-1">
@@ -855,7 +1618,6 @@
                     <div class="grid grid-cols-2 gap-2.5" id="master-sell-cards-container"></div>
                 </div>
 
-                <!-- SUBMISSION FORM FOR MASTER WORK -->
                 <div class="bg-white p-5 rounded-3xl border border-slate-200/90 shadow-sm space-y-4">
                     <div class="flex items-center justify-between pb-3 border-b border-slate-100">
                         <div>
@@ -886,7 +1648,7 @@
                 </div>
             </div>
 
-            <!-- 2.3 HIGHLY PROFESSIONAL MASTER WORK APPLICATION FORM PAGE -->
+            <!-- 2.3 MASTER WORK TRAINING APPLICATION PAGE -->
             <div id="master-apply-page" class="p-4 space-y-4 sub-page">
                 <div class="flex items-center gap-2 mb-1">
                     <button onclick="navigateTo('work-page')" class="p-2.5 rounded-2xl bg-white border border-slate-200 hover:bg-slate-50 transition shadow-sm">
@@ -906,10 +1668,7 @@
                     <p class="text-[11px] text-amber-100">আবেদন যাচাই শেষে এডমিন টিম সরাসরি আপনার সাথে যোগাযোগ করে প্র্যাকটিক্যাল কাজ ও ট্রিকস বুঝিয়ে দেবে।</p>
                 </div>
 
-                <!-- PROFESSIONAL MULTI-SECTION FORM -->
                 <div class="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm space-y-5">
-                    
-                    <!-- SECTION 1: PERSONAL & CONTACT -->
                     <div class="space-y-3.5 pb-4 border-b border-slate-100">
                         <div class="flex items-center gap-2">
                             <div class="w-6 h-6 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-black">1</div>
@@ -937,7 +1696,6 @@
                         </div>
                     </div>
 
-                    <!-- SECTION 2: DEVICE & TECHNICAL SETUP -->
                     <div class="space-y-3.5 pb-4 border-b border-slate-100">
                         <div class="flex items-center gap-2">
                             <div class="w-6 h-6 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center text-xs font-black">2</div>
@@ -975,7 +1733,6 @@
                         </div>
                     </div>
 
-                    <!-- SECTION 3: TIME & COMMITMENT -->
                     <div class="space-y-3.5 pb-2">
                         <div class="flex items-center gap-2">
                             <div class="w-6 h-6 rounded-lg bg-amber-100 text-amber-600 flex items-center justify-center text-xs font-black">3</div>
@@ -1125,7 +1882,6 @@
                     </button>
                 </div>
 
-                <!-- DYNAMIC TASKS LIST -->
                 <div class="space-y-3.5" id="dynamic-tasks-container"></div>
             </div>
 
@@ -1251,7 +2007,6 @@
                         </div>
                     </div>
 
-                    <!-- REDEEM CODE BUTTON -->
                     <div class="pt-2 border-t border-white/10">
                         <button onclick="openRedeemModal()" class="w-full py-2.5 px-4 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-black rounded-2xl text-xs flex items-center justify-center gap-2 shadow-lg active:scale-95 transition">
                             <i data-lucide="gift" class="w-4 h-4 text-white animate-bounce"></i>
@@ -1302,6 +2057,14 @@
                             <span>আপনার অর্ডারসমূহ (Orders History)</span>
                         </div>
                         <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400"></i>
+                    </button>
+
+                    <button onclick="openSupportModal()" class="w-full p-3 flex items-center justify-between hover:bg-sky-50 rounded-xl transition text-sky-700">
+                        <div class="flex items-center gap-2.5">
+                            <div class="p-1.5 bg-sky-100 text-sky-600 rounded-lg"><i class="fab fa-telegram"></i></div>
+                            <span class="font-black">টেলিগ্রাম লাইভ সাপোর্ট (Chat Support)</span>
+                        </div>
+                        <i data-lucide="chevron-right" class="w-4 h-4 text-sky-400"></i>
                     </button>
 
                     <button onclick="navigateTo('pay-page')" class="w-full p-3 flex items-center justify-between hover:bg-slate-50 rounded-xl transition">
@@ -1363,7 +2126,6 @@
                         <span id="ledger-current-balance" class="text-sm font-black text-blue-600 font-mono">৳0.00</span>
                     </div>
                 </div>
-
                 <div id="balance-history-list" class="space-y-2.5 min-h-[220px]"></div>
             </div>
 
@@ -1485,9 +2247,9 @@
                         <button onclick="navigateTo('history-page')" class="p-1 text-slate-300 hover:text-white transition" title="হিস্ট্রি">
                             <i data-lucide="clipboard-list" class="w-5 h-5"></i>
                         </button>
-                        <a href="https://t.me/EXPERTearn_team" target="_blank" class="p-1 text-slate-300 hover:text-white transition" title="সাপোর্ট">
-                            <i data-lucide="message-circle" class="w-5 h-5"></i>
-                        </a>
+                        <button onclick="openSupportModal()" class="p-1 text-slate-300 hover:text-white transition" title="সাপোর্ট">
+                            <i class="fab fa-telegram"></i>
+                        </button>
                     </div>
                 </div>
 
@@ -1713,18 +2475,10 @@
             <div class="space-y-1.5">
                 <label class="block text-xs font-semibold text-slate-600">ই-ওয়ালেট প্রকার</label>
                 <div class="grid grid-cols-4 gap-1.5">
-                    <button type="button" onclick="selectWithdrawWalletType('Nagad', this)" class="wallet-type-tab active py-2 rounded-xl text-[11px] font-bold text-center border">
-                        Nagad
-                    </button>
-                    <button type="button" onclick="selectWithdrawWalletType('BKash', this)" class="wallet-type-tab py-2 rounded-xl text-[11px] font-bold text-center border">
-                        BKash
-                    </button>
-                    <button type="button" onclick="selectWithdrawWalletType('Rocket', this)" class="wallet-type-tab py-2 rounded-xl text-[11px] font-bold text-center border">
-                        Rocket
-                    </button>
-                    <button type="button" onclick="selectWithdrawWalletType('Binance', this)" class="wallet-type-tab py-2 rounded-xl text-[11px] font-bold text-center border">
-                        Binance
-                    </button>
+                    <button type="button" onclick="selectWithdrawWalletType('Nagad', this)" class="wallet-type-tab active py-2 rounded-xl text-[11px] font-bold text-center border">Nagad</button>
+                    <button type="button" onclick="selectWithdrawWalletType('BKash', this)" class="wallet-type-tab py-2 rounded-xl text-[11px] font-bold text-center border">BKash</button>
+                    <button type="button" onclick="selectWithdrawWalletType('Rocket', this)" class="wallet-type-tab py-2 rounded-xl text-[11px] font-bold text-center border">Rocket</button>
+                    <button type="button" onclick="selectWithdrawWalletType('Binance', this)" class="wallet-type-tab py-2 rounded-xl text-[11px] font-bold text-center border">Binance</button>
                 </div>
             </div>
 
@@ -1982,7 +2736,680 @@
         </div>
     </div>
 
-    <!-- FIREBASE & CORE JAVASCRIPT LOGIC -->
+    <!-- ======================================================== -->
+    <!-- REALTIME FIREBASE LIVE SUPPORT DESK LOGIC (FILE 2)       -->
+    <!-- ======================================================== -->
+    <script>
+        const OFFICIAL_ADMIN_ID = "7358825471";
+        const OFFICIAL_LOGO = "https://i.postimg.cc/vmSBzy63/file-00000000eb4c81faa545e57c85285455.png";
+        const OFFICIAL_TITLE = "𝐆𝐌𝐀𝐈𝐋 𝐇𝐔𝐁 ˢᵘᵖᵖᵒʳᵗ";
+
+        const VERIFIED_BADGE_SVG = `
+            <svg class="tg-verified-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10.29 2.3c.75-.4 1.67-.4 2.42 0l1.58.84c.32.17.68.26 1.04.26h1.79c.85 0 1.63.45 2.05 1.18l.89 1.55c.18.31.44.57.75.75l1.55.89c.73.42 1.18 1.2 1.18 2.05v1.79c0 .36.09.72.26 1.04l.84 1.58c.4.75.4 1.67 0 2.42l-.84 1.58c-.17.32-.26.68-.26 1.04v1.79c0 .85-.45 1.63-1.18 2.05l-1.55.89c-.31.18-.57.44-.75.75l-.89 1.55c-.42.73-1.2 1.18-2.05 1.18h-1.79c-.36 0-.72.09-1.04.26l-1.58.84c-.75.4-1.67.4-2.42 0l-1.58-.84a2.44 2.44 0 0 0-1.04-.26h-1.79c-.85 0-1.63-.45-2.05-1.18l-.89-1.55a2.44 2.44 0 0 0-.75-.75l-1.55-.89c-.73-.42-1.18-1.2-1.18-2.05v-1.79c0-.36-.09-.72-.26-1.04l-.84-1.58a2.44 2.44 0 0 1 0-2.42l.84-1.58c.17-.32.26-.68.26-1.04V6.18c0-.85.45-1.63 1.18-2.05l1.55-.89c.31-.18.57-.44.75-.75l.89-1.55c.42-.73 1.2-1.18 2.05-1.18h1.79c.36 0 .72-.09 1.04-.26l1.58-.84z" fill="#2AABEE"/>
+                <path d="M9.3 12.2l1.9 1.9 4.3-4.3" stroke="#ffffff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>`;
+
+        // Support Realtime Database (Compat instance)
+        const supportFirebaseConfig = {
+            apiKey: "AIzaSyAsENiikJ5YQ1F8UHrixdJVEINAhO4PG30",
+            authDomain: "bot2-3d8bc.firebaseapp.com",
+            databaseURL: "https://bot2-3d8bc-default-rtdb.firebaseio.com",
+            projectId: "bot2-3d8bc",
+            storageBucket: "bot2-3d8bc.firebasestorage.app",
+            messagingSenderId: "77444577377",
+            appId: "1:77444577377:web:05a9910049d166878d5220"
+        };
+        const supportApp = firebase.initializeApp(supportFirebaseConfig, "supportAppInstance");
+        const supportDb = supportApp.database();
+
+        let supportTgUser = { id: '6954647230', first_name: 'Guest User', photo_url: '' };
+        let activeChatTargetUserId = supportTgUser.id;
+        let activeTargetUserMeta = null;
+        let chatMessageHistory = [];
+        let allInboxThreads = [];
+        let typingTimer = null;
+        let activeCommunityLinks = [];
+
+        let currentChatRef = null;
+        let currentTypingRef = null;
+        let currentUserMetaRef = null;
+        let currentInboxRef = null;
+
+        const isSupportAdmin = () => String(supportTgUser.id) === String(OFFICIAL_ADMIN_ID);
+
+        function escapeHTML(str) {
+            if (!str) return '';
+            return String(str).replace(/[&<>'"]/g, 
+                tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+            );
+        }
+
+        function triggerSupportHaptic(type = 'light') {
+            if (window.Telegram?.WebApp?.HapticFeedback) {
+                window.Telegram.WebApp.HapticFeedback.impactOccurred(type);
+            }
+        }
+
+        function openSupportModal() {
+            triggerSupportHaptic('medium');
+            document.getElementById('support-modal-overlay').style.display = 'flex';
+            initSupportDesk();
+        }
+
+        function closeSupportModal() {
+            triggerSupportHaptic('light');
+            document.getElementById('support-modal-overlay').style.display = 'none';
+            detachActiveListeners();
+        }
+
+        function initSupportDesk() {
+            listenCommunityLinks();
+            if (isSupportAdmin()) {
+                openAdminInbox();
+            } else {
+                document.getElementById('admin-search-bar').style.display = 'none';
+                openUserDirectChat(supportTgUser.id);
+            }
+        }
+
+        function handleSupportBack() {
+            triggerSupportHaptic('medium');
+            if (isSupportAdmin()) openAdminInbox();
+        }
+
+        function handleHeaderClick() {
+            if (isSupportAdmin() && activeChatTargetUserId !== supportTgUser.id) {
+                openUserProfileModal();
+            }
+        }
+
+        // --- REALTIME COMMUNITY LINKS ---
+        function listenCommunityLinks() {
+            supportDb.ref('community_links').on('value', snap => {
+                activeCommunityLinks = [];
+                if (snap.exists()) {
+                    snap.forEach(c => {
+                        activeCommunityLinks.push({ key: c.key, ...c.val() });
+                    });
+                } else {
+                    const defaults = [
+                        { title: "অফিসিয়াল টেলিগ্রাম চ্যানেল", icon: "fab fa-telegram", url: "https://t.me/EXPERTearn_team" },
+                        { title: "অফিসিয়াল হোয়াটসঅ্যাপ সাপোর্ট", icon: "fab fa-whatsapp", url: "https://wa.me/8801827750260" }
+                    ];
+                    defaults.forEach(d => supportDb.ref('community_links').push(d));
+                }
+                renderAdminLinksManagerList();
+            });
+        }
+
+        function openLinksManageModal() {
+            renderAdminLinksManagerList();
+            document.getElementById('admin-links-modal').style.display = 'flex';
+        }
+
+        function renderAdminLinksManagerList() {
+            const container = document.getElementById('admin-links-container');
+            if (!container) return;
+            container.innerHTML = '';
+            if (!activeCommunityLinks.length) {
+                container.innerHTML = `<div style="font-size:0.75rem; color:#8e9bb2;">কোনো লিংক যুক্ত নেই।</div>`;
+                return;
+            }
+
+            activeCommunityLinks.forEach(item => {
+                const row = document.createElement('div');
+                row.className = 'links-list-item';
+                row.innerHTML = `
+                    <div style="display:flex; align-items:center; gap:8px; overflow:hidden;">
+                        <i class="${escapeHTML(item.icon)}" style="color:#2AABEE;"></i>
+                        <div style="overflow:hidden;">
+                            <div style="font-weight:600; white-space:nowrap; text-overflow:ellipsis; overflow:hidden;">${escapeHTML(item.title)}</div>
+                            <div style="font-size:0.68rem; color:#8e9bb2; white-space:nowrap; text-overflow:ellipsis; overflow:hidden;">${escapeHTML(item.url)}</div>
+                        </div>
+                    </div>
+                    <button class="btn-del-link" onclick="deleteSocialLink('${item.key}')" title="Delete"><i class="fas fa-trash-alt"></i></button>
+                `;
+                container.appendChild(row);
+            });
+        }
+
+        async function addNewSocialLink() {
+            const title = document.getElementById('new-link-title').value.trim();
+            const icon = document.getElementById('new-link-icon').value;
+            const url = document.getElementById('new-link-url').value.trim();
+
+            if (!title || !url) return showToast('দয়া করে শিরোনাম এবং লিংক দিন', 'error');
+
+            await supportDb.ref('community_links').push({ title, icon, url });
+            document.getElementById('new-link-title').value = '';
+            document.getElementById('new-link-url').value = '';
+            showToast('নতুন সোশ্যাল লিংক যুক্ত হয়েছে', 'success');
+        }
+
+        async function deleteSocialLink(key) {
+            if (!confirm('আপনি কি এই লিংকটি মুছে ফেলতে চান?')) return;
+            await supportDb.ref(`community_links/${key}`).remove();
+            showToast('লিংক মুছে ফেলা হয়েছে', 'info');
+        }
+
+        function openSupportExternalLink(url) {
+            if (window.Telegram?.WebApp?.openLink) {
+                window.Telegram.WebApp.openLink(url);
+            } else {
+                window.open(url, '_blank');
+            }
+        }
+
+        // --- ADMIN INBOX ---
+        function openAdminInbox() {
+            detachActiveListeners();
+            document.getElementById('btn-back').style.display = 'none';
+            document.getElementById('btn-complete-ticket').style.display = 'none';
+            document.getElementById('btn-manage-links').style.display = 'inline-flex';
+            document.getElementById('support-header-title').innerHTML = `<span>Admin Inbox</span>`;
+            document.getElementById('support-header-sub').innerText = "সকল ব্যবহারকারীর ইনবক্স";
+            document.getElementById('support-header-img').src = OFFICIAL_LOGO;
+
+            document.getElementById('admin-search-bar').style.display = 'block';
+            document.getElementById('admin-inbox-view').style.display = 'flex';
+            document.getElementById('chat-messages').style.display = 'none';
+            document.getElementById('support-input-bar').style.display = 'none';
+            document.getElementById('typing-box').style.display = 'none';
+            document.getElementById('user-status-banner').style.display = 'none';
+
+            currentInboxRef = supportDb.ref('support_chats');
+            currentInboxRef.on('value', snap => {
+                allInboxThreads = [];
+                if (snap.exists()) {
+                    const chats = snap.val();
+                    Object.keys(chats).forEach(uid => {
+                        const thread = chats[uid];
+                        const msgKeys = Object.keys(thread);
+                        const lastMsg = thread[msgKeys[msgKeys.length - 1]];
+                        
+                        let unreadCount = 0;
+                        msgKeys.forEach(k => {
+                            if (thread[k].sender === 'user' && !thread[k].seen) unreadCount++;
+                        });
+
+                        allInboxThreads.push({
+                            uid: uid,
+                            userName: lastMsg.name || `User (${uid})`,
+                            userPhoto: lastMsg.photo || `https://api.dicebear.com/7.x/bottts/svg?seed=${uid}`,
+                            lastText: lastMsg.text || (lastMsg.type === 'community_card' ? 'অফিসিয়াল কমিউনিটি কার্ড' : ''),
+                            time: lastMsg.time || '',
+                            unreadCount: unreadCount,
+                            timestamp: lastMsg.timestamp || 0
+                        });
+                    });
+
+                    allInboxThreads.sort((a, b) => b.timestamp - a.timestamp);
+                }
+                renderInboxList(allInboxThreads);
+            });
+        }
+
+        function renderInboxList(threads) {
+            const container = document.getElementById('admin-inbox-view');
+            container.innerHTML = '';
+            if (!threads.length) {
+                container.innerHTML = `<div style="text-align:center; padding:40px; color:#8e9bb2; font-size:0.9rem;">কোনো কথোপকথন নেই!</div>`;
+                return;
+            }
+
+            threads.forEach(t => {
+                const item = document.createElement('div');
+                item.className = 'inbox-card';
+                item.onclick = () => openAdminChatThread(t.uid, t.userName, t.userPhoto);
+                item.innerHTML = `
+                    <div class="inbox-left">
+                        <img src="${escapeHTML(t.userPhoto)}">
+                        <div class="inbox-meta">
+                            <h4>${escapeHTML(t.userName)}</h4>
+                            <p>${escapeHTML(t.lastText)}</p>
+                        </div>
+                    </div>
+                    <div style="display:flex; align-items:center;">
+                        ${t.unreadCount > 0 ? `<span class="unread-pill">${t.unreadCount}</span>` : ''}
+                        <span style="font-size:0.75rem; color:#2AABEE; font-weight:700; margin-left:8px;"><i class="fas fa-chevron-right"></i></span>
+                    </div>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        function filterInbox() {
+            const q = document.getElementById('admin-search-input').value.toLowerCase().trim();
+            const filtered = allInboxThreads.filter(t => 
+                t.userName.toLowerCase().includes(q) || t.uid.includes(q)
+            );
+            renderInboxList(filtered);
+        }
+
+        // --- CHAT THREAD ---
+        function openAdminChatThread(targetUid, userName, userPhoto) {
+            triggerSupportHaptic('light');
+            detachActiveListeners();
+            activeChatTargetUserId = targetUid;
+
+            document.getElementById('btn-back').style.display = 'block';
+            document.getElementById('btn-complete-ticket').style.display = 'inline-flex';
+            document.getElementById('btn-manage-links').style.display = 'none';
+            document.getElementById('support-header-title').innerHTML = `<span>${escapeHTML(userName)}</span> <i class="fas fa-info-circle" style="font-size:0.8rem; color:#8e9bb2;"></i>`;
+            document.getElementById('support-header-sub').innerText = `ID: ${targetUid} (ক্লিক করে প্রোফাইল দেখুন)`;
+            document.getElementById('support-header-img').src = userPhoto;
+
+            document.getElementById('admin-search-bar').style.display = 'none';
+            document.getElementById('admin-inbox-view').style.display = 'none';
+            document.getElementById('chat-messages').style.display = 'flex';
+            document.getElementById('support-input-bar').style.display = 'flex';
+            
+            markMessagesAsSeen(targetUid);
+            loadThreadMessages(targetUid);
+            listenTypingStatus(targetUid);
+            listenUserMeta(targetUid);
+        }
+
+        function openUserDirectChat(myId) {
+            detachActiveListeners();
+            activeChatTargetUserId = myId;
+            document.getElementById('btn-back').style.display = 'none';
+            document.getElementById('btn-complete-ticket').style.display = 'none';
+            document.getElementById('btn-manage-links').style.display = 'none';
+            
+            document.getElementById('support-header-title').innerHTML = `
+                <span>${OFFICIAL_TITLE}</span>
+                ${VERIFIED_BADGE_SVG}
+            `;
+            document.getElementById('support-header-sub').innerText = "অনলাইন সাপোর্ট টিম";
+            document.getElementById('support-header-img').src = OFFICIAL_LOGO;
+
+            document.getElementById('admin-inbox-view').style.display = 'none';
+            document.getElementById('chat-messages').style.display = 'flex';
+            document.getElementById('support-input-bar').style.display = 'flex';
+            
+            loadThreadMessages(myId);
+            listenTypingStatus(myId);
+            listenUserMeta(myId);
+        }
+
+        function detachActiveListeners() {
+            if (currentChatRef) currentChatRef.off();
+            if (currentTypingRef) currentTypingRef.off();
+            if (currentUserMetaRef) currentUserMetaRef.off();
+            if (currentInboxRef) currentInboxRef.off();
+        }
+
+        function markMessagesAsSeen(uid) {
+            supportDb.ref('support_chats/' + uid).once('value', snap => {
+                if (snap.exists()) {
+                    snap.forEach(c => {
+                        if (c.val().sender === 'user' && !c.val().seen) {
+                            c.ref.update({ seen: true });
+                        }
+                    });
+                }
+            });
+        }
+
+        function loadThreadMessages(uid) {
+            currentChatRef = supportDb.ref('support_chats/' + uid);
+            currentChatRef.on('value', snap => {
+                const body = document.getElementById('chat-messages');
+                body.innerHTML = `
+                    <div class="msg-row admin">
+                        <img src="${OFFICIAL_LOGO}" class="msg-avatar" alt="Admin">
+                        <div class="msg-bubble">
+                            হ্যালো! <b>${OFFICIAL_TITLE}</b> এ আপনাকে স্বাগতম। আপনার সমস্যা বা অভিযোগ বিস্তারিত লিখে জানান।
+                            <div class="msg-time">${OFFICIAL_TITLE}</div>
+                        </div>
+                    </div>`;
+
+                chatMessageHistory = [];
+                if (snap.exists()) {
+                    snap.forEach(c => {
+                        const key = c.key;
+                        const m = c.val();
+                        chatMessageHistory.push(m);
+                        const isMsgFromAdmin = m.sender === 'admin';
+                        const avatar = isMsgFromAdmin ? OFFICIAL_LOGO : (m.photo || `https://api.dicebear.com/7.x/bottts/svg?seed=${uid}`);
+                        const checkMark = m.seen ? '<i class="fas fa-check-double tick-blue"></i>' : '<i class="fas fa-check"></i>';
+
+                        let contentHTML = escapeHTML(m.text);
+
+                        // 1. RATING REQUEST CARD
+                        if (m.type === 'rating_request') {
+                            if (!isSupportAdmin()) {
+                                contentHTML = `
+                                    <div>${escapeHTML(m.text)}</div>
+                                    <div class="rating-box-wrap">
+                                        <div style="font-size:0.75rem; color:#8e9bb2; font-weight:600;">নিচের স্টারে টাচ করে রেটিং দিন:</div>
+                                        <div class="rating-stars-row">
+                                            ${[1, 2, 3, 4, 5].map(s => `
+                                                <i class="fas fa-star rating-star-btn" onclick="rateSupport('${key}', ${s})" title="${s} Star"></i>
+                                            `).join('')}
+                                        </div>
+                                    </div>
+                                `;
+                            } else {
+                                contentHTML = `
+                                    <div>${escapeHTML(m.text)}</div>
+                                    <div style="margin-top:6px; font-size:0.72rem; color:#8e9bb2; font-style:italic;">
+                                        <i class="fas fa-clock"></i> ব্যবহারকারীর রেটিংয়ের অপেক্ষায়...
+                                    </div>
+                                `;
+                            }
+                        }
+
+                        // 2. COMMUNITY HUB CARD
+                        if (m.type === 'community_card') {
+                            const starsGiven = m.starsGiven || 5;
+                            const linksHTML = activeCommunityLinks.map(link => `
+                                <a href="javascript:void(0)" onclick="openSupportExternalLink('${encodeURI(link.url)}')" class="community-link-btn">
+                                    <div class="community-link-left">
+                                        <i class="${escapeHTML(link.icon)}" style="color:#2AABEE;"></i>
+                                        <span>${escapeHTML(link.title)}</span>
+                                    </div>
+                                    <i class="fas fa-external-link-alt" style="font-size:0.75rem; opacity:0.6;"></i>
+                                </a>
+                            `).join('');
+
+                            contentHTML = `
+                                <div class="community-hub-card">
+                                    <div class="community-hub-title">
+                                        <span>${OFFICIAL_TITLE}</span>
+                                        ${VERIFIED_BADGE_SVG}
+                                    </div>
+
+                                    <div style="display:flex; align-items:center; gap:4px; margin-bottom:8px;">
+                                        ${[1,2,3,4,5].map(st => `<i class="fas fa-star" style="font-size:0.9rem; color:${st <= starsGiven ? '#f1c40f' : '#4b5563'};"></i>`).join('')}
+                                        <span style="font-size:0.75rem; color:#00b894; font-weight:700; margin-left:6px;">রেটিং সম্পন্ন (${starsGiven}/৫)</span>
+                                    </div>
+
+                                    <p class="community-hub-desc">
+                                        আপনাকে ধন্যবাদ আমাদের সাথে থাকার জন্য! নিচে দেওয়া অফিসিয়াল চ্যানেলে জয়েন হয়ে আমাদের সাথে যুক্ত থাকুন:
+                                    </p>
+
+                                    <div class="community-links-grid">
+                                        ${linksHTML || '<div style="font-size:0.75rem; color:#8e9bb2;">শীঘ্রই চ্যানেল লিংক আসছে...</div>'}
+                                    </div>
+                                </div>
+                            `;
+                        }
+
+                        body.innerHTML += `
+                            <div class="msg-row ${isMsgFromAdmin ? 'admin' : 'user'}">
+                                ${isMsgFromAdmin ? `<img src="${escapeHTML(avatar)}" class="msg-avatar">` : ''}
+                                <div class="msg-bubble">
+                                    ${contentHTML}
+                                    <div class="msg-time">
+                                        ${escapeHTML(m.time || '')} ${!isMsgFromAdmin ? checkMark : ''}
+                                    </div>
+                                </div>
+                                ${!isMsgFromAdmin ? `<img src="${escapeHTML(avatar)}" class="msg-avatar">` : ''}
+                            </div>`;
+                    });
+                    body.scrollTop = body.scrollHeight;
+                }
+            });
+        }
+
+        // --- TICKET RESOLUTION & RATING ---
+        async function completeSupportTicket() {
+            if (!confirm("আপনি কি সেশনটি সমাপ্ত করে রেটিং পাঠাতে চান?")) return;
+            triggerSupportHaptic('medium');
+
+            const now = new Date();
+            const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+            await supportDb.ref('support_chats/' + activeChatTargetUserId).push({
+                sender: 'admin',
+                type: 'rating_request',
+                userId: OFFICIAL_ADMIN_ID,
+                name: OFFICIAL_TITLE,
+                photo: OFFICIAL_LOGO,
+                text: 'আমাদের সাথে যোগাযোগ করার জন্য ধন্যবাদ! আপনার সমস্যার সমাধান কি সফলভাবে হয়েছে? আমাদের সার্ভিস রেটিং দিন:',
+                rating: 0,
+                rated: false,
+                time: timeString,
+                seen: false,
+                timestamp: Date.now()
+            });
+
+            showToast('রেটিং রিকোয়েস্ট পাঠানো হয়েছে', 'info');
+        }
+
+        async function rateSupport(messageKey, stars) {
+            if (isSupportAdmin()) return;
+            triggerSupportHaptic('medium');
+
+            const chatUid = activeChatTargetUserId;
+            const now = new Date();
+            const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+            await supportDb.ref(`support_chats/${chatUid}/${messageKey}`).remove();
+
+            await supportDb.ref(`support_chats/${chatUid}`).push({
+                sender: 'admin',
+                type: 'community_card',
+                userId: OFFICIAL_ADMIN_ID,
+                name: OFFICIAL_TITLE,
+                photo: OFFICIAL_LOGO,
+                starsGiven: stars,
+                time: timeString,
+                seen: true,
+                timestamp: Date.now()
+            });
+
+            await supportDb.ref(`users_meta/${chatUid}`).update({
+                lastSupportRating: stars,
+                lastRatedAt: Date.now()
+            });
+
+            showToast(`ধন্যবাদ! আপনার ${stars} স্টার রেটিং গ্রহণ করা হয়েছে।`, 'success');
+        }
+
+        // --- USER ACCESS & MODERATION ---
+        function listenUserMeta(uid) {
+            currentUserMetaRef = supportDb.ref('users_meta/' + uid);
+            currentUserMetaRef.on('value', snap => {
+                activeTargetUserMeta = snap.val() || {};
+                checkAccessControl();
+            });
+        }
+
+        function checkAccessControl() {
+            if (isSupportAdmin()) return;
+
+            const banner = document.getElementById('user-status-banner');
+            const inputBar = document.getElementById('support-input-bar');
+            const now = Date.now();
+
+            if (activeTargetUserMeta.isBanned) {
+                banner.style.display = 'block';
+                banner.innerText = '⚠️ আপনার অ্যাকাউন্টটি স্থায়ীভাবে ব্লক করা হয়েছে।';
+                inputBar.style.display = 'none';
+                return;
+            }
+
+            if (activeTargetUserMeta.mutedUntil && activeTargetUserMeta.mutedUntil > now) {
+                const remainingMinutes = Math.ceil((activeTargetUserMeta.mutedUntil - now) / (1000 * 60));
+                banner.style.display = 'block';
+                banner.innerText = `⚠️ সাময়িক নিষেধাজ্ঞার কারণে আপনি আরও ${remainingMinutes} মিনিট বার্তা পাঠাতে পারবেন না।`;
+                inputBar.style.display = 'none';
+                return;
+            }
+
+            banner.style.display = 'none';
+            inputBar.style.display = 'flex';
+        }
+
+        function openUserProfileModal() {
+            const modal = document.getElementById('admin-user-modal');
+            const meta = activeTargetUserMeta || {};
+            
+            document.getElementById('modal-user-avatar').src = meta.photo || `https://api.dicebear.com/7.x/bottts/svg?seed=${activeChatTargetUserId}`;
+            document.getElementById('modal-user-name').innerText = meta.name || 'User ' + activeChatTargetUserId;
+            document.getElementById('modal-user-id').innerText = 'Telegram ID: ' + activeChatTargetUserId;
+            document.getElementById('modal-msg-limit').value = meta.customLimit || 0;
+
+            const statusSpan = document.getElementById('modal-user-status');
+            if (meta.isBanned) {
+                statusSpan.innerText = 'Status: Banned (স্থায়ী ব্লক)';
+                statusSpan.style.color = '#eb4d4b';
+            } else if (meta.mutedUntil && meta.mutedUntil > Date.now()) {
+                statusSpan.innerText = 'Status: Muted (সাময়িক বন্ধ)';
+                statusSpan.style.color = '#f0932b';
+            } else {
+                statusSpan.innerText = 'Status: Active (সক্রিয়)';
+                statusSpan.style.color = '#00b894';
+            }
+
+            modal.style.display = 'flex';
+        }
+
+        function closeSpModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        function setModerationStatus(type, hours = 0) {
+            triggerSupportHaptic('medium');
+            const metaRef = supportDb.ref('users_meta/' + activeChatTargetUserId);
+
+            if (type === 'ban') {
+                metaRef.update({ isBanned: true, mutedUntil: null });
+                showToast('ইউজার ব্যান করা হয়েছে', 'info');
+            } else if (type === 'unban') {
+                metaRef.update({ isBanned: false, mutedUntil: null });
+                showToast('ইউজার সচল করা হয়েছে', 'success');
+            } else if (type === 'mute') {
+                const muteDuration = Date.now() + (hours * 60 * 60 * 1000);
+                metaRef.update({ mutedUntil: muteDuration, isBanned: false });
+                showToast(`${hours} ঘণ্টার জন্য মিউট করা হয়েছে`, 'info');
+            }
+            closeSpModal('admin-user-modal');
+        }
+
+        function updateMessageLimit() {
+            const val = parseInt(document.getElementById('modal-msg-limit').value) || 0;
+            supportDb.ref('users_meta/' + activeChatTargetUserId).update({ customLimit: val });
+            showToast(val > 0 ? `লিমিট ${val} টি মেসেজ সেট হয়েছে` : 'আনলিমিটেড করা হয়েছে', 'success');
+            closeSpModal('admin-user-modal');
+        }
+
+        // --- TYPING & SENDING ---
+        function handleTypingEvent() {
+            const role = isSupportAdmin() ? 'admin' : 'user';
+            supportDb.ref('typing/' + activeChatTargetUserId).set({
+                sender: role,
+                isTyping: true,
+                timestamp: Date.now()
+            });
+
+            clearTimeout(typingTimer);
+            typingTimer = setTimeout(() => {
+                supportDb.ref('typing/' + activeChatTargetUserId).set({ isTyping: false });
+            }, 2000);
+        }
+
+        function listenTypingStatus(uid) {
+            currentTypingRef = supportDb.ref('typing/' + uid);
+            currentTypingRef.on('value', snap => {
+                const data = snap.val();
+                const typingBox = document.getElementById('typing-box');
+                if (data && data.isTyping) {
+                    const isMeAdmin = isSupportAdmin();
+                    if ((isMeAdmin && data.sender === 'user') || (!isMeAdmin && data.sender === 'admin')) {
+                        document.getElementById('typing-user').innerText = data.sender === 'admin' ? OFFICIAL_TITLE : "ব্যবহারকারী";
+                        typingBox.style.display = 'flex';
+                        return;
+                    }
+                }
+                typingBox.style.display = 'none';
+            });
+        }
+
+        async function sendSupportMessage() {
+            const input = document.getElementById('chat-text-input');
+            const text = input.value.trim();
+            if (!text) return;
+
+            const isCurrentAdmin = isSupportAdmin();
+            const targetChat = activeChatTargetUserId;
+
+            if (!isCurrentAdmin) {
+                if (activeTargetUserMeta?.isBanned) return showToast("আপনার অ্যাকাউন্টটি ব্লক করা!", "error");
+                if (activeTargetUserMeta?.mutedUntil && activeTargetUserMeta.mutedUntil > Date.now()) return showToast("আপনি সাময়িকভাবে মিউট আছেন!", "error");
+
+                const customLimit = activeTargetUserMeta?.customLimit || 0;
+                if (customLimit > 0) {
+                    const myMsgCount = chatMessageHistory.filter(m => m.sender === 'user').length;
+                    if (myMsgCount >= customLimit) {
+                        return showToast(`আপনি সর্বোচ্চ ${customLimit}টি মেসেজের লিমিট শেষ করেছেন!`, "error");
+                    }
+                }
+            }
+
+            triggerSupportHaptic('light');
+
+            const now = new Date();
+            const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            const userAvatarUrl = supportTgUser.photo_url || `https://api.dicebear.com/7.x/bottts/svg?seed=${supportTgUser.id}`;
+
+            await supportDb.ref('support_chats/' + targetChat).push({
+                sender: isCurrentAdmin ? 'admin' : 'user',
+                userId: supportTgUser.id,
+                name: isCurrentAdmin ? OFFICIAL_TITLE : (supportTgUser.first_name || 'User'),
+                photo: isCurrentAdmin ? OFFICIAL_LOGO : userAvatarUrl,
+                text: text,
+                time: timeString,
+                seen: isCurrentAdmin ? true : false,
+                timestamp: Date.now()
+            });
+
+            if (!isCurrentAdmin) {
+                supportDb.ref('users_meta/' + targetChat).update({
+                    name: supportTgUser.first_name || 'User',
+                    photo: userAvatarUrl,
+                    lastActive: Date.now()
+                });
+
+                handleAutoReplySystem(targetChat);
+            }
+
+            supportDb.ref('typing/' + targetChat).set({ isTyping: false });
+            input.value = '';
+            input.focus();
+        }
+
+        async function handleAutoReplySystem(userUid) {
+            const metaSnap = await supportDb.ref('users_meta/' + userUid).once('value');
+            const meta = metaSnap.val() || {};
+
+            if (!meta.autoReplySent) {
+                setTimeout(async () => {
+                    const autoTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                    await supportDb.ref('support_chats/' + userUid).push({
+                        sender: 'admin',
+                        userId: OFFICIAL_ADMIN_ID,
+                        name: OFFICIAL_TITLE,
+                        photo: OFFICIAL_LOGO,
+                        text: 'আপনার বার্তাটি সফলভাবে গৃহীত হয়েছে। কিছুক্ষণের মধ্যে সাপোর্ট টিম এটি দেখে আপনাকে সহায়তা করবে। সাথে থাকার জন্য ধন্যবাদ।',
+                        time: autoTime,
+                        seen: false,
+                        timestamp: Date.now()
+                    });
+
+                    supportDb.ref('users_meta/' + userUid).update({ autoReplySent: true });
+                }, 1500);
+            }
+        }
+    </script>
+
+    <!-- ======================================================== -->
+    <!-- PRIMARY APP FIREBASE & SHOP/WALLET ENGINE LOGIC (FILE 1) -->
+    <!-- ======================================================== -->
     <script type="module">
         const primaryFirebaseConfig = {
             apiKey: "AIzaSyC_Qj_G_FOrlSehcj6qjdYB8x_G-yIyWnU",
@@ -2046,12 +3473,12 @@
         let masterCooldownRemaining = 0;
         let activeDeliveredOrderText = "";
 
-        // Dynamic Account Sell Services State & Bulk Input
+        // Dynamic Account Sell Services State
         let dynamicSellServices = [];
         let currentSelectedService = null;
         let currentSelectedMasterService = null;
         let dynamicMasterTasks = [];
-        let currentSellInputMode = 'single'; // 'single' | 'bulk'
+        let currentSellInputMode = 'single';
 
         // WITHDRAWAL STATE
         let selectedBindMethod = 'Nagad';
@@ -2111,9 +3538,7 @@
             return parseFloat(appConfig?.ordersRetentionHours || 48);
         }
 
-        // ==========================================
-        // DYNAMIC TELEGRAM DISPATCHER (Firebase Config Driven)
-        // ==========================================
+        // TELEGRAM DISPATCHER
         async function sendTelegramMessage(chatId, messageText) {
             if (!chatId || !messageText) return;
             try {
@@ -2122,27 +3547,18 @@
                     await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            chat_id: String(chatId),
-                            text: messageText,
-                            parse_mode: 'HTML'
-                        })
+                        body: JSON.stringify({ chat_id: String(chatId), text: messageText, parse_mode: 'HTML' })
                     });
                 } else {
                     await fetch('/api/telegram?action=send_message', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            chat_id: String(chatId),
-                            text: messageText,
-                            parse_mode: 'HTML'
-                        })
+                        body: JSON.stringify({ chat_id: String(chatId), text: messageText, parse_mode: 'HTML' })
                     }).catch(() => {});
                 }
             } catch (err) {}
         }
 
-        // রুটভিত্তিক নির্দিষ্ট এডমিন চ্যাটে মেসেজ প্রেরক
         async function dispatchTelegramNotification(type, defaultText, replacements = {}) {
             let targetAdminId = appConfig?.adminChatId || "6954647230";
             let customMessageTemplate = "";
@@ -2291,6 +3707,10 @@
                     currentUserTg = { id: "6954647230", first_name: "User", username: "account" };
                 }
 
+                // Sync with Support Desk
+                supportTgUser = currentUserTg;
+                activeChatTargetUserId = supportTgUser.id;
+
                 const passEl = document.getElementById('daily-dynamic-password');
                 if (passEl) passEl.textContent = getComputedDailyPassword();
 
@@ -2301,6 +3721,27 @@
                 await checkReturnPaymentStatus();
                 checkAndRefundExpiredOrders();
                 startCountdownTimerRoutine();
+
+                // Listen for unseen messages in support chat to show badge on floating button
+                supportDb.ref('support_chats/' + supportTgUser.id).on('value', snap => {
+                    const badge = document.getElementById('floating-support-badge');
+                    if (!snap.exists()) {
+                        badge.style.display = 'none';
+                        return;
+                    }
+                    let unread = 0;
+                    snap.forEach(c => {
+                        const m = c.val();
+                        if (m.sender === 'admin' && m.seen === false) unread++;
+                    });
+                    if (unread > 0) {
+                        badge.innerText = unread;
+                        badge.style.display = 'block';
+                    } else {
+                        badge.style.display = 'none';
+                    }
+                });
+
             } catch(err) {
                 console.error("App startup error:", err);
             } finally {
@@ -2400,9 +3841,6 @@
                 const configSnap = await getDoc(configRef);
                 appConfig = configSnap.exists() ? configSnap.data() : {};
 
-                if (appConfig.telegramSupportUrl) {
-                    document.getElementById('drawer-tg-support').href = appConfig.telegramSupportUrl;
-                }
                 if (appConfig.whatsappSupportUrl) {
                     document.getElementById('drawer-wa-support').href = appConfig.whatsappSupportUrl;
                 }
@@ -2445,7 +3883,6 @@
             }
         }
 
-        // Helper to render Firebase Image URL or Lucide Icon
         function renderServiceIconHtml(iconVal, isSelected, defaultIcon = 'mail') {
             const iconStr = iconVal || defaultIcon;
             const isUrl = iconStr.startsWith('http://') || iconStr.startsWith('https://') || iconStr.startsWith('data:image');
@@ -2456,9 +3893,7 @@
             return `<i data-lucide="${iconStr}" class="w-4 h-4"></i>`;
         }
 
-        // ========================================================
-        // DYNAMIC ACCOUNT SELL SERVICES (VIP 0 & WORK RATES)
-        // ========================================================
+        // --- DYNAMIC SELL SERVICES ---
         async function fetchSellServices() {
             try {
                 const snap = await getDocs(collection(dbWork, "sell_services"));
@@ -2473,7 +3908,7 @@
                             id: "gmail",
                             name: "Gmail Sell",
                             category: "Gmail",
-                            icon: "mail", // Can be an icon name OR image URL from Firebase
+                            icon: "mail",
                             rate: defaultVip0Rate,
                             rateDisplay: `৳${defaultVip0Rate.toFixed(2)} / আইডি`,
                             isActive: true,
@@ -2510,9 +3945,7 @@
                 }
 
                 renderDynamicSellCards();
-            } catch(e) {
-                console.warn("Sell services load error:", e);
-            }
+            } catch(e) {}
         }
 
         function renderDynamicSellCards() {
@@ -2524,7 +3957,6 @@
                 return;
             }
 
-            if (!currentSelectedService) {
                 currentSelectedService = dynamicSellServices.find(s => s.isActive !== false) || dynamicSellServices[0];
             }
 
@@ -2658,9 +4090,7 @@
             const dailyPasswordUsed = getComputedDailyPassword();
             const rewardEstimate = parseFloat(currentSelectedService.rate || 25.00);
 
-            // ----------------------------------------------------
             // CASE A: BULK EXCEL PASTE SUBMISSION
-            // ----------------------------------------------------
             if (currentSellInputMode === 'bulk') {
                 const rawText = document.getElementById('bulk-accounts-input').value.trim();
                 if (!rawText) return showToast("অনুগ্রহ করে এক্সেল বা টেক্সট তালিকা পেস্ট করুন!", "error");
@@ -2753,9 +4183,7 @@
                 return;
             }
 
-            // ----------------------------------------------------
             // CASE B: SINGLE ACCOUNT SUBMISSION
-            // ----------------------------------------------------
             const inputs = document.querySelectorAll('#dynamic-credential-fields-container input');
             const submissionData = {};
             let primaryIdentifierValue = "";
@@ -2836,11 +4264,8 @@
             }
         };
 
-        // ========================================================
-        // MASTER WORK APPROVED SUBMISSION & DYNAMIC RATE
-        // ========================================================
+        // --- MASTER WORK PORTAL LOGIC ---
         window.openMasterTelegramChannel = function() {
-            // Firebase Controlled Channel URL
             const channelUrl = appConfig.masterChannelUrl || "https://t.me/EXPERTearn_team";
             try {
                 if (window.Telegram?.WebApp?.openTelegramLink) {
@@ -2891,9 +4316,7 @@
                 }
 
                 renderMasterSellCards();
-            } catch(e) {
-                console.warn("Master tasks load error:", e);
-            }
+            } catch(e) {}
         }
 
         function renderMasterSellCards() {
@@ -3084,9 +4507,7 @@
             }
         };
 
-        // ========================================================
-        // MASTER WORK APPLICATION & REJECTION 24H LIVE TIMER
-        // ========================================================
+        // --- MASTER APPLICATION STATUS & COOLDOWN ---
         async function checkMasterApplicationStatus() {
             if (!userData) return;
             try {
@@ -3134,9 +4555,7 @@
                     masterApplicationStatus = null;
                     masterCooldownRemaining = 0;
                 }
-            } catch(e) {
-                console.error("Master check err:", e);
-            }
+            } catch(e) {}
         }
 
         function startMasterRejectCountdown() {
@@ -3274,9 +4693,7 @@
             }
         };
 
-        // ========================================================
-        // WORK MARKETPLACE
-        // ========================================================
+        // --- WORK PAGE STATS & CARDS ---
         async function loadWorkPageStats() {
             if (!userData) return;
             try {
@@ -3724,9 +5141,7 @@
             }
         }
 
-        // ========================================================
-        // DYNAMIC TASKS ENGINE WITH VISIT BOT REDIRECT RETRY
-        // ========================================================
+        // --- TASKS ENGINE ---
         async function renderDynamicTasksList() {
             const container = document.getElementById('dynamic-tasks-container');
             if (!container) return;
@@ -3961,7 +5376,6 @@
             }
         };
 
-        // VISIT BOT TASK WITH TIMER AND REDIRECT
         window.startBotVisitFlow = function(taskId, botUrl, duration = 8, reward) {
             if (!ensureAccountActive("বট টাস্ক")) return;
 
@@ -4071,7 +5485,6 @@
                 btn.textContent = "জমা দিন";
                 if (input) input.value = '';
 
-                // রিডাইরেক্ট লজিক যদি কি ভুল হয়
                 setTimeout(() => {
                     startBotVisitFlow(taskId, botUrl, duration, reward);
                 }, 1000);
@@ -4158,9 +5571,7 @@
             }
         };
 
-        // ========================================================
-        // REFERRAL & CHECKIN
-        // ========================================================
+        // --- REFERRAL & DAILY CHECKIN ---
         async function loadReferralPageData() {
             if (!userData) return;
             const tgId = String(userData.tgChatId);
@@ -4310,9 +5721,7 @@
             }
         };
 
-        // ========================================================
-        // REDEEM CODES (DIRECTLY FROM FIREBASE)
-        // ========================================================
+        // --- REDEEM CODES ENGINE ---
         window.openRedeemModal = function() {
             document.getElementById('redeem-code-input').value = '';
             document.getElementById('redeem-code-modal').classList.remove('hidden');
@@ -4451,9 +5860,7 @@
             }
         };
 
-        // ========================================================
-        // BALANCE HISTORY (LEDGER)
-        // ========================================================
+        // --- BALANCE HISTORY (LEDGER) ---
         async function loadBalanceHistory() {
             const listEl = document.getElementById('balance-history-list');
             const balEl = document.getElementById('ledger-current-balance');
@@ -4526,9 +5933,7 @@
             lucide.createIcons();
         }
 
-        // ========================================================
-        // WITHDRAWAL SYSTEM
-        // ========================================================
+        // --- WITHDRAWAL SYSTEM ---
         function loadWithdrawPageUI() {
             if (!userData) return;
             const bal = (userData.balance || 0).toFixed(2);
@@ -4840,7 +6245,6 @@
                 userData.balance -= totalDebit;
                 await recordUserLedger('expense', `উত্তোলন (${activeWallet.method})`, totalDebit, false, `ফি: ৳${WITHDRAW_FEE_BDT}`);
 
-                // Admin Notification
                 const withdrawMsg = `💸 <b>নতুন উত্তোলন অনুরোধ!</b>\n\n` +
                     `👤 <b>নাম:</b> ${userData.name || 'User'}\n` +
                     `🆔 <b>User ID:</b> <code>${userData.tgChatId}</code>\n` +
@@ -4909,9 +6313,7 @@
             }
         }
 
-        // ========================================================
-        // ACCOUNT ACTIVATION
-        // ========================================================
+        // --- ACCOUNT ACTIVATION & GATEWAY ---
         window.openAccountActivationModal = function() {
             document.getElementById('account-activation-modal').classList.remove('hidden');
         };
@@ -4995,9 +6397,6 @@
             }
         }
 
-        // ========================================================
-        // PAYMENTS & DEPOSITS
-        // ========================================================
         window.setAutoQuickAmount = function(val) {
             document.getElementById('amountInput').value = val;
             document.querySelectorAll('.quick-amount-pill').forEach(chip => {
@@ -5176,9 +6575,7 @@
                 document.getElementById('displayAmount').textContent = `${masterFee.toFixed(2)} BDT`;
                 document.getElementById('gateway-success-status-msg').textContent = "মাস্টার ওয়ার্ক সফলভাবে আনলক হয়েছে!";
                 document.getElementById('gateway-success-modal').classList.remove('hidden');
-            } catch(e) {
-                console.error("Master upgrade error:", e);
-            }
+            } catch(e) {}
         }
 
         async function savePaymentAndUpdateBalance(depositAmount, txid, fullData) {
@@ -5215,14 +6612,10 @@
 
                 updateUI();
                 await loadUserNotifications();
-            } catch (err) {
-                console.error(err);
-            }
+            } catch (err) {}
         }
 
-        // ==========================================
-        // NOTIFICATIONS SYSTEM
-        // ==========================================
+        // --- NOTIFICATIONS SYSTEM ---
         async function loadUserNotifications() {
             if (!userData) return;
             const tgChatId = String(userData.tgChatId);
@@ -5418,7 +6811,6 @@
             renderProductsBySelection();
         };
 
-        // Reads real-time stock count from dbShop (Secondary Firebase)
         async function getStockCount(collectionName) {
             if(!collectionName) return 0;
             try {
@@ -5548,7 +6940,7 @@
             lucide.createIcons();
         }
 
-        // --- BUY NOW MODAL ---
+        // --- BUY NOW ACTIONS ---
         window.openBuyModal = function(index) {
             const item = displayedProductsCache[index];
             if (!item) return;
@@ -5614,7 +7006,6 @@
             updateBuyModalPriceDisplay();
         };
 
-        // Purchases item: deducts balance from primary DB (dbUser), updates stock in secondary DB (dbShop)
         window.executeBuyNowConfirmed = async function() {
             if (!activeBuyModalData) return;
             const { product, unitPrice, qty } = activeBuyModalData;
@@ -5629,7 +7020,6 @@
             btn.innerHTML = `<span class="animate-spin inline-block w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full mr-1"></span> Processing...`;
 
             try {
-                // Check stock in secondary DB (dbShop)
                 const itemQuery = query(collection(dbShop, product.stockKey), where("isSold", "==", false), limit(qty));
                 const itemQuerySnapshot = await getDocs(itemQuery);
 
@@ -5639,7 +7029,6 @@
 
                 const purchasedItems = [];
 
-                // Deduct balance from primary DB (dbUser)
                 await runTransaction(dbUser, async (transaction) => {
                     const buyerRef = doc(dbUser, "users", String(userData.tgChatId));
                     const buyerSnap = await transaction.get(buyerRef);
@@ -5651,7 +7040,6 @@
                     transaction.update(buyerRef, { balance: buyerSnap.data().balance - totalCost });
                 });
 
-                // Update stock and save purchases in secondary DB (dbShop)
                 let saleId = Date.now();
                 for (const itemDoc of itemQuerySnapshot.docs) {
                     const itemData = itemDoc.data();
@@ -5704,7 +7092,7 @@
             }
         };
 
-        // --- PRE-ORDER LOGIC WITH DISPATCHER ---
+        // --- PRE-ORDER LOGIC ---
         window.openManualModal = function(index) {
             const item = displayedProductsCache[index];
             if (!item) return;
@@ -5764,7 +7152,6 @@
             btn.textContent = "Processing...";
 
             try {
-                // Deduct balance from primary DB (dbUser)
                 await runTransaction(dbUser, async (transaction) => {
                     const buyerRef = doc(dbUser, "users", String(userData.tgChatId));
                     const buyerSnap = await transaction.get(buyerRef);
@@ -5778,7 +7165,6 @@
 
                 const expiryDate = new Date(Date.now() + timeoutMinutes * 60 * 1000);
                 
-                // Store manual order in secondary DB (dbShop)
                 const orderDocRef = await addDoc(collection(dbShop, "manual_orders"), {
                     userId: String(userData.tgChatId),
                     userName: userData.name || 'User',
@@ -5796,7 +7182,6 @@
 
                 await recordUserLedger('expense', `প্রি-অর্ডার (${product.type})`, totalPrice, false, `${qty} টি আইটেম`);
 
-                // Send Notification using dispatcher for manual order
                 const defaultManualAdminNotice = `📦 <b>নতুন ম্যানুয়াল / প্রি-অর্ডার!</b>\n\n` +
                     `👤 <b>ইউজার:</b> ${userData.name || 'User'} (<code>${userData.tgChatId}</code>)\n` +
                     `🏷 <b>পণ্য:</b> ${product.type}\n` +
@@ -6050,7 +7435,7 @@
             } catch(e) {}
         }
 
-        // --- 48-HOUR RETENTION ORDERS HISTORY ---
+        // --- RETENTION ORDERS HISTORY ---
         async function loadOrdersHistory() {
             const listEl = document.getElementById('orders-purchase-history');
             listEl.innerHTML = getLoadingHTML();
@@ -6119,7 +7504,7 @@
             }
         }
 
-        // --- 10-HOUR RETENTION MANUAL ORDERS HISTORY WITH VIEW SECTION ---
+        // --- MANUAL ORDERS HISTORY ---
         async function loadManualOrdersHistory() {
             const list = document.getElementById('manual-orders-history-list');
             if(!list) return;
@@ -6207,7 +7592,7 @@
             copyToClipboard(activeDeliveredOrderText, null, "অ্যাকাউন্টের সম্পূর্ণ তালিকা কপি হয়েছে!");
         };
 
-        // --- 10-HOUR RETENTION REPLACE / REPORT HISTORY ---
+        // --- REPLACE HISTORY ---
         async function loadReplaceHistory() {
             const list = document.getElementById('replace-history-list');
             if(!list) return;
@@ -6312,7 +7697,6 @@
             btn.textContent = "Submitting...";
 
             try {
-                // Store replace request in secondary DB (dbShop)
                 const docRef = await addDoc(collection(dbShop, "replace_requests"), {
                     userId: String(userData.tgChatId),
                     userName: userData.name || 'User',
@@ -6326,7 +7710,6 @@
                     requestedAt: serverTimestamp()
                 });
 
-                // Dispatch telegram notification for replacement
                 const defaultReplaceMsg = `⚠️ <b>নতুন রিপ্লেসমেন্ট / রিপোর্ট রিকোয়েস্ট!</b>\n\n` +
                     `👤 <b>ইউজার:</b> ${userData.name || 'User'} (<code>${userData.tgChatId}</code>)\n` +
                     `🏷 <b>সার্ভিস:</b> ${mailType}\n` +
