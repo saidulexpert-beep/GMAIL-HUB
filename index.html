@@ -476,11 +476,19 @@
         }
         #support-chat-wrapper * {
             box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
+        
+        /* FontAwesome Icon Specific Fixes inside Support Container */
+        #support-chat-wrapper i.fa,
+        #support-chat-wrapper i.fas,
+        #support-chat-wrapper i.far,
+        #support-chat-wrapper i.fab {
+            font-family: "Font Awesome 6 Free", "Font Awesome 6 Brands" !important;
+            font-style: normal;
+        }
 
-        /* Support Top Bar */
+        /* Support Top Bar (Professional Transfer-like Back Header) */
         .tg-top-bar {
             background: #17212b;
             color: #fff;
@@ -493,34 +501,42 @@
             z-index: 10;
             flex-shrink: 0;
         }
-        .tg-back-btn { 
-            background: none; 
-            border: none; 
-            color: #fff; 
-            font-size: 1.2rem; 
-            cursor: pointer; 
-            padding: 6px; 
-            display: none;
-            transition: transform .2s;
-        }
-        .tg-close-btn {
+        .tg-exit-btn {
             background: rgba(255, 255, 255, 0.08);
             border: 1px solid rgba(255, 255, 255, 0.12);
             color: #fff;
-            width: 34px;
-            height: 34px;
-            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1rem;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.2s ease;
             flex-shrink: 0;
         }
-        .tg-close-btn:active {
-            transform: scale(0.9);
-            background: rgba(239, 68, 68, 0.3);
+        .tg-exit-btn:hover {
+            background: rgba(255, 255, 255, 0.16);
+        }
+        .tg-exit-btn:active {
+            transform: scale(0.92);
+        }
+        .tg-back-btn { 
+            background: rgba(255, 255, 255, 0.08); 
+            border: 1px solid rgba(255, 255, 255, 0.12); 
+            color: #fff; 
+            width: 36px;
+            height: 36px;
+            border-radius: 12px;
+            cursor: pointer; 
+            display: none;
+            align-items: center;
+            justify-content: center;
+            transition: transform .2s;
+            flex-shrink: 0;
+        }
+        .tg-back-btn:active {
+            transform: scale(0.92);
         }
         .tg-chat-user { 
             display: flex; 
@@ -535,8 +551,8 @@
             flex-shrink: 0;
         }
         .tg-avatar-wrap img { 
-            width: 42px; 
-            height: 42px; 
+            width: 40px; 
+            height: 40px; 
             border-radius: 50%; 
             object-fit: cover; 
             border: 2px solid #2AABEE; 
@@ -544,8 +560,8 @@
             background: #111;
         }
         .online-badge {
-            width: 11px;
-            height: 11px;
+            width: 10px;
+            height: 10px;
             background: #00b894;
             border: 2px solid #17212b;
             border-radius: 50%;
@@ -559,7 +575,7 @@
             white-space: nowrap;
         }
         .user-text-info h4 { 
-            font-size: 0.92rem; 
+            font-size: 0.90rem; 
             font-weight: 700; 
             color: #fff;
             display: flex;
@@ -567,14 +583,14 @@
             gap: 6px;
         }
         .tg-verified-svg {
-            width: 18px;
-            height: 18px;
+            width: 17px;
+            height: 17px;
             display: inline-block;
             vertical-align: middle;
             flex-shrink: 0;
         }
         .user-text-info p { 
-            font-size: 0.72rem; 
+            font-size: 0.70rem; 
             color: #2AABEE; 
             font-weight: 600; 
         }
@@ -759,7 +775,7 @@
         .rating-stars-row {
             display: flex;
             justify-content: center;
-            gap: 10px;
+            gap: 12px;
             margin: 10px 0 4px 0;
         }
         .rating-star-btn {
@@ -878,16 +894,16 @@
         .tg-send-btn {
             background: #2AABEE;
             color: #fff;
-            width: 40px;
-            height: 40px;
-            min-width: 40px;
+            width: 42px;
+            height: 42px;
+            min-width: 42px;
             border-radius: 50%;
             border: none;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            font-size: 1rem;
+            font-size: 1.1rem;
             box-shadow: 0 4px 12px rgba(42, 171, 238, 0.3);
             transition: transform .15s, background .2s;
             flex-shrink: 0;
@@ -1013,7 +1029,7 @@
     <div id="floating-support-btn" class="floating-telegram-btn" onclick="openSupportModal()" title="লাইভ সাপোর্ট">
         <div class="pulse-ring"></div>
         <i class="fab fa-telegram-plane"></i>
-        <span id="floating-support-badge" class="floating-support-badge">1</span>
+        <span id="floating-support-badge" class="floating-support-badge">0</span>
     </div>
 
     <!-- FULL POPUP SUPPORT CHAT DESK MODAL -->
@@ -1021,7 +1037,15 @@
         <div id="support-chat-wrapper">
             <!-- Top Bar -->
             <div class="tg-top-bar">
-                <button id="btn-back" class="tg-back-btn" onclick="handleSupportBack()"><i class="fas fa-arrow-left"></i></button>
+                <!-- PROFESSIONAL BACK / EXIT BUTTON (LIKE BALANCE TRANSFER PAGE) -->
+                <button class="tg-exit-btn" onclick="closeSupportModal()" title="ফিরে যান">
+                    <i data-lucide="arrow-left" class="w-5 h-5 text-white"></i>
+                </button>
+
+                <!-- Admin back to inbox button -->
+                <button id="btn-back" class="tg-back-btn" onclick="handleSupportBack()" title="ইনবক্সে ফিরে যান">
+                    <i data-lucide="chevron-left" class="w-5 h-5 text-white"></i>
+                </button>
                 
                 <div class="tg-chat-user" onclick="handleHeaderClick()">
                     <div class="tg-avatar-wrap">
@@ -1049,11 +1073,6 @@
                     <!-- Admin Support Complete Action -->
                     <button id="btn-complete-ticket" class="btn-complete-ticket" onclick="completeSupportTicket()">
                         <i class="fas fa-check-circle"></i> সমাধান
-                    </button>
-
-                    <!-- EXIT / CLOSE BUTTON -->
-                    <button class="tg-close-btn" onclick="closeSupportModal()" title="বন্ধ করুন">
-                        <i class="fas fa-times"></i>
                     </button>
                 </div>
             </div>
@@ -1942,7 +1961,7 @@
                     <div>
                         <div class="flex justify-between items-center mb-1.5">
                             <label for="amountInput" class="text-xs font-black text-slate-700">টাকার পরিমাণ (BDT)</label>
-                            <span class="text-[10.5px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-md border border-blue-100">মিনিমাম: ৳১০</span>
+                            <span id="deposit-min-badge" class="text-[10.5px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-md border border-blue-100">মিনিমাম: ৳১০</span>
                         </div>
                         <div class="relative">
                             <input id="amountInput" type="number" step="1" value="50" min="10" placeholder="50" oninput="handleAutoAmountInput()" class="w-full p-3.5 pl-10 rounded-2xl input-field text-2xl font-black text-slate-800 border-2 border-blue-200 focus:border-blue-600 text-center tracking-wider font-mono">
@@ -2101,7 +2120,7 @@
 
                     <button onclick="navigateTo('history-page')" class="w-full p-3 flex items-center justify-between hover:bg-slate-50 rounded-xl transition">
                         <div class="flex items-center gap-2.5">
-                            <div class="p-1.5 bg-purple-50 text-purple-600 rounded-lg"><i data-lucide="clock" class="w-4 h-4"></i></div>
+                            <div class="p-1.5 bg-purple-100 text-purple-600 rounded-lg"><i data-lucide="clock" class="w-4 h-4"></i></div>
                             <span>প্রি-অর্ডার ও রিপোর্ট হিস্ট্রি</span>
                         </div>
                         <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400"></i>
@@ -2297,7 +2316,7 @@
                             <span id="withdraw-fee-text" class="font-black text-rose-600 font-mono">৳ ১০.০০</span>
                         </div>
                         <div class="flex justify-between bg-rose-50/60 p-2 rounded-xl border border-rose-100">
-                            <span class="text-rose-800 font-bold">১০ টাকা ফি বাদে তোলার যোগ্য:</span>
+                            <span class="text-rose-800 font-bold" id="withdraw-fee-deduct-label">ফি বাদে তোলার যোগ্য:</span>
                             <span id="withdraw-max-withdrawable-text" class="font-black text-rose-700 font-mono">৳ 0</span>
                         </div>
                     </div>
@@ -2313,7 +2332,7 @@
                             <span class="text-xs font-bold text-slate-700 w-20">পরিমাণ</span>
                             <input id="withdraw-amount-input" oninput="handleWithdrawAmountInput(this)" type="number" step="1" min="100" max="20000" placeholder="100 ~ 20,000" class="flex-grow text-xs font-semibold outline-none text-slate-800 font-mono">
                         </div>
-                        <p class="text-[10px] text-slate-400 mt-1">* কোনো দশমিক গ্রহণ করা হবে না। মিনিমাম উত্তোলন ১০০ টাকা।</p>
+                        <p class="text-[10px] text-slate-400 mt-1" id="withdraw-rules-note">* কোনো দশমিক গ্রহণ করা হবে না। মিনিমাম উত্তোলন ১০০ টাকা।</p>
                     </div>
 
                     <button onclick="submitWithdrawalRequest()" id="btn-submit-withdraw" class="w-full py-3.5 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white font-bold rounded-2xl text-sm flex items-center justify-center gap-2 shadow-lg active:scale-98 transition">
@@ -2737,7 +2756,7 @@
     </div>
 
     <!-- ======================================================== -->
-    <!-- REALTIME FIREBASE LIVE SUPPORT DESK LOGIC (FILE 2)       -->
+    <!-- REALTIME FIREBASE LIVE SUPPORT DESK LOGIC                -->
     <!-- ======================================================== -->
     <script>
         const OFFICIAL_ADMIN_ID = "7358825471";
@@ -2770,6 +2789,7 @@
         let allInboxThreads = [];
         let typingTimer = null;
         let activeCommunityLinks = [];
+        let isSupportModalCurrentlyOpen = false;
 
         let currentChatRef = null;
         let currentTypingRef = null;
@@ -2793,12 +2813,24 @@
 
         function openSupportModal() {
             triggerSupportHaptic('medium');
+            isSupportModalCurrentlyOpen = true;
             document.getElementById('support-modal-overlay').style.display = 'flex';
+            
+            // Mark all unread messages as read immediately and clear badge
+            markAdminMessagesAsSeen(supportTgUser.id);
+            const badge = document.getElementById('floating-support-badge');
+            if (badge) {
+                badge.style.display = 'none';
+                badge.innerText = '0';
+            }
+
             initSupportDesk();
+            if (window.lucide) lucide.createIcons();
         }
 
         function closeSupportModal() {
             triggerSupportHaptic('light');
+            isSupportModalCurrentlyOpen = false;
             document.getElementById('support-modal-overlay').style.display = 'none';
             detachActiveListeners();
         }
@@ -2993,7 +3025,7 @@
             detachActiveListeners();
             activeChatTargetUserId = targetUid;
 
-            document.getElementById('btn-back').style.display = 'block';
+            document.getElementById('btn-back').style.display = 'inline-flex';
             document.getElementById('btn-complete-ticket').style.display = 'inline-flex';
             document.getElementById('btn-manage-links').style.display = 'none';
             document.getElementById('support-header-title').innerHTML = `<span>${escapeHTML(userName)}</span> <i class="fas fa-info-circle" style="font-size:0.8rem; color:#8e9bb2;"></i>`;
@@ -3009,6 +3041,7 @@
             loadThreadMessages(targetUid);
             listenTypingStatus(targetUid);
             listenUserMeta(targetUid);
+            if (window.lucide) lucide.createIcons();
         }
 
         function openUserDirectChat(myId) {
@@ -3029,9 +3062,11 @@
             document.getElementById('chat-messages').style.display = 'flex';
             document.getElementById('support-input-bar').style.display = 'flex';
             
+            markAdminMessagesAsSeen(myId);
             loadThreadMessages(myId);
             listenTypingStatus(myId);
             listenUserMeta(myId);
+            if (window.lucide) lucide.createIcons();
         }
 
         function detachActiveListeners() {
@@ -3053,6 +3088,20 @@
             });
         }
 
+        function markAdminMessagesAsSeen(uid) {
+            if (!uid) return;
+            supportDb.ref('support_chats/' + uid).once('value', snap => {
+                if (snap.exists()) {
+                    snap.forEach(c => {
+                        const m = c.val();
+                        if (m.sender === 'admin' && m.seen === false) {
+                            c.ref.update({ seen: true });
+                        }
+                    });
+                }
+            });
+        }
+
         function loadThreadMessages(uid) {
             currentChatRef = supportDb.ref('support_chats/' + uid);
             currentChatRef.on('value', snap => {
@@ -3065,7 +3114,7 @@
                             <div class="msg-time">${OFFICIAL_TITLE}</div>
                         </div>
                     </div>`;
-
+                
                 chatMessageHistory = [];
                 if (snap.exists()) {
                     snap.forEach(c => {
@@ -3150,6 +3199,12 @@
                                 ${!isMsgFromAdmin ? `<img src="${escapeHTML(avatar)}" class="msg-avatar">` : ''}
                             </div>`;
                     });
+
+                    // যদি ইউজার হিসেবে চ্যাট ওপেন অবস্থায় কোনো এডমিন মেসেজ আসে, তবে তৎক্ষণাৎ তা 'seen' হিসেবে মার্ক হবে
+                    if (!isSupportAdmin() && isSupportModalCurrentlyOpen) {
+                        markAdminMessagesAsSeen(uid);
+                    }
+
                     body.scrollTop = body.scrollHeight;
                 }
             });
@@ -3408,7 +3463,7 @@
     </script>
 
     <!-- ======================================================== -->
-    <!-- PRIMARY APP FIREBASE & SHOP/WALLET ENGINE LOGIC (FILE 1) -->
+    <!-- PRIMARY APP FIREBASE & SHOP/WALLET ENGINE LOGIC          -->
     <!-- ======================================================== -->
     <script type="module">
         const primaryFirebaseConfig = {
@@ -3484,7 +3539,6 @@
         let selectedBindMethod = 'Nagad';
         let selectedWithdrawCardId = null;
         let revealedWallets = new Set();
-        const WITHDRAW_FEE_BDT = 10;
 
         let recipientDebounceTimer = null;
         const taskActiveTimers = {};
@@ -3526,6 +3580,22 @@
 
         function getVip0UnlockFee() {
             return parseFloat(appConfig?.vip0UnlockFee !== undefined ? appConfig.vip0UnlockFee : 0.00);
+        }
+
+        function getMinDeposit() {
+            return parseFloat(appConfig?.minDeposit !== undefined ? appConfig.minDeposit : 10.00);
+        }
+
+        function getMinWithdraw() {
+            return parseFloat(appConfig?.minWithdraw !== undefined ? appConfig.minWithdraw : 100.00);
+        }
+
+        function getMaxWithdraw() {
+            return parseFloat(appConfig?.maxWithdraw !== undefined ? appConfig.maxWithdraw : 20000.00);
+        }
+
+        function getWithdrawFee() {
+            return parseFloat(appConfig?.withdrawFee !== undefined ? appConfig.withdrawFee : 10.00);
         }
 
         function getManualRetentionHours() {
@@ -3722,11 +3792,13 @@
                 checkAndRefundExpiredOrders();
                 startCountdownTimerRoutine();
 
-                // Listen for unseen messages in support chat to show badge on floating button
+                // Listen for unseen admin messages in support chat to update the badge
                 supportDb.ref('support_chats/' + supportTgUser.id).on('value', snap => {
                     const badge = document.getElementById('floating-support-badge');
-                    if (!snap.exists()) {
+                    if (!badge) return;
+                    if (!snap.exists() || isSupportModalCurrentlyOpen) {
                         badge.style.display = 'none';
+                        badge.innerText = '0';
                         return;
                     }
                     let unread = 0;
@@ -3739,6 +3811,7 @@
                         badge.style.display = 'block';
                     } else {
                         badge.style.display = 'none';
+                        badge.innerText = '0';
                     }
                 });
 
@@ -3847,6 +3920,13 @@
 
                 const actFee = getActivationFee();
                 const refBonus = getReferralBonus();
+                const minDep = getMinDeposit();
+
+                // Deposit Page Dynamic Setup
+                const depMinBadge = document.getElementById('deposit-min-badge');
+                if (depMinBadge) depMinBadge.textContent = `মিনিমাম: ৳${minDep.toFixed(0)}`;
+                const amtInput = document.getElementById('amountInput');
+                if (amtInput) amtInput.min = String(minDep);
 
                 const actBanner = document.getElementById('banner-activation-text');
                 if (actBanner) actBanner.textContent = `মাত্র ${actFee.toFixed(0)} টাকা দিয়ে একাউন্ট সক্রিয় করুন`;
@@ -5937,13 +6017,32 @@
         function loadWithdrawPageUI() {
             if (!userData) return;
             const bal = (userData.balance || 0).toFixed(2);
+            const withdrawFee = getWithdrawFee();
+            const minWithdraw = getMinWithdraw();
+            const maxWithdraw = getMaxWithdraw();
+
             document.getElementById('withdraw-main-wallet-bal').textContent = `৳ ${bal}`;
-            document.getElementById('withdraw-fee-text').textContent = `৳ ${WITHDRAW_FEE_BDT}.00`;
+            document.getElementById('withdraw-fee-text').textContent = `৳ ${withdrawFee.toFixed(2)}`;
+            
+            const feeDeductLabel = document.getElementById('withdraw-fee-deduct-label');
+            if (feeDeductLabel) feeDeductLabel.textContent = `${withdrawFee.toFixed(0)} টাকা ফি বাদে তোলার যোগ্য:`;
 
             const userBal = parseFloat(userData.balance || 0);
-            const maxWithdrawable = Math.max(0, Math.floor(userBal - WITHDRAW_FEE_BDT));
+            const maxWithdrawable = Math.max(0, Math.floor(userBal - withdrawFee));
             const maxEl = document.getElementById('withdraw-max-withdrawable-text');
             if (maxEl) maxEl.textContent = `৳ ${maxWithdrawable}`;
+
+            const amountInput = document.getElementById('withdraw-amount-input');
+            if (amountInput) {
+                amountInput.min = String(minWithdraw);
+                amountInput.max = String(maxWithdraw);
+                amountInput.placeholder = `${minWithdraw.toFixed(0)} ~ ${maxWithdraw.toLocaleString('en-US')}`;
+            }
+
+            const rulesNote = document.getElementById('withdraw-rules-note');
+            if (rulesNote) {
+                rulesNote.textContent = `* কোনো দশমিক গ্রহণ করা হবে না। মিনিমাম উত্তোলন ${minWithdraw.toFixed(0)} টাকা।`;
+            }
 
             const warnBox = document.getElementById('withdraw-locked-warning');
             const submitBtn = document.getElementById('btn-submit-withdraw');
@@ -5968,8 +6067,9 @@
         window.handleWithdrawAmountInput = function(inputEl) {
             inputEl.value = inputEl.value.replace(/[^0-9]/g, '');
 
+            const withdrawFee = getWithdrawFee();
             const userBal = parseFloat(userData?.balance || 0);
-            const maxAllowed = Math.max(0, Math.floor(userBal - WITHDRAW_FEE_BDT));
+            const maxAllowed = Math.max(0, Math.floor(userBal - withdrawFee));
             
             if (!inputEl.value) return;
             let val = parseInt(inputEl.value, 10);
@@ -5981,7 +6081,7 @@
 
             if (val > maxAllowed) {
                 inputEl.value = maxAllowed > 0 ? maxAllowed : '';
-                showToast(`১০ টাকা উইথড্র ফি বাদ দিয়ে আপনি সর্বোচ্চ ৳${maxAllowed} তুলতে পারবেন!`, "info");
+                showToast(`${withdrawFee.toFixed(0)} টাকা উইথড্র ফি বাদ দিয়ে আপনি সর্বোচ্চ ৳${maxAllowed} তুলতে পারবেন!`, "info");
             }
         };
 
@@ -6193,6 +6293,9 @@
 
             const activeWallet = wallets.find(w => w.id === selectedWithdrawCardId) || wallets[0];
             const amountInput = document.getElementById('withdraw-amount-input');
+            const withdrawFee = getWithdrawFee();
+            const minWithdraw = getMinWithdraw();
+            const maxWithdraw = getMaxWithdraw();
             
             const rawVal = amountInput.value.trim();
             if (!rawVal || !/^\d+$/.test(rawVal)) {
@@ -6200,14 +6303,14 @@
             }
 
             const amount = parseInt(rawVal, 10);
-            if (isNaN(amount) || amount < 100 || amount > 20000) {
-                return showToast("উত্তোলন পরিমাণ ১০০ থেকে ২০,০০০ টাকার মধ্যে হতে হবে!", "error");
+            if (isNaN(amount) || amount < minWithdraw || amount > maxWithdraw) {
+                return showToast(`উত্তোলন পরিমাণ ${minWithdraw} থেকে ${maxWithdraw} টাকার মধ্যে হতে হবে!`, "error");
             }
 
-            const totalDebit = amount + WITHDRAW_FEE_BDT;
+            const totalDebit = amount + withdrawFee;
 
             if ((userData.balance || 0) < totalDebit) {
-                return showToast(`পর্যাপ্ত ব্যালেন্স নেই! প্রয়োজন ৳${totalDebit} (উত্তোলন ৳${amount} + ফি ৳${WITHDRAW_FEE_BDT})`, "error");
+                return showToast(`পর্যাপ্ত ব্যালেন্স নেই! প্রয়োজন ৳${totalDebit} (উত্তোলন ৳${amount} + ফি ৳${withdrawFee.toFixed(0)})`, "error");
             }
 
             const btn = document.getElementById('btn-submit-withdraw');
@@ -6232,7 +6335,7 @@
                         userId: String(userData.tgChatId),
                         userName: userData.name || 'User',
                         amount: amount,
-                        fee: WITHDRAW_FEE_BDT,
+                        fee: withdrawFee,
                         totalDebit: totalDebit,
                         method: activeWallet.method,
                         accountName: activeWallet.name,
@@ -6243,7 +6346,7 @@
                 });
 
                 userData.balance -= totalDebit;
-                await recordUserLedger('expense', `উত্তোলন (${activeWallet.method})`, totalDebit, false, `ফি: ৳${WITHDRAW_FEE_BDT}`);
+                await recordUserLedger('expense', `উত্তোলন (${activeWallet.method})`, totalDebit, false, `ফি: ৳${withdrawFee.toFixed(2)}`);
 
                 const withdrawMsg = `💸 <b>নতুন উত্তোলন অনুরোধ!</b>\n\n` +
                     `👤 <b>নাম:</b> ${userData.name || 'User'}\n` +
@@ -6420,8 +6523,9 @@
 
         window.initiatePayment = async function() {
             if (!userData) return showToast('প্রথমে লগইন করুন', 'error');
+            const minDeposit = getMinDeposit();
             const amount = document.getElementById('amountInput').value.trim();
-            if (!amount || parseFloat(amount) < 10) return showToast('সর্বনিম্ন ডিপোজিট ১০ টাকা', 'error');
+            if (!amount || parseFloat(amount) < minDeposit) return showToast(`সর্বনিম্ন ডিপোজিট ${minDeposit.toFixed(0)} টাকা`, 'error');
 
             const btn = document.getElementById('btnPayGateway');
             btn.disabled = true; 
