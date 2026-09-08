@@ -3957,9 +3957,9 @@
                 return;
             }
 
+            if (!currentSelectedService) {
                 currentSelectedService = dynamicSellServices.find(s => s.isActive !== false) || dynamicSellServices[0];
             }
-
             container.innerHTML = dynamicSellServices.map(srv => {
                 const isSelected = currentSelectedService && currentSelectedService.id === srv.id;
                 const isEnabled = srv.isActive !== false;
